@@ -1,0 +1,52 @@
+﻿@model IEnumerable<BussinesEntities.CalendarioEntities>
+
+@{
+
+    DateTime Hoy = DateTime.Today;
+    var dia = Hoy.Day;
+    var style_dia = "color:Red";
+}
+
+<div class="table-responsive">
+
+    <table class="table table-bordered" style="font-size:9px;">
+
+        <tr style="background:#F6F5F5;">
+            <th>Hab.</th>
+            @for (int i = 1; i <= ViewBag.dias; i++)
+            {
+                <th style="@if(i==dia){@style_dia}">@i.ToString().PadLeft(2, '0')</th>
+            }
+        </tr>
+
+        @foreach (var item in Model)
+        {
+
+            <tr>
+                <td><strong>@item.Nombre</strong></td>
+
+                @for (int i = 1; i <= ViewBag.dias; i++)
+                {
+
+                    <td>
+
+                        <div  style=" height:33px; text-align:center; padding-top:8px;" rel="tooltip">
+                        
+
+
+                        </div>
+
+
+
+                        @i.ToString().PadLeft(2, '0')
+                    </td>
+                }
+
+            </tr>
+
+        }
+
+    </table>
+
+</div>
+

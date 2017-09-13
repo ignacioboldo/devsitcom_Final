@@ -1,0 +1,182 @@
+﻿@model IEnumerable<BussinesEntities.TramiteEntity>
+@using GridMvc.Html
+
+<script type="text/javascript">
+
+    var perfil = "@ViewBag.Perfil"
+    var mensaje = "@ViewBag.Mensaje"
+
+    $(document).ready(function () {
+
+        if (perfil == 1 || perfil == 2) {
+            $("#divTuristaRespNegocio").show();
+            $("#NoUsuarios").show();
+        }
+        else {
+            $("#divRespSecretaria").show();
+            $("#NoSecretaria").show();
+            $("#tabSecretaria").show();
+        }
+
+        if (perfil == 3) {
+            $("#btnTusTramites").hide();
+            $("#btnTusNegocios").hide();
+            $("#btnTusTramitesAsignados").show();
+        }
+        else {
+            $("#btnTusTramites").show();
+            $("#btnTusNegocios").show();
+            $("#btnTusTramitesAsignados").hide();
+        }
+
+        if (mensaje != "") {
+            alert(mensaje);
+        }
+
+        $("#btnTusTramites").click(function () {
+            event.preventDefault();
+            window.location = '@Url.Action("TramitesUsuario","Tramites")';
+        });
+
+        $("#btnTusTramitesAsignados").click(function () {
+            event.preventDefault();
+            window.location = '@Url.Action("TramitesUsuario","Tramites")';
+        });
+
+        $("#btnModificarDatos").click(function () {
+            event.preventDefault();
+            window.location = '@Url.Action("EditUsuario","Usuarios")';
+        });
+
+        $("#btnTusNegocios").click(function () {
+            event.preventDefault();
+            window.location = '@Url.Action("NegociosUsuario","Negocios")';
+        });
+    });
+
+    function cancelar(idtramite) {
+        if (confirm('¿Seguro que querés cancelar este trámite?')) {
+            window.location = "../Tramites/CancelarTramite/" + idtramite + "?returnUrl=../Tramites/TramitesUsuario";
+        }
+    }
+
+    function ver(idtramite) {
+        window.location = "../Tramites/VerTramite/" + idtramite;
+    }
+</script>
+
+    <script type="text/javascript">
+
+        debugger
+        function confirmar(idtramite) {
+            if (confirm('¿Seguro que querés tomar este trámite a tu nombre?')) {
+                alert('El trámite fué asignado a tu nombre, recordá que sólo podés tomar 3 trámites diarios.');
+                window.location = 'TomarTramiteResp/'+idtramite;
+            }
+        }
+
+     
+    </script>
+
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Panel de Control</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Panel de Control</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="btn-group" role="group" aria-label="..." style="text-align:center">
+
+                    <a href="" class="btn btn-default"><span class="glyphicon glyphicon-user" id="btnModificarDatos" aria-hidden="true"></span> MODIFICÁ TUS DATOS</a>
+
+                    <a href="" class="btn btn-default" id="btnTusNegocios">
+                        <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> TUS NEGOCIOS
+                    </a>
+
+                    <a href="" class="btn btn-default" id="btnTusTramites"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> TUS TRAMITES</a>
+
+                    <a href="" class="btn btn-default " id="btnTusTramitesAsignados">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> TUS TRAMITES ASIGNADOS
+                    </a>
+
+                    <a href="../Tramites/TramitesResp" class="btn btn-default active" id="btnTusTramitesAsignados">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> VER TODOS LOS TRAMITES
+                    </a>
+
+
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="innerWrapper">
+                    <div class="orderBox myAddress">
+
+                        <h4><strong>Ver todos mis Tramites</strong></h4>
+
+                        @helper verificarIdEstado(BussinesEntities.TramiteEntity t)
+{
+    if (t.EstadoTramite.idEstadoTramite == 1)
+    {
+                    <button id="btnTomarTramite" class="btn btn-blue" onclick="confirmar(@t.idTramite)" style="font-size:10px;width: 121px;">TOMAR TRÁMITE <i class="fa fa-hand-o-right"></i></button>
+    }
+    else
+    {
+                    <button id="btnTomarTramite" class="btn btn-blue" onclick="confirmar(@t.idTramite)" style="font-size:10px;width: 121px;" disabled="disabled">TOMAR TRÁMITE <i class="fa fa-hand-o-right"></i></button>
+    }
+}
+
+
+
+                        @Html.Grid(Model).Columns(columns =>
+        {
+            columns.Add(model => model.Usuarios.nombreUsuario).Titled("Usuario Solicitante");
+            columns.Add(model => model.Usuarios1.nombreUsuario).Titled("Usuario Responsable");
+            columns.Add(model => model.fechaAlta).Titled("Fecha Alta").SetWidth(160);
+            columns.Add(model => model.EstadoTramite.nombreEstadoTramite).Titled("Estado Trámite").SetWidth(40);
+            columns.Add(model => model.TipoTramite.nombreTipoTramite).Titled("Tipo").SetWidth(100);
+            columns.Add(t => t.idTramite)
+                .Titled("Acción")
+                .Encoded(false)
+                .Sanitized(false)
+                .SetWidth(30)
+                .RenderValueAs(t => verificarIdEstado(t)).SetWidth(35);
+        }).WithPaging(15).Sortable(true)
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</section>
+

@@ -1,0 +1,163 @@
+﻿@model BussinesEntities.SolicitudEntity
+@{
+    ViewBag.Title = "SolicitarReserva";
+    var fecha = DateTime.Now;
+}
+
+
+<script type="text/javascript">
+    var tipoHospedaje = "@ViewBag.idTipoLugarHospedaje"
+
+    $(document).ready(function () {
+        if (tipoHospedaje != "1") {
+            $("#divCantLugares").show();
+        }
+    });
+</script>
+
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+
+
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Solicitar Reserva</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Solicitar Reserva</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mainContent clearfix blogPage singleBlog">
+    <div class="container">
+
+
+        @if (ViewBag.estado == "")
+        {
+
+            DAL.Persona p = ViewBag.Persona;
+            
+            using (Html.BeginForm(new { idNegocio = ViewBag.idNegocio }))
+            {
+
+
+                <section class="invoice">
+                    <!-- title row -->
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h2 class="page-header">
+                                <i class="fa fa-globe"></i> Detalle
+                                <small class="pull-right">Fecha: @fecha</small>
+                            </h2>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- info row -->
+                    <div class="row invoice-info">
+                        <div class="col-sm-4 invoice-col">
+
+                            <h3><strong>Datos del cliente</strong></h3>
+
+                            <address>
+                                Nombre: @p.nombre<br>
+                                Apellido: @p.apellido<br>
+                                Sexo: @p.Sexo.nombre<br>
+                                Pasaporte: @p.documento<br>
+                                Email: @p.email
+                            </address>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-4 invoice-col">
+                            <h3><strong>Datos de la reserve</strong></h3>
+                            <address>
+                                Fecha Desde: @Session["fecha_desde"]<br>
+                                Fecha Hasta: @Session["fecha_hasta"]<br>
+                                Cantidad de Personas: @Session["cantidad_personas"]<br>
+                                Cantidad de Habitaciones: @Session["cantidad_habitaciones"]<br>
+                            </address>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-sm-4 invoice-col">
+
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                    <!-- Table row -->
+                    <div class="row">
+
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+
+                    <div class="row">
+                        <!-- accepted payments column -->
+                        <div class="col-xs-12">
+
+                            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                Dejanos tu consulta y envia tu solicitud de reserva y en brebe tendras una respuesta en tu correo electronico.
+                            </p>
+                        </div>
+                        <!-- /.col -->
+                        <div class="col-xs-12">
+
+                            <textarea class="form-control" name="observacion" rows="3"></textarea>
+                        </div>
+                        <!-- /.col -->
+                    </div>
+                    <!-- /.row -->
+                    <!-- this row will not appear when printing -->
+                    <div class="row no-print" style="margin-top: 20px;">
+                        <div class="col-xs-12">
+                            <button type="submit" class="btn btn-success pull-right" style="background-color: rgba(177, 13, 20, 1);padding: 10px;">
+                                Enviar Solicitud
+                            </button>
+                        </div>
+                    </div>
+                </section>
+
+                <input type="hidden" name="fechaDesde" id="fechaDesde" value="@Session["fecha_desde"]" />
+                <input type="hidden" name="fechaHasta" id="fechaHasta" value="@Session["fecha_hasta"]" />
+                <input type="hidden" name="cantidadPersonas" id="cantidadPersonas" value="@Session["cantidad_personas"]" />
+                <input type="hidden" name="cantidadLugares" id="cantidadLugares" value="@Session["cantidad_habitaciones"]" />
+
+
+
+            }
+
+
+
+        }
+        else
+        {
+            <div id="mensaje_reserva" style="text-align:center; font-size:19px; color:GrayText">
+                <div class="col-md-12">
+                    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Solicitud de reserva registrada correctamente nos contactaremos con usted a la brevedad<br />
+                </div>
+                <div class="col-md-12">
+                    <a href="@Url.Action("IndexHospedajes", "Negocios")" class="btn btn-info" style="padding:10px; margin-top:20px; width: 200px;">
+                        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Salir
+                    </a>
+                </div>
+            </div>
+        }
+
+
+
+    </div>
+</section>
+
+
+
+

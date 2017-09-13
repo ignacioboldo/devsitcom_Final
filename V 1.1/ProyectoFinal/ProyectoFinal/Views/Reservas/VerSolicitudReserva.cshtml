@@ -1,0 +1,512 @@
+﻿@model BussinesEntities.SolicitudEntity
+@{
+    ViewBag.Title = "SolicitarReserva";
+}
+
+
+
+<script type="text/javascript">
+    var tipoHospedaje = "@ViewBag.idTipoLugarHospedaje"
+
+    $(document).ready(function () {
+        if (tipoHospedaje != "1") {
+            $("#divCantLugares").show();
+        }
+    });
+
+
+    $(document).ready(function () {
+
+        $('.date').mask('00-00-0000');
+
+        $('#fecha_desde').datetimepicker({
+            locale: 'es',
+            format: 'DD-MM-YYYY'
+        });
+
+        $('#fecha_hasta').datetimepicker({
+            locale: 'es',
+            format: 'DD-MM-YYYY'
+        });
+
+
+    });
+
+    function buscar_cliente() {
+        var buscar = $("#buscar_cliente").val();
+        $.ajax({
+            url: "BuscarCliente?buscar=" + buscar
+        }).done(function (data) {
+            $("#lista_clientes").html(data);
+        });
+
+    };
+
+
+    function seleccionarCliente(idPersona, nombre,apellido, sexo, documento) {
+        $("#nombre").val(nombre);
+        $("#apellido").val(apellido);
+        $("#idPersona").val(idPersona);
+        $("#sexo").val(sexo);
+        $("#documento").val(documento);
+        return false;
+    }
+
+    function buscarHabitacionesDisponibles() {
+
+        var fecha_desde = $("#fecha_desde").val();
+        var fecha_hasta = $("#fecha_hasta").val();
+
+        if (fecha_desde != '' && fecha_hasta != '') {    
+            $(".habitaciones-select").html('<option>Cargando...</option>');
+            $.ajax({
+                url: "BuscarHabitacionesDisponibles?fecha_desde=" + fecha_desde + "&fecha_hasta=" + fecha_hasta + "&idNegocio=" + '@ViewBag.idNegocio'
+            }).done(function (data) {
+                $(".habitaciones-select").html(data);
+          
+            });
+        }
+
+
+    }
+
+
+</script>
+
+<input type="hidden" value="@ViewBag.idPersona" id="idPersona" />
+
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+
+
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Solicitud de Reserva</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Solicitud de Reserva</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mainContent clearfix blogPage singleBlog">
+    <div class="container">
+
+        <div id="mensaje_reserva" style="text-align:center; font-size:19px; color:GrayText; display:none">
+            <div class="col-md-12">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Solicitud de reserva registrada correctamente, Nro de Reserva: <span id="nro_reserva"></span><br />
+            </div>
+            <div class="col-md-12">
+                <a href="javascript:history.back()" class="btn btn-info" style="padding:10px; margin-top:20px; width: 200px;">
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Cancelar y Volver
+                </a>
+
+                <a href="#" class="btn btn-success" onclick="return nuevaReserva()"  style="padding:10px; margin-top:20px; background-color: rgba(177, 13, 20, 1); width: 200px;">
+                    Nueva Reserva
+                </a>
+            </div>
+         </div>
+
+
+        <div id="datos_reserva">
+
+
+            <div class="row">
+
+                <div>
+
+                    @{
+
+
+                        string nombre = "";
+                        string apellido = "";
+                        string sexo = "";
+                        int? documento = 0;
+                        string email = "";
+                        string fecha_desde = "";
+                        string fecha_hasta = "";
+                        string cantidad_persona = "";
+                        string cantidad_habitacion = "";
+                        string consulta = "";
+
+                        if (ViewBag.Persona != null)
+                        {
+                            DAL.Persona p = ViewBag.Persona;
+                            nombre = p.nombre;
+                            apellido = p.apellido;
+                            sexo = p.Sexo.nombre;
+                            documento = p.documento;
+                            email = p.email;
+
+                            fecha_desde = Convert.ToString(@Model.fechaDesde);
+                            fecha_hasta = Convert.ToString(@Model.fechaHasta);
+                            cantidad_persona = Convert.ToString(@Model.cantidadPersonas);
+                            cantidad_habitacion = Convert.ToString(@Model.cantidadLugares);
+                            consulta = @Model.observacion;
+
+
+                        }
+
+
+                    }
+
+                    @if (ViewBag.disabled == "")
+                    {
+
+
+                        <div class="col-xs-12 col-md-3">
+
+                            <div class="form-group">
+                                <label>&nbsp;</label>
+
+                                <a href="@Url.Action("DatosPersonales", "Persona")" style="background-color: rgba(177, 13, 20, 1);" class="btn btn-success btn-block">
+                                    Nuevo Cliente
+                                </a>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-xs-12 col-md-3">
+
+
+                        </div>
+
+                        <div class="col-xs-12 col-md-3">
+
+
+                        </div>
+
+                        <div class="col-xs-12 col-md-3">
+
+
+
+                        </div>
+
+
+                        <div class="col-xs-12" style="padding-top:10px;">
+                            <h4 class="page-header">
+                                Buscar Cliente
+                            </h4>
+                        </div>
+
+
+                        <div class="col-xs-12 col-md-12">
+
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Nombre y Apellido</label>
+                                <input type="text" class="form-control" value="" id="buscar_cliente" onkeyup="buscar_cliente();" placeholder="Nombre y Apellido">
+                            </div>
+
+                        </div>
+
+                        <div class="col-xs-12 col-md-12">
+
+                            <div id="lista_clientes"></div>
+
+                        </div>
+
+
+                    }
+
+                    <div class="col-xs-12" style="padding-top:10px;">
+                        <h4 class="page-header">
+                            Datos del Cliente
+                        </h4>
+                    </div>
+
+
+                    <div class="col-xs-12 col-md-3">
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Nombre</label>
+                            <input type="text" class="form-control" id="nombre" value="@nombre" disabled placeholder="Nombre">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-xs-12 col-md-3">
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Apellido</label>
+                            <input type="text" class="form-control" id="apellido" value="@apellido" disabled placeholder="Apellido">
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-12 col-md-3">
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Sexo</label>
+                            <input type="text" class="form-control" id="sexo" value="@sexo" disabled placeholder="Sexo">
+                        </div>
+
+                    </div>
+
+
+                    <div class="col-xs-12 col-md-3">
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Documento</label>
+                            <input type="text" class="form-control" id="documento" value="@documento" disabled placeholder="Documento">
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+
+                <div style="@ViewBag.datos_solicitud">
+
+
+
+                    <div class="col-xs-12" style="padding-top:10px;">
+                        <h4 class="page-header">
+                            Datos Solicitud de reserva
+                        </h4>
+                    </div>
+
+
+
+                    <div class="col-xs-12 col-md-4">
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email</label>
+                            <input type="text" class="form-control" value="@email" @ViewBag.disabled placeholder="Email">
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-12 col-md-2">
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Fecha Desde</label>
+                            <input type="text" class="form-control" value="@fecha_desde" @ViewBag.disabled placeholder="Fecha Desde">
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-12 col-md-2">
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Fecha Hasta</label>
+                            <input type="text" class="form-control" value="@fecha_hasta" @ViewBag.disabled placeholder="Fecha Hasta">
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-12 col-md-2">
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Cantidad de Personas</label>
+                            <input type="text" class="form-control" @ViewBag.disabled value="@cantidad_persona" placeholder="Cantidad de Personas">
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-12 col-md-2">
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Cantidad de Habitaciones</label>
+                            <input type="text" class="form-control" @ViewBag.disabled value="@cantidad_habitacion" placeholder="Cantidad de Habitaciones">
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-12 col-md-12">
+
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Consulta</label>
+                            <input type="text" class="form-control" @ViewBag.disabled value="@consulta" placeholder="Consulta">
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+
+
+            <div class="row">
+                <div class="col-xs-12" style="padding-top:10px;">
+                    <h4 class="page-header">
+                        Detalle de Reserva
+                    </h4>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-xs-12 col-md-3">
+
+                    <div class="form-group">
+                        <label>Fecha Desde</label>
+                        <input type="text" class="form-control date" onblur="buscarHabitacionesDisponibles();" id="fecha_desde" placeholder="Fecha Desde">
+                    </div>
+
+                </div>
+
+
+                <div class="col-xs-12 col-md-3">
+
+                    <div class="form-group">
+                        <label>Fecha Hasta</label>
+                        <input type="text" class="form-control date" onblur="buscarHabitacionesDisponibles();" id="fecha_hasta" placeholder="Fecha Hasta">
+                    </div>
+
+                </div>
+
+                <div class="col-xs-12 col-md-3">
+
+                    <div class="form-group">
+                        <label>Habitación</label>
+
+                        <select id="habitacion" class="form-control habitaciones-select"></select>
+
+                    </div>
+
+                </div>
+
+                <div class="col-xs-12 col-md-3">
+
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+
+                        <button type="button" class="btn btn-success btn-block" style="background-color: rgba(177, 13, 20, 1);" onclick="controlReserva('agregar');" style="padding: 7px;">
+                            Agregar
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+
+
+            <div id="lista_reserva"></div>
+
+
+
+
+
+        </div>
+
+
+
+
+    </div>
+</section>
+
+
+
+
+        <script>
+
+                    function controlReserva(accion, referencia) {
+
+                        var fecha_desde = $("#fecha_desde").val();
+                        var fecha_hasta = $("#fecha_hasta").val();
+                        var habitacion = $("#habitacion").val();
+                        var habitacion_text = $("#habitacion option:selected").text();
+
+                        var idPersona = $("#idPersona").val();
+
+      
+
+                        if (fecha_desde == '' || fecha_hasta == '' || habitacion == '') {
+                            alert("Debe completar los campos: Fecha Desde, Fecha Hasta y Habitación.");
+                        } else {
+
+                            if (idPersona == "") {
+                                alert("Debe seleccionar un cliente.");
+                            } else {
+
+
+                                if (!validate_fechaMayorQue(fecha_desde, fecha_hasta)) {
+                                    alert("La fecha desde no puede ser mayor a la fecha hasta.");
+                                } else {
+
+                                    $.ajax({
+                                        url: "AgregarReserva?fecha_desde=" + fecha_desde + "&fecha_hasta=" + fecha_hasta + "&habitacion=" + habitacion + "&accion=" + accion + "&referencia=" + referencia + "&habitacion_text=" + habitacion_text
+                                    }).done(function (data) {
+                                        $("#lista_reserva").html(data);
+                                    });
+                                   
+                                }
+
+   
+                    
+                            }
+
+                        }
+
+
+
+                        return false;
+
+                    };
+
+                    function registrarReserva() {
+
+
+                        var idPersona   = $("#idPersona").val();
+                        var idNegocio   = '@ViewBag.idNegocio';
+                        var idSolicitud = '@ViewBag.idSolicitud';
+
+                        $.ajax({
+                            url: "RegistrarReserva?idPersona=" + idPersona + "&idNegocio=" + idNegocio + "&idSolicitud=" + idSolicitud
+                        }).done(function (data) {
+                            $("#mensaje_reserva").show();
+                            $("#datos_reserva").hide();
+                            $("#nro_reserva").html(data);
+                        });
+
+
+
+                        return false;
+                    }
+
+            function nuevaReserva() {
+
+                location.reload();
+
+                return false;
+            }
+
+            function validate_fechaMayorQue(fechaInicial, fechaFinal) {
+                valuesStart = fechaInicial.split("-");
+                valuesEnd = fechaFinal.split("-");
+
+                // Verificamos que la fecha no sea posterior a la actual
+                var dateStart = new Date(valuesStart[2], (valuesStart[1] - 1), valuesStart[0]);
+                var dateEnd = new Date(valuesEnd[2], (valuesEnd[1] - 1), valuesEnd[0]);
+                if (dateStart > dateEnd) {
+                    return 0;
+                }
+                return 1;
+            }
+
+
+
+        </script>
+

@@ -1,0 +1,55 @@
+﻿@model BussinesEntities.NegocioEntity
+
+
+
+    <script type="text/javascript">
+
+    var perfil = @ViewBag.Perfil
+
+    $(document).ready(function () {
+        if (perfil == 4) {
+            $("#ddlPerfiles").show();
+            $("#lblPerfil").show();
+        }
+
+        $("#btnComplejo").click(function () {
+            $("#divLugarHospedaje").load('@Url.Action("NuevoComplejo","Negocios")');
+        });
+
+        $("#btnHotel").click(function () {
+            $("#divLugarHospedaje").load('@Url.Action("NuevoHotel","Negocios")');
+        });
+
+        $("#btnCasaODpto").click(function () {
+            $("#divLugarHospedaje").load('@Url.Action("NuevoCasaODpto","Negocios")');
+        });
+
+    });
+
+    </script>
+
+
+           
+           <div class="col-lg-offset-4" >
+               @Html.Label("¿QUE TIPO DE LUGAR DE HOSPEDAJE QUERÉS REGISTRAR?")
+           </div>
+            
+         <br />
+
+            <table cellspacing="3" class="tabla-principal" align="center">
+                <tr>
+                    <td><button type="button" class="btn btn-blue btn-lg" data-color="mint" data-style="expand-right" data-size="xl" id="btnComplejo">COMPLEJO</button>
+                        <br /> </td>
+                    <td><button type="button" class="btn btn-blue btn-lg" data-color="mint" data-style="expand-right" data-size="xl" id="btnHotel">HOTEL</button>
+                        <br /> </td>
+                    <td><button type="button" class="btn btn-blue btn-lg" data-color="mint" data-style="expand-right" data-size="xl" id="btnCasaODpto">CASA/DEPTO</button>
+                        <br /> </td>
+                </tr>
+            </table>
+
+           
+
+            <div id="divLugarHospedaje">
+
+            </div>
+       

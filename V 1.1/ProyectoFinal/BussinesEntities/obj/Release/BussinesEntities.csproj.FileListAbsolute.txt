@@ -1,0 +1,12 @@
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\BussinesEntities.dll.config
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\BussinesEntities.dll
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\BussinesEntities.pdb
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\DAL.dll
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramework.dll
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\DAL.pdb
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramework.xml
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\BussinesEntities\obj\Release\BussinesEntities.csprojResolveAssemblyReference.cache
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\BussinesEntities\obj\Release\BussinesEntities.dll
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\BussinesEntities\obj\Release\BussinesEntities.pdb

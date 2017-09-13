@@ -1,0 +1,122 @@
+﻿
+@{
+    ViewBag.Title = "AltaNegocio";
+}
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+
+
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Alta Negocio</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Alta Negocio</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+
+        <div class="row progress-wizard" id="paso-1" style="border-bottom:0;">
+
+            <div class="col-xs-3 progress-wizard-step complete">
+                <div class="text-center progress-wizard-stepnum"><strong>1) Seleccionar Tipo de Negocio</strong></div>
+                <div class="progress"><div class="progress-bar"></div></div>
+            </div>
+
+            <div class="col-xs-6 progress-wizard-step">
+                <div class="text-center progress-wizard-stepnum"><strong>2) Cargar Datos del Negocio</strong></div>
+                <div class="progress"><div class="progress-bar"></div></div>
+            </div>
+
+            <div class="col-xs-3 progress-wizard-step disabled">
+                <div class="text-center progress-wizard-stepnum"><strong>3) Finalizar</strong></div>
+                <div class="progress"><div class="progress-bar"></div></div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+
+            <div class="col-xs-12">
+
+                <div class="innerWrapper clearfix stepsPage">
+
+
+                    <form action="" class="row" role="form" onsubmit="return false">
+
+                        <div class="inicio">
+
+                            <div class="form-group col-sm-12 col-xs-12">
+
+                                <label for="">Tipo de Negocio</label>
+                                <span class="step-drop">
+                                    <select id="torneo" class="form-control">
+                                        <option value="">Hospedaje</option>
+                                        <option value="">Comercio</option>
+                                    </select>
+                                </span>
+
+
+                            </div>
+
+
+                        </div>
+
+
+                    </form>
+
+
+                    <div class="inicio col-xs-12" style="padding:0">
+
+                        <br />
+                        <div class="btn-group" role="group" aria-label="...">
+
+                            <div class="col-xs-6 col-md-4 padding">
+
+                            </div>
+
+                            <div class="col-xs-6 col-md-4 padding">
+
+                            </div>
+
+                            <div class="col-xs-6 col-md-2 padding">
+                                <a href="#" onclick="return anterior('BUSCAR');" disabled class="btn btn-default btn-block active">
+                                    Anterior
+                                </a>
+                            </div>
+
+                            <div class="col-xs-6 col-md-2 padding">
+                                <a href="#" onclick="return siguiente('BUSCAR');" class="btn btn-default btn-block">
+                                    Siguiente
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+
+
+

@@ -1,0 +1,265 @@
+﻿@model  BussinesEntities.UsuarioEntity
+
+@{
+    ViewBag.Title = "Principal";
+}
+
+
+    <script type="text/javascript">
+
+        var perfil = @ViewBag.Perfil
+
+        $(document).ready(function () {
+            if (perfil == 4) {
+                $("#btnGestionUsuarios").show();
+            }
+
+            if (perfil == 1 || perfil==0) {
+                $("#btnRegistrarNegocio").show();
+            }
+
+           /* $("#btnGestionUsuarios").click(function () {
+                $.ajax({
+                    url: "Home/GestionUsuarios",
+                    type: "GET"
+                });
+            });*/
+        });      
+               
+    </script>
+
+
+
+    <div class="bannercontainer">
+        <div class="fullscreenbanner-container">
+            <div class="fullscreenbanner">
+                <ul id="slider-banner">
+
+                    <li data-transition="slidehorizontal" data-slotamount="5" data-masterspeed="700" data-title="Slide 1">
+                        <img src="~/Content/img/Valle-De-Punilla_edit.jpg" alt="slidebg1" data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
+                        <div class="slider-caption container">
+
+                            <div class="tp-caption rs-caption-2 sft"
+                                 data-hoffset="0"
+                                 data-y="20"
+                                 data-speed="800"
+                                 data-start="0"
+                                 data-easing="Back.easeInOut"
+                                  </div>
+
+                            <div class="tp-caption rs-caption-3 sft"
+                                 data-hoffset="0"
+                                 data-y="60"
+                                 data-speed="1000"
+                                 data-start="3000"
+                                 data-easing="Power4.easeOut"
+                                 data-endspeed="300"
+                                 data-endeasing="Power1.easeIn"
+                                 data-captionhidden="off">
+                                <small></small>
+                            </div>
+                        </div>
+                    </li>
+
+                    <li data-transition="slidehorizontal" data-slotamount="5" data-masterspeed="700" data-title="Slide 1">
+                        <img src="~/Content/img/siete-cascadas_edit.jpg" alt="slidebg1" data-bgfit="cover" data-bgposition="center center" data-bgrepeat="no-repeat">
+                        <div class="slider-caption container">
+
+                            <div class="tp-caption rs-caption-2 sft"
+                                 data-hoffset="0"
+                                 data-y="20"
+                                 data-speed="800"
+                                 data-start="0"
+                                 data-easing="Back.easeInOut"
+                                  </div>
+
+                            <div class="tp-caption rs-caption-3 sft"
+                                 data-hoffset="0"
+                                 data-y="60"
+                                 data-speed="1000"
+                                 data-start="3000"
+                                 data-easing="Power4.easeOut"
+                                 data-endspeed="300"
+                                 data-endeasing="Power1.easeIn"
+                                 data-captionhidden="off">
+                                <small></small>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+ <!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+
+        <div class="row">
+            <div class="col-xs-12">
+
+                <div class="portada-titulo">
+                    TURISMO LA FALDA
+                </div>
+                <div class="mensaje-portada">
+                    "La Falda es una ciudad de la provincia de Córdoba, ubicada a 70 km de la ciudad de Córdoba y a 800 km de Buenos Aires.
+
+La Falda se encuentra al pie de dos cerros (Cerro El Cuadrado y Cerro La Banderita) integrantes del cordón montañoso denominado Sierras Chicas. La ciudad forma parte del departamento Punilla el cual incluye otras ciudades como Villa Carlos Paz, Cosquín (cabecera administrativa del departamento), La Cumbre y Capilla del Monte. La Falda forma parte del Gran Córdoba, y es la tercera ciudad más poblada de Punilla.
+                    "
+                </div>
+
+                <div class="btn-group" style="text-align: center" role="group" aria-label="...">
+
+                    <div class="col-xs-6 col-sm-3 padding">
+                        <a href="@Url.Action("Nuevo", "Usuarios")" class="btn btn-default btn-block"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Registrate</a>
+                    </div>
+
+
+                    <div class="col-xs-6 col-sm-3 padding">
+                        <a href="@Url.Action("Nuevo", "Negocios")" class="btn btn-default btn-block active"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Dar de alta Tu Negocio</a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-3 padding">
+                        <a href="@Url.Action("IndexHospedajes", "Negocios")" class="btn btn-default btn-block "><span class="glyphicon glyphicon-user" aria-hidden="true"></span> Hospedajes</a>
+                    </div>
+
+                    <div class="col-xs-6 col-sm-3 padding">
+                        <a href="@Url.Action("IndexComercios", "Negocios")" class="btn btn-default btn-block"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Comercios</a>
+                    </div>
+
+                </div>
+
+          
+
+
+            </div>
+        </div>
+
+        <br /><br />
+
+
+        <div class="row featuredProducts">
+            <div class="col-xs-12">
+                <div class="page-header">
+                    <h4>Promociones</h4>
+                </div>
+            </div>
+            <div class="col-xs-12">
+                <div class="owl-carousel featuredProductsSlider">
+
+
+                    <div class="slide">
+                        <div class="productImage clearfix">
+                            <img src="Content/img/riu-verano.jpg" style="height: 238px;" alt="featured-product-img">
+                            <div class="productMasking">
+                                <ul class="list-inline btn-group" role="group">
+
+                                    <li><a href="" class="btn btn-default btn-block btn-ver-producto"><i class="fa fa-eye btn-ver-producto"></i></a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="productCaption clearfix">
+                            <a class="btn-ver-producto" href="">
+                                <h5>Promociones al Mejor Precio!</h5>
+                            </a>
+                            <h3>$ 36225</h3>
+                        </div>
+
+                    </div>
+
+                    <div class="slide">
+                        <div class="productImage clearfix">
+                            <img src="Content/img/None.jpg" style="height: 238px;" alt="featured-product-img">
+                            <div class="productMasking">
+                                <ul class="list-inline btn-group" role="group">
+
+                                    <li><a href="" class="btn btn-default btn-block btn-ver-producto"><i class="fa fa-eye btn-ver-producto"></i></a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="productCaption clearfix">
+                            <a class="btn-ver-producto" href="">
+                                <h5>Promociones al Mejor Precio!</h5>
+                            </a>
+                            <h3>$ 36225</h3>
+                        </div>
+
+                    </div>
+
+                    <div class="slide">
+                        <div class="productImage clearfix">
+                            <img src="Content/img/descarga.jpg" style="height: 238px;" alt="featured-product-img">
+                            <div class="productMasking">
+                                <ul class="list-inline btn-group" role="group">
+
+                                    <li><a href="" class="btn btn-default btn-block btn-ver-producto"><i class="fa fa-eye btn-ver-producto"></i></a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="productCaption clearfix">
+                            <a class="btn-ver-producto" href="">
+                                <h5>Promociones al Mejor Precio!</h5>
+                            </a>
+                            <h3>$ 36225</h3>
+                        </div>
+
+                    </div>
+
+                    <div class="slide">
+                        <div class="productImage clearfix">
+                            <img src="Content/img/images (1).jpg" style="height: 238px;" alt="featured-product-img">
+                            <div class="productMasking">
+                                <ul class="list-inline btn-group" role="group">
+
+                                    <li><a href="" class="btn btn-default btn-block btn-ver-producto"><i class="fa fa-eye btn-ver-producto"></i></a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="productCaption clearfix">
+                            <a class="btn-ver-producto" href="">
+                                <h5>Promociones al Mejor Precio!</h5>
+                            </a>
+                            <h3>$ 36225</h3>
+                        </div>
+
+                    </div>
+
+                    <div class="slide">
+                        <div class="productImage clearfix">
+                            <img src="Content/img/images.jpg" style="height: 238px;" alt="featured-product-img">
+                            <div class="productMasking">
+                                <ul class="list-inline btn-group" role="group">
+
+                                    <li><a href="" class="btn btn-default btn-block btn-ver-producto"><i class="fa fa-eye btn-ver-producto"></i></a></li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="productCaption clearfix">
+                            <a class="btn-ver-producto" href="">
+                                <h5>Promociones al Mejor Precio!</h5>
+                            </a>
+                            <h3>$ 36225</h3>
+                        </div>
+
+                    </div>
+
+
+    
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</section>	
+

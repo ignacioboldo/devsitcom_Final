@@ -1,0 +1,14 @@
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DL\bin\Release\DL.dll.config
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DL\bin\Release\DL.dll
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DL\bin\Release\DL.pdb
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DL\bin\Release\BussinesEntities.dll
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DL\bin\Release\DAL.dll
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DL\bin\Release\EntityFramework.dll
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DL\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DL\bin\Release\BussinesEntities.pdb
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DL\bin\Release\DAL.pdb
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DL\bin\Release\EntityFramework.xml
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DL\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DL\obj\Release\BL.csprojResolveAssemblyReference.cache
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DL\obj\Release\DL.dll
+C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DL\obj\Release\DL.pdb

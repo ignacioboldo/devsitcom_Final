@@ -1,0 +1,200 @@
+﻿@model BussinesEntities.NegocioEntity
+
+
+
+<script>
+
+
+    
+
+    $(document).ready(function () {
+        planoReserva();
+    });
+
+
+</script>
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Gestion de Reservas</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Gestion de Reservas</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+        <div><h3><strong>@Model.nombre</strong></h3></div>
+        <div class="row">
+
+            <div class="col-xs-12 col-md-2">
+
+                @{
+                    if (Model.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 2)
+                    {<br />
+                    <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnTusDptosOCabana" onclick="window.location = '@Url.Action("TusDptosOCabanas", "Reservas", new { idLugarHospedaje = Model.LugarHospedaje.FirstOrDefault().idLugarHospedaje })'">
+                        TUS DPTOS Ó CABAÑAS
+                    </button><br />
+                    }
+                    else
+                    {<br />
+                <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnTusHabitaciones" onclick="window.location = '@Url.Action("TusHabitaciones","Reservas", new { idLugarHospedaje = Model.LugarHospedaje.FirstOrDefault().idLugarHospedaje })'">
+                    TUS HABITACIONES
+                </button><br />
+                    }
+                }
+
+
+                <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnSolicitudes" onclick="window.location = '@Url.Action("SolicitudesReserva", "Reservas", new { idNegocio = Model.idNegocio })'">
+                    SOLICITUDES
+                </button><br />
+
+                <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnSolicitudes" onclick="window.location = '@Url.Action("VerSolicitudReserva", "Reservas", new { idNegocio = Model.idNegocio, idSolicitud = 0 })'">
+                    CREAR RESERVA
+                </button><br />
+
+
+                <div>
+                    <img alt="" src="@Url.Content("~/Content/img/icono_bandera_amarilla.png")" /> <strong> (Reservado)</strong> <br />
+                    <img alt="" src="@Url.Content("~/Content/img/icono_bandera_roja.png")" /> <strong>  (Ocupado)</strong>
+                </div>
+
+
+            </div>
+            <div class="col-xs-12 col-md-10">
+
+
+
+                @{
+
+                    DateTime Hoy = DateTime.Today;
+                    var anio = Hoy.Year;
+                    var mes = Hoy.ToString("MMMM").ToUpper();
+                    var valueMes = Hoy.Month;
+                    var selected = "selected=selected";
+                }
+
+
+
+
+                <script>
+
+                    function daysInMonth(humanMonth, year) {
+                        return new Date(year || new Date().getFullYear(), humanMonth, 0).getDate();
+                    }
+
+                    function planoReserva() {
+                        var idNegocio = '@Model.idNegocio';
+                        var mes = $('#month option:selected').val();
+                        var anio = $('#year option:selected').val();
+                        var dias = daysInMonth(mes, anio);
+                        var year = $("#year").val();
+                        var url = 'PlanoReserva/?dias=' + dias + '&mes=' + mes + "&idNegocio=" + idNegocio + "&year=" + year;
+                        $.ajax({
+                            url: url,
+                            type: "get",
+                            cache: false,
+                            success: function (retorno) {
+                                $("#planoreserva").html(retorno);
+                            },
+                            error: function () {
+
+                            }
+                        });
+
+                    };
+
+                </script>
+
+
+                <div class="row">
+
+                    <div class="col-xs-12" style="padding-top:10px;">
+                        <h4 class="page-header">
+                            Calendario de Ocupación.
+                        </h4>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+
+                    <div class="col-xs-12 col-md-6">
+
+                        <div class="form-group">
+                            <label>Año</label>
+
+                            <select class="form-control" id="year" onchange="planoReserva();">
+
+                                @{
+                                    for (int i = 2005; i < 2030; i++)
+                                    {
+                                        <option value="@i" @if (anio == i) { @selected        ; }>@i</option>
+                                    }
+                                }
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-12 col-md-6">
+
+                        <div class="form-group">
+                            <label>Mes</label>
+
+                            <select class="form-control" id="month" onchange="planoReserva();">
+                                <option value="01" @if (valueMes == 01) { @selected      ; }>ENERO</option>
+                                <option value="02" @if (valueMes == 02) { @selected      ; }>FEBRERO</option>
+                                <option value="03" @if (valueMes == 03) { @selected      ; }>MARZO</option>
+                                <option value="04" @if (valueMes == 04) { @selected      ; }>ABRIL</option>
+                                <option value="05" @if (valueMes == 05) { @selected      ; }>MAYO</option>
+                                <option value="06" @if (valueMes == 06) { @selected      ; }>JUNIO</option>
+                                <option value="07" @if (valueMes == 07) { @selected      ; }>JULIO</option>
+                                <option value="08" @if (valueMes == 08) { @selected      ; }>AGOSTO</option>
+                                <option value="09" @if (valueMes == 09) { @selected      ; }>SEPTIEMBRE</option>
+                                <option value="10" @if (valueMes == 10) { @selected      ; }>OCTUBRE</option>
+                                <option value="11" @if (valueMes == 11) { @selected      ; }>NOVIEMBRE</option>
+                                <option value="12" @if (valueMes == 12) { @selected      ; }>DICIEMBRE</option>
+                            </select>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+                <div id="planoreserva"></div>
+
+
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+</section>
+

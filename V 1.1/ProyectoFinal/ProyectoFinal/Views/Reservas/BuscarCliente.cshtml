@@ -1,0 +1,43 @@
+﻿@model IEnumerable<BussinesEntities.ClientesEntity>
+
+
+@if (Model != null)
+{
+
+
+    <table class="table">
+
+        <tr>
+            <th>Nombre</th>
+            <th>Apellido</th>
+            <th>Sexo</th>
+            <th>Documento</th>
+            <th></th>
+        </tr>
+
+
+        @{
+            
+            foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>@item.apellido</td>
+                    <td>@item.nombre</td>
+                    <td>@item.Sexo</td>
+                    <td>@item.documento</td>
+                    <td><a href="#" onclick="return seleccionarCliente('@item.idPersona', '@item.nombre', '@item.apellido', '@item.Sexo', '@item.documento');"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Seleccionar</a></td>
+                </tr>
+
+            }
+
+        }
+
+    </table>
+
+
+
+
+}
+
+

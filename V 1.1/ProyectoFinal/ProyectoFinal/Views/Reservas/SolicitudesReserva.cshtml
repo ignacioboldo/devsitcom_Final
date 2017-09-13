@@ -1,0 +1,91 @@
+﻿@model IEnumerable<BussinesEntities.SolicitudEntity>
+@using GridMvc.Html
+
+
+
+<script type="text/javascript">
+
+    var perfil = "@ViewBag.Perfil"
+    var mensaje = "@ViewBag.Mensaje"
+
+    $(document).ready(function () {
+
+    });
+
+</script>
+
+
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>SOLICITUDES DE RESERVA</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">SOLICITUDES DE RESERVA</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+
+        <h4><strong>Listado de Solicitudes</strong></h4>
+
+        @if (Model.Count() != 0)
+        {
+            @helper botonVer(BussinesEntities.SolicitudEntity s)
+            {
+                <button id="btnVerSolicitud" onclick="window.location = '@Url.Action("VerSolicitudReserva", "Reservas", new { idSolicitud = s.idSolicitud, idNegocio = s.idNegocio })'" class="btn btn-xs btn-green tooltips" style="font-size:10px; padding:5px;">VER</button>
+}
+
+            @Html.Grid(Model).Columns(columns =>
+            {
+                //columns.Add(model => model.fechaAlta).Titled("Fecha Alta");
+                columns.Add(model => model.Usuarios.nombreUsuario).Titled("Usuario").SetWidth(50);
+                columns.Add(model => model.fechaDesde).Titled("Fecha Desde").SetWidth(50);
+                columns.Add(model => model.fechaHasta).Titled("Fecha Hasta").SetWidth(50);
+                columns.Add(model => model.cantidadPersonas).Titled("Cant. Personas").SetWidth(50);
+                columns.Add(model => model.idSolicitud)
+                    .Titled("Acción")
+                    .Encoded(false)
+                    .Sanitized(false)
+                    .SetWidth(100)
+                    .RenderValueAs(s => botonVer(s));
+            }).WithPaging(10).Sortable(true)
+        }
+        else
+        {
+
+            <div id="NoSolicitudes" style="align-self:center; font-size:20px; display:none">
+                <strong>
+                    No tenés Solicitudes Recibidas.
+                </strong>
+            </div>
+
+        }
+
+
+    </div>
+</section>
+
+<!-- end: CORE JAVASCRIPTS  -->
+<script>
+    jQuery(document).ready(function () {
+        Main.init();
+        FormElements.init();
+        SVExamples.init();
+    });
+</script>

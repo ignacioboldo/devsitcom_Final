@@ -1,0 +1,219 @@
+﻿@model IEnumerable<BussinesEntities.TramiteEntity>
+@using GridMvc.Html
+
+<script type="text/javascript">
+
+    var perfil = "@ViewBag.Perfil"
+    var mensaje = "@ViewBag.Mensaje"
+
+    $(document).ready(function () {
+
+        if (perfil == 1 || perfil == 2) {
+            $("#divTuristaRespNegocio").show();
+            $("#NoUsuarios").show();
+        }
+        else {
+            $("#divRespSecretaria").show();
+            $("#NoSecretaria").show();
+            $("#tabSecretaria").show();
+        }
+
+        if (perfil == 3) {
+            $("#btnTusTramites").hide();
+            $("#btnTusNegocios").hide();
+            $("#btnTusTramitesAsignados").show();
+        }
+        else {
+            $("#btnTusTramites").show();
+            $("#btnTusNegocios").show();
+            $("#btnTusTramitesAsignados").hide();
+        }
+
+        if (mensaje != "") {
+            alert(mensaje);
+        }
+
+        $("#btnTusTramites").click(function () {
+            event.preventDefault();
+            window.location = '@Url.Action("TramitesUsuario","Tramites")';
+        });
+
+        $("#btnTusTramitesAsignados").click(function () {
+            event.preventDefault();
+            window.location = '@Url.Action("TramitesUsuario","Tramites")';
+        });
+
+        $("#btnModificarDatos").click(function () {
+            event.preventDefault();
+            window.location = '@Url.Action("EditUsuario","Usuarios")';
+        });
+
+        $("#btnTusNegocios").click(function () {
+            event.preventDefault();
+            window.location = '@Url.Action("NegociosUsuario","Negocios")';
+        });
+    });
+
+    function cancelar(idtramite) {
+        if (confirm('¿Seguro que querés cancelar este trámite?')) {
+            window.location = "../Tramites/CancelarTramite/" + idtramite + "?returnUrl=../Tramites/TramitesUsuario";
+        }
+    }
+
+    function ver(idtramite) {
+        window.location = "../Tramites/VerTramite/" + idtramite;
+    }
+</script>
+
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Panel de Control</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Panel de Control</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+        <div class="row">
+ 
+            <div class="col-xs-12">
+                <div class="btn-group" role="group" aria-label="..." style="text-align:center">
+
+                    <a href="" class="btn btn-default" style="width:230px;"><span class="glyphicon glyphicon-user" id="btnModificarDatos" aria-hidden="true"></span> MODIFICÁ TUS DATOS</a>
+
+                    <a href="" class="btn btn-default" id="btnTusNegocios" style="width:230px;">
+                        <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> TUS NEGOCIOS
+                    </a>
+
+                    <a href="" class="btn btn-default active" id="btnTusTramites" style="width:200px;"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> TUS TRAMITES</a>
+
+                    <a href="" class="btn btn-default active" id="btnTusTramitesAsignados" style="width:230px;">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> TUS TRAMITES ASIGNADOS
+                    </a>
+
+                    <a href="../Tramites/TramitesResp" class="btn btn-default" id="btnTusTramitesAsignados" style="width:230px;">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> TODOS LOS TRAMITES
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="innerWrapper">
+                    <div class="orderBox myAddress">
+
+                        <h4><strong>Tramites del Usuario</strong></h4>
+
+                        @if (Model.Count() != 0)
+                        {
+                            <div id="divTuristaRespNegocio" style="display:none">
+                                @helper verificarIdEstado(BussinesEntities.TramiteEntity t)
+                    {
+                        if (t.EstadoTramite.idEstadoTramite == 1)
+                        {
+                                        <button id="btnCancelarTramite" class="btn btn-red" onclick="cancelar(@t.idTramite)" style="font-size:10px; padding: 5px;">Cancelar <i class="fa fa-times"></i></button>
+                        }
+                        else
+                        {
+                                        <button id="btnCancelarTramite" class="btn btn-red" onclick="cancelar(@t.idTramite)" style="font-size:10px; padding: 5px;" disabled="disabled">Cancelar <i class="fa fa-times"></i></button>
+                        }
+                    }
+
+         @Html.Grid(Model).Columns(columns =>
+        {
+            columns.Add(model => model.fechaAlta).Titled("Fecha Alta");
+            columns.Add(model => model.EstadoTramite.nombreEstadoTramite).Titled("Estado Trámite");
+            columns.Add(model => model.TipoTramite.nombreTipoTramite).Titled("Tipo");
+            columns.Add(model => model.fechaFin).Titled("Fecha Fin");
+            columns.Add(t => t.idTramite)
+                .Titled("Acción")
+                .Encoded(false)
+                .Sanitized(false)
+                .SetWidth(30)
+                .RenderValueAs(t => verificarIdEstado(t));
+        }).WithPaging(10).Sortable(true)
+
+                            </div>
+
+                            <div id="divRespSecretaria" style="display:none">
+                                @helper verificarIdEstado2(BussinesEntities.TramiteEntity t)
+{
+    if (t.EstadoTramite.idEstadoTramite == 1 || t.EstadoTramite.idEstadoTramite == 2)
+    {
+                    <button id="btnVerTramite" class="btn btn-blue" onclick="ver(@t.idTramite)" style="font-size:10px; width: 54px;">Ver <i class="fa fa-search"></i></button>
+    }
+    else
+    {
+                    <button id="btnVerTramite" class="btn btn-blue" onclick="ver(@t.idTramite)" style="font-size:10px; width: 54px;" disabled="disabled">Ver <i class="fa fa-search"></i></button>
+    }
+}
+
+
+
+                                @Html.Grid(Model).Columns(columns =>
+         {
+             columns.Add(model => model.Usuarios.nombreUsuario).Titled("Usuario Solicitante");
+             columns.Add(model => model.Usuarios1.nombreUsuario).Titled("Usuario Responsable");
+             columns.Add(model => model.fechaAlta).Titled("Fecha Alta");
+             columns.Add(model => model.EstadoTramite.nombreEstadoTramite).Titled("Estado Trámite");
+             columns.Add(model => model.TipoTramite.nombreTipoTramite).Titled("Tipo");
+             // columns.Add(model => model.fechaFin).Titled("Fecha Fin");
+             columns.Add(t => t.idTramite)
+               .Titled("Acción")
+               .Encoded(false)
+               .Sanitized(false)
+               .SetWidth(30)
+               .RenderValueAs(t => verificarIdEstado2(t));
+         }).WithPaging(10).Sortable(true)
+
+                            </div>
+                        }
+                        else
+                        {
+
+                            <div id="NoSecretaria" style="align-self:center; font-size:20px; display:none">
+                                <strong>
+                                    No tenés trámites asignados.
+                                </strong>
+                            </div>
+
+                            <div id="NoUsuarios" style="align-self:center; font-size:20px; display:none">
+                                <strong>
+                                    No has solicitado ningún trámite.
+                                </strong>
+                            </div>
+
+                        }
+
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</section>

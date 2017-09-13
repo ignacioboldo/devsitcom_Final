@@ -1,0 +1,113 @@
+﻿@model BussinesEntities.NegocioEntity
+@{
+    ViewBag.Title = "ALTA DE NEGOCIO";
+}
+
+
+    <!-- end: CORE CSS -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script src="~/Scripts/jquery-ui-1.9.2.custom.js"></script>
+<script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
+
+<script type="text/javascript">
+
+    var perfil = @ViewBag.Perfil
+
+    $(document).ready(function () {
+        if (perfil == 4) {
+            $("#ddlPerfiles").show();
+            $("#lblPerfil").show();
+        }
+
+
+        var selectDDL = $("#ddlTiposNegocio").val();
+        if (selectDDL == 1) {
+            $("#divLugarHospedaje").show();
+            $("#divComercio").hide();
+        }
+        else {
+            if (selectDDL == 2) {
+                $("#divComercio").show();
+                $("#divLugarHospedaje").hide();
+            }
+            else {
+                $("#divLugarHospedaje").hide();
+                $("#divComercio").hide();
+            }
+        }
+
+
+        $("#ddlTiposNegocio").change(function () {
+            var select = $(this).val();
+
+            if (select == 1) {
+                $("#divLugarHospedaje").show();
+                $("#divComercio").hide();
+            }
+            else {
+                if (select == 2) {
+                    $("#divComercio").show();
+                    $("#divLugarHospedaje").hide();
+                }
+                else {
+                    $("#divLugarHospedaje").hide();
+                    $("#divComercio").hide();
+                }
+            }
+        });
+    });
+
+</script>
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>NUEVO NEGOCIO</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">NUEVO NEGOCIO</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+        <div class="row">
+            <div class="col-md-12">
+   
+                <div class="form-group">
+                    <div class="col-md-9 col-lg-offset-4">
+                        @Html.DropDownListFor(model => model.idTipoNegocio, (SelectList)ViewBag.TiposNegocio, "-- SELECCIONA EL TIPO DE NEGOCIO --", new { id = "ddlTiposNegocio" })
+                        @Html.ValidationMessageFor(model => model.idTipoNegocio)
+                    </div>
+                </div>
+                <br />
+                <br />
+                <div class="form-horizontal" id="divLugarHospedaje" style="display:none">
+                    @Html.Partial("_NuevoLugarHospedaje")
+                </div>
+
+                <div class="form-horizontal" id="divComercio" style="display:none">
+                    @Html.Partial("_NuevoCom", Model)
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+     </div>
+</section>

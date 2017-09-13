@@ -1,0 +1,194 @@
+﻿@{
+    ViewBag.Title = "Panel de Control";
+}
+@model BussinesEntities.UsuarioEntity
+
+
+    <script type="text/javascript">
+
+        var perfil = "@Model.idPerfil"
+        var mensaje = "@ViewBag.Mensaje"
+
+        $(document).ready(function () {
+
+            if (perfil == 3) {
+                $("#btnTusTramites").hide();
+                $("#btnTusNegocios").hide();
+                $("#btnTusTramitesAsignados").show();
+                $("#tabSecretaria").show();
+            }
+            else {
+                $("#btnTusTramites").show();
+                $("#btnTusNegocios").show();
+                $("#btnTusTramitesAsignados").hide();
+            }
+
+            if (perfil == 4) {
+                $("#ddlPerfiles").show();
+                $("#lblPerfil").show();
+            }
+
+            if (mensaje != "") {
+                alert(mensaje);
+            }
+
+            $("#btnTusTramites").click(function () {
+                window.location = '@Url.Action("TramitesUsuario","Tramites")';
+            });
+
+            $("#btnTusTramitesAsignados").click(function () {
+                window.location = '@Url.Action("TramitesUsuario","Tramites")';
+            });
+
+            $("#btnModificarDatos").click(function () {
+                window.location = '@Url.Action("EditUsuario","Usuarios")';
+            });
+
+            $("#btnTusNegocios").click(function () {
+                window.location = '@Url.Action("NegociosUsuario","Negocios")';
+            });
+        });
+
+    </script>
+
+
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>NUEVO NEGOCIO</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">NUEVO NEGOCIO</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+
+        <div class="panel panel-white" style="width:1190px;">
+            <div class="panel-heading">
+                <h2 class="panel-title"><span class="text-bold">Habitaciones</span></h2>
+            </div>
+            <div class="panel-body">
+
+                <h2>Usuario: @Model.nombreUsuario</h2>
+                <h4>@Html.DisplayFor(model => model.Perfiles.nombre)</h4>
+
+                <table id="tabSecretaria" align="left" style="display:none">
+                    <tr>
+                        <td>
+                            @Html.ActionLink("VER TODOS LOS TRAMITES", "../Tramites/TramitesResp")
+                        </td>
+
+                    </tr>
+                </table>
+                <table cellspacing="3" cellpadding="3" class="tabla-principal" align="center">
+
+                    <tr>
+                        <td>
+                            <button class="btn btn-blue btn-lg" data-color="mint" data-style="expand-right" data-size="xl" id="btnModificarDatos">
+                                MODIFICÁ TUS DATOS
+                            </button>
+                            <br />
+                        </td>
+                        <td>
+                            <button class="btn btn-blue btn-lg" data-color="mint" data-style="expand-right" data-size="xl" id="btnTusNegocios">
+                                TUS NEGOCIOS
+                            </button>
+                            <br />
+                        </td>
+                        <td>
+                            <button class="btn btn-blue btn-lg" data-color="mint" data-style="expand-right" data-size="xl" id="btnTusTramites">
+                                TUS TRAMITES
+                            </button>
+                            <br />
+                        </td>
+                        <td>
+                            <button class="btn btn-blue btn-lg" data-color="mint" data-style="expand-right" data-size="xl" id="btnTusTramitesAsignados">
+                                TUS TRAMITES ASIGNADOS
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+
+                <br />
+                <br />
+
+                @using (Html.BeginForm(new { returnUrl = ViewBag.ReturnUrl }))
+                {
+                    @Html.AntiForgeryToken()
+
+                    <div class="form-horizontal">
+                        <hr />
+                        @Html.ValidationSummary(true)
+                        @Html.HiddenFor(model => model.idUsuario)
+
+                        <div class="form-group">
+                            @Html.Label("Nombre de Usuario:", new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.nombreUsuario)
+                                @Html.ValidationMessageFor(model => model.nombreUsuario)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Password:", new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.PasswordFor(model => model.password)
+                                @Html.ValidationMessageFor(model => model.password)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.Label("Confirmar Password:", new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.PasswordFor(model => model.confirmarPassword)
+                                @Html.ValidationMessageFor(model => model.confirmarPassword)
+                            </div>
+                        </div>
+
+
+                        <div class="form-group">
+                            @Html.Label("idPerfil", "Perfil:", new { @class = "control-label col-md-2", id = "lblPerfil", style = "display:none" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(model => model.idPerfil, (SelectList)ViewBag.Perfiles, "-- SELECCIONA EL PERFIL --", new { id = "ddlPerfiles", style = "display:none" })
+                                @Html.ValidationMessageFor(model => model.idPerfil)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <div class="col-md-offset-5 col-md-10">
+                                <input type="submit" value="GUARDAR" class="btn btn-green" />
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+
+            </div>
+            <div class="panel-footer">
+                @Html.ActionLink("Volver", "Index")
+            </div>
+        </div>
+
+
+
+    </div>
+</section>
+
+
