@@ -61,6 +61,14 @@
     <Property Name="idCategoria" Type="int" />
     <Property Name="idLugarHospedaje" Type="int" />
   </EntityType>
+  <EntityType Name="DetalleDisponibilidad">
+    <Key>
+      <PropertyRef Name="idDetalleDisponibilidad" />
+    </Key>
+    <Property Name="idDetalleDisponibilidad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idDisponibilidad" Type="int" />
+    <Property Name="idPersona" Type="int" />
+  </EntityType>
   <EntityType Name="Disponibilidad">
     <Key>
       <PropertyRef Name="idDisponibilidad" />
@@ -72,6 +80,7 @@
     <Property Name="idCasaODpto" Type="int" />
     <Property Name="habilitado" Type="bit" />
     <Property Name="idEstado" Type="int" />
+    <Property Name="idReserva" Type="int" />
   </EntityType>
   <EntityType Name="Domicilio">
     <Key>
@@ -212,6 +221,7 @@
     <Property Name="idTelefono" Type="int" />
     <Property Name="idTipoDocumento" Type="int" />
     <Property Name="idDomicilio" Type="int" />
+    <Property Name="idNegocio" Type="int" />
   </EntityType>
   <EntityType Name="Provincia">
     <Key>
@@ -220,6 +230,16 @@
     <Property Name="idProvincia" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="nombreProvincia" Type="varchar" MaxLength="150" />
     <Property Name="idPais" Type="int" />
+  </EntityType>
+  <EntityType Name="Reserva">
+    <Key>
+      <PropertyRef Name="idReserva" />
+    </Key>
+    <Property Name="idReserva" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="idPersonaSolicitante" Type="int" />
+    <Property Name="idNegocio" Type="int" />
+    <Property Name="idSolicitud" Type="int" />
+    <Property Name="idEstado" Type="int" />
   </EntityType>
   <EntityType Name="Rubro">
     <Key>
@@ -928,6 +948,7 @@
     <EntitySet Name="CategoriaHospedaje" EntityType="Self.CategoriaHospedaje" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Comercio" EntityType="Self.Comercio" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Complejo" EntityType="Self.Complejo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DetalleDisponibilidad" EntityType="Self.DetalleDisponibilidad" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Disponibilidad" EntityType="Self.Disponibilidad" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Domicilio" EntityType="Self.Domicilio" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="EstadoReserva" EntityType="Self.EstadoReserva" Schema="dbo" store:Type="Tables" />
@@ -945,6 +966,7 @@
     <EntitySet Name="Perfiles" EntityType="Self.Perfiles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Persona" EntityType="Self.Persona" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Provincia" EntityType="Self.Provincia" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Reserva" EntityType="Self.Reserva" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Rubro" EntityType="Self.Rubro" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Sexo" EntityType="Self.Sexo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Solicitud" EntityType="Self.Solicitud" Schema="dbo" store:Type="Tables" />

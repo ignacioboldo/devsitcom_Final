@@ -7,3 +7,13 @@ C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DAL\bin\Release\EntityFra
 C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DAL\bin\Release\EntityFramework.SqlServer.xml
 C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DAL\obj\Release\DAL.dll
 C:\Users\Pablo\Desktop\Repositorio\V 1.1\ProyectoFinal\DAL\obj\Release\DAL.pdb
+C:\Boldo\V 1.1\ProyectoFinal\DAL\bin\Release\DAL.dll.config
+C:\Boldo\V 1.1\ProyectoFinal\DAL\bin\Release\DAL.dll
+C:\Boldo\V 1.1\ProyectoFinal\DAL\bin\Release\DAL.pdb
+C:\Boldo\V 1.1\ProyectoFinal\DAL\bin\Release\EntityFramework.dll
+C:\Boldo\V 1.1\ProyectoFinal\DAL\bin\Release\EntityFramework.SqlServer.dll
+C:\Boldo\V 1.1\ProyectoFinal\DAL\bin\Release\EntityFramework.xml
+C:\Boldo\V 1.1\ProyectoFinal\DAL\bin\Release\EntityFramework.SqlServer.xml
+C:\Boldo\V 1.1\ProyectoFinal\DAL\obj\Release\DAL.dll
+C:\Boldo\V 1.1\ProyectoFinal\DAL\obj\Release\DAL.pdb
+C:\Boldo\V 1.1\ProyectoFinal\DAL\obj\Release\DAL.csprojResolveAssemblyReference.cache

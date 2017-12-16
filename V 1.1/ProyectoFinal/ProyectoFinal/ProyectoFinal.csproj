@@ -318,11 +318,16 @@
     <Content Include="Content\template\js\bootstrap-datetimepicker.es.js" />
     <Content Include="Content\template\js\bootstrap-datetimepicker.js" />
     <Content Include="Content\template\js\custom.js" />
+    <Content Include="Content\template\js\funciones.js" />
     <Content Include="Content\template\js\jquery.bracket.js" />
     <Content Include="Content\template\js\jquery.bracket.min.js" />
     <Content Include="Content\template\js\jquery.mask.min.js" />
     <Content Include="Content\template\js\moment-with-locales.js" />
     <Content Include="Content\template\js\select2.full.js" />
+    <Content Include="Content\template\plugins\bootstrap-fileupload\bootstrap-fileupload.css" />
+    <Content Include="Content\template\plugins\bootstrap-fileupload\bootstrap-fileupload.js" />
+    <Content Include="Content\template\plugins\bootstrap-fileupload\bootstrap-fileupload.min.css" />
+    <Content Include="Content\template\plugins\bootstrap-fileupload\bootstrap-fileupload.min.js" />
     <Content Include="Content\template\plugins\bootstrap\css\bootstrap-theme.css" />
     <Content Include="Content\template\plugins\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="Content\template\plugins\bootstrap\css\bootstrap.css" />
@@ -615,6 +620,9 @@
     <Content Include="Views\Reservas\BuscarCliente.cshtml" />
     <Content Include="Views\Reservas\BuscarHabitacionesDisponibles.cshtml" />
     <Content Include="Views\Reservas\PlanoReservas.cshtml" />
+    <Content Include="Views\Reservas\ReservasUsuario.cshtml" />
+    <Content Include="Views\Reservas\ListadoConsultaReserva.cshtml" />
+    <Content Include="Views\Reservas\ListadoPlanoReservas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

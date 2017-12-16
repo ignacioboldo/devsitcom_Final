@@ -408,6 +408,11 @@ namespace ProyectoFinal.Controllers
             ObtenerUsuarioActual();
             NegocioEntity neg = nm.GetNegocioById((int)id);
 
+            ViewBag.Perfiles = new SelectList(db.Perfiles, "idPerfil", "nombre", usuarioActual.idPerfil);
+            ViewBag.Perfil = usuarioActual.idPerfil;
+
+            neg.idPerfil = usuarioActual.idPerfil;
+
             string address = neg.Sucursal.FirstOrDefault().Domicilio.calle + "+" + neg.Sucursal.FirstOrDefault().Domicilio.numero + ",+" + neg.Sucursal.FirstOrDefault().Domicilio.Localidad.nombreLocalidad + ",+Cordoba,+Argentina";
 
             int cont = 0;

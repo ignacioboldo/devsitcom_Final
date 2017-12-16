@@ -19,12 +19,15 @@ namespace ProyectoFinal.Controllers
         PersonasManager pm = new PersonasManager();
         PersonaEntity per;
 
-        public ActionResult DatosPersonales(string returnUrl)
+        public ActionResult DatosPersonales(string returnUrl, int? idNegocio)
         {
                 per = new PersonaEntity();
                 ViewBag.Sexos = new SelectList(db.Sexo, "idSexo", "nombre");
                 ViewBag.TiposDocumento = new SelectList(db.TipoDocumento, "idTipoDocumento", "nombre");
                 ViewBag.ReturnUrl = returnUrl;
+                ViewBag.idNegocio = idNegocio;
+
+                per.idNegocio = idNegocio;
 
                 per.Domicilio = new DomicilioEntity()
                 {
@@ -36,9 +39,10 @@ namespace ProyectoFinal.Controllers
                 return View(per);
         }
         [HttpPost]
-        public ActionResult DatosPersonales(PersonaEntity per, string returnUrl)
+        public ActionResult DatosPersonales(PersonaEntity per, string returnUrl, int? idNegocio)
         {
             ObtenerUsuarioActual();
+            
             per.Usuarios.Add(usuarioActual);
             int idPersona = pm.AddPersona(per);
 
@@ -47,7 +51,7 @@ namespace ProyectoFinal.Controllers
 
             return RedirectToAction(returnUrl);
         }
-        public ActionResult PaisSeleccionado([Bind(Include = "nombre,apellido,idTipoDocumento,documento,idSexo,email")] PersonaEntity persona, int? idPaisSeleccionado, string returnUrl)
+        public ActionResult PaisSeleccionado([Bind(Include = "nombre,apellido,idTipoDocumento,documento,idSexo,email,idNegocio")] PersonaEntity persona, int? idPaisSeleccionado, string returnUrl)
         {
             
             ViewBag.Sexos = new SelectList(db.Sexo, "idSexo", "nombre", persona.idSexo);
@@ -71,7 +75,7 @@ namespace ProyectoFinal.Controllers
 
             return View("DatosPersonales",persona);
         }
-        public ActionResult ProvinciaSeleccionada([Bind(Include = "nombre,apellido,idTipoDocumento,documento,idSexo,email")] PersonaEntity persona, int? idPaisSeleccionado, int? idProvinciaSeleccionada, string returnUrl)
+        public ActionResult ProvinciaSeleccionada([Bind(Include = "nombre,apellido,idTipoDocumento,documento,idSexo,email,idNegocio")] PersonaEntity persona, int? idPaisSeleccionado, int? idProvinciaSeleccionada, string returnUrl)
         {
             ViewBag.Sexos = new SelectList(db.Sexo, "idSexo", "nombre", persona.idSexo);
             ViewBag.TiposDocumento = new SelectList(db.TipoDocumento, "idTipoDocumento", "nombre", persona.idTipoDocumento);

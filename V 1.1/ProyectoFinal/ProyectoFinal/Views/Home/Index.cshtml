@@ -8,6 +8,10 @@
     <script type="text/javascript">
 
         var perfil = @ViewBag.Perfil
+        $("#alta_negocio").show();
+        $("#alta_negocio_desactivado").hide();
+        
+            
 
         $(document).ready(function () {
             if (perfil == 4) {
@@ -16,6 +20,15 @@
 
             if (perfil == 1 || perfil==0) {
                 $("#btnRegistrarNegocio").show();
+            }
+
+            if (perfil == 3) {
+
+                $("#alta_negocio").hide();
+                $("#alta_negocio_desactivado").show();
+            } else {
+                $("#alta_negocio").show();
+                $("#alta_negocio_desactivado").hide();
             }
 
            /* $("#btnGestionUsuarios").click(function () {
@@ -120,7 +133,8 @@ La Falda se encuentra al pie de dos cerros (Cerro El Cuadrado y Cerro La Banderi
 
 
                     <div class="col-xs-6 col-sm-3 padding">
-                        <a href="@Url.Action("Nuevo", "Negocios")" class="btn btn-default btn-block active"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Dar de alta Tu Negocio</a>
+                        <a href="@Url.Action("Nuevo", "Negocios")" id="alta_negocio"  class="btn btn-default btn-block active"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Dar de alta Tu Negocio</a>
+                        <a href="javascript: void(0)" disabled="disabled" id="alta_negocio_desactivado" class="btn btn-default btn-block active"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Dar de alta Tu Negocio</a>
                     </div>
 
                     <div class="col-xs-6 col-sm-3 padding">

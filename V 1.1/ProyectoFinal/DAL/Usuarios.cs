@@ -32,9 +32,9 @@ namespace DAL
         public virtual ICollection<FotosUsuario> FotosUsuario { get; set; }
         public virtual ICollection<Negocio> Negocio { get; set; }
         public virtual Perfiles Perfiles { get; set; }
-        public virtual Persona Persona { get; set; }
         public virtual ICollection<Solicitud> Solicitud { get; set; }
         public virtual ICollection<Tramite> Tramite { get; set; }
         public virtual ICollection<Tramite> Tramite1 { get; set; }
+        public virtual Persona Persona { get; set; }
     }
 }

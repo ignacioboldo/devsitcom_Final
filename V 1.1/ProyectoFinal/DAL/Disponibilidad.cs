@@ -21,6 +21,7 @@ namespace DAL
         public Nullable<int> idCasaODpto { get; set; }
         public Nullable<bool> habilitado { get; set; }
         public Nullable<int> idEstado { get; set; }
+        public Nullable<int> idReserva { get; set; }
     
         public virtual CasaDptoOCabana CasaDptoOCabana { get; set; }
         public virtual EstadoReserva EstadoReserva { get; set; }

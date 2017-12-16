@@ -120,6 +120,7 @@ namespace BL
                 idTipoDocumento = per.idTipoDocumento,
                 documento = per.documento,
                 email = per.email,
+                idNegocio = per.idNegocio,
                 Domicilio = DomicilioEntityToDomicilio(per.Domicilio)
             };
 

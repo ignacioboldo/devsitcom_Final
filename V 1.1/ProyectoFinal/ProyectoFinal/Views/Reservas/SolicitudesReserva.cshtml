@@ -12,7 +12,146 @@
 
     });
 
+
+    function consultarReserva(nro_reserva) {
+
+        $('#nro_reserva').html(nro_reserva);
+
+
+        $('#myModal').modal('show');
+        listarComentarios();
+
+        return false;
+    }
+
+    function listarComentarios() {
+
+        var nro_reserva = $("#nro_reserva").html();
+
+        $.ajax({
+            type: 'GET',
+            url: 'ListadoDeComentario?idSolicitud=' + nro_reserva,
+            success: function (response) {
+                $("#consultas").html(response);
+                actualizar_Comentarios_Leidos();
+            }
+        })
+
+    }
+
+    function enviarConsulta() {
+
+        if ($("#consultareserva").val() != "") {
+
+            var fdata = new FormData();
+
+            fdata.append("nro_reserva", $("#nro_reserva").html());
+
+            fdata.append("consultareserva", $("#consultareserva").val());
+
+            fdata.append("filereserva", $("#filereserva")[0].files[0]);
+
+            fdata.append("comentarioCliente", "0");
+
+
+            $.ajax({
+                type: 'POST',
+                url: 'GuardarConsulta',
+                data: fdata,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    $("#consultas").html(response);
+                    $("#filereserva").val('');
+                    $("#consultareserva").val('');
+                }
+            })
+
+        } else {
+            alert("Debe enviar un comentario.");
+        }
+
+
+    }
+
 </script>
+
+
+        <!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Consultar Solicitud Nro: <span id="nro_reserva"></span></h4>
+                <div></div>
+
+            </div>
+            <div id="mensajes" class="modal-body">
+
+                <div id="consultas"></div>
+
+
+            </div>
+            <div class="modal-footer">
+                <!-- Deemphasize a button by making it look like a link while maintaining button behavior -->
+                <input type="file" id="filereserva" name="filereserva">
+                <textarea class="form-control" rows="3" id="consultareserva" name="consultareserva"></textarea>
+
+                <button type="button" onclick="enviarConsulta()" class="btn btn-link">
+                    <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+                    Enviar Mensaje
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .reserva-pregunta {
+        margin-left: 40px;
+        padding: 10px;
+        background-color: gray;
+        color: white;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .reserva-respuesta {
+        margin-right: 40px;
+        padding: 10px;
+        background-color: rgba(177, 13, 20, 1);
+        color: white;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .reserva-pregunta-imagen {
+        margin-left: 40px;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .reserva-respuesta-imagen {
+        text-align: right;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+
+    .reserva-fecha-comentario {
+        text-align: right;
+        font-size: 10px;
+    }
+
+    .modal-body {
+        position: relative;
+        padding: 15px;
+        height: 400px;
+        overflow: auto;
+    }
+</style>
 
 
 
@@ -48,7 +187,11 @@
         {
             @helper botonVer(BussinesEntities.SolicitudEntity s)
             {
-                <button id="btnVerSolicitud" onclick="window.location = '@Url.Action("VerSolicitudReserva", "Reservas", new { idSolicitud = s.idSolicitud, idNegocio = s.idNegocio })'" class="btn btn-xs btn-green tooltips" style="font-size:10px; padding:5px;">VER</button>
+    
+
+    
+                <button id="btnVerSolicitud" onclick="window.location = '@Url.Action("VerSolicitudReserva", "Reservas", new { idSolicitud = s.idSolicitud, idNegocio = s.idNegocio , tipo= ViewBag.tipo})'" class="btn btn-xs btn-green tooltips" style="font-size:10px; padding:5px;">VER</button>
+               <button style="font-size:10px;  padding: 5px;"  onclick="return consultarReserva('@s.idSolicitud');" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar</button>
 }
 
             @Html.Grid(Model).Columns(columns =>

@@ -17,10 +17,12 @@
             $("#btnTusNegocios").hide();
             $("#btnTusTramitesAsignados").show();
             $("#tabSecretaria").show();
+            $("#btnMisReservas").hide();
         }
         else {
             $("#btnTusTramites").show();
             $("#btnTusNegocios").show();
+            $("#btnMisReservas").show();
             $("#btnTusTramitesAsignados").hide();
         }
 
@@ -47,6 +49,13 @@
             window.location = '@Url.Action("NegociosUsuario","Negocios")';
             event.preventDefault();
         });
+
+
+        $("#btnMisReservas").click(function (event) {
+            window.location = '@Url.Action("ReservasUsuario", "Reservas")';
+            event.preventDefault();
+        });
+
     });
 
 </script>
@@ -93,6 +102,11 @@
                             <a href="" class="btn btn-default" id="btnTusTramites" style="width:200px;">
                                 TUS TRAMITES
                             </a>
+
+                            <a href="" class="btn btn-default" id="btnMisReservas" style="width:200px;">
+                                MIS RESERVAS
+                            </a>
+
                             <a href="" class="btn btn-default" id="btnTusTramitesAsignados" style="width:200px;">
                                 TUS TRAMITES ASIGNADOS
                             </a>

@@ -27,7 +27,6 @@
         <EntityTypeShape EntityType="SitcomModel.PaginasXPerfil" Width="1.5" PointX="3" PointY="19.25" IsExpanded="true" />
         <EntityTypeShape EntityType="SitcomModel.Pais" Width="1.5" PointX="1.5" PointY="32.75" IsExpanded="true" />
         <EntityTypeShape EntityType="SitcomModel.Perfiles" Width="1.5" PointX="0.75" PointY="19.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="SitcomModel.Persona" Width="1.5" PointX="3.75" PointY="25.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SitcomModel.Provincia" Width="1.5" PointX="1.5" PointY="29.5" IsExpanded="true" />
         <EntityTypeShape EntityType="SitcomModel.Rubro" Width="1.5" PointX="11.25" PointY="15.375" IsExpanded="true" />
         <EntityTypeShape EntityType="SitcomModel.Sexo" Width="1.5" PointX="1.5" PointY="35.625" IsExpanded="true" />
@@ -59,7 +58,6 @@
         <AssociationConnector Association="SitcomModel.FK_Disponibilidad_EstadoReserva" ManuallyRouted="false" />
         <AssociationConnector Association="SitcomModel.FK_Disponibilidad_Habitacion" ManuallyRouted="false" />
         <AssociationConnector Association="SitcomModel.FK_Domicilio_Localidad" ManuallyRouted="false" />
-        <AssociationConnector Association="SitcomModel.FK_Persona_Domicilio" ManuallyRouted="false" />
         <AssociationConnector Association="SitcomModel.FK_Sucursal_Domicilio" ManuallyRouted="false" />
         <AssociationConnector Association="SitcomModel.FK_Tramite_EstadoTramite" ManuallyRouted="false" />
         <AssociationConnector Association="SitcomModel.FK_FotosNegocio_Negocio" ManuallyRouted="false" />
@@ -80,14 +78,18 @@
         <AssociationConnector Association="SitcomModel.FK_PaginasXPerfil_Perfiles" ManuallyRouted="false" />
         <AssociationConnector Association="SitcomModel.FK_Provincia_Pais" ManuallyRouted="false" />
         <AssociationConnector Association="SitcomModel.FK_Usuarios_Perfiles" ManuallyRouted="false" />
-        <AssociationConnector Association="SitcomModel.FK_Persona_Sexo" ManuallyRouted="false" />
-        <AssociationConnector Association="SitcomModel.FK_Persona_Telefono" ManuallyRouted="false" />
-        <AssociationConnector Association="SitcomModel.FK_Persona_TipoDocumento" ManuallyRouted="false" />
-        <AssociationConnector Association="SitcomModel.FK_Usuarios_Persona" ManuallyRouted="false" />
         <AssociationConnector Association="SitcomModel.FK_Solicitud_Usuarios" ManuallyRouted="false" />
         <AssociationConnector Association="SitcomModel.FK_Tramite_TipoTramite" ManuallyRouted="false" />
         <AssociationConnector Association="SitcomModel.FK_Tramite_UsuarioResponsable" ManuallyRouted="false" />
         <AssociationConnector Association="SitcomModel.FK_Tramite_UsuarioSolicitante" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SitcomModel.DetalleDisponibilidad" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="SitcomModel.Persona" Width="1.5" PointX="4.125" PointY="30.25" />
+        <EntityTypeShape EntityType="SitcomModel.Reserva" Width="1.5" PointX="2.75" PointY="0.75" />
+        <AssociationConnector Association="SitcomModel.FK_Persona_Domicilio" />
+        <AssociationConnector Association="SitcomModel.FK_Persona_Sexo" />
+        <AssociationConnector Association="SitcomModel.FK_Persona_Telefono" />
+        <AssociationConnector Association="SitcomModel.FK_Persona_TipoDocumento" />
+        <AssociationConnector Association="SitcomModel.FK_Usuarios_Persona" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

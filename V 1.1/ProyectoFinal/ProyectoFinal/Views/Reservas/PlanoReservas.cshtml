@@ -27,18 +27,35 @@
 
                 @for (int i = 1; i <= ViewBag.dias; i++)
                 {
+                    string disponible = "";
+                    var planoList = Session["PLANO_RESERVA"] as List<BussinesEntities.CalendarioEntities>;
+                    var fecha = Convert.ToDateTime(i + "/" + ViewBag.mes + "/" + ViewBag.anio);
+
+
+                    foreach (var item1 in planoList)
+                    {
+                        if (item1.Id == item.Id && item1.Fecha.Equals(fecha))
+                        {
+                            if (item1.NoDisponible == 1)
+                            {
+                                disponible = "NO";
+                            }
+
+                        }
+                    }
+                    
 
                     <td>
 
-                        <div  style=" height:33px; text-align:center; padding-top:8px;" rel="tooltip">
-                        
-
-
+                        <div  style=" height:33px; text-align:center; padding-top:8px;" rel="tooltip">          
+                            @if (disponible == "NO")
+                            {
+                                <img alt="" src="@Url.Content("~/Content/img/icono_bandera_amarilla.png")" />
+                            }
                         </div>
 
-
-
                         @i.ToString().PadLeft(2, '0')
+
                     </td>
                 }
 

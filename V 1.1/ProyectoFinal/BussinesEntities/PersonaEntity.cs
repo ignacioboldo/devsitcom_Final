@@ -36,6 +36,8 @@ namespace BussinesEntities
         public Nullable<int> idSexo { get; set; }
         public Nullable<int> idTelefono { get; set; }
 
+        public Nullable<int> idNegocio { get; set; }
+
         [Required(ErrorMessage = "Se debe seleccionar el tipo de documento.")]
         public Nullable<int> idTipoDocumento { get; set; }
         public Nullable<int> idDomicilio { get; set; }

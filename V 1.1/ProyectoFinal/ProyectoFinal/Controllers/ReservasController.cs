@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using BL;
 using DAL;
 using BussinesEntities;
+using System.Drawing;
+using System.IO;
 
 namespace ProyectoFinal.Controllers
 {
@@ -25,6 +27,51 @@ namespace ProyectoFinal.Controllers
             return View();
         }
 
+
+        public String AnularReserva(int id)
+        {
+
+            hm.reserva_Anular(id);
+           
+            return "ok";
+        }
+
+        public String CheckInReserva(int id)
+        {
+            hm.reserva_CheckIn(id);
+            return "ok";
+        }
+
+        public String CheckOutReserva(int id)
+        {
+            hm.reserva_CheckOut(id);
+            return "ok";
+        }
+
+        public String Actualizar_Comentarios_Leidos(int id)
+        {
+            hm.actualizar_Comentarios_Leidos(id);
+            return "ok";
+        }
+
+
+        public ActionResult ListadoPlanoReserva(string dias, string mes, int idNegocio, int year)
+        {
+            var fecha_desde = Convert.ToDateTime("01/" + mes + "/" + year);
+
+            var fecha_hasta = Convert.ToDateTime(dias + "/" + mes + "/" + year);
+
+            var listado = hm.listadoReservasPlaning(fecha_desde, fecha_hasta, idNegocio, true);
+
+            ViewBag.dias = Convert.ToInt32(dias);
+            ViewBag.mes = Convert.ToInt32(mes);
+            ViewBag.anio = Convert.ToInt32(year);
+
+            return PartialView("ListadoPlanoReservas", listado);
+        }
+
+
+
         public ActionResult PlanoReserva(string dias, string mes, int idNegocio, int year)
         {
             var fecha_desde = Convert.ToDateTime("01/" + mes + "/" + year);
@@ -32,8 +79,13 @@ namespace ProyectoFinal.Controllers
             var fecha_hasta = Convert.ToDateTime(dias + "/" + mes + "/" + year);
 
             var listado = hm.calendario(fecha_desde,fecha_hasta, idNegocio);
+            var planoReserva = hm.planoReserva(fecha_desde, fecha_hasta, idNegocio);
+
+            Session["PLANO_RESERVA"] = planoReserva;
 
             ViewBag.dias = Convert.ToInt32(dias);
+            ViewBag.mes = Convert.ToInt32(mes);
+            ViewBag.anio = Convert.ToInt32(year);
 
             return PartialView("PlanoReservas", listado);
         }
@@ -46,15 +98,15 @@ namespace ProyectoFinal.Controllers
             return PartialView("BuscarHabitacionesDisponibles", listado);
         }
 
-        public ActionResult BuscarCliente(string buscar, int? idNegocio)
+        public ActionResult BuscarCliente(string buscar, int idNegocio)
         {
 
-            var listado = hm.buscarClientes(buscar, 1);
+            var listado = hm.buscarClientes(buscar, idNegocio);
 
             return PartialView("BuscarCliente", listado);
         }
 
-        public string RegistrarReserva(int? idPersona, int? idNegocio, int? idSolicitud)
+        public string RegistrarReserva(int? idPersona, int? idNegocio, int? idSolicitud, int tipo)
         {
 
             var greListSession = Session["AgregarReservaList"] as List<GestionReservaEntities>;
@@ -63,11 +115,76 @@ namespace ProyectoFinal.Controllers
 
             foreach (var item in greListSession)
             {
-                hm.disponibilidad_i(item.FechaDesde, item.FechaHasta, item.IdHabitacion, null, Convert.ToInt32(id));
+
+                if(tipo == 2){
+                    hm.disponibilidad_i(item.FechaDesde, item.FechaHasta, null, item.IdHabitacion, Convert.ToInt32(id));
+                }else{
+                    hm.disponibilidad_i(item.FechaDesde, item.FechaHasta, item.IdHabitacion, null, Convert.ToInt32(id));
+                }
+                
             };
 
 
             return Convert.ToString(id);
+        }
+
+        [HttpGet]
+        public ActionResult ListadoDeComentario(int idSolicitud)
+        {
+            var listado = hm.consultarComentariosSolicitud(Convert.ToInt32(idSolicitud));
+
+            return PartialView("ListadoConsultaReserva", listado);
+        }
+
+        [HttpPost]
+        public ActionResult GuardarConsulta(FormCollection collection)
+        {
+            var nro_reserva = collection["nro_reserva"];
+            var consultareserva = collection["consultareserva"];
+            var filereserva = collection["filereserva"];
+            var comentarioCliente = collection["comentarioCliente"];
+
+            bool cliente = false;
+
+            if(comentarioCliente == "1"){
+                cliente = true;
+            };
+
+            Random rnd = new Random();
+            var file = Request.Files["filereserva"];
+
+            string nombre_imagen = "";
+
+            if (file != null && file.ContentLength > 0)
+            {
+                var filename = Path.GetFileName(file.FileName);
+
+                nombre_imagen = Convert.ToString(rnd.Next(300)) + ".jpg";
+
+                filename = Path.Combine(Server.MapPath("~/Content/img"), nombre_imagen);
+
+                file.SaveAs(filename);
+            }
+
+            var result = hm.comentariosSolicitud_i(consultareserva, nombre_imagen, Convert.ToInt32(nro_reserva), cliente);
+
+            var listado = hm.consultarComentariosSolicitud(Convert.ToInt32(nro_reserva));
+
+
+            return PartialView("ListadoConsultaReserva", listado);
+        }
+
+        public ActionResult ReservasUsuario()
+        {
+            ObtenerUsuarioActual();
+  
+            ViewBag.Perfil = usuarioActual.idPerfil;
+            ViewBag.UsuarioActual = usuarioActual;
+
+            var listado = hm.consultarListadoReservasPorPersona(Convert.ToInt32(usuarioActual.idPersona));
+
+
+            return View(listado);
         }
 
 
@@ -224,17 +341,18 @@ namespace ProyectoFinal.Controllers
 
             return View();
         }
-        public ActionResult SolicitudesReserva(int idNegocio)
+        public ActionResult SolicitudesReserva(int idNegocio, int tipo)
         {
             List<SolicitudEntity> solicitudes = rm.GetSolicitudesReserva(idNegocio);
             ViewBag.idNegocio = idNegocio;
+            ViewBag.tipo = tipo;
 
             return View(solicitudes);
         }
 
  
 
-        public ActionResult VerSolicitudReserva(int? idSolicitud, int? idNegocio)
+        public ActionResult VerSolicitudReserva(int? idSolicitud, int? idNegocio, int tipo)
         {
             SolicitudEntity sol = new SolicitudEntity();
 
@@ -246,6 +364,7 @@ namespace ProyectoFinal.Controllers
             ViewBag.disabled = "";
             ViewBag.idSolicitud = idSolicitud;
             ViewBag.idNegocio = idNegocio;
+            ViewBag.tipo = tipo;
 
             if (idSolicitud != null && idSolicitud > 0)
             {

@@ -34,8 +34,9 @@
 
     function buscar_cliente() {
         var buscar = $("#buscar_cliente").val();
+        var idNegocio = '@ViewBag.idNegocio';
         $.ajax({
-            url: "BuscarCliente?buscar=" + buscar
+            url: "BuscarCliente?buscar=" + buscar + '&idNegocio=' + idNegocio
         }).done(function (data) {
             $("#lista_clientes").html(data);
         });
@@ -57,13 +58,13 @@
         var fecha_desde = $("#fecha_desde").val();
         var fecha_hasta = $("#fecha_hasta").val();
 
-        if (fecha_desde != '' && fecha_hasta != '') {    
+        if (fecha_desde != '' && fecha_hasta != '') {
             $(".habitaciones-select").html('<option>Cargando...</option>');
             $.ajax({
                 url: "BuscarHabitacionesDisponibles?fecha_desde=" + fecha_desde + "&fecha_hasta=" + fecha_hasta + "&idNegocio=" + '@ViewBag.idNegocio'
             }).done(function (data) {
                 $(".habitaciones-select").html(data);
-          
+
             });
         }
 
@@ -74,6 +75,7 @@
 </script>
 
 <input type="hidden" value="@ViewBag.idPersona" id="idPersona" />
+<input type="hidden" value="@ViewBag.idNegocio" id="idNegocio" />
 
 
 <!-- LIGHT SECTION -->
@@ -169,7 +171,7 @@
                             <div class="form-group">
                                 <label>&nbsp;</label>
 
-                                <a href="@Url.Action("DatosPersonales", "Persona")" style="background-color: rgba(177, 13, 20, 1);" class="btn btn-success btn-block">
+                                <a href="@Url.Action("DatosPersonales", "Persona", new { idNegocio = ViewBag.idNegocio })" style="background-color: rgba(177, 13, 20, 1);" class="btn btn-success btn-block">
                                     Nuevo Cliente
                                 </a>
 
@@ -422,69 +424,70 @@
 
         <script>
 
-                    function controlReserva(accion, referencia) {
+    function controlReserva(accion, referencia) {
 
-                        var fecha_desde = $("#fecha_desde").val();
-                        var fecha_hasta = $("#fecha_hasta").val();
-                        var habitacion = $("#habitacion").val();
-                        var habitacion_text = $("#habitacion option:selected").text();
+        var fecha_desde = $("#fecha_desde").val();
+        var fecha_hasta = $("#fecha_hasta").val();
+        var habitacion = $("#habitacion").val();
+        var habitacion_text = $("#habitacion option:selected").text();
 
-                        var idPersona = $("#idPersona").val();
-
-      
-
-                        if (fecha_desde == '' || fecha_hasta == '' || habitacion == '') {
-                            alert("Debe completar los campos: Fecha Desde, Fecha Hasta y Habitación.");
-                        } else {
-
-                            if (idPersona == "") {
-                                alert("Debe seleccionar un cliente.");
-                            } else {
-
-
-                                if (!validate_fechaMayorQue(fecha_desde, fecha_hasta)) {
-                                    alert("La fecha desde no puede ser mayor a la fecha hasta.");
-                                } else {
-
-                                    $.ajax({
-                                        url: "AgregarReserva?fecha_desde=" + fecha_desde + "&fecha_hasta=" + fecha_hasta + "&habitacion=" + habitacion + "&accion=" + accion + "&referencia=" + referencia + "&habitacion_text=" + habitacion_text
-                                    }).done(function (data) {
-                                        $("#lista_reserva").html(data);
-                                    });
-                                   
-                                }
-
-   
-                    
-                            }
-
-                        }
+        var idPersona = $("#idPersona").val();
 
 
 
-                        return false;
+        if (fecha_desde == '' || fecha_hasta == '' || habitacion == '') {
+            alert("Debe completar los campos: Fecha Desde, Fecha Hasta y Habitación.");
+        } else {
 
-                    };
-
-                    function registrarReserva() {
-
-
-                        var idPersona   = $("#idPersona").val();
-                        var idNegocio   = '@ViewBag.idNegocio';
-                        var idSolicitud = '@ViewBag.idSolicitud';
-
-                        $.ajax({
-                            url: "RegistrarReserva?idPersona=" + idPersona + "&idNegocio=" + idNegocio + "&idSolicitud=" + idSolicitud
-                        }).done(function (data) {
-                            $("#mensaje_reserva").show();
-                            $("#datos_reserva").hide();
-                            $("#nro_reserva").html(data);
-                        });
+            if (idPersona == "") {
+                alert("Debe seleccionar un cliente.");
+            } else {
 
 
+                if (!validate_fechaMayorQue(fecha_desde, fecha_hasta)) {
+                    alert("La fecha desde no puede ser mayor a la fecha hasta.");
+                } else {
 
-                        return false;
-                    }
+                    $.ajax({
+                        url: "AgregarReserva?fecha_desde=" + fecha_desde + "&fecha_hasta=" + fecha_hasta + "&habitacion=" + habitacion + "&accion=" + accion + "&referencia=" + referencia + "&habitacion_text=" + habitacion_text
+                    }).done(function (data) {
+                        $("#lista_reserva").html(data);
+                    });
+
+                }
+
+
+
+            }
+
+        }
+
+
+
+        return false;
+
+    };
+
+    function registrarReserva() {
+
+
+        var idPersona = $("#idPersona").val();
+        var idNegocio = '@ViewBag.idNegocio';
+        var idSolicitud = '@ViewBag.idSolicitud';
+        var tipo = '@ViewBag.tipo';
+
+        $.ajax({
+            url: "RegistrarReserva?idPersona=" + idPersona + "&idNegocio=" + idNegocio + "&idSolicitud=" + idSolicitud + "&tipo=" + tipo
+        }).done(function (data) {
+            $("#mensaje_reserva").show();
+            $("#datos_reserva").hide();
+            $("#nro_reserva").html(data);
+        });
+
+
+
+        return false;
+    }
 
             function nuevaReserva() {
 

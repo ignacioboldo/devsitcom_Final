@@ -92,6 +92,7 @@
     <NavigationProperty Name="CasaDptoOCabana" Relationship="Self.FK_Disponibilidad_CasaDptoOCabana" FromRole="Disponibilidad" ToRole="CasaDptoOCabana" />
     <NavigationProperty Name="EstadoReserva" Relationship="Self.FK_Disponibilidad_EstadoReserva" FromRole="Disponibilidad" ToRole="EstadoReserva" />
     <NavigationProperty Name="Habitacion" Relationship="Self.FK_Disponibilidad_Habitacion" FromRole="Disponibilidad" ToRole="Habitacion" />
+    <Property Name="idReserva" Type="Int32" />
   </EntityType>
   <EntityType Name="Domicilio">
     <Key>
@@ -104,8 +105,8 @@
     <Property Name="barrio" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
     <Property Name="idLocalidad" Type="Int32" />
     <NavigationProperty Name="Localidad" Relationship="Self.FK_Domicilio_Localidad" FromRole="Domicilio" ToRole="Localidad" />
-    <NavigationProperty Name="Persona" Relationship="Self.FK_Persona_Domicilio" FromRole="Domicilio" ToRole="Persona" />
     <NavigationProperty Name="Sucursal" Relationship="Self.FK_Sucursal_Domicilio" FromRole="Domicilio" ToRole="Sucursal" />
+    <NavigationProperty Name="Persona" Relationship="SitcomModel.FK_Persona_Domicilio" FromRole="Domicilio" ToRole="Persona" />
   </EntityType>
   <EntityType Name="EstadoReserva">
     <Key>
@@ -256,25 +257,6 @@
     <NavigationProperty Name="PaginasXPerfil" Relationship="Self.FK_PaginasXPerfil_Perfiles" FromRole="Perfiles" ToRole="PaginasXPerfil" />
     <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuarios_Perfiles" FromRole="Perfiles" ToRole="Usuarios" />
   </EntityType>
-  <EntityType Name="Persona">
-    <Key>
-      <PropertyRef Name="idPersona" />
-    </Key>
-    <Property Name="idPersona" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-    <Property Name="apellido" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-    <Property Name="email" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
-    <Property Name="documento" Type="Int32" />
-    <Property Name="idSexo" Type="Int32" />
-    <Property Name="idTelefono" Type="Int32" />
-    <Property Name="idTipoDocumento" Type="Int32" />
-    <Property Name="idDomicilio" Type="Int32" />
-    <NavigationProperty Name="Domicilio" Relationship="Self.FK_Persona_Domicilio" FromRole="Persona" ToRole="Domicilio" />
-    <NavigationProperty Name="Sexo" Relationship="Self.FK_Persona_Sexo" FromRole="Persona" ToRole="Sexo" />
-    <NavigationProperty Name="Telefono" Relationship="Self.FK_Persona_Telefono" FromRole="Persona" ToRole="Telefono" />
-    <NavigationProperty Name="TipoDocumento" Relationship="Self.FK_Persona_TipoDocumento" FromRole="Persona" ToRole="TipoDocumento" />
-    <NavigationProperty Name="Usuarios" Relationship="Self.FK_Usuarios_Persona" FromRole="Persona" ToRole="Usuarios" />
-  </EntityType>
   <EntityType Name="Provincia">
     <Key>
       <PropertyRef Name="idProvincia" />
@@ -299,7 +281,7 @@
     </Key>
     <Property Name="idSexo" Type="Int32" Nullable="false" />
     <Property Name="nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Persona" Relationship="Self.FK_Persona_Sexo" FromRole="Sexo" ToRole="Persona" />
+    <NavigationProperty Name="Persona" Relationship="SitcomModel.FK_Persona_Sexo" FromRole="Sexo" ToRole="Persona" />
   </EntityType>
   <EntityType Name="Solicitud">
     <Key>
@@ -337,7 +319,7 @@
     <Property Name="movil" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
     <Property Name="fijo" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
     <Property Name="alternativo" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Persona" Relationship="Self.FK_Persona_Telefono" FromRole="Telefono" ToRole="Persona" />
+    <NavigationProperty Name="Persona" Relationship="SitcomModel.FK_Persona_Telefono" FromRole="Telefono" ToRole="Persona" />
   </EntityType>
   <EntityType Name="TipoCaracteristica">
     <Key>
@@ -369,7 +351,7 @@
     </Key>
     <Property Name="idTipoDocumento" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="Persona" Relationship="Self.FK_Persona_TipoDocumento" FromRole="TipoDocumento" ToRole="Persona" />
+    <NavigationProperty Name="Persona" Relationship="SitcomModel.FK_Persona_TipoDocumento" FromRole="TipoDocumento" ToRole="Persona" />
   </EntityType>
   <EntityType Name="TipoHabitacion">
     <Key>
@@ -428,10 +410,10 @@
     <NavigationProperty Name="FotosUsuario" Relationship="Self.FK_FotosUsuario_Usuario" FromRole="Usuarios" ToRole="FotosUsuario" />
     <NavigationProperty Name="Negocio" Relationship="Self.FK_Negocio_Usuario" FromRole="Usuarios" ToRole="Negocio" />
     <NavigationProperty Name="Perfiles" Relationship="Self.FK_Usuarios_Perfiles" FromRole="Usuarios" ToRole="Perfiles" />
-    <NavigationProperty Name="Persona" Relationship="Self.FK_Usuarios_Persona" FromRole="Usuarios" ToRole="Persona" />
     <NavigationProperty Name="Solicitud" Relationship="Self.FK_Solicitud_Usuarios" FromRole="Usuarios" ToRole="Solicitud" />
     <NavigationProperty Name="Tramite" Relationship="Self.FK_Tramite_UsuarioResponsable" FromRole="Usuarios" ToRole="Tramite" />
     <NavigationProperty Name="Tramite1" Relationship="Self.FK_Tramite_UsuarioSolicitante" FromRole="Usuarios" ToRole="Tramite" />
+    <NavigationProperty Name="Persona" Relationship="SitcomModel.FK_Usuarios_Persona" FromRole="Usuarios" ToRole="Persona" />
   </EntityType>
   <Association Name="FK_Caracteristica_CategoriaCaracteristicas">
     <End Role="CategoriaCaracteristicas" Type="Self.CategoriaCaracteristicas" Multiplicity="0..1" />
@@ -622,18 +604,6 @@
       </Principal>
       <Dependent Role="Domicilio">
         <PropertyRef Name="idLocalidad" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Persona_Domicilio">
-    <End Role="Domicilio" Type="Self.Domicilio" Multiplicity="0..1" />
-    <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Domicilio">
-        <PropertyRef Name="idDomicilio" />
-      </Principal>
-      <Dependent Role="Persona">
-        <PropertyRef Name="idDomicilio" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -877,54 +847,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <Association Name="FK_Persona_Sexo">
-    <End Role="Sexo" Type="Self.Sexo" Multiplicity="0..1" />
-    <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Sexo">
-        <PropertyRef Name="idSexo" />
-      </Principal>
-      <Dependent Role="Persona">
-        <PropertyRef Name="idSexo" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Persona_Telefono">
-    <End Role="Telefono" Type="Self.Telefono" Multiplicity="0..1" />
-    <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Telefono">
-        <PropertyRef Name="idTelefono" />
-      </Principal>
-      <Dependent Role="Persona">
-        <PropertyRef Name="idTelefono" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Persona_TipoDocumento">
-    <End Role="TipoDocumento" Type="Self.TipoDocumento" Multiplicity="0..1" />
-    <End Role="Persona" Type="Self.Persona" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="TipoDocumento">
-        <PropertyRef Name="idTipoDocumento" />
-      </Principal>
-      <Dependent Role="Persona">
-        <PropertyRef Name="idTipoDocumento" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_Usuarios_Persona">
-    <End Role="Persona" Type="Self.Persona" Multiplicity="0..1" />
-    <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="Persona">
-        <PropertyRef Name="idPersona" />
-      </Principal>
-      <Dependent Role="Usuarios">
-        <PropertyRef Name="idPersona" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_Solicitud_Usuarios">
     <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
     <End Role="Solicitud" Type="Self.Solicitud" Multiplicity="*" />
@@ -996,7 +918,6 @@
     <EntitySet Name="PaginasXPerfil" EntityType="Self.PaginasXPerfil" />
     <EntitySet Name="Pais" EntityType="Self.Pais" />
     <EntitySet Name="Perfiles" EntityType="Self.Perfiles" />
-    <EntitySet Name="Persona" EntityType="Self.Persona" />
     <EntitySet Name="Provincia" EntityType="Self.Provincia" />
     <EntitySet Name="Rubro" EntityType="Self.Rubro" />
     <EntitySet Name="Sexo" EntityType="Self.Sexo" />
@@ -1075,10 +996,6 @@
     <AssociationSet Name="FK_Domicilio_Localidad" Association="Self.FK_Domicilio_Localidad">
       <End Role="Localidad" EntitySet="Localidad" />
       <End Role="Domicilio" EntitySet="Domicilio" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Persona_Domicilio" Association="Self.FK_Persona_Domicilio">
-      <End Role="Domicilio" EntitySet="Domicilio" />
-      <End Role="Persona" EntitySet="Persona" />
     </AssociationSet>
     <AssociationSet Name="FK_Sucursal_Domicilio" Association="Self.FK_Sucursal_Domicilio">
       <End Role="Domicilio" EntitySet="Domicilio" />
@@ -1160,22 +1077,6 @@
       <End Role="Perfiles" EntitySet="Perfiles" />
       <End Role="Usuarios" EntitySet="Usuarios" />
     </AssociationSet>
-    <AssociationSet Name="FK_Persona_Sexo" Association="Self.FK_Persona_Sexo">
-      <End Role="Sexo" EntitySet="Sexo" />
-      <End Role="Persona" EntitySet="Persona" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Persona_Telefono" Association="Self.FK_Persona_Telefono">
-      <End Role="Telefono" EntitySet="Telefono" />
-      <End Role="Persona" EntitySet="Persona" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Persona_TipoDocumento" Association="Self.FK_Persona_TipoDocumento">
-      <End Role="TipoDocumento" EntitySet="TipoDocumento" />
-      <End Role="Persona" EntitySet="Persona" />
-    </AssociationSet>
-    <AssociationSet Name="FK_Usuarios_Persona" Association="Self.FK_Usuarios_Persona">
-      <End Role="Persona" EntitySet="Persona" />
-      <End Role="Usuarios" EntitySet="Usuarios" />
-    </AssociationSet>
     <AssociationSet Name="FK_Solicitud_Usuarios" Association="Self.FK_Solicitud_Usuarios">
       <End Role="Usuarios" EntitySet="Usuarios" />
       <End Role="Solicitud" EntitySet="Solicitud" />
@@ -1229,9 +1130,130 @@
       <Parameter Name="cantHabitaciones" Mode="In" Type="Int32" />
       <Parameter Name="tipoHospedaje" Mode="In" Type="String" />
     </FunctionImport>
+    <EntitySet Name="DetalleDisponibilidad" EntityType="SitcomModel.DetalleDisponibilidad" />
+    <EntitySet Name="Persona" EntityType="SitcomModel.Persona" />
+    <EntitySet Name="Reserva" EntityType="SitcomModel.Reserva" />
+    <AssociationSet Name="FK_Persona_Domicilio" Association="SitcomModel.FK_Persona_Domicilio">
+      <End Role="Domicilio" EntitySet="Domicilio" />
+      <End Role="Persona" EntitySet="Persona" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Persona_Sexo" Association="SitcomModel.FK_Persona_Sexo">
+      <End Role="Sexo" EntitySet="Sexo" />
+      <End Role="Persona" EntitySet="Persona" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Persona_Telefono" Association="SitcomModel.FK_Persona_Telefono">
+      <End Role="Telefono" EntitySet="Telefono" />
+      <End Role="Persona" EntitySet="Persona" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Persona_TipoDocumento" Association="SitcomModel.FK_Persona_TipoDocumento">
+      <End Role="TipoDocumento" EntitySet="TipoDocumento" />
+      <End Role="Persona" EntitySet="Persona" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Usuarios_Persona" Association="SitcomModel.FK_Usuarios_Persona">
+      <End Role="Persona" EntitySet="Persona" />
+      <End Role="Usuarios" EntitySet="Usuarios" />
+    </AssociationSet>
   </EntityContainer>
   <ComplexType Name="cambiarHabitacionesNuevoHotel_Result">
     <Property Type="Int32" Name="Column1" Nullable="true" />
     <Property Type="Int32" Name="Column2" Nullable="true" />
   </ComplexType>
+  <EntityType Name="DetalleDisponibilidad">
+    <Key>
+      <PropertyRef Name="idDetalleDisponibilidad" />
+    </Key>
+    <Property Name="idDetalleDisponibilidad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idDisponibilidad" Type="Int32" />
+    <Property Name="idPersona" Type="Int32" />
+  </EntityType>
+  <EntityType Name="Persona">
+    <Key>
+      <PropertyRef Name="idPersona" />
+    </Key>
+    <Property Name="idPersona" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="apellido" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="email" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="documento" Type="Int32" />
+    <Property Name="idSexo" Type="Int32" />
+    <Property Name="idTelefono" Type="Int32" />
+    <Property Name="idTipoDocumento" Type="Int32" />
+    <Property Name="idDomicilio" Type="Int32" />
+    <Property Name="idNegocio" Type="Int32" />
+    <NavigationProperty Name="Domicilio" Relationship="SitcomModel.FK_Persona_Domicilio" FromRole="Persona" ToRole="Domicilio" />
+    <NavigationProperty Name="Sexo" Relationship="SitcomModel.FK_Persona_Sexo" FromRole="Persona" ToRole="Sexo" />
+    <NavigationProperty Name="Telefono" Relationship="SitcomModel.FK_Persona_Telefono" FromRole="Persona" ToRole="Telefono" />
+    <NavigationProperty Name="TipoDocumento" Relationship="SitcomModel.FK_Persona_TipoDocumento" FromRole="Persona" ToRole="TipoDocumento" />
+    <NavigationProperty Name="Usuarios" Relationship="SitcomModel.FK_Usuarios_Persona" FromRole="Persona" ToRole="Usuarios" />
+  </EntityType>
+  <EntityType Name="Reserva">
+    <Key>
+      <PropertyRef Name="idReserva" />
+    </Key>
+    <Property Name="idReserva" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idPersonaSolicitante" Type="Int32" />
+    <Property Name="idNegocio" Type="Int32" />
+    <Property Name="idSolicitud" Type="Int32" />
+    <Property Name="idEstado" Type="Int32" />
+  </EntityType>
+  <Association Name="FK_Persona_Domicilio">
+    <End Type="SitcomModel.Domicilio" Role="Domicilio" Multiplicity="0..1" />
+    <End Type="SitcomModel.Persona" Role="Persona" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Domicilio">
+        <PropertyRef Name="idDomicilio" />
+      </Principal>
+      <Dependent Role="Persona">
+        <PropertyRef Name="idDomicilio" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Persona_Sexo">
+    <End Type="SitcomModel.Sexo" Role="Sexo" Multiplicity="0..1" />
+    <End Type="SitcomModel.Persona" Role="Persona" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Sexo">
+        <PropertyRef Name="idSexo" />
+      </Principal>
+      <Dependent Role="Persona">
+        <PropertyRef Name="idSexo" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Persona_Telefono">
+    <End Type="SitcomModel.Telefono" Role="Telefono" Multiplicity="0..1" />
+    <End Type="SitcomModel.Persona" Role="Persona" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Telefono">
+        <PropertyRef Name="idTelefono" />
+      </Principal>
+      <Dependent Role="Persona">
+        <PropertyRef Name="idTelefono" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Persona_TipoDocumento">
+    <End Type="SitcomModel.TipoDocumento" Role="TipoDocumento" Multiplicity="0..1" />
+    <End Type="SitcomModel.Persona" Role="Persona" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TipoDocumento">
+        <PropertyRef Name="idTipoDocumento" />
+      </Principal>
+      <Dependent Role="Persona">
+        <PropertyRef Name="idTipoDocumento" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Usuarios_Persona">
+    <End Type="SitcomModel.Persona" Role="Persona" Multiplicity="0..1" />
+    <End Type="SitcomModel.Usuarios" Role="Usuarios" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Persona">
+        <PropertyRef Name="idPersona" />
+      </Principal>
+      <Dependent Role="Usuarios">
+        <PropertyRef Name="idPersona" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

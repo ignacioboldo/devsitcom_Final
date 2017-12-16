@@ -1,0 +1,336 @@
+﻿@model IEnumerable<BussinesEntities.ReservasUsuarioEntities>
+@using GridMvc.Html
+
+<script type="text/javascript">
+
+    var perfil = "@ViewBag.Perfil"
+    var mensaje = "@ViewBag.Mensaje"
+
+    $(document).ready(function () {
+
+
+        if (perfil == 3) {
+            $("#btnTusTramites").hide();
+            $("#btnTusNegocios").hide();
+            $("#btnTusTramitesAsignados").show();
+        }
+        else {
+            $("#btnTusTramites").show();
+            $("#btnTusNegocios").show();
+            $("#btnTusTramitesAsignados").hide();
+        }
+
+        if (mensaje != "") {
+            alert(mensaje);
+        }
+
+        $("#btnTusTramites").click(function (event) {
+            window.location = '@Url.Action("TramitesUsuario","Tramites")';
+            event.preventDefault();
+        });
+
+        $("#btnTusTramitesAsignados").click(function (event) {
+            window.location = '@Url.Action("TramitesUsuario","Tramites")';
+            event.preventDefault();
+        });
+
+        $("#btnModificarDatos").click(function (event) {
+            window.location = '@Url.Action("EditUsuario","Usuarios")';
+            event.preventDefault();
+        });
+
+        $("#btnTusNegocios").click(function (event) {
+            window.location = '@Url.Action("NegociosUsuario","Negocios")';
+            event.preventDefault();
+        });
+    });
+
+
+    function consultarReserva(nro_reserva) {
+
+        $('#nro_reserva').html(nro_reserva);
+
+       
+        $('#myModal').modal('show');
+        listarComentarios();
+
+        return false;
+    }
+
+    function anularReserva() {
+        var nro_reserva = $("#nro_reserva").html();
+
+
+        var result = confirm("Realmente quiere anular la reserva");
+
+        if (result) {
+            $("#consultareserva").val('[Solicitud de cancelacion de reserva Nro: ' + nro_reserva + ']');
+            enviarConsulta();
+            $('#myModal').modal('hide');
+            location.reload();
+        }
+    }
+
+    function listarComentarios() {
+
+        var nro_reserva = $("#nro_reserva").html();
+
+        $.ajax({
+            type: 'GET',
+            url: 'ListadoDeComentario?idSolicitud=' + nro_reserva,
+            success: function (response) {
+                $("#consultas").html(response);
+            }
+        })
+
+    }
+
+    function enviarConsulta() {
+
+        if ($("#consultareserva").val() != "") {
+
+            var fdata = new FormData();
+
+            fdata.append("nro_reserva", $("#nro_reserva").html());
+
+            fdata.append("consultareserva", $("#consultareserva").val());
+
+            fdata.append("filereserva", $("#filereserva")[0].files[0]);
+
+            fdata.append("comentarioCliente", "1");
+
+
+            $.ajax({
+                type: 'POST',
+                url: 'GuardarConsulta',
+                data: fdata,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    $("#consultas").html(response);
+                    $("#filereserva").val('');
+                    $("#consultareserva").val('');
+                }
+            })
+
+        } else {
+            alert("Debe enviar un comentario.");
+        }
+
+
+    }
+
+
+</script>
+
+
+
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Panel de Control</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Panel de Control</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+
+    .reserva-pregunta{
+        margin-left:40px;
+        padding: 10px;
+        background-color:gray;
+        color: white;
+        border-radius: 10px;
+        margin-bottom:10px;
+    }
+
+    .reserva-respuesta{
+        margin-right: 40px;
+        padding: 10px;
+        background-color:rgba(177, 13, 20, 1);
+        color: white;
+        border-radius: 10px;
+        margin-bottom:10px;
+    }
+
+    .reserva-pregunta-imagen{
+        margin-left:40px;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom:10px;
+    }
+
+    .reserva-respuesta-imagen{
+        text-align: right;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+
+    .reserva-fecha-comentario{
+        text-align:right;
+        font-size: 10px;
+    }
+
+    .modal-body {
+        position: relative;
+        padding: 15px;
+        height: 400px;
+        overflow: auto;
+    }
+
+
+</style>
+
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Consultar Reserva Nro: <span id="nro_reserva"></span></h4>
+                        <button type="button" onclick="anularReserva()" class="btn btn-link">
+                            Anular Reserva
+                        </button>
+                    </div>
+                    <div id="mensajes" class="modal-body">
+
+                        <div id="consultas"></div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Deemphasize a button by making it look like a link while maintaining button behavior -->
+                        <input type="file" id="filereserva" name="filereserva">
+                        <textarea class="form-control" rows="3" id="consultareserva" name="consultareserva"></textarea>
+          
+                        <button type="button" onclick="enviarConsulta()" class="btn btn-link">
+                            <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+                        Enviar Mensaje</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="btn-group" role="group" aria-label="..." style="text-align:center">
+
+                    <a class="btn btn-default" id="btnModificarDatos" style="width:200px;">
+                        MODIFICÁ TUS DATOS
+                    </a>
+
+                    <a class="btn btn-default active" id="btnTusNegocios" style="width:200px;">
+                        TUS NEGOCIOS
+                    </a>
+
+                    <a class="btn btn-default" id="btnTusTramites" style="width:200px;">
+                        TUS TRAMITES
+                    </a>
+
+                    <a class="btn btn-default" id="btnTusTramitesAsignados" style="width:200px;">
+                        TUS TRAMITES ASIGNADOS
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+
+
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="innerWrapper">
+                    <div class="orderBox myAddress">
+
+                        <h4><strong>Tus Reservas</strong></h4>
+
+                        @if (Model.Count() != 0)
+                        {
+                            @helper botonVer(BussinesEntities.ReservasUsuarioEntities n)
+{
+    if (n.idPersona != null)
+    {
+
+        string desactivado = "";
+
+
+        if (n.EstadoReserva == "RESERVA_ANULADA" || n.EstadoReserva == "CHECK-IN" || n.EstadoReserva == "CHECK-OUT")
+        {
+            desactivado = "disabled";
+        }
+
+        
+     
+        <button style="font-size:10px; padding: 5px;" @desactivado onclick="return consultarReserva('@n.idReserva');" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar</button>
+
+    }
+}
+
+
+                            @Html.Grid(Model).Columns(columns =>
+        {
+            //columns.Add(model => model.fechaAlta).Titled("Fecha Alta");
+            columns.Add(model => model.idReserva).Titled("Nro de Reserva").SetWidth(30);
+            columns.Add(model => model.FechaDesde).Titled("Fecha Desde").SetWidth(30);
+            columns.Add(model => model.fechaHasta).Titled("Fecha Hasta").SetWidth(30);
+            columns.Add(model => model.EstadoReserva).Titled("Estado Reserva").SetWidth(30);
+            columns.Add(model => model.TipoHabitacion).Titled("Tipo Habitación").SetWidth(30);
+            columns.Add(model => model.Negocio).Titled("Negocio").SetWidth(30);
+            columns.Add(model => model.idPersona)
+                .Titled("Acción")
+                .Encoded(false)
+                .Sanitized(false)
+                .SetWidth(40)
+                .RenderValueAs(n => botonVer(n));
+        }).WithPaging(10).Sortable(true)
+
+
+                        }
+                        else
+                        {
+
+                            <div id="NoNegocios" style="align-self:center; font-size:20px; display:none">
+                                <strong>
+                                    No tenés Negocios APROBADOS.
+                                </strong>
+                            </div>
+
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</section>
+
+
+

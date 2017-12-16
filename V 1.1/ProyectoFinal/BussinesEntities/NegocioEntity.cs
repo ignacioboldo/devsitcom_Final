@@ -34,11 +34,14 @@ namespace BussinesEntities
         public Nullable<int> idTipoNegocio { get; set; }
         public Nullable<int> idUsuario { get; set; }
         public Nullable<int> idNegocioModif { get; set; }
+
+        public Nullable<int> idPerfil { get; set; }
     
         public virtual ICollection<ComercioEntity> Comercio { get; set; }
         public virtual ICollection<FotosNegocio> FotosNegocio { get; set; }
         public virtual ICollection<LugarHospedajeEntity> LugarHospedaje { get; set; }
         public virtual TipoDeNegocio TipoDeNegocio { get; set; }
+        public virtual Perfiles Perfiles { get; set; }
         public virtual Usuarios Usuarios { get; set; }
         public virtual ICollection<SucursalEntity> Sucursal { get; set; }
         public virtual ICollection<TramiteEntity> Tramite { get; set; }

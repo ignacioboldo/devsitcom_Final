@@ -28,6 +28,7 @@ namespace DAL
         public Nullable<int> idTelefono { get; set; }
         public Nullable<int> idTipoDocumento { get; set; }
         public Nullable<int> idDomicilio { get; set; }
+        public Nullable<int> idNegocio { get; set; }
     
         public virtual Domicilio Domicilio { get; set; }
         public virtual Sexo Sexo { get; set; }

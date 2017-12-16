@@ -72,6 +72,7 @@
     <EntitySetMapping Name="Disponibilidad">
       <EntityTypeMapping TypeName="SitcomModel.Disponibilidad">
         <MappingFragment StoreEntitySet="Disponibilidad">
+          <ScalarProperty Name="idReserva" ColumnName="idReserva" />
           <ScalarProperty Name="idDisponibilidad" ColumnName="idDisponibilidad" />
           <ScalarProperty Name="fechaDesde" ColumnName="fechaDesde" />
           <ScalarProperty Name="fechaHasta" ColumnName="fechaHasta" />
@@ -219,21 +220,6 @@
           <ScalarProperty Name="idPerfil" ColumnName="idPerfil" />
           <ScalarProperty Name="nombre" ColumnName="nombre" />
           <ScalarProperty Name="descripcion" ColumnName="descripcion" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="Persona">
-      <EntityTypeMapping TypeName="SitcomModel.Persona">
-        <MappingFragment StoreEntitySet="Persona">
-          <ScalarProperty Name="idPersona" ColumnName="idPersona" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="apellido" ColumnName="apellido" />
-          <ScalarProperty Name="email" ColumnName="email" />
-          <ScalarProperty Name="documento" ColumnName="documento" />
-          <ScalarProperty Name="idSexo" ColumnName="idSexo" />
-          <ScalarProperty Name="idTelefono" ColumnName="idTelefono" />
-          <ScalarProperty Name="idTipoDocumento" ColumnName="idTipoDocumento" />
-          <ScalarProperty Name="idDomicilio" ColumnName="idDomicilio" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -396,5 +382,41 @@
     <FunctionImportMapping FunctionImportName="getDisponibilidadHabitacion" FunctionName="SitcomModel.Store.getDisponibilidadHabitacion" />
     <FunctionImportMapping FunctionImportName="getDisponibilidadHotel" FunctionName="SitcomModel.Store.getDisponibilidadHotel" />
     <FunctionImportMapping FunctionImportName="ConsultarLugaresHospedaje" FunctionName="SitcomModel.Store.ConsultarLugaresHospedaje" />
+    <EntitySetMapping Name="DetalleDisponibilidad">
+      <EntityTypeMapping TypeName="SitcomModel.DetalleDisponibilidad">
+        <MappingFragment StoreEntitySet="DetalleDisponibilidad">
+          <ScalarProperty Name="idPersona" ColumnName="idPersona" />
+          <ScalarProperty Name="idDisponibilidad" ColumnName="idDisponibilidad" />
+          <ScalarProperty Name="idDetalleDisponibilidad" ColumnName="idDetalleDisponibilidad" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Persona">
+      <EntityTypeMapping TypeName="SitcomModel.Persona">
+        <MappingFragment StoreEntitySet="Persona">
+          <ScalarProperty Name="idNegocio" ColumnName="idNegocio" />
+          <ScalarProperty Name="idDomicilio" ColumnName="idDomicilio" />
+          <ScalarProperty Name="idTipoDocumento" ColumnName="idTipoDocumento" />
+          <ScalarProperty Name="idTelefono" ColumnName="idTelefono" />
+          <ScalarProperty Name="idSexo" ColumnName="idSexo" />
+          <ScalarProperty Name="documento" ColumnName="documento" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="apellido" ColumnName="apellido" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idPersona" ColumnName="idPersona" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Reserva">
+      <EntityTypeMapping TypeName="SitcomModel.Reserva">
+        <MappingFragment StoreEntitySet="Reserva">
+          <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+          <ScalarProperty Name="idSolicitud" ColumnName="idSolicitud" />
+          <ScalarProperty Name="idNegocio" ColumnName="idNegocio" />
+          <ScalarProperty Name="idPersonaSolicitante" ColumnName="idPersonaSolicitante" />
+          <ScalarProperty Name="idReserva" ColumnName="idReserva" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

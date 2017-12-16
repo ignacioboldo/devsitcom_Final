@@ -9,13 +9,16 @@
     $(document).ready(function () {
         $("#ddlPaises").change(function () {
             nombre = $("#nombre").val();
+            idNegocio = $("#idNegocio").val();
+            $("#idNegocio").val(idNegocio)
             apellido = $("#apellido").val();
             idTipoDocumento = $("#idTipoDocumento").val();
             documento = $("#documento").val();
             idSexo = $("#idSexo").val();
             email = $("#email").val();
             idPaisSeleccionado = $("#ddlPaises").val();
-            datos = "nombre=" + nombre + "&";
+            datos = "idNegocio=" + idNegocio + "&";
+            datos = datos + "nombre=" + nombre + "&";
             datos = datos + "apellido=" + apellido + "&";
             datos = datos + "idTipoDocumento=" + idTipoDocumento + "&";
             datos = datos + "documento=" + documento + "&";
@@ -44,6 +47,8 @@
 
         $("#ddlProvincias").change(function () {
             nombre = $("#nombre").val();
+            idNegocio = $("#idNegocio").val();
+            $("#idNegocio").val(idNegocio)
             apellido = $("#apellido").val();
             idTipoDocumento = $("#idTipoDocumento").val();
             documento = $("#documento").val();
@@ -51,7 +56,8 @@
             email = $("#email").val();
             idPaisSeleccionado = $("#ddlPaises").val();
             idProvinciaSeleccionada = $("#ddlProvincias").val();
-            datos = "nombre=" + nombre + "&";
+            datos = "idNegocio=" + idNegocio + "&";
+            datos = datos + "nombre=" + nombre + "&";
             datos = datos + "apellido=" + apellido + "&";
             datos = datos + "idTipoDocumento=" + idTipoDocumento + "&";
             datos = datos + "documento=" + documento + "&";
@@ -98,6 +104,8 @@
             @Html.AntiForgeryToken()
 
             @Html.ValidationSummary(true)
+            
+            @Html.HiddenFor(model => model.idNegocio)
 
             <div class="row">
                 <div class="col-md-12">

@@ -49,7 +49,6 @@ namespace DAL
         public virtual DbSet<PaginasXPerfil> PaginasXPerfil { get; set; }
         public virtual DbSet<Pais> Pais { get; set; }
         public virtual DbSet<Perfiles> Perfiles { get; set; }
-        public virtual DbSet<Persona> Persona { get; set; }
         public virtual DbSet<Provincia> Provincia { get; set; }
         public virtual DbSet<Rubro> Rubro { get; set; }
         public virtual DbSet<Sexo> Sexo { get; set; }
@@ -65,6 +64,9 @@ namespace DAL
         public virtual DbSet<TipoTramite> TipoTramite { get; set; }
         public virtual DbSet<Tramite> Tramite { get; set; }
         public virtual DbSet<Usuarios> Usuarios { get; set; }
+        public virtual DbSet<DetalleDisponibilidad> DetalleDisponibilidad { get; set; }
+        public virtual DbSet<Persona> Persona { get; set; }
+        public virtual DbSet<Reserva> Reserva { get; set; }
     
         public virtual int cambiarCasaODptoNuevoComplejo(Nullable<int> idNegocioNuevo)
         {

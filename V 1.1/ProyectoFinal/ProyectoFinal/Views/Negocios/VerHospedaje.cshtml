@@ -6,6 +6,8 @@
 
 <script type="text/javascript">
 
+
+
     $(document).ready(function () {
 
         $('.date').mask('00-00-0000');
@@ -51,6 +53,7 @@
         var tieneTramite = "@ViewBag.TieneTramiteMGR"
 
         $(document).ready(function () {
+        
             if (esDueno == 1) {
                 if (tieneMGR == "True") {
                     $("#btnModificarNegocio").show();
@@ -81,6 +84,14 @@
             $("#btnDisponibilidad").click(function () {
                 window.location = '@Url.Action("Disponibilidad","Reservas", new { idNegocio = Model.idNegocio })';
             })
+
+            var perfil = "@Model.idPerfil"
+
+            if (perfil == 3) {
+                desactivarLink('btnReservar');
+                desactivarBtn('btnConsultar');
+            }
+
 
 
 
@@ -410,7 +421,7 @@
                                     </div>
 
                                     <div>
-                                        <button class="btn btn-primary btn-block" type="submit">Consultar!</button>
+                                        <button class="btn btn-primary btn-block" id="btnConsultar" type="submit">Consultar!</button>
                                     </div>
 
                                 }
@@ -427,10 +438,12 @@
 
 
                 <div class="col-xs-12 col-md-6">
+
                     <div class="titulodesc">
                         <br>
                         <h3><strong>@Model.nombre</strong></h3>
                     </div>
+                    <br />
                     <div class="desc-des" style="font-size:17px;">
                         @Model.descripcion
                         <br />
@@ -453,59 +466,35 @@
 
                     </div>
 
-
-                    <div class="row">
-                        <div class="col-sm-12 col-md-12">
-                            <div style="float:left;max-width: 100%;margin-bottom:20px;">
-
-                                @{
-                                    foreach (var item in Model.FotosNegocio)
-                                    {
-                                        if (item.esPrincipal == true)
-                                        {
-
-                                            <a class="group" rel="grupo_desplegada" href="@Url.Action("ObtenerImagen","Negocios",new { id = item.idFoto })">
-                                                <img src="@Url.Action("ObtenerImagen","Negocios",new { id = item.idFoto })" id="imagen_mostrar" class="img-responsive foto-desarrollo">
-                                            </a>
-
-                                        }
-                                    }
-                                }
-
-                            </div>
-                        </div>
+                    <div class="titulodesc">
+                        <br>
+                        <h3><strong>Galeria de Fotos</strong></h3>
                     </div>
-                    <div class="row">
-                        <div class="col-xs-12  col-sm-12  col-md-12 masfotos">
 
-                            @{
-                                foreach (var item in Model.FotosNegocio)
-                                {
-                                    if (item.esPrincipal != true)
-                                    {
-                                        <a class="group" rel="grupo_desplegada" href="@Url.Action("ObtenerImagen","Negocios",new { id = item.idFoto })"> <img src="@Url.Action("ObtenerImagen","Negocios",new { id = item.idFoto })" style="height:80px;" class="lasfotoschiquitas"> </a>
 
-                                    }
-                                }
+                        @{
+                            int index = 0;
+
+                            foreach (var item in Model.FotosNegocio)
+                            {
+                                
+                                    string activo = "";
+                                    if (index == 0) { activo = "active"; }
+
+                                    <div class="col-xs-6 col-md-3" style="padding:6px">
+                                        <div class="item @activo" data-thumb="@index">
+                                            <img src="@Url.Action("ObtenerImagen","Negocios",new { id = item.idFoto })"  onclick="modal('@index')" id="foto_@index" style="cursor: pointer;width:100px; " class="img-thumbnail">
+                                        </div>
+                                    </div>
+                              
+
+                                index++;
                             }
+                        }
 
-                        </div>
 
-                        <br />
 
-        
                     </div>
-
-                    <div class="row">
-                        <br /><br />
-                        <div class="col-xs-12  col-sm-12  col-md-12 masfotos">
-                            <!-- This is the div that will contain the Google Map -->
-                            <div id="map_canvas" style="height: 350px;"></div>
-                        </div>
-                     </div>
-
-
-                </div>
 
                 <div class="col-xs-12 col-md-3">
 
@@ -532,7 +521,7 @@
                                     GESTION DE RESERVAS
                                 </button>
                                 <!--id="btnReservar"-->
-                                <button class="btn btn-primary btn-block active" onclick="return reservaAhora('@Url.Action("SolicitarReserva","Reservas", new { id = Model.idNegocio })'); " style=" background-color: rgba(177, 13, 20, 1);display:inline">
+                                <button class="btn btn-primary btn-block active" id="btnReservar" onclick="return reservaAhora('@Url.Action("SolicitarReserva","Reservas", new { id = Model.idNegocio })'); " style=" background-color: rgba(177, 13, 20, 1);display:inline">
                                     ¡RESERVÁ AHORA!
                                 </button>
 
@@ -551,6 +540,35 @@
         </div>
 
     </section>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <img class="img-responsive" style="width:100%; height:100%" id="img_modal" src="">
+            </div>
+            <div class="modal-footer">
+
+                <a class="btn btn-default" style="padding: 10px;" data-dismiss="modal" href="javascript:void(0);">Cerrar</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function modal(id) {
+        $("#myModalLabel").html('Foto');
+        var src = $("#foto_" + id).attr("src");
+        $("#img_modal").attr("src", src);
+        $('#myModal').modal('show');
+    }
+</script>
 
 
 

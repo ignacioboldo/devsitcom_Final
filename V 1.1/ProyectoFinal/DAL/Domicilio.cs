@@ -16,8 +16,8 @@ namespace DAL
     {
         public Domicilio()
         {
-            this.Persona = new HashSet<Persona>();
             this.Sucursal = new HashSet<Sucursal>();
+            this.Persona = new HashSet<Persona>();
         }
     
         public int idDomicilio { get; set; }
@@ -28,7 +28,7 @@ namespace DAL
         public Nullable<int> idLocalidad { get; set; }
     
         public virtual Localidad Localidad { get; set; }
-        public virtual ICollection<Persona> Persona { get; set; }
         public virtual ICollection<Sucursal> Sucursal { get; set; }
+        public virtual ICollection<Persona> Persona { get; set; }
     }
 }
