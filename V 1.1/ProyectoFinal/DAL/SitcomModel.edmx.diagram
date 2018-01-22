@@ -90,6 +90,12 @@
         <AssociationConnector Association="SitcomModel.FK_Persona_Telefono" />
         <AssociationConnector Association="SitcomModel.FK_Persona_TipoDocumento" />
         <AssociationConnector Association="SitcomModel.FK_Usuarios_Persona" />
+        <EntityTypeShape EntityType="SitcomModel.Promociones" Width="1.5" PointX="13.875" PointY="11" />
+        <EntityTypeShape EntityType="SitcomModel.PromocionesOtorgadas" Width="1.5" PointX="19.125" PointY="12.25" />
+        <EntityTypeShape EntityType="SitcomModel.ComentariosSolicitud" Width="1.5" PointX="0.75" PointY="3.75" />
+        <AssociationConnector Association="SitcomModel.FK_Promociones_Negocio" />
+        <AssociationConnector Association="SitcomModel.FK_PromocionesOtorgadas_Promociones" />
+        <AssociationConnector Association="SitcomModel.FK_PromocionesOtorgadas_Usuarios" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

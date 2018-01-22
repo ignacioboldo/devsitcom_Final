@@ -33,18 +33,38 @@ namespace BL
             using (SitcomEntities db = new SitcomEntities())
             {
                 int idEstTra = 0;
-                if (n.idNegocioModif != null) //Seteo el estado de tramite segun si es Alta o Modificacion de Negocio.
+
+                bool esCorreccion = false;
+
+                //Seteo el estado de tramite segun si es Alta o Modificacion de Negocio.
+                if (n.idNegocioModif != null)
+                {
                     idEstTra = 3;
+
+                    var aprobado = (from nego in db.Negocio
+                                   where nego.idNegocio == n.idNegocioModif
+                                   select nego.estaAprobado).FirstOrDefault();
+
+                    if (!Boolean.Parse(aprobado.ToString()))
+                        esCorreccion = true;
+                }
                 else
                     idEstTra = 1;
 
-                Tramite tra = new Tramite()
+                Tramite tra = new Tramite();
+
+                //Solo genero un nuevo tramite si es un nuevo negocio o modificacion de uno ya existente.
+                if(!esCorreccion)
                 {
-                    idUsuarioSolicitante = usuarioActual.idUsuario,
-                    fechaAlta = DateTime.Now,
-                    idTipoTramite = idEstTra,
-                    idEstadoTramite = 1
-                };
+                    tra = new Tramite()
+                    {
+                        idUsuarioSolicitante = usuarioActual.idUsuario,
+                        fechaAlta = DateTime.Now,
+                        idTipoTramite = idEstTra,
+                        idEstadoTramite = 1
+                    };
+                }
+
                 var neg = new Negocio()
                 {
                     nombre = n.nombre,
@@ -54,16 +74,85 @@ namespace BL
                     Comercio = lstCom,
                     LugarHospedaje = lstLugar,
                     FotosNegocio = n.FotosNegocio,
-                    Tramite = new List<Tramite>() { tra },
                     Sucursal = convert.SucursalEntityToSucursal(n.Sucursal.FirstOrDefault()),
                     estaAprobado = false,
                     idNegocioModif = n.idNegocioModif
                 };
+
+                if (!esCorreccion)
+                    neg.Tramite = new List<Tramite>() { tra };
+
+
                 db.Negocio.Add(neg);
                 db.SaveChanges();
 
+
+                if (esCorreccion)
+                {
+                    //Obtengo el id del negocio recien creado.
+                    var idNuevoNegocio = (from negs in db.Negocio
+                                         where negs.idNegocioModif == n.idNegocioModif
+                                         select negs.idNegocio).FirstOrDefault();
+
+                    //Actualizo el id del tramite original con el del negocio recien creado.
+                    var tramiteOrig = (from trams in db.Tramite
+                                       where trams.idNegocio == n.idNegocioModif
+                                       select trams).FirstOrDefault();
+
+                    tramiteOrig.idNegocio = int.Parse(idNuevoNegocio.ToString());
+                    tramiteOrig.idEstadoTramite = 2;
+
+                    db.SaveChanges();
+                }
+
+
             }
         }
+
+        public void RepublicarNegocio(int idNegocio, UsuarioEntity usuarioActual)
+        {
+            using(SitcomEntities db = new SitcomEntities())
+            {
+                Tramite t = new Tramite()
+                {
+                    idUsuarioSolicitante = usuarioActual.idUsuario,
+                    fechaAlta = DateTime.Now,
+                    idTipoTramite = 5,
+                    idNegocio = idNegocio,
+                    idEstadoTramite = 1
+                };
+
+                db.Tramite.Add(t);
+
+                db.SaveChanges();
+            }
+        }
+
+        public void BajaNegocio(int idNegocio, UsuarioEntity usuarioActual)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                var result = (from neg in db.Negocio
+                              where neg.idNegocio == idNegocio
+                              select neg).FirstOrDefault();
+
+                result.estaAnulado = true;
+
+                Tramite t = new Tramite()
+                {
+                    idUsuarioSolicitante = usuarioActual.idUsuario,
+                    fechaAlta = DateTime.Now,
+                    idTipoTramite = 4,
+                    idNegocio = idNegocio,
+                    idEstadoTramite = 1
+                };
+
+                db.Tramite.Add(t);
+
+                db.SaveChanges();
+            }
+        }
+
         public FotosNegocio GetFotoNegocioById(int id)
         {
             using (var db = new SitcomEntities())
@@ -83,6 +172,7 @@ namespace BL
                 var result = (from n in db.Negocio
                               where n.estaAprobado == true
                               && n.idTipoNegocio == tipoNegocio
+                              && n.estaAnulado != true
                               select new NegocioEntity()
                               {
                                   idNegocio = n.idNegocio,
@@ -467,7 +557,6 @@ namespace BL
                 return result;
             }
         }
-
         public void UpdateDptosOCabanasCambio(int idNegocio)
         {
             using (SitcomEntities db = new SitcomEntities())
@@ -479,7 +568,6 @@ namespace BL
             }
 
         }
-
         public void UpdateHabitacionesCambio(int idNegocio)
         {
             using (SitcomEntities db = new SitcomEntities())

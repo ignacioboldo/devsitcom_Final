@@ -23,6 +23,7 @@ namespace DAL
             this.Solicitud = new HashSet<Solicitud>();
             this.Sucursal = new HashSet<Sucursal>();
             this.Tramite = new HashSet<Tramite>();
+            this.Promociones = new HashSet<Promociones>();
         }
     
         public int idNegocio { get; set; }
@@ -33,6 +34,7 @@ namespace DAL
         public Nullable<int> idUsuario { get; set; }
         public Nullable<bool> estaAprobado { get; set; }
         public Nullable<int> idNegocioModif { get; set; }
+        public Nullable<bool> estaAnulado { get; set; }
     
         public virtual ICollection<Comercio> Comercio { get; set; }
         public virtual ICollection<FotosNegocio> FotosNegocio { get; set; }
@@ -44,5 +46,6 @@ namespace DAL
         public virtual ICollection<Solicitud> Solicitud { get; set; }
         public virtual ICollection<Sucursal> Sucursal { get; set; }
         public virtual ICollection<Tramite> Tramite { get; set; }
+        public virtual ICollection<Promociones> Promociones { get; set; }
     }
 }

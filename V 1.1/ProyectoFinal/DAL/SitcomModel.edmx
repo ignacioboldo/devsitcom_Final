@@ -49,6 +49,18 @@
           <Property Name="idCategoria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombre" Type="varchar" MaxLength="150" />
         </EntityType>
+        <EntityType Name="ComentariosSolicitud">
+          <Key>
+            <PropertyRef Name="idComentarioSolicitud" />
+          </Key>
+          <Property Name="idComentarioSolicitud" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="comentario" Type="nvarchar(max)" />
+          <Property Name="rutaAdjunto" Type="varchar(max)" />
+          <Property Name="idSolicitud" Type="int" />
+          <Property Name="fechaEnvioComentario" Type="datetime" />
+          <Property Name="comentarioCliente" Type="bit" />
+          <Property Name="mensajesSinLeer" Type="bit" />
+        </EntityType>
         <EntityType Name="Comercio">
           <Key>
             <PropertyRef Name="idComercio" />
@@ -180,6 +192,7 @@
           <Property Name="idUsuario" Type="int" />
           <Property Name="estaAprobado" Type="bit" />
           <Property Name="idNegocioModif" Type="int" />
+          <Property Name="estaAnulado" Type="bit" />
         </EntityType>
         <EntityType Name="Paginas">
           <Key>
@@ -227,6 +240,30 @@
           <Property Name="idTipoDocumento" Type="int" />
           <Property Name="idDomicilio" Type="int" />
           <Property Name="idNegocio" Type="int" />
+        </EntityType>
+        <EntityType Name="Promociones">
+          <Key>
+            <PropertyRef Name="idPromocion" />
+          </Key>
+          <Property Name="idPromocion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fechaAlta" Type="datetime" />
+          <Property Name="fechaVencimiento" Type="datetime" />
+          <Property Name="titulo" Type="nvarchar" MaxLength="100" />
+          <Property Name="descripcion" Type="nvarchar" MaxLength="200" />
+          <Property Name="diasBeneficio" Type="int" />
+          <Property Name="idNegocio" Type="int" />
+          <Property Name="ofertaMaxima" Type="int" />
+        </EntityType>
+        <EntityType Name="PromocionesOtorgadas">
+          <Key>
+            <PropertyRef Name="codigo" />
+          </Key>
+          <Property Name="idPromocion" Type="int" Nullable="false" />
+          <Property Name="idUsuario" Type="int" />
+          <Property Name="fechaOtorgamiento" Type="datetime" />
+          <Property Name="fechaVencimiento" Type="datetime" />
+          <Property Name="codigo" Type="nvarchar" MaxLength="8" Nullable="false" />
+          <Property Name="utilizada" Type="int" />
         </EntityType>
         <EntityType Name="Provincia">
           <Key>
@@ -764,6 +801,42 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Promociones_Negocio">
+          <End Role="Negocio" Type="Self.Negocio" Multiplicity="0..1" />
+          <End Role="Promociones" Type="Self.Promociones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Negocio">
+              <PropertyRef Name="idNegocio" />
+            </Principal>
+            <Dependent Role="Promociones">
+              <PropertyRef Name="idNegocio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PromocionesOtorgadas_Promociones">
+          <End Role="Promociones" Type="Self.Promociones" Multiplicity="1" />
+          <End Role="PromocionesOtorgadas" Type="Self.PromocionesOtorgadas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Promociones">
+              <PropertyRef Name="idPromocion" />
+            </Principal>
+            <Dependent Role="PromocionesOtorgadas">
+              <PropertyRef Name="idPromocion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PromocionesOtorgadas_Usuarios">
+          <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
+          <End Role="PromocionesOtorgadas" Type="Self.PromocionesOtorgadas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="PromocionesOtorgadas">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Provincia_Pais">
           <End Role="Pais" Type="Self.Pais" Multiplicity="0..1" />
           <End Role="Provincia" Type="Self.Provincia" Multiplicity="*" />
@@ -908,11 +981,58 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Function Name="Actualizar_Comentarios_Leidos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idReserva" Type="int" Mode="In" />
+        </Function>
+        <Function Name="altaPromocion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idNegocio" Type="int" Mode="In" />
+          <Parameter Name="fechaVencimiento" Type="date" Mode="In" />
+          <Parameter Name="titulo" Type="varchar" Mode="In" />
+          <Parameter Name="descripcion" Type="varchar" Mode="In" />
+          <Parameter Name="diasBeneficio" Type="int" Mode="In" />
+          <Parameter Name="ofertaMaxima" Type="int" Mode="In" />
+        </Function>
         <Function Name="cambiarCasaODptoNuevoComplejo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idNegocioNuevo" Type="int" Mode="In" />
         </Function>
         <Function Name="cambiarHabitacionesNuevoHotel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idNegocioNuevo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="cancelPromociones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idPromocion" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ComentariosSolicitud_i" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="comentario" Type="nvarchar(max)" Mode="In" />
+          <Parameter Name="rutaAdjunto" Type="varchar(max)" Mode="In" />
+          <Parameter Name="idSolicitud" Type="int" Mode="In" />
+          <Parameter Name="comentarioCliente" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="ConsultarComentariosSolicitud" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idSolicitud" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ConsultarHabitacionesDisponiblesPorFechaYNegocio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fechaDesde" Type="datetime" Mode="In" />
+          <Parameter Name="fechaHasta" Type="datetime" Mode="In" />
+          <Parameter Name="idNegocio" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ConsultarHabitacionesDisponiblesPorFechaYNegocio_Planning" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fechaDesde" Type="datetime" Mode="In" />
+          <Parameter Name="fechaHasta" Type="datetime" Mode="In" />
+          <Parameter Name="idNegocio" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ConsultarHabitacionesDisponiblesPorFechaYNegocio_Planning_agrupadas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fechaDesde" Type="datetime" Mode="In" />
+          <Parameter Name="fechaHasta" Type="datetime" Mode="In" />
+          <Parameter Name="idNegocio" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ConsultarListadoReservasPorPersona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idPersona" Type="int" Mode="In" />
+        </Function>
+        <Function Name="ConsultarListadReservasPorFechaYNegocio_Planning" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fechaDesde" Type="datetime" Mode="In" />
+          <Parameter Name="fechaHasta" Type="datetime" Mode="In" />
+          <Parameter Name="idNegocio" Type="int" Mode="In" />
+          <Parameter Name="tipoComentario" Type="bit" Mode="In" />
         </Function>
         <Function Name="ConsultarLugaresHospedaje" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="fechaDesde" Type="datetime" Mode="In" />
@@ -920,6 +1040,17 @@
           <Parameter Name="cantPersonas" Type="int" Mode="In" />
           <Parameter Name="cantHabitaciones" Type="int" Mode="In" />
           <Parameter Name="tipoHospedaje" Type="varchar(max)" Mode="In" />
+        </Function>
+        <Function Name="DetalleDisponibilidad_i" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idDisponibilidad" Type="int" Mode="In" />
+          <Parameter Name="idPersona" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Disponibilidad_i" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="fechaDesde" Type="datetime" Mode="In" />
+          <Parameter Name="fechaHasta" Type="datetime" Mode="In" />
+          <Parameter Name="idHabitacion" Type="int" Mode="In" />
+          <Parameter Name="idCasaODpto" Type="int" Mode="In" />
+          <Parameter Name="idReserva" Type="int" Mode="In" />
         </Function>
         <Function Name="getDisponibilidadCasaDpto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="idCasa" Type="int" Mode="In" />
@@ -945,12 +1076,71 @@
           <Parameter Name="anio" Type="int" Mode="In" />
           <Parameter Name="mes" Type="int" Mode="In" />
         </Function>
+        <Function Name="getPromociones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idNegocio" Type="int" Mode="In" />
+          <Parameter Name="esTurista" Type="int" Mode="In" />
+        </Function>
+        <Function Name="getPromocionesOtorgadas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idUsuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="getPromocionOtorgada" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="codigo" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="getUltimaPromocionOtorgada" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idUsuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="obtenerCodigoProm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="codigo" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="otorgarPromocion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idPromocion" Type="int" Mode="In" />
+          <Parameter Name="idUsuario" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Persona_i" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="nombre" Type="varchar(max)" Mode="In" />
+          <Parameter Name="apellido" Type="varchar(max)" Mode="In" />
+          <Parameter Name="email" Type="varchar" Mode="In" />
+          <Parameter Name="documento" Type="int" Mode="In" />
+          <Parameter Name="idSexo" Type="int" Mode="In" />
+          <Parameter Name="idTelefono" Type="int" Mode="In" />
+          <Parameter Name="idTipoDocumento" Type="int" Mode="In" />
+          <Parameter Name="idDomicilio" Type="int" Mode="In" />
+          <Parameter Name="idNegocio" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Persona_s_By_IdNegocio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idNegocio" Type="int" Mode="In" />
+        </Function>
+        <Function Name="regUsoPromocion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="codigo" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="Reserva_Anular" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idReserva" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Reserva_CheckIn" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idReserva" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Reserva_CheckOut" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idReserva" Type="int" Mode="In" />
+        </Function>
+        <Function Name="Reserva_i" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idPersonaSolicitante" Type="int" Mode="In" />
+          <Parameter Name="idNegocio" Type="int" Mode="In" />
+          <Parameter Name="idSolicitud" Type="int" Mode="In" />
+        </Function>
+        <Function Name="updatePromociones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="idPromocion" Type="int" Mode="In" />
+          <Parameter Name="fechaVencimiento" Type="date" Mode="In" />
+          <Parameter Name="titulo" Type="varchar" Mode="In" />
+          <Parameter Name="descripcion" Type="varchar" Mode="In" />
+          <Parameter Name="diasBeneficio" Type="int" Mode="In" />
+        </Function>
         <EntityContainer Name="SitcomModelStoreContainer">
           <EntitySet Name="Caracteristica" EntityType="Self.Caracteristica" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CaracteristicasHospedaje" EntityType="Self.CaracteristicasHospedaje" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CasaDptoOCabana" EntityType="Self.CasaDptoOCabana" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CategoriaCaracteristicas" EntityType="Self.CategoriaCaracteristicas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CategoriaHospedaje" EntityType="Self.CategoriaHospedaje" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComentariosSolicitud" EntityType="Self.ComentariosSolicitud" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Comercio" EntityType="Self.Comercio" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Complejo" EntityType="Self.Complejo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DetalleDisponibilidad" EntityType="Self.DetalleDisponibilidad" Schema="dbo" store:Type="Tables" />
@@ -970,6 +1160,8 @@
           <EntitySet Name="Pais" EntityType="Self.Pais" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Perfiles" EntityType="Self.Perfiles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Persona" EntityType="Self.Persona" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Promociones" EntityType="Self.Promociones" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PromocionesOtorgadas" EntityType="Self.PromocionesOtorgadas" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Provincia" EntityType="Self.Provincia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Reserva" EntityType="Self.Reserva" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Rubro" EntityType="Self.Rubro" Schema="dbo" store:Type="Tables" />
@@ -1117,6 +1309,18 @@
           <AssociationSet Name="FK_Persona_TipoDocumento" Association="Self.FK_Persona_TipoDocumento">
             <End Role="TipoDocumento" EntitySet="TipoDocumento" />
             <End Role="Persona" EntitySet="Persona" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Promociones_Negocio" Association="Self.FK_Promociones_Negocio">
+            <End Role="Negocio" EntitySet="Negocio" />
+            <End Role="Promociones" EntitySet="Promociones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PromocionesOtorgadas_Promociones" Association="Self.FK_PromocionesOtorgadas_Promociones">
+            <End Role="Promociones" EntitySet="Promociones" />
+            <End Role="PromocionesOtorgadas" EntitySet="PromocionesOtorgadas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PromocionesOtorgadas_Usuarios" Association="Self.FK_PromocionesOtorgadas_Usuarios">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="PromocionesOtorgadas" EntitySet="PromocionesOtorgadas" />
           </AssociationSet>
           <AssociationSet Name="FK_Provincia_Pais" Association="Self.FK_Provincia_Pais">
             <End Role="Pais" EntitySet="Pais" />
@@ -1389,6 +1593,8 @@
           <NavigationProperty Name="Solicitud" Relationship="Self.FK_Solicitud_Negocio" FromRole="Negocio" ToRole="Solicitud" />
           <NavigationProperty Name="Sucursal" Relationship="Self.FK_Sucursal_Negocio" FromRole="Negocio" ToRole="Sucursal" />
           <NavigationProperty Name="Tramite" Relationship="Self.FK_Tramite_Negocio" FromRole="Negocio" ToRole="Tramite" />
+          <Property Name="estaAnulado" Type="Boolean" />
+          <NavigationProperty Name="Promociones" Relationship="SitcomModel.FK_Promociones_Negocio" FromRole="Negocio" ToRole="Promociones" />
         </EntityType>
         <EntityType Name="Paginas">
           <Key>
@@ -1585,6 +1791,7 @@
           <NavigationProperty Name="Tramite" Relationship="Self.FK_Tramite_UsuarioResponsable" FromRole="Usuarios" ToRole="Tramite" />
           <NavigationProperty Name="Tramite1" Relationship="Self.FK_Tramite_UsuarioSolicitante" FromRole="Usuarios" ToRole="Tramite" />
           <NavigationProperty Name="Persona" Relationship="SitcomModel.FK_Usuarios_Persona" FromRole="Usuarios" ToRole="Persona" />
+          <NavigationProperty Name="PromocionesOtorgadas" Relationship="SitcomModel.FK_PromocionesOtorgadas_Usuarios" FromRole="Usuarios" ToRole="PromocionesOtorgadas" />
         </EntityType>
         <Association Name="FK_Caracteristica_CategoriaCaracteristicas">
           <End Role="CategoriaCaracteristicas" Type="Self.CategoriaCaracteristicas" Multiplicity="0..1" />
@@ -2324,6 +2531,137 @@
             <End Role="Persona" EntitySet="Persona" />
             <End Role="Usuarios" EntitySet="Usuarios" />
           </AssociationSet>
+          <EntitySet Name="Promociones" EntityType="SitcomModel.Promociones" />
+          <EntitySet Name="PromocionesOtorgadas" EntityType="SitcomModel.PromocionesOtorgadas" />
+          <EntitySet Name="ComentariosSolicitud" EntityType="SitcomModel.ComentariosSolicitud" />
+          <AssociationSet Name="FK_Promociones_Negocio" Association="SitcomModel.FK_Promociones_Negocio">
+            <End Role="Negocio" EntitySet="Negocio" />
+            <End Role="Promociones" EntitySet="Promociones" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PromocionesOtorgadas_Promociones" Association="SitcomModel.FK_PromocionesOtorgadas_Promociones">
+            <End Role="Promociones" EntitySet="Promociones" />
+            <End Role="PromocionesOtorgadas" EntitySet="PromocionesOtorgadas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PromocionesOtorgadas_Usuarios" Association="SitcomModel.FK_PromocionesOtorgadas_Usuarios">
+            <End Role="Usuarios" EntitySet="Usuarios" />
+            <End Role="PromocionesOtorgadas" EntitySet="PromocionesOtorgadas" />
+          </AssociationSet>
+          <FunctionImport Name="Actualizar_Comentarios_Leidos" ReturnType="Collection(Decimal)">
+          <Parameter Name="idReserva" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="altaPromocion" ReturnType="Collection(Int32)">
+            <Parameter Name="idNegocio" Mode="In" Type="Int32" />
+            <Parameter Name="fechaVencimiento" Mode="In" Type="DateTime" />
+            <Parameter Name="titulo" Mode="In" Type="String" />
+            <Parameter Name="descripcion" Mode="In" Type="String" />
+            <Parameter Name="diasBeneficio" Mode="In" Type="Int32" />
+            <Parameter Name="ofertaMaxima" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="cancelPromociones" ReturnType="Collection(Int32)">
+          <Parameter Name="idPromocion" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ComentariosSolicitud_i" ReturnType="Collection(Decimal)">
+            <Parameter Name="comentario" Mode="In" Type="String" />
+            <Parameter Name="rutaAdjunto" Mode="In" Type="String" />
+            <Parameter Name="idSolicitud" Mode="In" Type="Int32" />
+            <Parameter Name="comentarioCliente" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="ConsultarComentariosSolicitud" ReturnType="Collection(SitcomModel.ConsultarComentariosSolicitud_Result)">
+          <Parameter Name="idSolicitud" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ConsultarHabitacionesDisponiblesPorFechaYNegocio">
+            <Parameter Name="fechaDesde" Mode="In" Type="DateTime" />
+            <Parameter Name="fechaHasta" Mode="In" Type="DateTime" />
+            <Parameter Name="idNegocio" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ConsultarHabitacionesDisponiblesPorFechaYNegocio_Planning">
+            <Parameter Name="fechaDesde" Mode="In" Type="DateTime" />
+            <Parameter Name="fechaHasta" Mode="In" Type="DateTime" />
+            <Parameter Name="idNegocio" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ConsultarHabitacionesDisponiblesPorFechaYNegocio_Planning_agrupadas">
+            <Parameter Name="fechaDesde" Mode="In" Type="DateTime" />
+            <Parameter Name="fechaHasta" Mode="In" Type="DateTime" />
+            <Parameter Name="idNegocio" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ConsultarListadoReservasPorPersona" ReturnType="Collection(SitcomModel.ConsultarListadoReservasPorPersona_Result)">
+          <Parameter Name="idPersona" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="ConsultarListadReservasPorFechaYNegocio_Planning">
+            <Parameter Name="fechaDesde" Mode="In" Type="DateTime" />
+            <Parameter Name="fechaHasta" Mode="In" Type="DateTime" />
+            <Parameter Name="idNegocio" Mode="In" Type="Int32" />
+            <Parameter Name="tipoComentario" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="DetalleDisponibilidad_i">
+            <Parameter Name="idDisponibilidad" Mode="In" Type="Int32" />
+            <Parameter Name="idPersona" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Disponibilidad_i" ReturnType="Collection(Decimal)">
+            <Parameter Name="fechaDesde" Mode="In" Type="DateTime" />
+            <Parameter Name="fechaHasta" Mode="In" Type="DateTime" />
+            <Parameter Name="idHabitacion" Mode="In" Type="Int32" />
+            <Parameter Name="idCasaODpto" Mode="In" Type="Int32" />
+            <Parameter Name="idReserva" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="getPromociones" ReturnType="Collection(SitcomModel.getPromociones_Result)">
+            <Parameter Name="idNegocio" Mode="In" Type="Int32" />
+            <Parameter Name="esTurista" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="getPromocionesOtorgadas" ReturnType="Collection(SitcomModel.getPromocionesOtorgadas_Result)">
+          <Parameter Name="idUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="getPromocionOtorgada" ReturnType="Collection(SitcomModel.getPromocionOtorgada_Result)">
+          <Parameter Name="codigo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="getUltimaPromocionOtorgada" ReturnType="Collection(SitcomModel.getUltimaPromocionOtorgada_Result)">
+          <Parameter Name="idUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="obtenerCodigoProm">
+          <Parameter Name="codigo" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="otorgarPromocion" ReturnType="Collection(Int32)">
+            <Parameter Name="idPromocion" Mode="In" Type="Int32" />
+            <Parameter Name="idUsuario" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Persona_i">
+            <Parameter Name="nombre" Mode="In" Type="String" />
+            <Parameter Name="apellido" Mode="In" Type="String" />
+            <Parameter Name="email" Mode="In" Type="String" />
+            <Parameter Name="documento" Mode="In" Type="Int32" />
+            <Parameter Name="idSexo" Mode="In" Type="Int32" />
+            <Parameter Name="idTelefono" Mode="In" Type="Int32" />
+            <Parameter Name="idTipoDocumento" Mode="In" Type="Int32" />
+            <Parameter Name="idDomicilio" Mode="In" Type="Int32" />
+            <Parameter Name="idNegocio" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Persona_s_By_IdNegocio" ReturnType="Collection(SitcomModel.Persona_s_By_IdNegocio_Result)">
+          <Parameter Name="idNegocio" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="regUsoPromocion" ReturnType="Collection(Int32)">
+          <Parameter Name="codigo" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="Reserva_Anular" ReturnType="Collection(Decimal)">
+          <Parameter Name="idReserva" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Reserva_CheckIn" ReturnType="Collection(Decimal)">
+          <Parameter Name="idReserva" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Reserva_CheckOut" ReturnType="Collection(Decimal)">
+          <Parameter Name="idReserva" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="Reserva_i" ReturnType="Collection(Decimal)">
+            <Parameter Name="idPersonaSolicitante" Mode="In" Type="Int32" />
+            <Parameter Name="idNegocio" Mode="In" Type="Int32" />
+            <Parameter Name="idSolicitud" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="updatePromociones">
+            <Parameter Name="idPromocion" Mode="In" Type="Int32" />
+            <Parameter Name="fechaVencimiento" Mode="In" Type="DateTime" />
+            <Parameter Name="titulo" Mode="In" Type="String" />
+            <Parameter Name="descripcion" Mode="In" Type="String" />
+            <Parameter Name="diasBeneficio" Mode="In" Type="Int32" />
+          </FunctionImport>
         </EntityContainer>
         <ComplexType Name="cambiarHabitacionesNuevoHotel_Result">
           <Property Type="Int32" Name="Column1" Nullable="true" />
@@ -2427,6 +2765,149 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="Promociones">
+          <Key>
+            <PropertyRef Name="idPromocion" />
+          </Key>
+          <Property Name="idPromocion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fechaAlta" Type="DateTime" Precision="3" />
+          <Property Name="fechaVencimiento" Type="DateTime" Precision="3" />
+          <Property Name="titulo" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="diasBeneficio" Type="Int32" />
+          <Property Name="idNegocio" Type="Int32" />
+          <Property Name="ofertaMaxima" Type="Int32" />
+          <NavigationProperty Name="Negocio" Relationship="SitcomModel.FK_Promociones_Negocio" FromRole="Promociones" ToRole="Negocio" />
+          <NavigationProperty Name="PromocionesOtorgadas" Relationship="SitcomModel.FK_PromocionesOtorgadas_Promociones" FromRole="Promociones" ToRole="PromocionesOtorgadas" />
+        </EntityType>
+        <EntityType Name="PromocionesOtorgadas">
+          <Key>
+            <PropertyRef Name="codigo" />
+          </Key>
+          <Property Name="idPromocion" Type="Int32" Nullable="false" />
+          <Property Name="idUsuario" Type="Int32" />
+          <Property Name="fechaOtorgamiento" Type="DateTime" Precision="3" />
+          <Property Name="fechaVencimiento" Type="DateTime" Precision="3" />
+          <Property Name="codigo" Type="String" Nullable="false" MaxLength="8" FixedLength="false" Unicode="true" />
+          <Property Name="utilizada" Type="Int32" />
+          <NavigationProperty Name="Promociones" Relationship="SitcomModel.FK_PromocionesOtorgadas_Promociones" FromRole="PromocionesOtorgadas" ToRole="Promociones" />
+          <NavigationProperty Name="Usuarios" Relationship="SitcomModel.FK_PromocionesOtorgadas_Usuarios" FromRole="PromocionesOtorgadas" ToRole="Usuarios" />
+        </EntityType>
+        <EntityType Name="ComentariosSolicitud">
+          <Key>
+            <PropertyRef Name="idComentarioSolicitud" />
+          </Key>
+          <Property Name="idComentarioSolicitud" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="comentario" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="rutaAdjunto" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+          <Property Name="idSolicitud" Type="Int32" />
+          <Property Name="fechaEnvioComentario" Type="DateTime" Precision="3" />
+          <Property Name="comentarioCliente" Type="Boolean" />
+          <Property Name="mensajesSinLeer" Type="Boolean" />
+        </EntityType>
+        <Association Name="FK_Promociones_Negocio">
+          <End Type="SitcomModel.Negocio" Role="Negocio" Multiplicity="0..1" />
+          <End Type="SitcomModel.Promociones" Role="Promociones" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Negocio">
+              <PropertyRef Name="idNegocio" />
+            </Principal>
+            <Dependent Role="Promociones">
+              <PropertyRef Name="idNegocio" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PromocionesOtorgadas_Promociones">
+          <End Type="SitcomModel.Promociones" Role="Promociones" Multiplicity="1" />
+          <End Type="SitcomModel.PromocionesOtorgadas" Role="PromocionesOtorgadas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Promociones">
+              <PropertyRef Name="idPromocion" />
+            </Principal>
+            <Dependent Role="PromocionesOtorgadas">
+              <PropertyRef Name="idPromocion" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PromocionesOtorgadas_Usuarios">
+          <End Type="SitcomModel.Usuarios" Role="Usuarios" Multiplicity="0..1" />
+          <End Type="SitcomModel.PromocionesOtorgadas" Role="PromocionesOtorgadas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Usuarios">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="PromocionesOtorgadas">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <ComplexType Name="ConsultarComentariosSolicitud_Result">
+          <Property Type="Int32" Name="idComentarioSolicitud" Nullable="false" />
+          <Property Type="String" Name="comentario" Nullable="true" />
+          <Property Type="String" Name="rutaAdjunto" Nullable="true" />
+          <Property Type="Int32" Name="idSolicitud" Nullable="true" />
+          <Property Type="DateTime" Name="fechaEnvioComentario" Nullable="true" Precision="23" />
+          <Property Type="Boolean" Name="comentarioCliente" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="ConsultarListadoReservasPorPersona_Result">
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="Int32" Name="idReserva" Nullable="false" />
+          <Property Type="DateTime" Name="FechaDesde" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="fechaHasta" Nullable="true" Precision="23" />
+          <Property Type="String" Name="EstadoReserva" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="TipoHabitacion" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="Negocio" Nullable="true" MaxLength="300" />
+        </ComplexType>
+        <ComplexType Name="getPromociones_Result">
+          <Property Type="Int32" Name="idPromocion" Nullable="false" />
+          <Property Type="String" Name="NEGOCIO" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="PROMOCION" Nullable="true" MaxLength="303" />
+          <Property Type="DateTime" Name="FECHA_ALTA" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="CANT_DISP" Nullable="true" />
+          <Property Type="DateTime" Name="VENCE" Nullable="true" Precision="23" />
+          <Property Type="Int32" Name="DIAS_BENEFICIO" Nullable="true" />
+          <Property Type="String" Name="ESTADO" Nullable="true" MaxLength="7" />
+        </ComplexType>
+        <ComplexType Name="getPromocionesOtorgadas_Result">
+          <Property Type="String" Name="NEGOCIO" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="PROMOCION" Nullable="true" MaxLength="303" />
+          <Property Type="DateTime" Name="OBTENIDA" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="VENCE" Nullable="true" Precision="23" />
+          <Property Type="String" Name="CODIGO" Nullable="false" MaxLength="8" />
+          <Property Type="String" Name="ESTADO" Nullable="true" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="getPromocionOtorgada_Result">
+          <Property Type="String" Name="NEGOCIO" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="PROMOCION" Nullable="true" MaxLength="303" />
+          <Property Type="DateTime" Name="OBTENIDA" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="VENCE" Nullable="true" Precision="23" />
+          <Property Type="String" Name="ESTADO" Nullable="true" MaxLength="10" />
+          <Property Type="String" Name="CODIGO" Nullable="false" MaxLength="8" />
+          <Property Type="Int32" Name="USUARIO" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="getUltimaPromocionOtorgada_Result">
+          <Property Type="String" Name="NEGOCIO" Nullable="true" MaxLength="300" />
+          <Property Type="String" Name="PROMOCION" Nullable="true" MaxLength="303" />
+          <Property Type="DateTime" Name="OBTENIDA" Nullable="true" Precision="23" />
+          <Property Type="DateTime" Name="VENCE" Nullable="true" Precision="23" />
+          <Property Type="String" Name="CODIGO" Nullable="false" MaxLength="8" />
+          <Property Type="String" Name="ESTADO" Nullable="true" MaxLength="10" />
+        </ComplexType>
+        <ComplexType Name="Persona_s_By_IdNegocio_Result">
+          <Property Type="Int32" Name="idPersona" Nullable="false" />
+          <Property Type="String" Name="nombre" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="apellido" Nullable="true" MaxLength="150" />
+          <Property Type="String" Name="email" Nullable="true" MaxLength="250" />
+          <Property Type="Int32" Name="documento" Nullable="true" />
+          <Property Type="Int32" Name="idSexo" Nullable="true" />
+          <Property Type="String" Name="Sexo" Nullable="true" MaxLength="150" />
+          <Property Type="Int32" Name="idTipoDocumento" Nullable="true" />
+          <Property Type="String" Name="TipoDocumento" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="calle" Nullable="true" MaxLength="150" />
+          <Property Type="Int32" Name="numero" Nullable="true" />
+          <Property Type="String" Name="dpto" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="barrio" Nullable="true" MaxLength="150" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -2608,6 +3089,7 @@
           <EntitySetMapping Name="Negocio">
             <EntityTypeMapping TypeName="SitcomModel.Negocio">
               <MappingFragment StoreEntitySet="Negocio">
+                <ScalarProperty Name="estaAnulado" ColumnName="estaAnulado" />
                 <ScalarProperty Name="idNegocio" ColumnName="idNegocio" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="descripcion" ColumnName="descripcion" />
@@ -2850,6 +3332,159 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Promociones">
+            <EntityTypeMapping TypeName="SitcomModel.Promociones">
+              <MappingFragment StoreEntitySet="Promociones">
+                <ScalarProperty Name="ofertaMaxima" ColumnName="ofertaMaxima" />
+                <ScalarProperty Name="idNegocio" ColumnName="idNegocio" />
+                <ScalarProperty Name="diasBeneficio" ColumnName="diasBeneficio" />
+                <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+                <ScalarProperty Name="titulo" ColumnName="titulo" />
+                <ScalarProperty Name="fechaVencimiento" ColumnName="fechaVencimiento" />
+                <ScalarProperty Name="fechaAlta" ColumnName="fechaAlta" />
+                <ScalarProperty Name="idPromocion" ColumnName="idPromocion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PromocionesOtorgadas">
+            <EntityTypeMapping TypeName="SitcomModel.PromocionesOtorgadas">
+              <MappingFragment StoreEntitySet="PromocionesOtorgadas">
+                <ScalarProperty Name="utilizada" ColumnName="utilizada" />
+                <ScalarProperty Name="codigo" ColumnName="codigo" />
+                <ScalarProperty Name="fechaVencimiento" ColumnName="fechaVencimiento" />
+                <ScalarProperty Name="fechaOtorgamiento" ColumnName="fechaOtorgamiento" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="idPromocion" ColumnName="idPromocion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComentariosSolicitud">
+            <EntityTypeMapping TypeName="SitcomModel.ComentariosSolicitud">
+              <MappingFragment StoreEntitySet="ComentariosSolicitud">
+                <ScalarProperty Name="mensajesSinLeer" ColumnName="mensajesSinLeer" />
+                <ScalarProperty Name="comentarioCliente" ColumnName="comentarioCliente" />
+                <ScalarProperty Name="fechaEnvioComentario" ColumnName="fechaEnvioComentario" />
+                <ScalarProperty Name="idSolicitud" ColumnName="idSolicitud" />
+                <ScalarProperty Name="rutaAdjunto" ColumnName="rutaAdjunto" />
+                <ScalarProperty Name="comentario" ColumnName="comentario" />
+                <ScalarProperty Name="idComentarioSolicitud" ColumnName="idComentarioSolicitud" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="Actualizar_Comentarios_Leidos" FunctionName="SitcomModel.Store.Actualizar_Comentarios_Leidos" />
+          <FunctionImportMapping FunctionImportName="altaPromocion" FunctionName="SitcomModel.Store.altaPromocion" />
+          <FunctionImportMapping FunctionImportName="cancelPromociones" FunctionName="SitcomModel.Store.cancelPromociones" />
+          <FunctionImportMapping FunctionImportName="ComentariosSolicitud_i" FunctionName="SitcomModel.Store.ComentariosSolicitud_i" />
+          <FunctionImportMapping FunctionImportName="ConsultarComentariosSolicitud" FunctionName="SitcomModel.Store.ConsultarComentariosSolicitud">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SitcomModel.ConsultarComentariosSolicitud_Result">
+                <ScalarProperty Name="idComentarioSolicitud" ColumnName="idComentarioSolicitud" />
+                <ScalarProperty Name="comentario" ColumnName="comentario" />
+                <ScalarProperty Name="rutaAdjunto" ColumnName="rutaAdjunto" />
+                <ScalarProperty Name="idSolicitud" ColumnName="idSolicitud" />
+                <ScalarProperty Name="fechaEnvioComentario" ColumnName="fechaEnvioComentario" />
+                <ScalarProperty Name="comentarioCliente" ColumnName="comentarioCliente" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ConsultarHabitacionesDisponiblesPorFechaYNegocio" FunctionName="SitcomModel.Store.ConsultarHabitacionesDisponiblesPorFechaYNegocio" />
+          <FunctionImportMapping FunctionImportName="ConsultarHabitacionesDisponiblesPorFechaYNegocio_Planning" FunctionName="SitcomModel.Store.ConsultarHabitacionesDisponiblesPorFechaYNegocio_Planning" />
+          <FunctionImportMapping FunctionImportName="ConsultarHabitacionesDisponiblesPorFechaYNegocio_Planning_agrupadas" FunctionName="SitcomModel.Store.ConsultarHabitacionesDisponiblesPorFechaYNegocio_Planning_agrupadas" />
+          <FunctionImportMapping FunctionImportName="ConsultarListadoReservasPorPersona" FunctionName="SitcomModel.Store.ConsultarListadoReservasPorPersona">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SitcomModel.ConsultarListadoReservasPorPersona_Result">
+                <ScalarProperty Name="idPersona" ColumnName="idPersona" />
+                <ScalarProperty Name="idReserva" ColumnName="idReserva" />
+                <ScalarProperty Name="FechaDesde" ColumnName="FechaDesde" />
+                <ScalarProperty Name="fechaHasta" ColumnName="fechaHasta" />
+                <ScalarProperty Name="EstadoReserva" ColumnName="EstadoReserva" />
+                <ScalarProperty Name="TipoHabitacion" ColumnName="TipoHabitacion" />
+                <ScalarProperty Name="Negocio" ColumnName="Negocio" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="ConsultarListadReservasPorFechaYNegocio_Planning" FunctionName="SitcomModel.Store.ConsultarListadReservasPorFechaYNegocio_Planning" />
+          <FunctionImportMapping FunctionImportName="DetalleDisponibilidad_i" FunctionName="SitcomModel.Store.DetalleDisponibilidad_i" />
+          <FunctionImportMapping FunctionImportName="Disponibilidad_i" FunctionName="SitcomModel.Store.Disponibilidad_i" />
+          <FunctionImportMapping FunctionImportName="getPromociones" FunctionName="SitcomModel.Store.getPromociones">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SitcomModel.getPromociones_Result">
+                <ScalarProperty Name="idPromocion" ColumnName="idPromocion" />
+                <ScalarProperty Name="NEGOCIO" ColumnName="NEGOCIO" />
+                <ScalarProperty Name="PROMOCION" ColumnName="PROMOCION" />
+                <ScalarProperty Name="FECHA_ALTA" ColumnName="FECHA_ALTA" />
+                <ScalarProperty Name="CANT_DISP" ColumnName="CANT_DISP" />
+                <ScalarProperty Name="VENCE" ColumnName="VENCE" />
+                <ScalarProperty Name="DIAS_BENEFICIO" ColumnName="DIAS_BENEFICIO" />
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="getPromocionesOtorgadas" FunctionName="SitcomModel.Store.getPromocionesOtorgadas">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SitcomModel.getPromocionesOtorgadas_Result">
+                <ScalarProperty Name="NEGOCIO" ColumnName="NEGOCIO" />
+                <ScalarProperty Name="PROMOCION" ColumnName="PROMOCION" />
+                <ScalarProperty Name="OBTENIDA" ColumnName="OBTENIDA" />
+                <ScalarProperty Name="VENCE" ColumnName="VENCE" />
+                <ScalarProperty Name="CODIGO" ColumnName="CODIGO" />
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="getPromocionOtorgada" FunctionName="SitcomModel.Store.getPromocionOtorgada">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SitcomModel.getPromocionOtorgada_Result">
+                <ScalarProperty Name="NEGOCIO" ColumnName="NEGOCIO" />
+                <ScalarProperty Name="PROMOCION" ColumnName="PROMOCION" />
+                <ScalarProperty Name="OBTENIDA" ColumnName="OBTENIDA" />
+                <ScalarProperty Name="VENCE" ColumnName="VENCE" />
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+                <ScalarProperty Name="CODIGO" ColumnName="CODIGO" />
+                <ScalarProperty Name="USUARIO" ColumnName="USUARIO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="getUltimaPromocionOtorgada" FunctionName="SitcomModel.Store.getUltimaPromocionOtorgada">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SitcomModel.getUltimaPromocionOtorgada_Result">
+                <ScalarProperty Name="NEGOCIO" ColumnName="NEGOCIO" />
+                <ScalarProperty Name="PROMOCION" ColumnName="PROMOCION" />
+                <ScalarProperty Name="OBTENIDA" ColumnName="OBTENIDA" />
+                <ScalarProperty Name="VENCE" ColumnName="VENCE" />
+                <ScalarProperty Name="CODIGO" ColumnName="CODIGO" />
+                <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="obtenerCodigoProm" FunctionName="SitcomModel.Store.obtenerCodigoProm" />
+          <FunctionImportMapping FunctionImportName="otorgarPromocion" FunctionName="SitcomModel.Store.otorgarPromocion" />
+          <FunctionImportMapping FunctionImportName="Persona_i" FunctionName="SitcomModel.Store.Persona_i" />
+          <FunctionImportMapping FunctionImportName="Persona_s_By_IdNegocio" FunctionName="SitcomModel.Store.Persona_s_By_IdNegocio">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="SitcomModel.Persona_s_By_IdNegocio_Result">
+                <ScalarProperty Name="idPersona" ColumnName="idPersona" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="apellido" ColumnName="apellido" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="documento" ColumnName="documento" />
+                <ScalarProperty Name="idSexo" ColumnName="idSexo" />
+                <ScalarProperty Name="Sexo" ColumnName="Sexo" />
+                <ScalarProperty Name="idTipoDocumento" ColumnName="idTipoDocumento" />
+                <ScalarProperty Name="TipoDocumento" ColumnName="TipoDocumento" />
+                <ScalarProperty Name="calle" ColumnName="calle" />
+                <ScalarProperty Name="numero" ColumnName="numero" />
+                <ScalarProperty Name="dpto" ColumnName="dpto" />
+                <ScalarProperty Name="barrio" ColumnName="barrio" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="regUsoPromocion" FunctionName="SitcomModel.Store.regUsoPromocion" />
+          <FunctionImportMapping FunctionImportName="Reserva_Anular" FunctionName="SitcomModel.Store.Reserva_Anular" />
+          <FunctionImportMapping FunctionImportName="Reserva_CheckIn" FunctionName="SitcomModel.Store.Reserva_CheckIn" />
+          <FunctionImportMapping FunctionImportName="Reserva_CheckOut" FunctionName="SitcomModel.Store.Reserva_CheckOut" />
+          <FunctionImportMapping FunctionImportName="Reserva_i" FunctionName="SitcomModel.Store.Reserva_i" />
+          <FunctionImportMapping FunctionImportName="updatePromociones" FunctionName="SitcomModel.Store.updatePromociones" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

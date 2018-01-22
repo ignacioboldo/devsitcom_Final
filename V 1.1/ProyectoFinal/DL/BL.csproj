@@ -58,6 +58,7 @@
     <Compile Include="PerfilesManager.cs" />
     <Compile Include="PersonaManager.cs" />
     <Compile Include="PersonasManager.cs" />
+    <Compile Include="PromocionesManager.cs" />
     <Compile Include="ReservasManager.cs" />
     <Compile Include="TramitesManager.cs" />
     <Compile Include="UsuariosManager.cs" />

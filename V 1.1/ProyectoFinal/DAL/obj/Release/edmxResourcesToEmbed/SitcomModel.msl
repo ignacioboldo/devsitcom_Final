@@ -176,6 +176,7 @@
     <EntitySetMapping Name="Negocio">
       <EntityTypeMapping TypeName="SitcomModel.Negocio">
         <MappingFragment StoreEntitySet="Negocio">
+          <ScalarProperty Name="estaAnulado" ColumnName="estaAnulado" />
           <ScalarProperty Name="idNegocio" ColumnName="idNegocio" />
           <ScalarProperty Name="nombre" ColumnName="nombre" />
           <ScalarProperty Name="descripcion" ColumnName="descripcion" />
@@ -418,5 +419,158 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="Promociones">
+      <EntityTypeMapping TypeName="SitcomModel.Promociones">
+        <MappingFragment StoreEntitySet="Promociones">
+          <ScalarProperty Name="ofertaMaxima" ColumnName="ofertaMaxima" />
+          <ScalarProperty Name="idNegocio" ColumnName="idNegocio" />
+          <ScalarProperty Name="diasBeneficio" ColumnName="diasBeneficio" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="titulo" ColumnName="titulo" />
+          <ScalarProperty Name="fechaVencimiento" ColumnName="fechaVencimiento" />
+          <ScalarProperty Name="fechaAlta" ColumnName="fechaAlta" />
+          <ScalarProperty Name="idPromocion" ColumnName="idPromocion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PromocionesOtorgadas">
+      <EntityTypeMapping TypeName="SitcomModel.PromocionesOtorgadas">
+        <MappingFragment StoreEntitySet="PromocionesOtorgadas">
+          <ScalarProperty Name="utilizada" ColumnName="utilizada" />
+          <ScalarProperty Name="codigo" ColumnName="codigo" />
+          <ScalarProperty Name="fechaVencimiento" ColumnName="fechaVencimiento" />
+          <ScalarProperty Name="fechaOtorgamiento" ColumnName="fechaOtorgamiento" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <ScalarProperty Name="idPromocion" ColumnName="idPromocion" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ComentariosSolicitud">
+      <EntityTypeMapping TypeName="SitcomModel.ComentariosSolicitud">
+        <MappingFragment StoreEntitySet="ComentariosSolicitud">
+          <ScalarProperty Name="mensajesSinLeer" ColumnName="mensajesSinLeer" />
+          <ScalarProperty Name="comentarioCliente" ColumnName="comentarioCliente" />
+          <ScalarProperty Name="fechaEnvioComentario" ColumnName="fechaEnvioComentario" />
+          <ScalarProperty Name="idSolicitud" ColumnName="idSolicitud" />
+          <ScalarProperty Name="rutaAdjunto" ColumnName="rutaAdjunto" />
+          <ScalarProperty Name="comentario" ColumnName="comentario" />
+          <ScalarProperty Name="idComentarioSolicitud" ColumnName="idComentarioSolicitud" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="Actualizar_Comentarios_Leidos" FunctionName="SitcomModel.Store.Actualizar_Comentarios_Leidos" />
+    <FunctionImportMapping FunctionImportName="altaPromocion" FunctionName="SitcomModel.Store.altaPromocion" />
+    <FunctionImportMapping FunctionImportName="cancelPromociones" FunctionName="SitcomModel.Store.cancelPromociones" />
+    <FunctionImportMapping FunctionImportName="ComentariosSolicitud_i" FunctionName="SitcomModel.Store.ComentariosSolicitud_i" />
+    <FunctionImportMapping FunctionImportName="ConsultarComentariosSolicitud" FunctionName="SitcomModel.Store.ConsultarComentariosSolicitud">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SitcomModel.ConsultarComentariosSolicitud_Result">
+          <ScalarProperty Name="idComentarioSolicitud" ColumnName="idComentarioSolicitud" />
+          <ScalarProperty Name="comentario" ColumnName="comentario" />
+          <ScalarProperty Name="rutaAdjunto" ColumnName="rutaAdjunto" />
+          <ScalarProperty Name="idSolicitud" ColumnName="idSolicitud" />
+          <ScalarProperty Name="fechaEnvioComentario" ColumnName="fechaEnvioComentario" />
+          <ScalarProperty Name="comentarioCliente" ColumnName="comentarioCliente" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ConsultarHabitacionesDisponiblesPorFechaYNegocio" FunctionName="SitcomModel.Store.ConsultarHabitacionesDisponiblesPorFechaYNegocio" />
+    <FunctionImportMapping FunctionImportName="ConsultarHabitacionesDisponiblesPorFechaYNegocio_Planning" FunctionName="SitcomModel.Store.ConsultarHabitacionesDisponiblesPorFechaYNegocio_Planning" />
+    <FunctionImportMapping FunctionImportName="ConsultarHabitacionesDisponiblesPorFechaYNegocio_Planning_agrupadas" FunctionName="SitcomModel.Store.ConsultarHabitacionesDisponiblesPorFechaYNegocio_Planning_agrupadas" />
+    <FunctionImportMapping FunctionImportName="ConsultarListadoReservasPorPersona" FunctionName="SitcomModel.Store.ConsultarListadoReservasPorPersona">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SitcomModel.ConsultarListadoReservasPorPersona_Result">
+          <ScalarProperty Name="idPersona" ColumnName="idPersona" />
+          <ScalarProperty Name="idReserva" ColumnName="idReserva" />
+          <ScalarProperty Name="FechaDesde" ColumnName="FechaDesde" />
+          <ScalarProperty Name="fechaHasta" ColumnName="fechaHasta" />
+          <ScalarProperty Name="EstadoReserva" ColumnName="EstadoReserva" />
+          <ScalarProperty Name="TipoHabitacion" ColumnName="TipoHabitacion" />
+          <ScalarProperty Name="Negocio" ColumnName="Negocio" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ConsultarListadReservasPorFechaYNegocio_Planning" FunctionName="SitcomModel.Store.ConsultarListadReservasPorFechaYNegocio_Planning" />
+    <FunctionImportMapping FunctionImportName="DetalleDisponibilidad_i" FunctionName="SitcomModel.Store.DetalleDisponibilidad_i" />
+    <FunctionImportMapping FunctionImportName="Disponibilidad_i" FunctionName="SitcomModel.Store.Disponibilidad_i" />
+    <FunctionImportMapping FunctionImportName="getPromociones" FunctionName="SitcomModel.Store.getPromociones">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SitcomModel.getPromociones_Result">
+          <ScalarProperty Name="idPromocion" ColumnName="idPromocion" />
+          <ScalarProperty Name="NEGOCIO" ColumnName="NEGOCIO" />
+          <ScalarProperty Name="PROMOCION" ColumnName="PROMOCION" />
+          <ScalarProperty Name="FECHA_ALTA" ColumnName="FECHA_ALTA" />
+          <ScalarProperty Name="CANT_DISP" ColumnName="CANT_DISP" />
+          <ScalarProperty Name="VENCE" ColumnName="VENCE" />
+          <ScalarProperty Name="DIAS_BENEFICIO" ColumnName="DIAS_BENEFICIO" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getPromocionesOtorgadas" FunctionName="SitcomModel.Store.getPromocionesOtorgadas">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SitcomModel.getPromocionesOtorgadas_Result">
+          <ScalarProperty Name="NEGOCIO" ColumnName="NEGOCIO" />
+          <ScalarProperty Name="PROMOCION" ColumnName="PROMOCION" />
+          <ScalarProperty Name="OBTENIDA" ColumnName="OBTENIDA" />
+          <ScalarProperty Name="VENCE" ColumnName="VENCE" />
+          <ScalarProperty Name="CODIGO" ColumnName="CODIGO" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getPromocionOtorgada" FunctionName="SitcomModel.Store.getPromocionOtorgada">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SitcomModel.getPromocionOtorgada_Result">
+          <ScalarProperty Name="NEGOCIO" ColumnName="NEGOCIO" />
+          <ScalarProperty Name="PROMOCION" ColumnName="PROMOCION" />
+          <ScalarProperty Name="OBTENIDA" ColumnName="OBTENIDA" />
+          <ScalarProperty Name="VENCE" ColumnName="VENCE" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+          <ScalarProperty Name="CODIGO" ColumnName="CODIGO" />
+          <ScalarProperty Name="USUARIO" ColumnName="USUARIO" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="getUltimaPromocionOtorgada" FunctionName="SitcomModel.Store.getUltimaPromocionOtorgada">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SitcomModel.getUltimaPromocionOtorgada_Result">
+          <ScalarProperty Name="NEGOCIO" ColumnName="NEGOCIO" />
+          <ScalarProperty Name="PROMOCION" ColumnName="PROMOCION" />
+          <ScalarProperty Name="OBTENIDA" ColumnName="OBTENIDA" />
+          <ScalarProperty Name="VENCE" ColumnName="VENCE" />
+          <ScalarProperty Name="CODIGO" ColumnName="CODIGO" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="obtenerCodigoProm" FunctionName="SitcomModel.Store.obtenerCodigoProm" />
+    <FunctionImportMapping FunctionImportName="otorgarPromocion" FunctionName="SitcomModel.Store.otorgarPromocion" />
+    <FunctionImportMapping FunctionImportName="Persona_i" FunctionName="SitcomModel.Store.Persona_i" />
+    <FunctionImportMapping FunctionImportName="Persona_s_By_IdNegocio" FunctionName="SitcomModel.Store.Persona_s_By_IdNegocio">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SitcomModel.Persona_s_By_IdNegocio_Result">
+          <ScalarProperty Name="idPersona" ColumnName="idPersona" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="apellido" ColumnName="apellido" />
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="documento" ColumnName="documento" />
+          <ScalarProperty Name="idSexo" ColumnName="idSexo" />
+          <ScalarProperty Name="Sexo" ColumnName="Sexo" />
+          <ScalarProperty Name="idTipoDocumento" ColumnName="idTipoDocumento" />
+          <ScalarProperty Name="TipoDocumento" ColumnName="TipoDocumento" />
+          <ScalarProperty Name="calle" ColumnName="calle" />
+          <ScalarProperty Name="numero" ColumnName="numero" />
+          <ScalarProperty Name="dpto" ColumnName="dpto" />
+          <ScalarProperty Name="barrio" ColumnName="barrio" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="regUsoPromocion" FunctionName="SitcomModel.Store.regUsoPromocion" />
+    <FunctionImportMapping FunctionImportName="Reserva_Anular" FunctionName="SitcomModel.Store.Reserva_Anular" />
+    <FunctionImportMapping FunctionImportName="Reserva_CheckIn" FunctionName="SitcomModel.Store.Reserva_CheckIn" />
+    <FunctionImportMapping FunctionImportName="Reserva_CheckOut" FunctionName="SitcomModel.Store.Reserva_CheckOut" />
+    <FunctionImportMapping FunctionImportName="Reserva_i" FunctionName="SitcomModel.Store.Reserva_i" />
+    <FunctionImportMapping FunctionImportName="updatePromociones" FunctionName="SitcomModel.Store.updatePromociones" />
   </EntityContainerMapping>
 </Mapping>

@@ -3,57 +3,6 @@
 
 <script type="text/javascript">
 
-    var perfil = "@ViewBag.Perfil"
-    var mensaje = "@ViewBag.Mensaje"
-
-    $(document).ready(function () {
-
-        if (perfil == 1 || perfil == 2) {
-            $("#divTuristaRespNegocio").show();
-            $("#NoUsuarios").show();
-        }
-        else {
-            $("#divRespSecretaria").show();
-            $("#NoSecretaria").show();
-            $("#tabSecretaria").show();
-        }
-
-        if (perfil == 3) {
-            $("#btnTusTramites").hide();
-            $("#btnTusNegocios").hide();
-            $("#btnTusTramitesAsignados").show();
-        }
-        else {
-            $("#btnTusTramites").show();
-            $("#btnTusNegocios").show();
-            $("#btnTusTramitesAsignados").hide();
-        }
-
-        if (mensaje != "") {
-            alert(mensaje);
-        }
-
-        $("#btnTusTramites").click(function () {
-            event.preventDefault();
-            window.location = '@Url.Action("TramitesUsuario","Tramites")';
-        });
-
-        $("#btnTusTramitesAsignados").click(function () {
-            event.preventDefault();
-            window.location = '@Url.Action("TramitesUsuario","Tramites")';
-        });
-
-        $("#btnModificarDatos").click(function () {
-            event.preventDefault();
-            window.location = '@Url.Action("EditUsuario","Usuarios")';
-        });
-
-        $("#btnTusNegocios").click(function () {
-            event.preventDefault();
-            window.location = '@Url.Action("NegociosUsuario","Negocios")';
-        });
-    });
-
     function cancelar(idtramite) {
         if (confirm('¿Seguro que querés cancelar este trámite?')) {
             window.location = "../Tramites/CancelarTramite/" + idtramite + "?returnUrl=../Tramites/TramitesUsuario";
@@ -103,33 +52,9 @@
 <!-- MAIN CONTENT SECTION -->
 <section class="mainContent clearfix userProfile">
     <div class="container">
-        <div class="row">
-
-            <div class="col-xs-12">
-                <div class="btn-group" role="group" aria-label="..." style="text-align:center">
-
-                    <a href="" class="btn btn-default"><span class="glyphicon glyphicon-user" id="btnModificarDatos" aria-hidden="true"></span> MODIFICÁ TUS DATOS</a>
-
-                    <a href="" class="btn btn-default" id="btnTusNegocios">
-                        <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> TUS NEGOCIOS
-                    </a>
-
-                    <a href="" class="btn btn-default" id="btnTusTramites"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> TUS TRAMITES</a>
-
-                    <a href="" class="btn btn-default " id="btnTusTramitesAsignados">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> TUS TRAMITES ASIGNADOS
-                    </a>
-
-                    <a href="../Tramites/TramitesResp" class="btn btn-default active" id="btnTusTramitesAsignados">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> VER TODOS LOS TRAMITES
-                    </a>
 
 
-                </div>
-            </div>
-        </div>
-
-        <br>
+        @Html.Partial("_Botonera")
 
         <div class="row">
             <div class="col-xs-12">

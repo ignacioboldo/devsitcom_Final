@@ -22,7 +22,13 @@ namespace ProyectoFinal.Controllers
         }
         public ActionResult TramitesResp(int? id)
         {
+             ObtenerUsuarioActual();
+
             List<TramiteEntity> tramites = tm.GetAllTramites(id);
+
+            ViewBag.Perfil = usuarioActual.idPerfil;
+
+            ViewBag.idPerfil = usuarioActual.idPerfil;
 
             foreach (var item in tramites)
             {
@@ -51,6 +57,7 @@ namespace ProyectoFinal.Controllers
             ObtenerUsuarioActual();
 
             ViewBag.Perfil = usuarioActual.idPerfil;
+            ViewBag.idPerfil = usuarioActual.idPerfil;
             ViewBag.UsuarioActual = usuarioActual;
             ViewBag.Mensaje = mensaje;
             List<TramiteEntity> tramites = tm.GetTramitesByUsuario(usuarioActual);
@@ -66,6 +73,8 @@ namespace ProyectoFinal.Controllers
                 case 1: return RedirectToAction("EvalNegocio", "Negocios", new { id = tra.idNegocio, idTramite = tra.idTramite});
                 case 2: return RedirectToAction("EvalSolicitudModulo", "Reservas", new { id = tra.idNegocio, idTramite = tra.idTramite });
                 case 3: return RedirectToAction("EvalNegocio", "Negocios", new { id = tra.idNegocio, idTramite = tra.idTramite });
+                case 4: return RedirectToAction("VerBajaNegocio", "Negocios", new { id = tra.idNegocio, idTramite = tra.idTramite });
+                case 5: return RedirectToAction("VerRepublicacionNegocio", "Negocios", new { id = tra.idNegocio, idTramite = tra.idTramite });
                 default: return RedirectToAction("Index","Home");
            
             }
@@ -76,7 +85,8 @@ namespace ProyectoFinal.Controllers
             TramiteEntity tra = tm.GetTramiteById(idtramite);
             tm.CambiarEstadoTramite(tra, accion, usuarioActual);
 
-            return RedirectToAction("PanelControlUsuario", "Usuarios", new { mensaje = "Se resolvio el tramite correctamente!" });
+      
+            return RedirectToAction("PanelControlUsuario", "Usuarios", new { mensaje = "Se resolvió el tramite correctamente!" });
         }
         public bool ValidarPermisoVista(string controlador, string vista) //METODO UNICO DEL CONTROLADOR PARA VALIDAR PERMISO DE LA VISTA (LLAMA AL MANEJADOR).
         {

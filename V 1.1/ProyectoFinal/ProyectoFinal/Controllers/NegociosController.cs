@@ -20,6 +20,9 @@ namespace ProyectoFinal.Controllers
         private DomicilioManager dm = new DomicilioManager();
         private NegocioEntity neg = new NegocioEntity();
         private DomicilioEntity dom = new DomicilioEntity();
+        private PromocionesManager pm = new PromocionesManager();
+        private PersonasManager perm = new PersonasManager();
+        
         
         public ActionResult Index()
         {
@@ -124,12 +127,23 @@ namespace ProyectoFinal.Controllers
             neg.descripcion = negocio.descripcion;
             neg.Comercio = new List<ComercioEntity>() { comercio };
 
+            domEn.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
+            
             neg.Sucursal.Add(new SucursalEntity()
             {
                 esPrincipal = true,
                 telefono = telefono,
                 Domicilio = domEn
             });
+
+            if(imagenPrinc == null)
+            {
+                ModelState.AddModelError("", "Debés seleccionar una imagen principal.");
+                ViewBag.Perfil = usuarioActual.idPerfil;
+                ViewBag.Rubros = new SelectList(db.Rubro, "idRubro", "nombreRubro", neg.Comercio.FirstOrDefault().idRubro);
+                ViewBag.TiposNegocio = new SelectList(db.TipoDeNegocio, "idTipoNegocio", "nombre", neg.idTipoNegocio);
+                return View("Nuevo", neg);
+            }
 
             byte[] buffer = null;
             using (var binaryReader = new BinaryReader(imagenPrinc.InputStream))
@@ -165,6 +179,70 @@ namespace ProyectoFinal.Controllers
             }
 
             return RedirectToAction("Index", "Home");
+        }
+        public ActionResult SolicitarBajaNegocio(int idNegocio)
+        {
+            ObtenerUsuarioActual();
+            NegocioEntity neg = nm.GetNegocioById(idNegocio);
+
+            Persona p = perm.GetPersonaByIdUsuario(usuarioActual.idUsuario);
+
+            ViewBag.Persona = p;
+
+            return View(neg);
+           
+        }
+        public ActionResult SolicitarRepublicacion(int idNegocio)
+        {
+            ObtenerUsuarioActual();
+            NegocioEntity neg = nm.GetNegocioById(idNegocio);
+
+            Persona p = perm.GetPersonaByIdUsuario(usuarioActual.idUsuario);
+
+            ViewBag.Persona = p;
+
+            return View(neg);
+
+        }
+        public ActionResult VerBajaNegocio(int id, int idTramite)
+        {
+            ObtenerUsuarioActual();
+            NegocioEntity neg = nm.GetNegocioById(id);
+
+            Persona p = perm.GetPersonaByIdUsuario((int)neg.idUsuario);
+
+            ViewBag.Persona = p;
+            ViewBag.IdTramite = idTramite;
+
+            return View(neg);
+        }
+        public ActionResult VerRepublicacionNegocio(int id, int idTramite)
+        {
+            ObtenerUsuarioActual();
+            NegocioEntity neg = nm.GetNegocioById(id);
+
+            Persona p = perm.GetPersonaByIdUsuario((int)neg.idUsuario);
+
+            ViewBag.Persona = p;
+            ViewBag.IdTramite = idTramite;
+
+            return View(neg);
+        }
+        public ActionResult BajaNegocio(int idNegocio)
+        {
+            ObtenerUsuarioActual();
+
+            nm.BajaNegocio(idNegocio, usuarioActual);
+
+            return RedirectToAction("NegociosUsuario");
+        }
+        public ActionResult RepublicarNegocio(int idNegocio)
+        {
+            ObtenerUsuarioActual();
+
+            nm.RepublicarNegocio(idNegocio, usuarioActual);
+
+            return RedirectToAction("NegociosUsuario");
         }
         public ActionResult NuevoLugarHospedaje([Bind(Include = "nombre,descripcion")] NegocioEntity negocio,
                                                 [Bind(Include = "localidadSeleccionada,barrio,calle,dpto,numero")] DomicilioEntity domEn,
@@ -399,6 +477,7 @@ namespace ProyectoFinal.Controllers
             List<Negocio> negs = nm.GetNegocioByUsuario(usuarioActual.idUsuario);
 
             ViewBag.Perfil = usuarioActual.idPerfil;
+            ViewBag.idPerfil = usuarioActual.idPerfil;
             ViewBag.UsuarioActual = usuarioActual;
 
             return View(negs);
@@ -469,6 +548,7 @@ namespace ProyectoFinal.Controllers
         }
         public ActionResult VerComercio(int? id)
         {
+			ObtenerUsuarioActual();	
             NegocioEntity neg = nm.GetNegocioById((int)id);
 
             string address = neg.Sucursal.FirstOrDefault().Domicilio.calle + "+" + neg.Sucursal.FirstOrDefault().Domicilio.numero + ",+" + neg.Sucursal.FirstOrDefault().Domicilio.Localidad.nombreLocalidad + ",+Cordoba,+Argentina";
@@ -505,6 +585,11 @@ namespace ProyectoFinal.Controllers
             ViewBag.Address = address;
             ViewBag.NombreNegocio = neg.nombre;
             ViewBag.AddressShow = neg.Sucursal.FirstOrDefault().Domicilio.calle + " " + neg.Sucursal.FirstOrDefault().Domicilio.numero + ", " + neg.Sucursal.FirstOrDefault().Domicilio.Localidad.nombreLocalidad;
+            ViewBag.Perfil = usuarioActual.idPerfil;
+
+            List<PromocionesNegocioEntity> pro = pm.getPromociones(neg.idNegocio, 1);
+
+            neg.Promociones = pro;
 
             
             return View(neg);
@@ -518,7 +603,7 @@ namespace ProyectoFinal.Controllers
             if(idNegocio != 0)
                  neg = nm.GetNegocioById((int)idNegocio);
 
-            return View(neg);
+            return PartialView(neg);
         } //NO LA USO - POR SI NO FUNCIONA LA VISTA PARCIAL//
         public ActionResult NuevoCasaODpto()
         {
@@ -530,7 +615,7 @@ namespace ProyectoFinal.Controllers
             neg.Sucursal.Add(suc);
             ViewBag.Carac = nm.GetCaracteristicas();
             ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
-            return View(neg);
+            return PartialView(neg);
         }
         public ActionResult EditCasaODpto(int? idNegocio)
         {
@@ -589,7 +674,7 @@ namespace ProyectoFinal.Controllers
             ViewBag.Carac = nm.GetCaracteristicas();
             ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
             ViewBag.TiposComplejo = new SelectList(db.TipoComplejo, "idTipoComplejo", "nombreTipoComplejo");
-            return View(neg);
+            return PartialView(neg);
         }
         public ActionResult EditComplejo(int? idNegocio)
         {

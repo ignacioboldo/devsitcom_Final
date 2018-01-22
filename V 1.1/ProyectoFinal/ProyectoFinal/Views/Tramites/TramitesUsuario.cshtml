@@ -3,62 +3,21 @@
 
 <script type="text/javascript">
 
-    var perfil = "@ViewBag.Perfil"
-    var mensaje = "@ViewBag.Mensaje"
-
-    $(document).ready(function () {
-
-        if (perfil == 1 || perfil == 2) {
-            $("#divTuristaRespNegocio").show();
-            $("#NoUsuarios").show();
-        }
-        else {
-            $("#divRespSecretaria").show();
-            $("#NoSecretaria").show();
-            $("#tabSecretaria").show();
-        }
-
-        if (perfil == 3) {
-            $("#btnTusTramites").hide();
-            $("#btnTusNegocios").hide();
-            $("#btnTusTramitesAsignados").show();
-        }
-        else {
-            $("#btnTusTramites").show();
-            $("#btnTusNegocios").show();
-            $("#btnTusTramitesAsignados").hide();
-        }
-
-        if (mensaje != "") {
-            alert(mensaje);
-        }
-
-        $("#btnTusTramites").click(function () {
-            event.preventDefault();
-            window.location = '@Url.Action("TramitesUsuario","Tramites")';
-        });
-
-        $("#btnTusTramitesAsignados").click(function () {
-            event.preventDefault();
-            window.location = '@Url.Action("TramitesUsuario","Tramites")';
-        });
-
-        $("#btnModificarDatos").click(function () {
-            event.preventDefault();
-            window.location = '@Url.Action("EditUsuario","Usuarios")';
-        });
-
-        $("#btnTusNegocios").click(function () {
-            event.preventDefault();
-            window.location = '@Url.Action("NegociosUsuario","Negocios")';
-        });
-    });
+ 
 
     function cancelar(idtramite) {
         if (confirm('¿Seguro que querés cancelar este trámite?')) {
             window.location = "../Tramites/CancelarTramite/" + idtramite + "?returnUrl=../Tramites/TramitesUsuario";
         }
     }
+
+    function corregir(idnegocio, idtiponegocio) {
+        if (idtiponegocio==1) //Si es Lugar de Hospedaje
+            window.location = "../Negocios/EditHospedaje/?idNegocio=" + idnegocio;
+        else
+            window.location = "../Negocios/EditComercio/?idNegocio=" + idnegocio;
+    }
+
 
     function ver(idtramite) {
         window.location = "../Tramites/VerTramite/" + idtramite;
@@ -91,30 +50,7 @@
 <!-- MAIN CONTENT SECTION -->
 <section class="mainContent clearfix userProfile">
     <div class="container">
-        <div class="row">
- 
-            <div class="col-xs-12">
-                <div class="btn-group" role="group" aria-label="..." style="text-align:center">
-
-                    <a href="" class="btn btn-default" style="width:230px;"><span class="glyphicon glyphicon-user" id="btnModificarDatos" aria-hidden="true"></span> MODIFICÁ TUS DATOS</a>
-
-                    <a href="" class="btn btn-default" id="btnTusNegocios" style="width:230px;">
-                        <span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> TUS NEGOCIOS
-                    </a>
-
-                    <a href="" class="btn btn-default active" id="btnTusTramites" style="width:200px;"><span class="glyphicon glyphicon-th" aria-hidden="true"></span> TUS TRAMITES</a>
-
-                    <a href="" class="btn btn-default active" id="btnTusTramitesAsignados" style="width:230px;">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> TUS TRAMITES ASIGNADOS
-                    </a>
-
-                    <a href="../Tramites/TramitesResp" class="btn btn-default" id="btnTusTramitesAsignados" style="width:230px;">
-                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span> TODOS LOS TRAMITES
-                    </a>
-
-                </div>
-            </div>
-        </div>
+        @Html.Partial("_Botonera")
 
         <div class="row">
             <div class="col-xs-12">
@@ -127,15 +63,21 @@
                         {
                             <div id="divTuristaRespNegocio" style="display:none">
                                 @helper verificarIdEstado(BussinesEntities.TramiteEntity t)
-                    {
-                        if (t.EstadoTramite.idEstadoTramite == 1)
                         {
-                                        <button id="btnCancelarTramite" class="btn btn-red" onclick="cancelar(@t.idTramite)" style="font-size:10px; padding: 5px;">Cancelar <i class="fa fa-times"></i></button>
-                        }
-                        else
-                        {
-                                        <button id="btnCancelarTramite" class="btn btn-red" onclick="cancelar(@t.idTramite)" style="font-size:10px; padding: 5px;" disabled="disabled">Cancelar <i class="fa fa-times"></i></button>
-                        }
+                            if ((t.EstadoTramite.idEstadoTramite == 1 || t.EstadoTramite.idEstadoTramite == 6) && t.idTipoTramite != 4)
+                            {
+                                            <button id="btnCancelarTramite" class="btn btn-red" onclick="cancelar(@t.idTramite)" style="font-size:10px; padding: 5px;">Cancelar <i class="fa fa-times"></i></button>
+                            }
+                            else
+                            {
+                                            <button id="btnCancelarTramite" class="btn btn-red" onclick="cancelar(@t.idTramite)" style="font-size:10px; padding: 5px;" disabled="disabled">Cancelar <i class="fa fa-times"></i></button>
+                            }
+                            
+                            if (t.EstadoTramite.idEstadoTramite == 6)
+                            {
+                                            <button id="btnCorregir" class="btn btn-red" onclick="corregir(@t.idNegocio,@t.Negocio.idTipoNegocio)" style="font-size:10px; padding: 5px;">Corregir <i class="fa fa-times"></i></button>
+                            }
+                           
                     }
 
          @Html.Grid(Model).Columns(columns =>
@@ -169,7 +111,7 @@
 
 
 
-                                @Html.Grid(Model).Columns(columns =>
+          @Html.Grid(Model).Columns(columns =>
          {
              columns.Add(model => model.Usuarios.nombreUsuario).Titled("Usuario Solicitante");
              columns.Add(model => model.Usuarios1.nombreUsuario).Titled("Usuario Responsable");

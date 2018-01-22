@@ -64,6 +64,10 @@
     <Compile Include="LugarHospedajeEntity.cs" />
     <Compile Include="NegocioEntity.cs" />
     <Compile Include="PersonaEntity.cs" />
+    <Compile Include="PromocionesEntity.cs" />
+    <Compile Include="PromocionesNegocioEntity.cs" />
+    <Compile Include="PromocionesOtorgadasEntity.cs" />
+    <Compile Include="PromocionesOtorgadasUsuario.cs" />
     <Compile Include="ReservasEntities.cs" />
     <Compile Include="SolicitudEntity.cs" />
     <Compile Include="SucursalEntity.cs" />

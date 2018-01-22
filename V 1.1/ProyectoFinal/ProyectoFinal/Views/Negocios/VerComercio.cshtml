@@ -1,67 +1,110 @@
 ﻿@model BussinesEntities.NegocioEntity
+@using GridMvc.Html
 @{
-    ViewBag.Title = "Comercio";
+    ViewBag.Title = "Lugar de Hospedaje";
+    ViewBag.postDisponibilidad = Session["fecha_desde"];
 }
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title>Rapido - Responsive Admin Template</title>
-    <!-- start: META -->
-    <meta charset="utf-8" />
-    <!--[if IE]><meta http-equiv='X-UA-Compatible' content="IE=edge,IE=9,IE=8,chrome=1" /><![endif]-->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black">
-    <meta content="" name="description" />
-    <meta content="" name="author" />
-    <!-- end: META -->
-    <!-- start: MAIN CSS -->
-    <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,500,600,700,200,100,800' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="~/assets/plugins/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/iCheck/skins/all.css">
-    <link rel="stylesheet" href="~/assets/plugins/perfect-scrollbar/src/perfect-scrollbar.css">
-    <link rel="stylesheet" href="~/assets/plugins/animate.css/animate.min.css">
-    <!-- end: MAIN CSS -->
-    <!-- start: CSS REQUIRED FOR SUBVIEW CONTENTS -->
-    <link rel="stylesheet" href="~/assets/plugins/owl-carousel/owl-carousel/owl.carousel.css">
-    <link rel="stylesheet" href="~/assets/plugins/owl-carousel/owl-carousel/owl.theme.css">
-    <link rel="stylesheet" href="~/assets/plugins/owl-carousel/owl-carousel/owl.transitions.css">
-    <link rel="stylesheet" href="~/assets/plugins/summernote/dist/summernote.css">
-    <link rel="stylesheet" href="~/assets/plugins/fullcalendar/fullcalendar/fullcalendar.css">
-    <link rel="stylesheet" href="~/assets/plugins/toastr/toastr.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/bootstrap-select/bootstrap-select.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/DataTables/media/css/DT_bootstrap.css">
-    <link rel="stylesheet" href="~/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css">
-    <!-- end: CSS REQUIRED FOR THIS SUBVIEW CONTENTS-->
-    <!-- start: CSS REQUIRED FOR THIS PAGE ONLY -->
-    <link rel="stylesheet" href="~/assets/plugins/weather-icons/css/weather-icons.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/nvd3/nv.d3.min.css">
-    <!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
-    <!-- start: CORE CSS -->
-    <link rel="stylesheet" href="~/assets/css/styles.css">
-    <link rel="stylesheet" href="~/assets/css/styles-responsive.css">
-    <link rel="stylesheet" href="~/assets/css/plugins.css">
-    <link rel="stylesheet" href="~/assets/css/themes/theme-default.css" type="text/css" id="skin_color">
-    <link rel="stylesheet" href="~/assets/css/print.css" type="text/css" media="print" />
-    <!-- end: CORE CSS -->
+<script type="text/javascript">
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-    <script src="~/Scripts/jquery-ui-1.9.2.custom.js"></script>
-    <script src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.0/jquery.validate.min.js"></script>
 
-    <script type="text/javascript">
 
-    //This code tells the browser to execute the "Initialize" method only when the complete document model has been loaded.
     $(document).ready(function () {
+
+        $('.date').mask('00-00-0000');
+
+        $('#fecha_desde').datetimepicker({
+            locale: 'es',
+            format: 'DD-MM-YYYY'
+        });
+
+        $('#fecha_hasta').datetimepicker({
+            locale: 'es',
+            format: 'DD-MM-YYYY'
+        });
+
+
+    });
+
+    function soloNumeros(e) {
+
+        var key = window.Event ? e.which : e.keyCode
+
+        return (key >= 48 && key <= 57)
+
+    }
+
+
+
+</script>
+
+
+
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+    });
+</script>
+
+<script src="http://maps.google.com/maps/api/js?sensor=true&key=AIzaSyC-zIIzu7G8S6LR58CXQKGuveSVRoJ1z3o" type="text/javascript"></script>
+
+<script type="text/javascript">
+    var esDueno = "@ViewBag.EsDueno"
+    var tieneMGR = 0
+    var tieneTramite = "@ViewBag.TieneTramiteMGR"
+
+    $(document).ready(function () {
+
+        if (esDueno == 1) {
+            if (tieneMGR == "True") {
+                $("#btnModificarNegocio").show();
+                $("#btnGestionReservas").show();
+            }
+            else {
+                $("#btnDisponibilidad").show();
+                $("#btnSolicitarMGR").show();
+                $("#btnModificarNegocio").show();
+            }
+        }
+        else {
+            $("#btnContactar").show();
+            if (tieneMGR == "True") {
+                $("#btnReservar").show();
+            }
+        }
+
+        $("#btnSolicitarMGR").click(function () {
+            if (tieneTramite == "1") {
+                alert("Ya tiene un trámite pendiente para un Modulo de Gestion de Reservas.")
+            }
+            else {
+                window.location = '@Url.Action("SolicitarModulo","Reservas", new { idNegocio = Model.idNegocio })';
+            }
+        });
+
+        $("#btnDisponibilidad").click(function () {
+            window.location = '@Url.Action("Disponibilidad","Reservas", new { idNegocio = Model.idNegocio })';
+        })
+
+        var perfil = "@Model.idPerfil"
+
+        if (perfil == 3) {
+            desactivarLink('btnReservar');
+            desactivarBtn('btnConsultar');
+        }
+
+
+
+
+
+
+
         var lat = 0;
         var long = 0;
         var address = "@ViewBag.Address"
 
 
-        //alert(address);
+        // alert(address);
 
         $.ajax({
             // En data puedes utilizar un objeto JSON, un array o un query string
@@ -72,12 +115,13 @@
             dataType: "json",
             // URL a la que se enviará la solicitud Ajax
             url: address
+            //url: 'https://maps.googleapis.com/maps/api/geocode/json?address=Juan%20b%20Justo+1582,+Resistencia,+Chaco,+Argentina'
         })
                    .done(function (data, textStatus, jqXHR) {
                        lat = data.results[0].geometry.location.lat;
                        long = data.results[0].geometry.location.lng;
 
-                       // alert(lat);
+                       //alert(lat);
                        //alert(long);
 
                        Initialize(lat, long);
@@ -90,331 +134,412 @@
         //alert(long);
 
 
+        // Where all the fun happens
+        function Initialize(latitude, longitude) {
+
+
+            var nomComercio = "@ViewBag.NombreNegocio"
+            var addressShow = "@ViewBag.AddressShow"
+
+            // Google has tweaked their interface somewhat - this tells the api to use that new UI
+            google.maps.visualRefresh = true;
+            var Tunisie = new google.maps.LatLng(latitude, longitude);
+
+            //alert(Tunisie);
+
+            var Argentina = new google.maps.LatLng(-31.411003, -64.503992);
+
+
+
+
+            /*for (var i = 0; i < result.results.length; i++) {
+                myAddress[i] = result.results[i].lat;
+            }*/
+
+            // These are options that set initial zoom level, where the map is centered globally to start, and the type of map to show
+            var mapOptions = {
+                zoom: 17,
+                center: Tunisie,
+                mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
+            };
+
+            var mapOptions_2 = {
+                zoom: 17,
+                center: Argentina,
+                mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
+            };
+
+
+            // This makes the div with id "map_canvas" a google map
+            var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+            longitude = longitude.toString();
+            latitude = latitude.toString();
+
+            // a sample list of JSON encoded data of places to visit in Tunisia
+            // you can either make up a JSON list server side, or call it from a controller using JSONResult
+            var data = [
+                      { "Id": 1, "PlaceName": "Mi Casa", "GeoLong": latitude, "GeoLat": longitude }
+                      /*{ "Id": 1, "PlaceName": "Zaghouan", "GeoLong": "36.401081", "GeoLat": "10.16596" },
+                      { "Id": 2, "PlaceName": "Hammamet ", "GeoLong": "36.4", "GeoLat": "10.616667" },
+                      { "Id": 3, "PlaceName": "Sousse", "GeoLong": "35.8329809", "GeoLat": "10.63875" },
+                      { "Id": 4, "PlaceName": "Sfax", "GeoLong": "34.745159", "GeoLat": "10.7613" }*/
+            ];
+
+            // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
+            $.each(data, function (i, item) {
+                var marker = new google.maps.Marker({
+                    'position': new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                    'map': map,
+                    'title': item.PlaceName
+                });
+
+                // Make the marker-pin blue!
+                marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+
+                // put in some information about each json object - in this case, the opening hours.
+                var infowindow = new google.maps.InfoWindow({
+                    content: "<div class='infoDiv'><h4>" + nomComercio + "</h4><br /><h5>" + addressShow + "</h5></div></div>"
+                });
+
+                // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
+                google.maps.event.addListener(marker, 'click', function () {
+                    infowindow.open(map, marker);
+                });
+
+            });
+        }
+
+
+
+
+
+
     });
 
 
+</script>
 
-    // Where all the fun happens
-    function Initialize(latitude, longitude) {
+<style>
+    .infoDiv {
+        height: 100px;
+        width: 200px;
+        -webkit-user-select: none;
+        background-color: rgb(254, 255, 153);
+    }
+</style>
+
+<script type="text/javascript">
+    $(document).on('ready', function () {
+
+        $('#foto1').on('click', function () {
+            var src = $('#foto1 img').attr('src');
+            $('#divImagenPrincipal img').attr('src', src)
+            return false;
+        });// click en foto 1
+        $('#foto2').on('click', function () {
+            var src = $('#foto2 img').attr('src');
+            $('#divImagenPrincipal img').attr('src', src)
+            return false;
+        });// click en foto 2
+        $('#foto3').on('click', function () {
+            var src = $('#foto3 img').attr('src');
+            $('#divImagenPrincipal img').attr('src', src)
+            return false;
+        });// click en foto 3
+        $('#foto4').on('click', function () {
+            var src = $('#foto4 img').attr('src');
+            $('#divImagenPrincipal img').attr('src', src)
+            return false;
+        });// click en foto 4
+        $('#foto5').on('click', function () {
+            var src = $('#foto5 img').attr('src');
+            $('#divImagenPrincipal img').attr('src', src)
+            return false;
+        });// click en foto 5
+
+    });
+
+    function reservaAhora(url) {
+
+        var fecha_desde = $("#fecha_desde").val();
+        var fecha_hasta = $("#fecha_hasta").val();
+        var postDisponibilidad = $("#postDisponibilidad").val();
 
 
-        var nomComercio = "@ViewBag.NombreNegocio"
-        var addressShow = "@ViewBag.AddressShow"
+        if (fecha_desde != '' && fecha_hasta != '' && postDisponibilidad != '') {
 
-        // Google has tweaked their interface somewhat - this tells the api to use that new UI
-        google.maps.visualRefresh = true;
-        var Tunisie = new google.maps.LatLng(latitude, longitude);
+            if (!validate_fechaMayorQue(fecha_desde, fecha_hasta)) {
+                alert("La fecha desde no puede ser mayor a la fecha hasta.");
+            } else {
+                window.location = url;
+            }
 
-        //alert(Tunisie);
+        } else {
+            alert("Debe consultar disponibilidad para poder reservar. ");
+        }
 
-        var Argentina = new google.maps.LatLng(-31.411003, -64.503992);
+        return false;
+    }
 
+    function validate_fechaMayorQue(fechaInicial, fechaFinal) {
+        valuesStart = fechaInicial.split("-");
+        valuesEnd = fechaFinal.split("-");
 
-
-
-        /*for (var i = 0; i < result.results.length; i++) {
-            myAddress[i] = result.results[i].lat;
-        }*/
-
-        // These are options that set initial zoom level, where the map is centered globally to start, and the type of map to show
-        var mapOptions = {
-            zoom: 17,
-            center: Tunisie,
-            mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
-        };
-
-        var mapOptions_2 = {
-            zoom: 17,
-            center: Argentina,
-            mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
-        };
-
-
-        // This makes the div with id "map_canvas" a google map
-        var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
-
-        longitude = longitude.toString();
-        latitude = latitude.toString();
-
-        // a sample list of JSON encoded data of places to visit in Tunisia
-        // you can either make up a JSON list server side, or call it from a controller using JSONResult
-        var data = [
-                  { "Id": 1, "PlaceName": "Mi Casa", "GeoLong": latitude, "GeoLat": longitude }
-                  /*{ "Id": 1, "PlaceName": "Zaghouan", "GeoLong": "36.401081", "GeoLat": "10.16596" },
-                  { "Id": 2, "PlaceName": "Hammamet ", "GeoLong": "36.4", "GeoLat": "10.616667" },
-                  { "Id": 3, "PlaceName": "Sousse", "GeoLong": "35.8329809", "GeoLat": "10.63875" },
-                  { "Id": 4, "PlaceName": "Sfax", "GeoLong": "34.745159", "GeoLat": "10.7613" }*/
-        ];
-
-        // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
-        $.each(data, function (i, item) {
-            var marker = new google.maps.Marker({
-                'position': new google.maps.LatLng(item.GeoLong, item.GeoLat),
-                'map': map,
-                'title': item.PlaceName
-            });
-
-            // Make the marker-pin blue!
-            marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
-
-            // put in some information about each json object - in this case, the opening hours.
-            var infowindow = new google.maps.InfoWindow({
-                content: "<div class='infoDiv'><h4>" + nomComercio + "</h4><br /><h5>" + addressShow + "</h5></div></div>"
-            });
-
-            // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
-            google.maps.event.addListener(marker, 'click', function () {
-                infowindow.open(map, marker);
-            });
-
-        })
+        // Verificamos que la fecha no sea posterior a la actual
+        var dateStart = new Date(valuesStart[2], (valuesStart[1] - 1), valuesStart[0]);
+        var dateEnd = new Date(valuesEnd[2], (valuesEnd[1] - 1), valuesEnd[0]);
+        if (dateStart > dateEnd) {
+            return 0;
+        }
+        return 1;
     }
 
 
-    </script>
+</script>
 
-    <style type="text/css">
-        .thumb img {
-            opacity: 0.5;
-            
-            filter: alpha(opacity=5);
-        }
 
-            .thumb img:hover {
-                opacity: 1;
-                
-                filter: alpha(opacity=5);
-            }
-    </style>
-    
-</head>
-<body>
+<input id="postDisponibilidad" type="hidden" value="@ViewBag.postDisponibilidad" />
 
-   
 
-        
-                <div class="panel panel-white" style="width:1190px;">
+<section class="lightSection clearfix pageHeader">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>
+
+                        Comercio: @Model.nombre
+
+                    </h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">
+                        Comercio: @Model.nombre
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mainContent clearfix userProfile">
+
+
+    <div class="container">
+
+
+        <div class="row" style=" margin-bottom:30px;">
+
+            <div class="col-sm-12 col-md-3 sideBar">
+
+
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">Promociones Disponibles</div>
                     <div class="panel-body">
-                        <h1><span class="text-bold">@Model.nombre </span> <br /><small>@Model.Comercio.FirstOrDefault().Rubro.nombreRubro</small></h1>
-                        <hr />
-                        <div class="row">
-                        <div class="col-md-4">
-                            <div class="row">
-                                <div class="panel panel-orange">
-                                    <div class="panel-body">
-                                        <h4 class="panel-title"><span class="text-bold">Datos de Interés</span></h4>
-                                        <hr />
-                                        <i class="fa fa-phone"> <span class="text-bold">@Model.Sucursal.FirstOrDefault().telefono</span></i>
-                                        <hr />
-                                        <i class="fa fa-map-marker">
-                                            <span class="text-bold">@Model.Sucursal.FirstOrDefault().Domicilio.calle @Html.Label("  ") @Model.Sucursal.FirstOrDefault().Domicilio.numero @Html.Label(",  ") @Model.Sucursal.FirstOrDefault().Domicilio.Localidad.nombreLocalidad</span>
-                                        </i>
-                                        <hr />
-                                    </div>
+                        <div class="collapse navbar-collapse navbar-ex1-collapse navbar-side-collapse">
 
-                                </div>
-                            </div>
+         
+
+                            <div class="row" id="divPromociones">
                            
-                            <br />
-                            <div class="row">
-                                <div class="map" id="map1"></div>  
-                            </div>
-                            
-                        </div>
-                            <div class="col-md-8">
-                                <h4 class="panel-title"><span class="text-bold">Descripción</span></h4>
-                                <hr>
-                                <div class="panel panel-white">
-                                    <div class="panel-body">
-                                        @Model.descripcion
-                                        <br />
-                                        <br />
-                                        <br />
-                                    </div>
-                                  
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-8">
-                                        <h4 class="panel-title"><span class="text-bold">Imágenes</span></h4>
-                                        <hr>
-                                    </div>
-                                        @{
-                                            foreach (var item in Model.FotosNegocio)
-                                            {
-                                                if (item.esPrincipal == true)
-                                                {
-                                                    <div id="divImagenPrincipal" class="col-lg-offset-1">
-                                                        <img src="@Url.Action("ObtenerImagen","Negocios",new { id = item.idFoto })" alt="Alternate Text" style="width: 650px; height: 350px;" />
-                                                    </div>
-                                                }
-                                            }
-                                        }
 
 
+                                @if (Model.Promociones.Count > 0)
+                                {
 
-                                    </div>
-                                <div class="row">
-                                    <div class="col-lg-8 col-lg-offset-2">
-                                        
-                                        <ul>
-                                            @{foreach (var item in Model.FotosNegocio)
-                                            {
-                                                if (item.esPrincipal != true)
-                                                {
-                                                    int varFoto = item.idFoto;
-                                                    <li class="col-lg-2">
-                                                        <div class="thumb">
-                                                           <img src="@Url.Action("ObtenerImagen","Negocios",new { id = item.idFoto })" alt="Alternate Text" style="width: 75px; height: 75px;" />
-                                                                
-                                                            <hr />
-                                                         </div>
-                                                       
-                                                    </li>
-                                                }
-                                            }
-                                            }
-                                        </ul>
-                                    </div>
-                                </div>
-                               
-                            </div>
-                        </div>
 
-                        @*<div class="row">
-                            <div class="col-lg-6 col-lg-offset-1">
-                                @{
-                                    foreach (var item in Model.FotosNegocio)
+                                    foreach (var item in Model.Promociones)
                                     {
-                                        if (item.esPrincipal == true)
-                                        {
-                                            <div id="divImagenPrincipal">
-                                                <img src="@Url.Action("ObtenerImagen","Negocios",new { id = item.idFoto })" alt="Alternate Text" style="width: 500px; height: 500px;" />
-                                            </div>
-                                        }
+                                        <div style="color: rgba(177, 13, 20, 1);font-size: 18px;text-align: center; padding:10px;"><img src="~/Content/img/promociones.png" /> @item.PROMOCION</div>
+                                        <div style="margin-bottom:10px;">
+                                            <button onclick="window.location = '@Url.Action("ObtenerPromocion", "Promociones", new { idPromocion = item.idPromocion })'" style="background: cornflowerblue;color: white;" class="btn btn-xs btn-blue tooltips btn-block" data-placement="top" data-original-title="Editar">Quiero Esta Promoción!</button>
+                                        </div>
                                     }
-                                }
+
+                                 }
+
+
                             </div>
-                            <div class="col-lg-5">
-                                <div>
-                                    @Html.Label("Imagenes del Negocio: ", new { @class = "control-label col-md-2", id = "lblRubro" })
-
-                                    <ul class="row the-icons">
-                                        @{foreach (var item in Model.FotosNegocio)
-                                        {
-                                            if (item.esPrincipal != true)
-                                            {
-                                                <li class="col-lg-4" >
-
-                                                <img src="@Url.Action("ObtenerImagen","Negocios",new { id = item.idFoto })" alt="Alternate Text" style="width: 100px; height: 100px;" />
-                                                    <hr />
-                                                    </li>
-                                            }
-                                        }
-                                        }
-                                    </ul>
-                                        
 
 
-                                          
-                                           
-</div>
-                            </div>
-                        </div>*@
 
+
+
+
+
+                        </div>
                     </div>
-                 </div>
-              
-
-             <br />
-
-
-        <br />
-
-        <br />
-        <br />
-       
-
-        <br />
-        <script src="~/assets/plugins/jQuery/jquery-2.1.1.min.js"></script>
-        <!--<![endif]-->
-        <script src="~/assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
-        <script src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-        <script src="~/assets/plugins/blockUI/jquery.blockUI.js"></script>
-        <script src="~/assets/plugins/iCheck/jquery.icheck.min.js"></script>
-        <script src="~/assets/plugins/moment/min/moment.min.js"></script>
-        <script src="~/assets/plugins/perfect-scrollbar/src/jquery.mousewheel.js"></script>
-        <script src="~/assets/plugins/perfect-scrollbar/src/perfect-scrollbar.js"></script>
-        <script src="~/assets/plugins/bootbox/bootbox.min.js"></script>
-        <script src="~/assets/plugins/jquery.scrollTo/jquery.scrollTo.min.js"></script>
-        <script src="~/assets/plugins/ScrollToFixed/jquery-scrolltofixed-min.js"></script>
-        <script src="~/assets/plugins/jquery.appear/jquery.appear.js"></script>
-        <script src="~/assets/plugins/jquery-cookie/jquery.cookie.js"></script>
-        <script src="~/assets/plugins/velocity/jquery.velocity.min.js"></script>
-        <script src="~/assets/plugins/TouchSwipe/jquery.touchSwipe.min.js"></script>
-        <!-- end: MAIN JAVASCRIPTS -->
-        <!-- start: JAVASCRIPTS REQUIRED FOR SUBVIEW CONTENTS -->
-        <script src="~/assets/plugins/owl-carousel/owl-carousel/owl.carousel.js"></script>
-        <script src="~/assets/plugins/jquery-mockjax/jquery.mockjax.js"></script>
-        <script src="~/assets/plugins/toastr/toastr.js"></script>
-        <script src="~/assets/plugins/bootstrap-modal/js/bootstrap-modal.js"></script>
-        <script src="~/assets/plugins/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
-        <script src="~/assets/plugins/fullcalendar/fullcalendar/fullcalendar.min.js"></script>
-        <script src="~/assets/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
-        <script src="~/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
-        <script src="~/assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="~/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min.js"></script>
-        <script src="~/assets/plugins/DataTables/media/js/jquery.dataTables.min.js"></script>
-        <script src="~/assets/plugins/DataTables/media/js/DT_bootstrap.js"></script>
-        <script src="~/assets/plugins/truncate/jquery.truncate.js"></script>
-        <script src="~/assets/plugins/summernote/dist/summernote.min.js"></script>
-        <script src="~/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-        <script src="~/assets/js/subview.js"></script>
-        <script src="~/assets/js/subview-examples.js"></script>
-        <!-- end: JAVASCRIPTS REQUIRED FOR SUBVIEW CONTENTS -->
-        <!-- start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
-        <script src="~/assets/plugins/bootstrap-progressbar/bootstrap-progressbar.min.js"></script>
-        <script src="~/assets/plugins/nvd3/lib/d3.v3.js"></script>
-        <script src="~/assets/plugins/nvd3/nv.d3.min.js"></script>
-        <script src="~/assets/plugins/nvd3/src/models/historicalBar.js"></script>
-        <script src="~/assets/plugins/nvd3/src/models/historicalBarChart.js"></script>
-        <script src="~/assets/plugins/nvd3/src/models/stackedArea.js"></script>
-        <script src="~/assets/plugins/nvd3/src/models/stackedAreaChart.js"></script>
-        <script src="~/assets/plugins/jquery.sparkline/jquery.sparkline.js"></script>
-        <script src="~/assets/plugins/easy-pie-chart/dist/jquery.easypiechart.min.js"></script>
-        <script src="~/assets/js/index.js"></script>
-    <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
-    <script src="assets/plugins/gmaps/gmaps.js"></script>
-    <script src="assets/js/maps.js"></script>
-        <!-- end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
-        <!-- start: CORE JAVASCRIPTS  -->
-        <script src="~/assets/js/main.js"></script>
-        <!-- end: CORE JAVASCRIPTS  -->
-    <script type="text/html" id="edit_marker_template">
-        <h4>Edit Marker</h4>
-        <form class="edit_marker" action="#" method="post" data-marker-index="{{index}}">
-            <p>
-                <label for="marker_{{index}}_lat">Latitude:</label>
-                <input type="text" id="marker_{{index}}_lat" value="{{lat}}" />
-            </p>
-            <p>
-                <label for="marker_{{index}}_lng">Longitude:</label>
-                <input type="text" id="marker_{{index}}_lng" value="{{lng}}" />
-            </p>
-            <input type="submit" value="Update position" class="btn btn-bricky" />
-        </form>
-    </script>
-        <script>
-            jQuery(document).ready(function () {
-                Main.init();
-                Maps.init();
-                SVExamples.init();
-                Index.init();
-                
-            });
-        </script>
+                </div>
 
 
 
-</body>
-</html>
+
+            </div>
+
+
+
+            <div class="col-xs-12 col-md-6">
+
+                <div class="titulodesc">
+                    <br>
+                    <h3><strong>@Model.nombre</strong></h3>
+                </div>
+                <br />
+                <div class="desc-des" style="font-size:17px;">
+                    @Model.descripcion
+                    <br />
+                    <br />
+                </div>
+                <div class="desc-des">
+
+                    <div class="row">
+         
+                    </div>
+
+                    <br />
+
+                </div>
+
+                <div class="titulodesc">
+                    <br>
+                    <h3><strong>Galeria de Fotos</strong></h3>
+                </div>
+
+
+                <div class="row">
+                    @{
+                        int index = 0;
+
+                        foreach (var item in Model.FotosNegocio)
+                        {
+
+                            string activo = "";
+                            if (index == 0) { activo = "active"; }
+
+                            <div class="col-xs-6 col-md-3" style="padding:6px">
+                                <div class="item @activo" data-thumb="@index">
+                                    <img src="@Url.Action("ObtenerImagen","Negocios",new { id = item.idFoto })" onclick="modal('@index')" id="foto_@index" style="cursor: pointer;width:100px;height: 79px; " class="img-thumbnail">
+                                </div>
+                            </div>
+
+
+                            index++;
+                        }
+                    }
+                </div>
+
+                <div class="titulodesc">
+                    <br>
+                    <h3><strong>Dirección</strong></h3>
+                </div>
+
+
+                <div style="width:100%; height:300px;">
+                    <div style="width:100%; height:100%" id="map_canvas"></div>
+                </div>
+
+
+
+            </div>
+
+            <div class="col-xs-12 col-md-3 sideBar">
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <div class="btn-group" role="group" aria-label="...">
+
+                            <div class="panel panel-default">
+
+                                <div class="panel-heading">Datos de Interés</div>
+                                <div class="panel-body">
+                                    <div class="collapse navbar-collapse navbar-ex1-collapse navbar-side-collapse">
+
+                                        <div style="color: cornflowerblue;font-size: 16px;padding:10px;"><i class="fa fa-phone"> <span class="text-bold">Teléfono: @Model.Sucursal.FirstOrDefault().telefono</span></i></div>
+                                        <div style="color: cornflowerblue;font-size: 16px;padding:10px;">
+                                            <i class="fa fa-map-marker">
+                                                <span class="text-bold">Dirección: @Model.Sucursal.FirstOrDefault().Domicilio.calle @Html.Label("  ") @Model.Sucursal.FirstOrDefault().Domicilio.numero @Html.Label(",  ") @Model.Sucursal.FirstOrDefault().Domicilio.Localidad.nombreLocalidad</span>
+                                            </i>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+</section>
+
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title" id="myModalLabel"></h4>
+            </div>
+            <div class="modal-body">
+                <img class="img-responsive" style="width:100%; height:100%" id="img_modal" src="">
+            </div>
+            <div class="modal-footer">
+
+                <a class="btn btn-default" style="padding: 10px;" data-dismiss="modal" href="javascript:void(0);">Cerrar</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function modal(id) {
+        $("#myModalLabel").html('Foto');
+        var src = $("#foto_" + id).attr("src");
+        $("#img_modal").attr("src", src);
+        $('#myModal').modal('show');
+    };
+
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

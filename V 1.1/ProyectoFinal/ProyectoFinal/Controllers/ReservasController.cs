@@ -179,6 +179,8 @@ namespace ProyectoFinal.Controllers
             ObtenerUsuarioActual();
   
             ViewBag.Perfil = usuarioActual.idPerfil;
+
+            ViewBag.idPerfil = usuarioActual.idPerfil;
             ViewBag.UsuarioActual = usuarioActual;
 
             var listado = hm.consultarListadoReservasPorPersona(Convert.ToInt32(usuarioActual.idPersona));

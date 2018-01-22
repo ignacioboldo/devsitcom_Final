@@ -175,6 +175,20 @@ namespace BL
 
             return solicitud;
         }
+        public Promociones PromocionesEntityToPromocion(PromocionesEntity pro)
+        {
+            Promociones p = new Promociones()
+            {
+                titulo = pro.titulo,
+                descripcion = pro.descripcion,
+                fechaVencimiento = pro.fechaVencimiento,
+                idNegocio = pro.idNegocio,
+                ofertaMaxima = pro.ofertaMaxima,
+                diasBeneficio = pro.diasBeneficio
+            };
+
+            return p;
+        }
 
     }
 }

@@ -165,7 +165,17 @@ namespace ProyectoFinal
                  ""); // additional informations
 
                 FormsAuthentication.SetAuthCookie(us.nombreUsuario, false);
-                return RedirectToAction("Index", "Home");
+
+                string returnUrl = (string)Session["ReturnUrl"];
+
+                if(returnUrl != null)
+                {
+                    Session["ReturnUrl"] = null;
+
+                    return Redirect(returnUrl);
+                }
+                else
+                    return RedirectToAction("Index", "Home");
             }
             else
             {
@@ -188,6 +198,7 @@ namespace ProyectoFinal
             ViewBag.Perfiles = new SelectList(db.Perfiles, "idPerfil", "nombre", usuarioActual.idPerfil);
             ViewBag.Perfil = usuarioActual.idPerfil;
             ViewBag.Mensaje = mensaje;
+            ViewBag.nombre = "pablo";
             return View(usuarioActual);
         }
         protected override void Dispose(bool disposing)

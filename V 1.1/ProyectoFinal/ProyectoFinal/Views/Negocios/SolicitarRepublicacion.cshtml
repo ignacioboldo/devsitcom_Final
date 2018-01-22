@@ -1,0 +1,149 @@
+﻿@model BussinesEntities.NegocioEntity
+@{
+    ViewBag.Title = "Solicitar Republicación de Negocio";
+}
+
+
+<script type="text/javascript">
+    var error = "@ViewBag.Error"
+
+    $(document).ready(function () {
+        if (error == 1)
+            alert("Debés aceptar los términos y condiciones");
+    });
+
+</script>
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Solicitar Republicación</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="Home">INICIO</a>
+                    </li>
+                    <li class="active">Solicitar Republicación</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+        <div class="panel panel-white">
+            <div class="panel-heading">
+                <!--<h4 class="panel-title pull-right">Solicitar Modulo <span class="text-bold">Gestión de Reservas</span></h4>-->
+            </div>
+            <div class="panel-body">
+                <div class="list-group">
+                    <a class="list-group-item list-group-item-info" href="#" style="font-size: 20px;">
+                        <h4>DATOS DEL NEGOCIO</h4>
+                    </a>
+                    <a class="list-group-item" href="#">
+                        @Html.Label("NOMBRE: ") @Model.nombre
+                    </a>
+                    <a class="list-group-item" href="#">
+                        @Html.Label("TIPO: ") @Model.TipoDeNegocio.nombre
+                    </a>
+
+                    @{
+                        if (Model.idTipoNegocio == 1)
+                        {
+                            <a class="list-group-item" href="#">
+                                @if (Model.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje != 2)
+                                {
+                                    @Html.Label("  -  ") @Model.LugarHospedaje.FirstOrDefault().TipoLugarHospedaje.nombre
+                                }
+                                else
+                                {
+                                    @Html.Label("  -  ") @Model.LugarHospedaje.FirstOrDefault().TipoLugarHospedaje.nombre
+                                    @Html.Label(" de ") @Model.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().TipoComplejo.nombreTipoComplejo
+                                }
+                            </a>
+                        }
+
+                    }
+
+                    <a class="list-group-item" href="#">
+                        @Html.Label("DESCRIPCION: ") @Model.descripcion
+                    </a>
+                    <a class="list-group-item" href="#">
+                        @Html.Label("LOCALIDAD: ") @Model.Sucursal.FirstOrDefault().Domicilio.Localidad.nombreLocalidad
+                    </a>
+                    <a class="list-group-item" href="#">
+                        @Html.Label("CALLE: ") @Model.Sucursal.FirstOrDefault().Domicilio.calle
+                    </a>
+                    <a class="list-group-item" href="#">
+                        @Html.Label("NÚMERO: ") @Model.Sucursal.FirstOrDefault().Domicilio.numero
+                    </a>
+                    <a class="list-group-item" href="#">
+                        @Html.Label("BARRIO: ") @Model.Sucursal.FirstOrDefault().Domicilio.barrio
+                    </a>
+                    <a class="list-group-item" href="#">
+                        @Html.Label("DPTO: ") @Model.Sucursal.FirstOrDefault().Domicilio.dpto
+                    </a>
+                </div>
+                <br />
+                <br />
+
+                @{
+                    DAL.Persona p = ViewBag.Persona;
+
+
+                    <div class="list-group">
+                        <a class="list-group-item list-group-item-info" href="#" style="font-size: 20px;">
+                            <h4>DATOS DEL RESPONSABLE</h4>
+                        </a>
+                        <a class="list-group-item" href="#">
+                            @Html.Label("NOMBRE: ") @p.nombre
+                        </a>
+                        <a class="list-group-item" href="#">
+                            @Html.Label("APELLIDO: ") @p.apellido
+                        </a>
+                        <a class="list-group-item" href="#">
+                            @Html.Label("DNI: ") @p.documento
+                        </a>
+                        <a class="list-group-item" href="#">
+                            @Html.Label("EMAIL: ") @p.email
+                        </a>
+                        <a class="list-group-item" href="#">
+                            @Html.Label("APELLIDO: ") @p.apellido
+                        </a>
+                    </div>
+                }
+
+                <br />
+                <br />
+                @*<h3>CONDICIONES DE USO</h3>*@
+
+                @using (Html.BeginForm("RepublicarNegocio", "Negocios", new { idNegocio = Model.idNegocio }, FormMethod.Post, new { id = "republicarNegocio", name = "republicarNegocio" }))
+                {
+
+                    @Html.CheckBox("aceptaCondiciones") @Html.Label("Aceptar términos y condiciones")
+
+
+
+                    <br />
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="SOLICITAR REPUBLICACION" style="background: yellowgreen; color:white;padding:10px;" class="btn btn-green col-lg-offset-5" />
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+
+
+    </div>
+
+</section>
+

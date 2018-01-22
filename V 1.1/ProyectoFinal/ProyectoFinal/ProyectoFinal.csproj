@@ -180,6 +180,8 @@
     <Compile Include="Controllers\HotelController.cs" />
     <Compile Include="Controllers\NegociosController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
+    <Compile Include="Controllers\PromocionesController.cs" />
+    <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\ReservasController.cs" />
     <Compile Include="Controllers\TipoHabitacionController.cs" />
     <Compile Include="Controllers\TramitesController.cs" />
@@ -436,8 +438,8 @@
     <Content Include="Content\themes\base\tooltip.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <Content Include="Controllers\Images\lafalda.jpg" />
-    <Content Include="Controllers\Images\modif_datos.png" />
+    <Content Include="Content\Images\lafalda.jpg" />
+    <Content Include="Content\Images\modif_datos.png" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\gridmvc.js" />
@@ -623,6 +625,22 @@
     <Content Include="Views\Reservas\ReservasUsuario.cshtml" />
     <Content Include="Views\Reservas\ListadoConsultaReserva.cshtml" />
     <Content Include="Views\Reservas\ListadoPlanoReservas.cshtml" />
+    <Content Include="Views\Promociones\Delete.cshtml" />
+    <Content Include="Views\Promociones\Edit.cshtml" />
+    <Content Include="Views\Promociones\NuevaPromocion.cshtml" />
+    <Content Include="Views\Promociones\ObtenerPromocion.cshtml" />
+    <Content Include="Views\Promociones\PromocionesNeg.cshtml" />
+    <Content Include="Views\Promociones\PromocionesUsuario.cshtml" />
+    <Content Include="Views\Promociones\PromocionOtorgada.cshtml" />
+    <Content Include="Views\Promociones\ValidarPromocion.cshtml" />
+    <Content Include="Views\Shared\_Botonera.cshtml" />
+    <Content Include="Views\Negocios\SolicitarBajaNegocio.cshtml" />
+    <Content Include="Views\Negocios\SolicitarRepublicacion.cshtml" />
+    <Content Include="Views\Reportes\Index.cshtml" />
+    <Content Include="Views\Reportes\GraficoBar.cshtml" />
+    <Content Include="Views\Reportes\GraficoPie.cshtml" />
+    <Content Include="Views\Reportes\DataTable.cshtml" />
+    <Content Include="Views\Reportes\SinDatos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

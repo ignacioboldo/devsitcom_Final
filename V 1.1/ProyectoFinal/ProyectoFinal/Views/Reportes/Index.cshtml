@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "Gestion de Reportes";
+}
+
+
+<script>
+
+    function buscarReporte() {
+
+        var nombre_reporte = $("#nombre_reporte").val();
+        var fecha_desde    = $("#fecha_desde").val();
+        var fecha_hasta    = $("#fecha_hasta").val();
+
+        $.ajax({
+            type: 'GET',
+            url: 'Reportes/BuscarReporte?nombre_reporte=' + nombre_reporte + '&fecha_desde=' + fecha_desde + '&fecha_hasta=' +  fecha_hasta,
+            success: function (response) {
+                $("#resultado").html(response);
+            }
+        })
+    }
+
+</script>
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Gestion de Reportes</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Gestion de Reportes</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+        <div class="row" style="margin-bottom:20px;">
+            <div class="col-md-12">
+                <select class="form-control" id="nombre_reporte">
+                    <option value="GRAFICO_PIE">GRAFICO_PIE</option>
+                    <option value="GRAFICO_BAR">GRAFICO_BAR</option>
+                    <option value="DATA_TABLA">DATA_TABLA</option>
+                </select>
+            </div>
+            
+  
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <input class="form-control" placeholder="Fecha Desde" id="fecha_desde" type="text" />
+            </div>
+            <div class="col-md-4">
+                <input class="form-control" placeholder="Fecha Hasta" id="fecha_hasta" type="text" />
+            </div>
+            <div class="col-md-4">
+                <button class="btn btn-block" onclick="buscarReporte();" style="background-color:yellowgreen; color:white;height: 33px;padding: 5px;">Buscar</button>
+            </div>
+
+        </div>
+
+        <hr />
+
+        <div id="resultado"></div>
+
+    </div>
+</section>

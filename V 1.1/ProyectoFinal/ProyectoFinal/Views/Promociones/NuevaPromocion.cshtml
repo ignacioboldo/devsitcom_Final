@@ -1,0 +1,163 @@
+﻿@model BussinesEntities.PromocionesEntity
+
+@{
+    ViewBag.Title = "Nueva Promocion";
+}
+
+<script type="text/javascript">
+
+    var mensaje = "@ViewBag.Mensaje"
+
+    var idNegocio = "@ViewBag.idNegocio"
+
+    if (mensaje != "") {
+        alert(mensaje);
+    }
+
+    $(document).ready(function () {
+
+
+        if (perfil == 3) {
+            $("#btnTusTramites").hide();
+            $("#btnTusNegocios").hide();
+            $("#btnTusTramitesAsignados").show();
+        }
+        else {
+            $("#btnTusTramites").show();
+            $("#btnTusNegocios").show();
+            $("#btnTusTramitesAsignados").hide();
+        }
+        
+
+        $("#btnTusTramites").click(function (event) {
+            window.location = '@Url.Action("TramitesUsuario","Tramites")';
+            event.preventDefault();
+        });
+
+        $("#btnTusTramitesAsignados").click(function (event) {
+            window.location = '@Url.Action("TramitesUsuario","Tramites")';
+            event.preventDefault();
+        });
+
+        $("#btnModificarDatos").click(function (event) {
+            window.location = '@Url.Action("EditUsuario","Usuarios")';
+            event.preventDefault();
+        });
+
+        $("#btnTusNegocios").click(function (event) {
+            window.location = '@Url.Action("NegociosUsuario","Negocios")';
+            event.preventDefault();
+        });
+
+
+
+        /*$("formPromociones").submit(function () {
+
+            alert("entro");
+
+            $.ajax({     
+                type: 'POST',  
+                url: "../Promociones/NuevaPromocion",
+                dataType: "json",
+                data: $("formPromociones").serialize() + '?idNegocio=' + idNegocio
+            });
+        });*/
+
+    }); 
+</script>
+
+
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Nueva Promocion</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Nueva Promocion</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+        @using (Html.BeginForm("NuevaPromocion", "Promociones", FormMethod.Post, new { id = "formPromociones" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+     
+                @Html.ValidationSummary(true)
+
+
+
+                <div class="form-group">
+                    @Html.Label("Título: ", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.titulo, new { @class = "form-control", style = "width:300px;" })
+                        @Html.ValidationMessageFor(model => model.titulo)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Descripción: ", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextAreaFor(model => model.descripcion, new { @class = "autosize form-control", style = "width:300px;" })
+                        @Html.ValidationMessageFor(model => model.descripcion)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Días Beneficio: ", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.diasBeneficio, new { @class = "autosize form-control", style = "width:300px;" })
+                        @Html.ValidationMessageFor(model => model.diasBeneficio)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Fecha de vencimiento (DD/MM/YYYY): ", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.fechaVencimiento, new { @class = "autosize form-control", style = "width:300px;" })
+                        @Html.ValidationMessageFor(model => model.fechaVencimiento)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.Label("Oferta máxima: ", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.ofertaMaxima, new { @class = "autosize form-control", style = "width:300px;" })
+                        @Html.ValidationMessageFor(model => model.ofertaMaxima)
+                    </div>
+                </div>
+
+                <div class="form-group" style="display:none">
+
+                    @Html.HiddenFor(m => m.idNegocio, new { @value = "@ViewBag.IdNegocio" })
+
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="CREAR PROMOCION" style="background: yellowgreen; color:white;padding:10px;" class="btn btn-default" />
+                    </div>
+                </div>
+            </div>
+        }
+
+    
+    </div>
+</section>

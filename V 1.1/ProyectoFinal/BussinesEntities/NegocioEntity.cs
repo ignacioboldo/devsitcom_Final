@@ -33,6 +33,10 @@ namespace BussinesEntities
         public Nullable<System.DateTime> fechaAlta { get; set; }
         public Nullable<int> idTipoNegocio { get; set; }
         public Nullable<int> idUsuario { get; set; }
+
+        public Nullable<bool> estaAnulado { get; set; }
+
+        public Nullable<bool> estaAprobado { get; set; }
         public Nullable<int> idNegocioModif { get; set; }
 
         public Nullable<int> idPerfil { get; set; }
@@ -41,9 +45,9 @@ namespace BussinesEntities
         public virtual ICollection<FotosNegocio> FotosNegocio { get; set; }
         public virtual ICollection<LugarHospedajeEntity> LugarHospedaje { get; set; }
         public virtual TipoDeNegocio TipoDeNegocio { get; set; }
-        public virtual Perfiles Perfiles { get; set; }
         public virtual Usuarios Usuarios { get; set; }
         public virtual ICollection<SucursalEntity> Sucursal { get; set; }
         public virtual ICollection<TramiteEntity> Tramite { get; set; }
+        public virtual ICollection<PromocionesNegocioEntity> Promociones { get; set; }
     }
 }

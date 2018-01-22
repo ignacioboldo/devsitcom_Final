@@ -165,6 +165,10 @@ namespace BL
                         break;
                 case 3: CETModifNegocio(tramite, idEstadoACambiar, us);
                         break;
+                case 4: CETBajaNegocio(tramite, idEstadoACambiar, us);
+                        break;
+                case 5: CETRepublicarNegocio(tramite, idEstadoACambiar, us);
+                        break;
 	        	
                 default:
                 break;
@@ -185,6 +189,7 @@ namespace BL
 
                             db.SaveChanges();
                             break;
+
                         case 3: result.fechaFin = DateTime.Now; //3: Aprobado
                             result.idEstadoTramite = 3;
                             result.Negocio.estaAprobado = true;
@@ -192,6 +197,7 @@ namespace BL
 
                             db.SaveChanges();
                             break;
+
                         case 4: result.fechaFin = DateTime.Now;//4: Rechazado
                             result.idEstadoTramite = 4;
                             result.Negocio.estaAprobado = false;
@@ -199,11 +205,18 @@ namespace BL
 
                             db.SaveChanges();
                             break;
-                        case 5: result.fechaFin = DateTime.Now;
-                            result.idEstadoTramite = 5; //5: Cancelado
 
-                            db.SaveChanges();
+                        case 5: result.fechaFin = DateTime.Now;
+                                result.idEstadoTramite = 5; //5: Cancelado
+                               
+                                db.SaveChanges();
                             break;
+
+                        case 6: result.idEstadoTramite = 6;
+                                
+                               db.SaveChanges();
+                               break;
+
                         default:
                             break;
                     }
@@ -308,6 +321,66 @@ namespace BL
 
                                 db.SaveChanges();
                                 break;
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+        public void CETBajaNegocio(TramiteEntity tramite, int idEstadoACambiar, UsuarioEntity us)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                var result = db.Tramite.Include("Negocio").Where(t => t.idTramite == tramite.idTramite).FirstOrDefault();
+
+                if (result != null)
+                {
+                    switch (idEstadoACambiar)
+                    {
+                        case 2: result.idUsuarioResponsable = us.idUsuario;
+                                result.idEstadoTramite = 2;//2: En revisión
+
+                                db.SaveChanges();
+                                break;
+
+                        case 3: result.fechaFin = DateTime.Now; //3: Aprobado
+                                result.idEstadoTramite = 3;
+                                result.comentario = tramite.comentario;
+
+                                db.SaveChanges();
+                                break;
+                      
+                        default:
+                            break;
+                    }
+                }
+            }
+        }
+        public void CETRepublicarNegocio(TramiteEntity tramite, int idEstadoACambiar, UsuarioEntity us)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                var result = db.Tramite.Include("Negocio").Where(t => t.idTramite == tramite.idTramite).FirstOrDefault();
+
+                if (result != null)
+                {
+                    switch (idEstadoACambiar)
+                    {
+                        case 2: result.idUsuarioResponsable = us.idUsuario;
+                            result.idEstadoTramite = 2;//2: En revisión
+
+                            db.SaveChanges();
+                            break;
+
+                        case 3: result.fechaFin = DateTime.Now; //3: Aprobado
+                                result.idEstadoTramite = 3;
+                                result.comentario = tramite.comentario;
+
+                                result.Negocio.estaAnulado = null;
+
+                                db.SaveChanges();
+                                break;
+
                         default:
                             break;
                     }

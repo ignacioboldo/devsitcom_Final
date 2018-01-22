@@ -1,0 +1,97 @@
+﻿@model BussinesEntities.PromocionesOtorgadasUsuario
+
+@{
+    ViewBag.Title = "Obtener Promocion";
+}
+
+
+
+<section class="lightSection clearfix pageHeader">
+
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>
+
+                        OBTUVISTE LA PROMOCION!
+
+                    </h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="home">INICIO</a>
+                    </li>
+                    <li class="active">
+                        OBTUVISTE LA PROMOCION!
+                    </li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="mainContent clearfix userProfile">
+
+
+    <div class="container">
+
+        <div>
+            <h4>Detalles</h4>
+            <hr />
+            <dl class="dl-horizontal">
+
+                <dt>
+                    Negocio:
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.NEGOCIO)
+                </dd>
+
+                <dt>
+                    Promocion:
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.PROMOCION)
+                </dd>
+
+                <dt>
+                    Obtenida:
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.OBTENIDA)
+                </dd>
+
+                <dt>
+                    Vence:
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.VENCE)
+                </dd>
+
+                <dt>
+                    Codigo:
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.CODIGO)
+                </dd>
+
+            </dl>
+        </div>
+        <p>
+            @{
+                int idUsuario = ViewBag.IdUsuario;
+            }
+            <button style="background: yellowgreen; color:white;padding:10px;"  onclick="window.location = '@Url.Action("PromocionesUsuario", "Promociones", new { idUsuario = idUsuario })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">IR A TUS PROMOCIONES</button>
+        </p>
+    </div>
+
+</section>

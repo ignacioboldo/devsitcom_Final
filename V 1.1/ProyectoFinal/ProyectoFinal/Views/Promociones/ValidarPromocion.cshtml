@@ -1,0 +1,218 @@
+﻿@model BussinesEntities.PromocionesOtorgadasUsuario
+
+@{
+    ViewBag.Title = "Validar Promocion";
+}
+
+
+<script type="text/javascript">
+
+    var mensaje = "@ViewBag.Mensaje"
+    var status = "@ViewBag.Status"
+
+    $(document).ready(function () {
+
+        if(status==0 && mensaje!=""){
+            $("#divMensajeError").show();
+        }
+
+        if (status == 1 && mensaje != "") {
+            $("#divMensajeOk").show();
+        }
+       
+
+
+        /*$("formPromociones").submit(function () {
+
+            alert("entro");
+
+            $.ajax({
+                type: 'POST',
+                url: "../Promociones/NuevaPromocion",
+                dataType: "json",
+                data: $("formPromociones").serialize() + '?idNegocio=' + idNegocio
+            });
+        });*/
+
+    });
+</script>
+
+
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>VALIDAR PROMOCION</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">VALIDAR PROMOCION</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+   
+        @using (Html.BeginForm("ValidarPromo", "Promociones", FormMethod.Post, new { id = "formValidarPromo" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+          
+                @Html.ValidationSummary(true)
+
+
+                <div class="form-group">
+                    @Html.Label("INGRESA EL CODIGO: ", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.CODIGO, new { @class = "form-control", style = "width:300px;" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="VALIDAR" style="background: yellowgreen; color:white;padding:10px;" class="btn btn-default" />
+                    </div>
+                </div>
+
+            </div>
+        }
+
+
+
+        <div id="divMensajeOk" style="color:green; display:none;">
+
+            @ViewBag.Mensaje
+
+            <br />
+
+        </div>
+
+        <div id="divMensajeError" style="color:red; display:none;">
+
+            @ViewBag.Mensaje
+
+            <br />
+
+        </div>
+
+
+
+        @{
+            if (Model != null)
+            {
+                DAL.Persona p = ViewBag.Persona;
+
+                string nombreCompleto = p.nombre + " " + p.apellido;
+
+                <div>
+
+                    <h4>Promocion Valida!</h4>
+                    <hr />
+                    <dl class="dl-horizontal">
+
+                        <dt>
+                            PROMOCION:
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.PROMOCION)
+                        </dd>
+
+                        <dt>
+                            NEGOCIO:
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.NEGOCIO)
+                        </dd>
+
+                        <dt>
+                            OBTENIDA:
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.OBTENIDA)
+                        </dd>
+
+                        <dt>
+                            VENCE:
+                        </dt>
+
+                        <dd>
+                            @Html.DisplayFor(model => model.VENCE)
+                        </dd>
+
+                        <br />
+
+                        <dt>
+                            USUARIO:
+                        </dt>
+
+                        <dd>
+                            @nombreCompleto
+                        </dd>
+
+                        <dt>
+                            MAIL:
+                        </dt>
+
+                        <dd>
+                            @p.email
+                        </dd>
+
+                        <dt>
+                            DOCUMENTO:
+                        </dt>
+
+                        <dd>
+                            @p.documento.ToString()
+                        </dd>
+
+                    </dl>
+
+                </div>
+
+                <br />
+
+                <div>
+                    <p>
+                        <button style="background: yellowgreen; color:white;padding:10px;" onclick="window.location = '@Url.Action("RegUsoPromocion", "Promociones", new { codigo = Model.CODIGO })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">REGISTRAR USO DE PROMOCIÓN</button>
+                    </p>
+                </div>
+
+            }
+        }
+
+
+
+
+
+
+
+
+    </div>
+</section>
+
+
+
+
+<br />
+
+       
+
+
+

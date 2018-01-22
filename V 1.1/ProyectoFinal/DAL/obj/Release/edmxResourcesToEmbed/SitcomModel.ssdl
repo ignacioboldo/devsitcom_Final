@@ -44,6 +44,18 @@
     <Property Name="idCategoria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="nombre" Type="varchar" MaxLength="150" />
   </EntityType>
+  <EntityType Name="ComentariosSolicitud">
+    <Key>
+      <PropertyRef Name="idComentarioSolicitud" />
+    </Key>
+    <Property Name="idComentarioSolicitud" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="comentario" Type="nvarchar(max)" />
+    <Property Name="rutaAdjunto" Type="varchar(max)" />
+    <Property Name="idSolicitud" Type="int" />
+    <Property Name="fechaEnvioComentario" Type="datetime" />
+    <Property Name="comentarioCliente" Type="bit" />
+    <Property Name="mensajesSinLeer" Type="bit" />
+  </EntityType>
   <EntityType Name="Comercio">
     <Key>
       <PropertyRef Name="idComercio" />
@@ -175,6 +187,7 @@
     <Property Name="idUsuario" Type="int" />
     <Property Name="estaAprobado" Type="bit" />
     <Property Name="idNegocioModif" Type="int" />
+    <Property Name="estaAnulado" Type="bit" />
   </EntityType>
   <EntityType Name="Paginas">
     <Key>
@@ -222,6 +235,30 @@
     <Property Name="idTipoDocumento" Type="int" />
     <Property Name="idDomicilio" Type="int" />
     <Property Name="idNegocio" Type="int" />
+  </EntityType>
+  <EntityType Name="Promociones">
+    <Key>
+      <PropertyRef Name="idPromocion" />
+    </Key>
+    <Property Name="idPromocion" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="fechaAlta" Type="datetime" />
+    <Property Name="fechaVencimiento" Type="datetime" />
+    <Property Name="titulo" Type="nvarchar" MaxLength="100" />
+    <Property Name="descripcion" Type="nvarchar" MaxLength="200" />
+    <Property Name="diasBeneficio" Type="int" />
+    <Property Name="idNegocio" Type="int" />
+    <Property Name="ofertaMaxima" Type="int" />
+  </EntityType>
+  <EntityType Name="PromocionesOtorgadas">
+    <Key>
+      <PropertyRef Name="codigo" />
+    </Key>
+    <Property Name="idPromocion" Type="int" Nullable="false" />
+    <Property Name="idUsuario" Type="int" />
+    <Property Name="fechaOtorgamiento" Type="datetime" />
+    <Property Name="fechaVencimiento" Type="datetime" />
+    <Property Name="codigo" Type="nvarchar" MaxLength="8" Nullable="false" />
+    <Property Name="utilizada" Type="int" />
   </EntityType>
   <EntityType Name="Provincia">
     <Key>
@@ -759,6 +796,42 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_Promociones_Negocio">
+    <End Role="Negocio" Type="Self.Negocio" Multiplicity="0..1" />
+    <End Role="Promociones" Type="Self.Promociones" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Negocio">
+        <PropertyRef Name="idNegocio" />
+      </Principal>
+      <Dependent Role="Promociones">
+        <PropertyRef Name="idNegocio" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PromocionesOtorgadas_Promociones">
+    <End Role="Promociones" Type="Self.Promociones" Multiplicity="1" />
+    <End Role="PromocionesOtorgadas" Type="Self.PromocionesOtorgadas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Promociones">
+        <PropertyRef Name="idPromocion" />
+      </Principal>
+      <Dependent Role="PromocionesOtorgadas">
+        <PropertyRef Name="idPromocion" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_PromocionesOtorgadas_Usuarios">
+    <End Role="Usuarios" Type="Self.Usuarios" Multiplicity="0..1" />
+    <End Role="PromocionesOtorgadas" Type="Self.PromocionesOtorgadas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuarios">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="PromocionesOtorgadas">
+        <PropertyRef Name="idUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_Provincia_Pais">
     <End Role="Pais" Type="Self.Pais" Multiplicity="0..1" />
     <End Role="Provincia" Type="Self.Provincia" Multiplicity="*" />
@@ -903,11 +976,58 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Function Name="Actualizar_Comentarios_Leidos" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idReserva" Type="int" Mode="In" />
+  </Function>
+  <Function Name="altaPromocion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idNegocio" Type="int" Mode="In" />
+    <Parameter Name="fechaVencimiento" Type="date" Mode="In" />
+    <Parameter Name="titulo" Type="varchar" Mode="In" />
+    <Parameter Name="descripcion" Type="varchar" Mode="In" />
+    <Parameter Name="diasBeneficio" Type="int" Mode="In" />
+    <Parameter Name="ofertaMaxima" Type="int" Mode="In" />
+  </Function>
   <Function Name="cambiarCasaODptoNuevoComplejo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="idNegocioNuevo" Type="int" Mode="In" />
   </Function>
   <Function Name="cambiarHabitacionesNuevoHotel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="idNegocioNuevo" Type="int" Mode="In" />
+  </Function>
+  <Function Name="cancelPromociones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idPromocion" Type="int" Mode="In" />
+  </Function>
+  <Function Name="ComentariosSolicitud_i" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="comentario" Type="nvarchar(max)" Mode="In" />
+    <Parameter Name="rutaAdjunto" Type="varchar(max)" Mode="In" />
+    <Parameter Name="idSolicitud" Type="int" Mode="In" />
+    <Parameter Name="comentarioCliente" Type="bit" Mode="In" />
+  </Function>
+  <Function Name="ConsultarComentariosSolicitud" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idSolicitud" Type="int" Mode="In" />
+  </Function>
+  <Function Name="ConsultarHabitacionesDisponiblesPorFechaYNegocio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="fechaDesde" Type="datetime" Mode="In" />
+    <Parameter Name="fechaHasta" Type="datetime" Mode="In" />
+    <Parameter Name="idNegocio" Type="int" Mode="In" />
+  </Function>
+  <Function Name="ConsultarHabitacionesDisponiblesPorFechaYNegocio_Planning" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="fechaDesde" Type="datetime" Mode="In" />
+    <Parameter Name="fechaHasta" Type="datetime" Mode="In" />
+    <Parameter Name="idNegocio" Type="int" Mode="In" />
+  </Function>
+  <Function Name="ConsultarHabitacionesDisponiblesPorFechaYNegocio_Planning_agrupadas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="fechaDesde" Type="datetime" Mode="In" />
+    <Parameter Name="fechaHasta" Type="datetime" Mode="In" />
+    <Parameter Name="idNegocio" Type="int" Mode="In" />
+  </Function>
+  <Function Name="ConsultarListadoReservasPorPersona" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idPersona" Type="int" Mode="In" />
+  </Function>
+  <Function Name="ConsultarListadReservasPorFechaYNegocio_Planning" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="fechaDesde" Type="datetime" Mode="In" />
+    <Parameter Name="fechaHasta" Type="datetime" Mode="In" />
+    <Parameter Name="idNegocio" Type="int" Mode="In" />
+    <Parameter Name="tipoComentario" Type="bit" Mode="In" />
   </Function>
   <Function Name="ConsultarLugaresHospedaje" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="fechaDesde" Type="datetime" Mode="In" />
@@ -915,6 +1035,17 @@
     <Parameter Name="cantPersonas" Type="int" Mode="In" />
     <Parameter Name="cantHabitaciones" Type="int" Mode="In" />
     <Parameter Name="tipoHospedaje" Type="varchar(max)" Mode="In" />
+  </Function>
+  <Function Name="DetalleDisponibilidad_i" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idDisponibilidad" Type="int" Mode="In" />
+    <Parameter Name="idPersona" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Disponibilidad_i" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="fechaDesde" Type="datetime" Mode="In" />
+    <Parameter Name="fechaHasta" Type="datetime" Mode="In" />
+    <Parameter Name="idHabitacion" Type="int" Mode="In" />
+    <Parameter Name="idCasaODpto" Type="int" Mode="In" />
+    <Parameter Name="idReserva" Type="int" Mode="In" />
   </Function>
   <Function Name="getDisponibilidadCasaDpto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="idCasa" Type="int" Mode="In" />
@@ -940,12 +1071,71 @@
     <Parameter Name="anio" Type="int" Mode="In" />
     <Parameter Name="mes" Type="int" Mode="In" />
   </Function>
+  <Function Name="getPromociones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idNegocio" Type="int" Mode="In" />
+    <Parameter Name="esTurista" Type="int" Mode="In" />
+  </Function>
+  <Function Name="getPromocionesOtorgadas" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idUsuario" Type="int" Mode="In" />
+  </Function>
+  <Function Name="getPromocionOtorgada" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="codigo" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="getUltimaPromocionOtorgada" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idUsuario" Type="int" Mode="In" />
+  </Function>
+  <Function Name="obtenerCodigoProm" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="codigo" Type="varchar" Mode="InOut" />
+  </Function>
+  <Function Name="otorgarPromocion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idPromocion" Type="int" Mode="In" />
+    <Parameter Name="idUsuario" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Persona_i" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="nombre" Type="varchar(max)" Mode="In" />
+    <Parameter Name="apellido" Type="varchar(max)" Mode="In" />
+    <Parameter Name="email" Type="varchar" Mode="In" />
+    <Parameter Name="documento" Type="int" Mode="In" />
+    <Parameter Name="idSexo" Type="int" Mode="In" />
+    <Parameter Name="idTelefono" Type="int" Mode="In" />
+    <Parameter Name="idTipoDocumento" Type="int" Mode="In" />
+    <Parameter Name="idDomicilio" Type="int" Mode="In" />
+    <Parameter Name="idNegocio" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Persona_s_By_IdNegocio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idNegocio" Type="int" Mode="In" />
+  </Function>
+  <Function Name="regUsoPromocion" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="codigo" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="Reserva_Anular" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idReserva" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Reserva_CheckIn" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idReserva" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Reserva_CheckOut" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idReserva" Type="int" Mode="In" />
+  </Function>
+  <Function Name="Reserva_i" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idPersonaSolicitante" Type="int" Mode="In" />
+    <Parameter Name="idNegocio" Type="int" Mode="In" />
+    <Parameter Name="idSolicitud" Type="int" Mode="In" />
+  </Function>
+  <Function Name="updatePromociones" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="idPromocion" Type="int" Mode="In" />
+    <Parameter Name="fechaVencimiento" Type="date" Mode="In" />
+    <Parameter Name="titulo" Type="varchar" Mode="In" />
+    <Parameter Name="descripcion" Type="varchar" Mode="In" />
+    <Parameter Name="diasBeneficio" Type="int" Mode="In" />
+  </Function>
   <EntityContainer Name="SitcomModelStoreContainer">
     <EntitySet Name="Caracteristica" EntityType="Self.Caracteristica" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CaracteristicasHospedaje" EntityType="Self.CaracteristicasHospedaje" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CasaDptoOCabana" EntityType="Self.CasaDptoOCabana" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CategoriaCaracteristicas" EntityType="Self.CategoriaCaracteristicas" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="CategoriaHospedaje" EntityType="Self.CategoriaHospedaje" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ComentariosSolicitud" EntityType="Self.ComentariosSolicitud" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Comercio" EntityType="Self.Comercio" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Complejo" EntityType="Self.Complejo" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DetalleDisponibilidad" EntityType="Self.DetalleDisponibilidad" Schema="dbo" store:Type="Tables" />
@@ -965,6 +1155,8 @@
     <EntitySet Name="Pais" EntityType="Self.Pais" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Perfiles" EntityType="Self.Perfiles" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Persona" EntityType="Self.Persona" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Promociones" EntityType="Self.Promociones" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PromocionesOtorgadas" EntityType="Self.PromocionesOtorgadas" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Provincia" EntityType="Self.Provincia" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Reserva" EntityType="Self.Reserva" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="Rubro" EntityType="Self.Rubro" Schema="dbo" store:Type="Tables" />
@@ -1112,6 +1304,18 @@
     <AssociationSet Name="FK_Persona_TipoDocumento" Association="Self.FK_Persona_TipoDocumento">
       <End Role="TipoDocumento" EntitySet="TipoDocumento" />
       <End Role="Persona" EntitySet="Persona" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Promociones_Negocio" Association="Self.FK_Promociones_Negocio">
+      <End Role="Negocio" EntitySet="Negocio" />
+      <End Role="Promociones" EntitySet="Promociones" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PromocionesOtorgadas_Promociones" Association="Self.FK_PromocionesOtorgadas_Promociones">
+      <End Role="Promociones" EntitySet="Promociones" />
+      <End Role="PromocionesOtorgadas" EntitySet="PromocionesOtorgadas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_PromocionesOtorgadas_Usuarios" Association="Self.FK_PromocionesOtorgadas_Usuarios">
+      <End Role="Usuarios" EntitySet="Usuarios" />
+      <End Role="PromocionesOtorgadas" EntitySet="PromocionesOtorgadas" />
     </AssociationSet>
     <AssociationSet Name="FK_Provincia_Pais" Association="Self.FK_Provincia_Pais">
       <End Role="Pais" EntitySet="Pais" />

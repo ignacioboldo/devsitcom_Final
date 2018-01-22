@@ -1,11 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
+
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace BussinesEntities
 {
+
+    public class ReportesDataTableEntities
+    {
+
+        public string descripcion { get; set; }
+        public DateTime? fecha { get; set; }
+
+    }
+
+    public class ReportesGraficoPieEntities
+    {
+
+        public string label { get; set; }
+        public int valor { get; set; }
+
+
+    }
+
+    public class ReportesGraficoBarEntities
+    {
+
+        public string label { get; set; }
+        public int valor { get; set; }
+
+    }
+
     public class ReservasEntities
     {
         public int? idNegocio { get; set; }

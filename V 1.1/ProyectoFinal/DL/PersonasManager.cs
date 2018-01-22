@@ -49,5 +49,19 @@ namespace BL
             }
         }
 
+        public Persona GetPersonaByIdUsuario(int idUsuario)
+        {
+            using (var db = new SitcomEntities())
+            {
+                var result = (from p in db.Persona.Include("Domicilio")
+                                      .Include("Sexo")
+                                      .Include("TipoDocumento")
+                              join u in db.Usuarios on p.idPersona equals u.idPersona
+                              where u.idUsuario == idUsuario
+                              select p).FirstOrDefault();
+                             
+                return result;
+            }
+        }
     }
 }

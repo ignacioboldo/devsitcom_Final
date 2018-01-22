@@ -22,3 +22,15 @@ C:\Boldo\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramework.SqlSer
 C:\Boldo\V 1.1\ProyectoFinal\BussinesEntities\obj\Release\BussinesEntities.csprojResolveAssemblyReference.cache
 C:\Boldo\V 1.1\ProyectoFinal\BussinesEntities\obj\Release\BussinesEntities.dll
 C:\Boldo\V 1.1\ProyectoFinal\BussinesEntities\obj\Release\BussinesEntities.pdb
+C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\obj\Release\BussinesEntities.csprojResolveAssemblyReference.cache
+C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\obj\Release\BussinesEntities.dll
+C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\obj\Release\BussinesEntities.pdb
+C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\BussinesEntities.dll.config
+C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\BussinesEntities.dll
+C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\BussinesEntities.pdb
+C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\DAL.dll
+C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramework.dll
+C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramework.SqlServer.dll
+C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\DAL.pdb
+C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramework.xml
+C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramework.SqlServer.xml

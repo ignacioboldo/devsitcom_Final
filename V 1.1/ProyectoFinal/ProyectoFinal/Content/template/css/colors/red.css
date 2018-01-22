@@ -187,6 +187,18 @@
     width: 42px;
 }
 
+.fileupload{
+    width: 200px;
+}
+
+.btn-file{
+    background: cornflowerblue;
+    color: white;
+    padding: 5px;
+    width: 100%;
+}
+
+
 
 
 /*# sourceMappingURL=deepBlue.css.map */

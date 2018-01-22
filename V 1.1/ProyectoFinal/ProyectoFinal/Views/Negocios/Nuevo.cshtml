@@ -88,10 +88,12 @@
             <div class="col-md-12">
    
                 <div class="form-group">
-                    <div class="col-md-9 col-lg-offset-4">
-                        @Html.DropDownListFor(model => model.idTipoNegocio, (SelectList)ViewBag.TiposNegocio, "-- SELECCIONA EL TIPO DE NEGOCIO --", new { id = "ddlTiposNegocio" })
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        @Html.DropDownListFor(model => model.idTipoNegocio, (SelectList)ViewBag.TiposNegocio, "-- SELECCIONA EL TIPO DE NEGOCIO --", new { id = "ddlTiposNegocio", @class = "form-control" })
                         @Html.ValidationMessageFor(model => model.idTipoNegocio)
                     </div>
+                    <div class="col-md-4"></div>
                 </div>
                 <br />
                 <br />

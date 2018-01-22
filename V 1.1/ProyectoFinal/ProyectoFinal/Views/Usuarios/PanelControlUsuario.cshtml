@@ -5,60 +5,7 @@
 @model BussinesEntities.UsuarioEntity
 
 
-<script type="text/javascript">
 
-    var perfil = "@Model.idPerfil"
-    var mensaje = "@ViewBag.Mensaje"
-
-    $(document).ready(function () {
-
-        if (perfil == 3) {
-            $("#btnTusTramites").hide();
-            $("#btnTusNegocios").hide();
-            $("#btnTusTramitesAsignados").show();
-            $("#tabSecretaria").show();
-            $("#btnMisReservas").hide();
-        }
-        else {
-            $("#btnTusTramites").show();
-            $("#btnTusNegocios").show();
-            $("#btnMisReservas").show();
-            $("#btnTusTramitesAsignados").hide();
-        }
-
-        if (mensaje != "") {
-            alert(mensaje);
-        }
-
-        $("#btnTusTramites").click(function (event) {
-            window.location = '@Url.Action("TramitesUsuario","Tramites")';
-            event.preventDefault();
-        });
-
-        $("#btnTusTramitesAsignados").click(function (event) {
-            window.location = '@Url.Action("TramitesUsuario","Tramites")';
-            event.preventDefault();
-        });
-
-        $("#btnModificarDatos").click(function (event) {
-            window.location = '@Url.Action("EditUsuario","Usuarios")';
-            event.preventDefault();
-        });
-
-        $("#btnTusNegocios").click(function (event) {
-            window.location = '@Url.Action("NegociosUsuario","Negocios")';
-            event.preventDefault();
-        });
-
-
-        $("#btnMisReservas").click(function (event) {
-            window.location = '@Url.Action("ReservasUsuario", "Reservas")';
-            event.preventDefault();
-        });
-
-    });
-
-</script>
 
 
 
@@ -88,34 +35,10 @@
 <section class="mainContent clearfix userProfile">
     <div class="container">
 
-                <div class="row">
 
-                    <div class="col-xs-12">
-                        <div class="btn-group" role="group" aria-label="..." style="text-align:center">
+        @Html.Partial("_Botonera")
 
-                            <a  href="" class="btn btn-default"  id="btnModificarDatos" style="width:200px;">
-                                MODIFICÁ TUS DATOS
-                            </a>
-                            <a href="" class="btn btn-default" id="btnTusNegocios" style="width:200px;">
-                                TUS NEGOCIOS
-                            </a>
-                            <a href="" class="btn btn-default" id="btnTusTramites" style="width:200px;">
-                                TUS TRAMITES
-                            </a>
 
-                            <a href="" class="btn btn-default" id="btnMisReservas" style="width:200px;">
-                                MIS RESERVAS
-                            </a>
-
-                            <a href="" class="btn btn-default" id="btnTusTramitesAsignados" style="width:200px;">
-                                TUS TRAMITES ASIGNADOS
-                            </a>
-
-                        </div>
-
-                    </div>
-
-                 </div>
 
       </div>
 

@@ -1,64 +1,77 @@
 ﻿@model IEnumerable<BussinesEntities.ListadoReservasPlanoEntities>
 
+<script>
+
+    $(document).ready(function () {
+        $('#reserva').DataTable();
+    });
+
+</script>
+
+
 
 <div class="table-responsive">
 
-    <table class="table table-bordered" style="font-size:9px;">
+    <table id="reserva" class="table table-bordered" style="font-size:9px;">
+        <thead>
+            <tr style="background:#F6F5F5;">
+                <th>Nro de Reserva</th>
+                <th>Apellido</th>
+                <th>Nombre</th>
+                <th>Fecha Desde</th>
+                <th>Fecha Hasta</th>
+                <th>Telefono</th>
+                <th>Estado</th>
+                <th>Mensajes Sin Leer</th>
 
-        <tr style="background:#F6F5F5;">
-            <th>Nro de Reserva</th>
-            <th>Apellido</th>
-            <th>Nombre</th>
-            <th>Fecha Desde</th>
-            <th>Fecha Hasta</th>
-            <th>Telefono</th>
-            <th>Estado</th>
-            <th>Mensajes Sin Leer</th>
-            
-            <th></th>
-        </tr>
+                <th></th>
+            </tr>
+        </thead>
 
-        @foreach (var item in Model)
-        {
-
-            string desactivado = "";
-
-
-            if (item.nombreEstado == "RESERVA_ANULADA")
+        <tbody>
+            @foreach (var item in Model)
             {
-                desactivado = "disabled";
+
+                string desactivado = "";
+
+
+                if (item.nombreEstado == "RESERVA_ANULADA")
+                {
+                    desactivado = "disabled";
+                }
+
+                <tr>
+                    <td>@item.idReserva</td>
+                    <td>@item.apellido</td>
+                    <td>@item.nombre</td>
+                    <td>@item.FechaDesde</td>
+                    <td>@item.fechaHasta</td>
+                    <td>@item.Telefono</td>
+                    <td>@item.nombreEstado</td>
+                    <td>
+
+                        @if (item.mensajesSinLeer > 0)
+                        {
+
+                            <span class="glyphicon glyphicon-envelope" style="font-size: 15px; color: green" aria-hidden="true"></span>
+
+                        }
+
+                    </td>
+                    <td>
+
+
+                        <button style="font-size:10px;  padding: 5px;" @desactivado onclick="return checkin('@item.idReserva');" class="btn btn-xs btn-blue tooltips">Check-in</button>
+                        <button style="font-size:10px; padding: 5px;" @desactivado onclick="return checkout('@item.idReserva');" class="btn btn-xs btn-blue tooltips">Check-out</button>
+                        <button style="font-size:10px;  padding: 5px;" @desactivado onclick="return consultarReserva('@item.idReserva');" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar</button>
+
+                    </td>
+
+                </tr>
+
             }
 
-            <tr>
-                <td>@item.idReserva</td>
-                <td>@item.apellido</td>
-                <td>@item.nombre</td>
-                <td>@item.FechaDesde</td>
-                <td>@item.fechaHasta</td>
-                <td>@item.Telefono</td>
-                <td>@item.nombreEstado</td>
-                <td>
-                
-                @if (item.mensajesSinLeer > 0)
-                {
-
-                    <span class="glyphicon glyphicon-envelope" style="font-size: 15px; color: green" aria-hidden="true"></span>
-
-                }
-                
-                </td>
-                <td>
-
-
-                    <button style="font-size:10px;  padding: 5px;" @desactivado onclick="return checkin('@item.idReserva');" class="btn btn-xs btn-blue tooltips">Check-in</button>
-                    <button style="font-size:10px; padding: 5px;" @desactivado onclick="return checkout('@item.idReserva');" class="btn btn-xs btn-blue tooltips">Check-out</button>
-                    <button style="font-size:10px;  padding: 5px;" @desactivado onclick="return consultarReserva('@item.idReserva');" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar</button>
-
-                </td>
-
-            </tr>
-
-        }
+        </tbody>
 
     </table>
 

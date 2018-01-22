@@ -83,10 +83,19 @@
     <Compile Include="CategoriaHospedaje.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ComentariosSolicitud.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Comercio.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Complejo.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultarComentariosSolicitud_Result.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultarListadoReservasPorPersona_Result.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="DetalleDisponibilidad.cs">
@@ -108,6 +117,18 @@
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="FotosUsuario.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getPromocionesOtorgadas_Result.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getPromociones_Result.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getPromocionOtorgada_Result.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getUltimaPromocionOtorgada_Result.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Habitacion.cs">
@@ -138,6 +159,15 @@
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Persona.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Persona_s_By_IdNegocio_Result.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Promociones.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="PromocionesOtorgadas.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
