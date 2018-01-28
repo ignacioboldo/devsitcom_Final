@@ -20,6 +20,7 @@ namespace DAL
         public Nullable<System.DateTime> fechaVencimiento { get; set; }
         public string codigo { get; set; }
         public Nullable<int> utilizada { get; set; }
+        public Nullable<int> idNegocio { get; set; }
     
         public virtual Promociones Promociones { get; set; }
         public virtual Usuarios Usuarios { get; set; }

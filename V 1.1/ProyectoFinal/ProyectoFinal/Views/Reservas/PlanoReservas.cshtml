@@ -19,7 +19,7 @@
             }
         </tr>
 
-        @foreach (var item in Model)
+        @foreach (var item in Model.FirstOrDefault().nombresHabitacion)
         {
 
             <tr>
@@ -27,7 +27,9 @@
 
                 @for (int i = 1; i <= ViewBag.dias; i++)
                 {
-                    string disponible = "";
+                    string estado = "";
+                    int? nroReserva = 0;
+                    string tooltip2 = "";
                     var planoList = Session["PLANO_RESERVA"] as List<BussinesEntities.CalendarioEntities>;
                     var fecha = Convert.ToDateTime(i + "/" + ViewBag.mes + "/" + ViewBag.anio);
 
@@ -36,10 +38,27 @@
                     {
                         if (item1.Id == item.Id && item1.Fecha.Equals(fecha))
                         {
-                            if (item1.NoDisponible == 1)
+                            if (item1.Estado == "RESERVA_ASIGNADA")
                             {
-                                disponible = "NO";
+                                estado = "RESERVA_ASIGNADA";
                             }
+
+                            if (item1.Estado == "CHECK-IN")
+                            {
+                                estado = "CHECK-IN";
+                            }
+
+                            if (item1.Estado == "CHECK-OUT")
+                            {
+                                estado = "CHECK-OUT";
+                            }
+
+                            nroReserva = item1.idReserva;
+                            if (nroReserva!=null)
+                            {
+                                tooltip2 = "Nro Reserva: " + Convert.ToString(nroReserva);
+                            }
+                           
 
                         }
                     }
@@ -47,16 +66,37 @@
 
                     <td>
 
-                        <div  style=" height:33px; text-align:center; padding-top:8px;" rel="tooltip">          
-                            @if (disponible == "NO")
+                        <div  style=" height:33px; text-align:center; padding-top:8px" rel="tooltip">          
+                            @if (estado == "RESERVA_ASIGNADA")
+                            {
+                                <img alt="" src="@Url.Content("~/Content/img/icono_bandera_roja.png")" />
+                              
+                            }
+                            
+                            @if (estado == "CHECK-IN")
+                            {
+                                <img alt="" src="@Url.Content("~/Content/img/icono_bandera_amarilla.png")" />
+                            }
+                            
+                          
+                            
+                            @if (estado == "CHECK-OUT")
                             {
                                 <img alt="" src="@Url.Content("~/Content/img/icono_bandera_amarilla.png")" />
                             }
                         </div>
+                        
+                     
+                       
 
-                        @i.ToString().PadLeft(2, '0')
+                            @*<span title="Soy un tooltip">@tooltip2 </span>
 
-                    </td>
+                            @i.ToString().PadLeft(2, '0');*@
+                            
+                          @tooltip2.ToString().PadLeft(2,'0');
+
+
+</td>
                 }
 
             </tr>

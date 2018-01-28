@@ -13,9 +13,10 @@
     });
 
 
-    function consultarReserva(nro_reserva) {
+    function consultarReserva(nro_solicitud, nro_reserva) {
 
         $('#nro_reserva').html(nro_reserva);
+        $('#nro_solicitud').html(nro_solicitud);
 
 
         $('#myModal').modal('show');
@@ -25,11 +26,16 @@
     }
 
     function listarComentarios() {
+
         var nro_reserva = $("#nro_reserva").html();
+        var nro_solicitud = $("#nro_solicitud").html();
+
+        //alert(nro_reserva);
+        //alert(nro_solicitud);
 
         $.ajax({
             type: 'GET',
-            url: 'ListadoDeComentario?idSolicitud=' + nro_reserva,
+            url: 'ListadoDeComentario?idSolicitud=' + nro_solicitud + '&idReserva=' + nro_reserva,
             success: function (response) {
                 $("#consultas").html(response);
                 actualizar_Comentarios_Leidos();
@@ -45,7 +51,7 @@
             var fdata = new FormData();
 
             fdata.append("nro_reserva", $("#nro_reserva").html());
-
+            fdata.append("nro_solicitud", $("#nro_solicitud").html());
             fdata.append("consultareserva", $("#consultareserva").val());
 
             fdata.append("filereserva", $("#filereserva")[0].files[0]);
@@ -82,7 +88,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Consultar Solicitud Nro: <span id="nro_reserva"></span></h4>
+                <h4 class="modal-title" id="myModalLabel">Consultar Solicitud Nro: <span id="nro_reserva"></span><span id="nro_solicitud" style="display:none"></span></h4>
                 <div></div>
 
             </div>
@@ -164,12 +170,12 @@
                 </div>
             </div>
             <div class="col-xs-6">
-                <ol class="breadcrumb pull-right">
+                @*<ol class="breadcrumb pull-right">
                     <li>
                         <a href="portada.htm">INICIO</a>
                     </li>
                     <li class="active">SOLICITUDES DE RESERVA</li>
-                </ol>
+                </ol>*@
             </div>
         </div>
     </div>
@@ -190,17 +196,19 @@
 
     
                 <button id="btnVerSolicitud" onclick="window.location = '@Url.Action("VerSolicitudReserva", "Reservas", new { idSolicitud = s.idSolicitud, idNegocio = s.idNegocio , tipo= ViewBag.tipo})'" class="btn btn-xs btn-green tooltips" style="font-size:10px; padding:5px;">VER</button>
-               <button style="font-size:10px;  padding: 5px;"  onclick="return consultarReserva('@s.idSolicitud');" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar</button>
+               <button style="font-size:10px;  padding: 5px;"  onclick="return consultarReserva('@s.idSolicitud',0);" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar</button>
 }
 
             @Html.Grid(Model).Columns(columns =>
             {
                 //columns.Add(model => model.fechaAlta).Titled("Fecha Alta");
+                columns.Add(model => model.idSolicitud).Titled("Nro de Solicitud").SetWidth(50);
                 columns.Add(model => model.Usuarios.nombreUsuario).Titled("Usuario").SetWidth(50);
                 columns.Add(model => model.fechaDesde).Titled("Fecha Desde").SetWidth(50);
                 columns.Add(model => model.fechaHasta).Titled("Fecha Hasta").SetWidth(50);
+                columns.Add(model => model.FechaExpiracion).Titled("Fecha Expiración").SetWidth(50);
                 columns.Add(model => model.cantidadPersonas).Titled("Cant. Personas").SetWidth(50);
-                columns.Add(model => model.idSolicitud)
+                columns.Add(model => model.idNegocio)
                     .Titled("Acción")
                     .Encoded(false)
                     .Sanitized(false)

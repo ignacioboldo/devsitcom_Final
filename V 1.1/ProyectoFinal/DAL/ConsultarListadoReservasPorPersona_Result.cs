@@ -20,5 +20,6 @@ namespace DAL
         public string EstadoReserva { get; set; }
         public string TipoHabitacion { get; set; }
         public string Negocio { get; set; }
+        public Nullable<int> idSolicitud { get; set; }
     }
 }

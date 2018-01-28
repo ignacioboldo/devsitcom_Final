@@ -33,7 +33,9 @@
     });
 
     function buscar_cliente() {
+        
         var buscar = $("#buscar_cliente").val();
+     
         var idNegocio = '@ViewBag.idNegocio';
         $.ajax({
             url: "BuscarCliente?buscar=" + buscar + '&idNegocio=' + idNegocio

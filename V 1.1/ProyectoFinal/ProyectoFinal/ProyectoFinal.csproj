@@ -178,6 +178,7 @@
     <Compile Include="Controllers\HabitacionesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HotelController.cs" />
+    <Compile Include="Controllers\List.cs" />
     <Compile Include="Controllers\NegociosController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
     <Compile Include="Controllers\PromocionesController.cs" />
@@ -202,6 +203,8 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Gridmvc.css" />
     <Content Include="Content\img\bandeja-de-comida-cubierta-en-una-mano-del-servicio-de-habitaciones-del-hotel.png" />
+    <Content Include="Content\img\icono_bandera_amarilla.png" />
+    <Content Include="Content\img\icono_bandera_roja.png" />
     <Content Include="Content\img\invitado.png" />
     <Content Include="Content\img\lugares-para-fotografiar.png" />
     <Content Include="Content\img\siete-cascadas_edit.jpg" />
@@ -616,7 +619,6 @@
     <Content Include="Views\DptoOCabana\Index.cshtml" />
     <Content Include="Views\Habitaciones\ConsultarDisponibilidad.cshtml" />
     <Content Include="Views\Reservas\SolicitarReserva.cshtml" />
-    <Content Include="Views\Reservas\SolicitudesReserva.cshtml" />
     <Content Include="Views\Reservas\VerSolicitudReserva.cshtml" />
     <Content Include="Views\Reservas\AgregarReserva.cshtml" />
     <Content Include="Views\Reservas\BuscarCliente.cshtml" />
@@ -641,6 +643,7 @@
     <Content Include="Views\Reportes\GraficoPie.cshtml" />
     <Content Include="Views\Reportes\DataTable.cshtml" />
     <Content Include="Views\Reportes\SinDatos.cshtml" />
+    <Content Include="Views\Reservas\SolicitudesReserva.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

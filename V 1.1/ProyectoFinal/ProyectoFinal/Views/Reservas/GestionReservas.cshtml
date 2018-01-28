@@ -2,10 +2,12 @@
 
 <script type="text/javascript">
 
+    
 
-    function consultarReserva(nro_reserva) {
+    function consultarReserva(nro_solicitud,nro_reserva) {
 
         $('#nro_reserva').html(nro_reserva);
+        $('#nro_solicitud').html(nro_solicitud);
 
 
         $('#myModal').modal('show');
@@ -17,10 +19,14 @@
     function listarComentarios() {
 
         var nro_reserva = $("#nro_reserva").html();
+        var nro_solicitud = $("#nro_solicitud").html();
+
+        //alert(nro_reserva);
+        //alert(nro_solicitud);
 
         $.ajax({
             type: 'GET',
-            url: 'ListadoDeComentario?idSolicitud=' + nro_reserva,
+            url: 'ListadoDeComentario?idSolicitud=' + nro_solicitud + '&idReserva=' + nro_reserva,
             success: function (response) {
                 $("#consultas").html(response);
                 actualizar_Comentarios_Leidos();
@@ -83,6 +89,25 @@
         }
     }
 
+
+    function anular(id) {
+        var nro_reserva = id;
+
+        var result = confirm("Realmente quiere anular la reserva?.");
+
+        if (result) {
+            $.ajax({
+                type: 'GET',
+                url: 'AnularReserva?id=' + nro_reserva,
+                success: function (response) {
+                    planoListadoReserva()
+                    planoReserva()
+                    $('#myModal').modal('hide');
+                }
+            })
+        }
+    }
+
     function actualizar_Comentarios_Leidos() {
 
         var nro_reserva = $("#nro_reserva").html();
@@ -103,6 +128,7 @@
             var fdata = new FormData();
 
             fdata.append("nro_reserva", $("#nro_reserva").html());
+            fdata.append("nro_solicitud", $("#nro_solicitud").html());
 
             fdata.append("consultareserva", $("#consultareserva").val());
 
@@ -227,7 +253,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">Consultar Reserva Nro: <span id="nro_reserva"></span></h4>
+                        <h4 class="modal-title" id="myModalLabel">Consultar Reserva Nro: <span id="nro_reserva"></span><span id="nro_solicitud" style="display:none"></span></h4>
                         <button type="button" onclick="anularReserva()" class="btn btn-link">
                             Anular Reserva
                         </button>
@@ -283,14 +309,16 @@
 
 
                 <div>
-                    <img alt="" src="@Url.Content("~/Content/img/icono_bandera_amarilla.png")" /> <strong> (Reservado)</strong>
+                    <img alt="" src="@Url.Content("~/Content/img/icono_bandera_amarilla.png")" /> <strong> (Ocupado)</strong>
+                    <br> <br />
+                    <img alt="" src="@Url.Content("~/Content/img/icono_bandera_roja.png")" /> <strong> (Reservado)</strong>
                 </div>
 
 
             </div>
             <div class="col-xs-12 col-md-10">
 
-
+               
 
                 @{
 
@@ -395,7 +423,7 @@
                             <select class="form-control" id="year" onchange="planoReserva();">
 
                                 @{
-                                    for (int i = 2005; i < 2030; i++)
+                                    for (int i = 2017; i < 2020; i++)
                                     {
                                         <option value="@i" @if (anio == i) { @selected        ; }>@i</option>
                                     }

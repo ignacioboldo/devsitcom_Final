@@ -533,7 +533,7 @@ namespace BL
         {
             using (var db = new SitcomEntities())
             {
-                var result = db.Negocio.Include("TipoDeNegocio").Where(n => n.idUsuario == id && n.estaAprobado == true).ToList();
+                var result = db.Negocio.Include("TipoDeNegocio").Include("LugarHospedaje").Where(n => n.idUsuario == id && n.estaAprobado == true).ToList();
 
                 return result;
             }

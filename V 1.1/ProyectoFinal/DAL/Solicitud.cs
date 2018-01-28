@@ -22,6 +22,9 @@ namespace DAL
         public Nullable<int> cantidadLugares { get; set; }
         public string observacion { get; set; }
         public Nullable<int> idNegocio { get; set; }
+        public Nullable<bool> Expirar { get; set; }
+        public Nullable<System.DateTime> FechaExpiracion { get; set; }
+        public Nullable<System.DateTime> fechaCreacion { get; set; }
     
         public virtual Negocio Negocio { get; set; }
         public virtual Usuarios Usuarios { get; set; }

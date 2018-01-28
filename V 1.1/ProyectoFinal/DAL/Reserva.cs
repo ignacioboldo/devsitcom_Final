@@ -19,5 +19,6 @@ namespace DAL
         public Nullable<int> idNegocio { get; set; }
         public Nullable<int> idSolicitud { get; set; }
         public Nullable<int> idEstado { get; set; }
+        public Nullable<System.DateTime> fechaCreacion { get; set; }
     }
 }

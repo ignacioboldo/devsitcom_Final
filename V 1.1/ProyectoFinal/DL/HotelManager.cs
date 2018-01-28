@@ -139,7 +139,7 @@ namespace BL
           using (SitcomEntities db = new SitcomEntities())
           {
 
-              return db.Database.SqlQuery<ClientesEntity>("Persona_s_By_IdNegocio @idNegocio=" + idNegocio).ToList();
+              return db.Database.SqlQuery<ClientesEntity>("Persona_s_By_IdNegocio @idNegocio=" + idNegocio + " , @buscar= '" + buscar + "'").ToList();
 
           }
 
@@ -153,12 +153,29 @@ namespace BL
           using (SitcomEntities db = new SitcomEntities())
           {
 
-              return db.Database.SqlQuery<CalendarioEntities>("ConsultarHabitacionesDisponiblesPorFechaYNegocio @fechaDesde='" + fecha_desde + "',@fechaHasta='" + fecha_hasta + "',@idNegocio=" + idNegocio).ToList();
+              return db.Database.SqlQuery<CalendarioEntities>("ConsultarHabitacionesDisponiblesPorFechaYNegocio_Planning @fechaDesde='" + fecha_desde + "',@fechaHasta='" + fecha_hasta + "',@idNegocio=" + idNegocio).ToList();
 
           }
 
 
       }
+
+      public List<CalendarioHabitacionesEntities> calendarioNombresHabitacion(DateTime fecha_desde, DateTime fecha_hasta, int? idNegocio)
+      {
+
+
+          using (SitcomEntities db = new SitcomEntities())
+          {
+
+              return db.Database.SqlQuery<CalendarioHabitacionesEntities>("ConsultarHabitacionesDisponiblesPorFechaYNegocio @fechaDesde='" + fecha_desde + "',@fechaHasta='" + fecha_hasta + "',@idNegocio=" + idNegocio).ToList();
+
+          }
+
+
+      }
+
+
+
 
       public List<CalendarioEntities> planoReserva(DateTime fecha_desde, DateTime fecha_hasta, int? idNegocio)
       {
@@ -201,13 +218,13 @@ namespace BL
 
       }
 
-      public decimal comentariosSolicitud_i(string comentario, string rutaAdjunto, int idSolicitud, bool comentarioCliente)
+      public decimal comentariosSolicitud_i(string comentario, string rutaAdjunto, int idSolicitud, int idReserva , bool comentarioCliente)
       {
 
           using (SitcomEntities db = new SitcomEntities())
           {
 
-              return db.Database.SqlQuery<decimal>("ComentariosSolicitud_i @comentarioCliente='" + comentarioCliente + "', @comentario='" + comentario + "',@rutaAdjunto= '" + rutaAdjunto + "',@idSolicitud=" + idSolicitud + "").First();
+              return db.Database.SqlQuery<decimal>("ComentariosSolicitud_i @comentarioCliente='" + comentarioCliente + "', @comentario='" + comentario + "',@rutaAdjunto= '" + rutaAdjunto + "',@idSolicitud=" + idSolicitud + " ,@idReserva=" + idReserva + "").First();
 
           }
 
@@ -228,13 +245,29 @@ namespace BL
 
       }
 
-      public List<ReservasComentariosEntities> consultarComentariosSolicitud(int idSolicitud)
+
+      public List<SolicitudesUsuarioEntities> consultarListadoSolicitudesPorPersona(int idPersona)
       {
 
           using (SitcomEntities db = new SitcomEntities())
           {
 
-              return db.Database.SqlQuery<ReservasComentariosEntities>("ConsultarComentariosSolicitud @idSolicitud='" + idSolicitud + "'").ToList();
+              return db.Database.SqlQuery<SolicitudesUsuarioEntities>("ConsultarListadoSolicitudesPorPersona @idPersona='" + idPersona + "'").ToList();
+
+          }
+
+
+      }
+
+
+
+      public List<ReservasComentariosEntities> consultarComentariosSolicitud(int idSolicitud, int idReserva)
+      {
+
+          using (SitcomEntities db = new SitcomEntities())
+          {
+
+              return db.Database.SqlQuery<ReservasComentariosEntities>("ConsultarComentariosSolicitud @idSolicitud='" + idSolicitud + "' , @idReserva='" + idReserva +"' ").ToList();
 
           }
 
@@ -279,20 +312,21 @@ namespace BL
 
       }
 
+    
 
-      public void reserva_Anular(int idReserva)
-      {
-
-
-          using (SitcomEntities db = new SitcomEntities())
-          {
-
-             db.Database.ExecuteSqlCommand("Reserva_Anular @idReserva=" + idReserva + "");
-
-          }
+      //public void reserva_Anular(int idReserva)
+      //{
 
 
-      }
+      //    using (SitcomEntities db = new SitcomEntities())
+      //    {
+
+      //       db.Database.ExecuteSqlCommand("Reserva_Anular @idReserva=" + idReserva + "");
+
+      //    }
+
+
+      //}
 
 
       public void actualizar_Comentarios_Leidos(int idReserva)
@@ -322,6 +356,21 @@ namespace BL
 
 
       }
+
+      public void reserva_Anular(int idReserva)
+      {
+
+
+          using (SitcomEntities db = new SitcomEntities())
+          {
+
+              db.Database.ExecuteSqlCommand("Reserva_Anular @idReserva=" + idReserva + "");
+          }
+
+
+      }
+
+     
 
       public void reserva_CheckIn(int idReserva)
       {

@@ -52,6 +52,14 @@ namespace BussinesEntities
 
     }
 
+    public class ReservasUsuarioEntity
+    {
+        public List<ReservasUsuarioEntities> reservas { get; set; }
+
+        public List<SolicitudesUsuarioEntities> solicitudes { get; set; }
+    }
+
+
     public class ReservasUsuarioEntities
     {
         public int idPersona { get; set; }
@@ -61,7 +69,25 @@ namespace BussinesEntities
         public string EstadoReserva { get; set; }
         public string TipoHabitacion { get; set; }
         public string Negocio { get; set; }
+        public int idSolicitud { get; set; }
     }
+
+    public class SolicitudesUsuarioEntities
+    {
+        public int idSolicitud { get; set; }
+        public DateTime FechaDesde { get; set; }
+        public DateTime fechaHasta { get; set; }
+        public int cantidadPersonas { get; set; }
+        public int cantidadLugares { get; set; }  
+        public string observacion { get; set; }
+        public Boolean Expirar { get; set; }
+        public DateTime FechaExpiracion { get; set; }
+        public DateTime fechaCreacion { get; set; }
+        public string Negocio { get; set; }
+        public int idPersona { get; set; }
+        public String Mensaje { get; set; }
+    }
+
 
     public class ReservasComentariosEntities
     {
@@ -87,7 +113,20 @@ namespace BussinesEntities
         public DateTime Fecha { get; set; }
         public int Id { get; set; }
         public string Nombre { get; set; }
-        public int NoDisponible { get; set; }
+        public string Estado { get; set; }
+        public int? idReserva { get; set; }
+        public List<CalendarioHabitacionesEntities> nombresHabitacion { get; set; }
+       
+
+    }
+
+    public class CalendarioHabitacionesEntities
+    {
+      
+        public string Nombre { get; set; }
+        public int Id { get; set; }
+        public string tipo { get; set; }
+         
 
     }
 
@@ -102,6 +141,7 @@ namespace BussinesEntities
         public int mensajesSinLeer { get; set; }
         public int idEstado { get; set; }
         public string nombreEstado { get; set; }
+        public int idSolicitud { get; set; }
         
     }
 

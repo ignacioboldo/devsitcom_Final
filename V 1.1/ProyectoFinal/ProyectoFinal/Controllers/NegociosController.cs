@@ -22,7 +22,8 @@ namespace ProyectoFinal.Controllers
         private DomicilioEntity dom = new DomicilioEntity();
         private PromocionesManager pm = new PromocionesManager();
         private PersonasManager perm = new PersonasManager();
-        
+
+        public List<ReservasEntities> resultadoModelo;
         
         public ActionResult Index()
         {
@@ -72,8 +73,11 @@ namespace ProyectoFinal.Controllers
 
             Session["post"] = "si";
 
-            var result = hm.disponiblidad(fecha_desde, fecha_hasta, cantidad_personas, cantidad_habitaciones, tipo_hospedaje);
-            return RedirectToAction("IndexHospedajes", "Negocios", result);
+            var resultadoModelo = hm.disponiblidad(fecha_desde, fecha_hasta, cantidad_personas, cantidad_habitaciones, tipo_hospedaje);
+            
+            return RedirectToAction("IndexHospedajes", "Negocios",resultadoModelo);
+           
+
         }
 
         public ActionResult Nuevo() //PANTALLA CREAR NUEVO - NEGOCIOS
@@ -422,27 +426,52 @@ namespace ProyectoFinal.Controllers
             var result = nm.GetAllNegocios(2);
             return View(result);
         }
+
         public ActionResult IndexHospedajes()
         {
 
-            if (Session["post"] != "si") {
 
-                Session["fecha_desde"] = null;
-                Session["fecha_hasta"] = null;
-                Session["cantidad_personas"] = null;
-                Session["cantidad_habitaciones"] = null;
-                Session["tipo_hospedaje"] = null;
-
-            }
-            else
-            {
-                Session["post"] = null;
-            }
+            var result = hm.disponiblidad(null, null, null, null, null);
+            return View(result);
 
 
-                var result = hm.disponiblidad(null, null, null, null, null);
-                return View(result);
+            //if (Session["post"] != "si") {
+
+            //    Session["fecha_desde"] = null;
+            //    Session["fecha_hasta"] = null;
+            //    Session["cantidad_personas"] = null;
+            //    Session["cantidad_habitaciones"] = null;
+            //    Session["tipo_hospedaje"] = null;
+
+            //    var result = hm.disponiblidad(null, null, null, null, null);
+            //    return View(result);
+
+            //}
+            //else
+            //{
+
+             
+
+            //    Session["post"] = null;
+            //    return View();
+                
+                
+            //}
+
+
+            
         }
+
+        [HttpPost]
+        public ActionResult IndexHospedajes(List<ReservasEntities> modelo)
+        {
+
+            return View(modelo);
+ 
+        }
+
+
+
         public ActionResult ObtenerImagen(int id)
         {
             var img = nm.GetFotoNegocioById(id);

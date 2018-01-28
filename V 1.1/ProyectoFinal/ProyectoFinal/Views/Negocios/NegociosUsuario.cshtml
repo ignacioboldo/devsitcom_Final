@@ -63,13 +63,28 @@
                                         <button style="font-size:10px; padding: 5px;" disabled onclick="window.location = '@Url.Action("PromocionesNeg", "Promociones", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Promociones</button>                                        
                                     }
 
-                                   
+                                   if(n.LugarHospedaje.FirstOrDefault().moduloReservas==true)
+                                       { 
                                     <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("GestionReservas", "Reservas", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar Reservas</button>
+                                       }
+                                   else
+                                   {
+                                       if (n.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 3)  
+                                             {
+                                            <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("Disponibilidad", "Hotel", new { id = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar Disponibilidad</button>
+                                             }
+                                       if (n.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 2)
+                                              {                                      
+                                             <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("Disponibilidad", "Complejo", new { id = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar Disponibilidad</button>
+                                              }
 
+                                            <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("SolicitarModulo", "Reservas", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Solicitar Modulo Gestión de Reservas</button>
+
+                                   }
                                 }
                                 else
                                 {
-                                    if(n.estaAnulado == null)
+                                    if (n.estaAnulado == null)
                                     {
                                         <button id="btnVerNegocio" style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("VerComercio","Negocios",new { id = n.idNegocio })'" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Ver"><i class="fa fa-search"></i></button>
                                         <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("EditComercio","Negocios", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar"><i class="fa fa-edit"></i></button>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.DynamicData;
 using System.Web.Mvc;
+using BL;
 
 namespace ProyectoFinal.Controllers
 {
@@ -31,10 +32,12 @@ namespace ProyectoFinal.Controllers
                     break;
                 case "DATA_TABLA":
 
-                     var lista = new List<ReportesDataTableEntities>();
-                     ReportesDataTableEntities rDataTable = new ReportesDataTableEntities();
-                     rDataTable.descripcion = "Prueba";
-                     lista.Add(rDataTable);
+                     var lista = new List<ReportesDataTableEntitiesFechaValor>();
+                   //  ReportesDataTableEntities rDataTable = new ReportesDataTableEntities();
+                     ReportesManager rm = new ReportesManager();
+                     lista =  rm.getReporteCampoFecha(Convert.ToDateTime("1/1/2017"),Convert.ToDateTime("1/1/2020"),"Diaria");
+                    // rDataTable.descripcion = "Prueba";
+                     //lista.Add(rDataTable);
                         
                      ViewBag.nombre_reporte = "Solicitudes de Reserva por Negocio";
                      ViewBag.data = lista;

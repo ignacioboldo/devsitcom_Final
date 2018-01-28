@@ -44,9 +44,18 @@ namespace BL
         {
             using(var db = new SitcomEntities())
             {
+              
+                DateTime date = DateTime.Now.Date;
+
+              
+
+
                 var result = (from s in db.Solicitud
                               where s.idNegocio == idNegocio
-                              select new SolicitudEntity()
+                              && (
+                              (s.Expirar == true && s.FechaExpiracion > date)
+                              || (s.Expirar == false))
+                            select new SolicitudEntity()
                               {
                                   idSolicitud = s.idSolicitud,
                                   idNegocio = s.idNegocio,
@@ -56,6 +65,8 @@ namespace BL
                                   fechaDesde = s.fechaDesde,
                                   fechaHasta = s.fechaHasta,
                                   observacion = s.observacion,
+                                  FechaExpiracion=s.FechaExpiracion,
+
                                   Usuarios = db.Usuarios.Where(us => us.idUsuario == s.idUsuarioSolicitante).FirstOrDefault()
                               }).ToList();
 

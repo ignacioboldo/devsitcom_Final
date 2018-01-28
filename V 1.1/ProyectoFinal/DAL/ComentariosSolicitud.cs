@@ -21,5 +21,6 @@ namespace DAL
         public Nullable<System.DateTime> fechaEnvioComentario { get; set; }
         public Nullable<bool> comentarioCliente { get; set; }
         public Nullable<bool> mensajesSinLeer { get; set; }
+        public Nullable<int> idReserva { get; set; }
     }
 }

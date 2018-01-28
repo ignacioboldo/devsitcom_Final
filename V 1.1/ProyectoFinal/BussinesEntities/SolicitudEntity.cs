@@ -20,5 +20,7 @@ namespace BussinesEntities
 
         public virtual Negocio Negocio { get; set; }
         public virtual Usuarios Usuarios { get; set; }
+        public virtual Nullable<System.DateTime> FechaExpiracion { get; set; }
+
     }
 }

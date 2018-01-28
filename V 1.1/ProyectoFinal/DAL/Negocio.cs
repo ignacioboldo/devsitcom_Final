@@ -20,10 +20,10 @@ namespace DAL
             this.FotosNegocio = new HashSet<FotosNegocio>();
             this.LugarHospedaje = new HashSet<LugarHospedaje>();
             this.Negocio1 = new HashSet<Negocio>();
+            this.Promociones = new HashSet<Promociones>();
             this.Solicitud = new HashSet<Solicitud>();
             this.Sucursal = new HashSet<Sucursal>();
             this.Tramite = new HashSet<Tramite>();
-            this.Promociones = new HashSet<Promociones>();
         }
     
         public int idNegocio { get; set; }
@@ -43,9 +43,9 @@ namespace DAL
         public virtual Negocio Negocio2 { get; set; }
         public virtual TipoDeNegocio TipoDeNegocio { get; set; }
         public virtual Usuarios Usuarios { get; set; }
+        public virtual ICollection<Promociones> Promociones { get; set; }
         public virtual ICollection<Solicitud> Solicitud { get; set; }
         public virtual ICollection<Sucursal> Sucursal { get; set; }
         public virtual ICollection<Tramite> Tramite { get; set; }
-        public virtual ICollection<Promociones> Promociones { get; set; }
     }
 }

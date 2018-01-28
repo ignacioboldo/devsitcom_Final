@@ -27,14 +27,7 @@ namespace ProyectoFinal.Controllers
             return View();
         }
 
-
-        public String AnularReserva(int id)
-        {
-
-            hm.reserva_Anular(id);
-           
-            return "ok";
-        }
+ 
 
         public String CheckInReserva(int id)
         {
@@ -45,6 +38,12 @@ namespace ProyectoFinal.Controllers
         public String CheckOutReserva(int id)
         {
             hm.reserva_CheckOut(id);
+            return "ok";
+        }
+
+        public String AnularReserva(int id)
+        {
+            hm.reserva_Anular(id);
             return "ok";
         }
 
@@ -78,7 +77,12 @@ namespace ProyectoFinal.Controllers
 
             var fecha_hasta = Convert.ToDateTime(dias + "/" + mes + "/" + year);
 
-            var listado = hm.calendario(fecha_desde,fecha_hasta, idNegocio);
+            //var listado = hm.calendario(fecha_desde,fecha_hasta, idNegocio);
+            List<CalendarioEntities> listado= hm.calendario(fecha_desde,fecha_hasta, idNegocio);
+            var listadoHabitaciones = hm.calendarioNombresHabitacion(fecha_desde, fecha_hasta, idNegocio);
+
+            listado.FirstOrDefault().nombresHabitacion = listadoHabitaciones;
+
             var planoReserva = hm.planoReserva(fecha_desde, fecha_hasta, idNegocio);
 
             Session["PLANO_RESERVA"] = planoReserva;
@@ -129,9 +133,9 @@ namespace ProyectoFinal.Controllers
         }
 
         [HttpGet]
-        public ActionResult ListadoDeComentario(int idSolicitud)
+        public ActionResult ListadoDeComentario(int idSolicitud, int idReserva)
         {
-            var listado = hm.consultarComentariosSolicitud(Convert.ToInt32(idSolicitud));
+            var listado = hm.consultarComentariosSolicitud(Convert.ToInt32(idSolicitud), Convert.ToInt32(idReserva));
 
             return PartialView("ListadoConsultaReserva", listado);
         }
@@ -139,7 +143,8 @@ namespace ProyectoFinal.Controllers
         [HttpPost]
         public ActionResult GuardarConsulta(FormCollection collection)
         {
-            var nro_reserva = collection["nro_reserva"];
+            var nro_reserva= collection["nro_reserva"];
+            var nro_solicitud = collection["nro_solicitud"];
             var consultareserva = collection["consultareserva"];
             var filereserva = collection["filereserva"];
             var comentarioCliente = collection["comentarioCliente"];
@@ -166,9 +171,9 @@ namespace ProyectoFinal.Controllers
                 file.SaveAs(filename);
             }
 
-            var result = hm.comentariosSolicitud_i(consultareserva, nombre_imagen, Convert.ToInt32(nro_reserva), cliente);
+            var result = hm.comentariosSolicitud_i(consultareserva, nombre_imagen, Convert.ToInt32(nro_solicitud), Convert.ToInt32(nro_reserva), cliente);
 
-            var listado = hm.consultarComentariosSolicitud(Convert.ToInt32(nro_reserva));
+            var listado = hm.consultarComentariosSolicitud(Convert.ToInt32(nro_solicitud), Convert.ToInt32(nro_reserva));
 
 
             return PartialView("ListadoConsultaReserva", listado);
@@ -183,11 +188,21 @@ namespace ProyectoFinal.Controllers
             ViewBag.idPerfil = usuarioActual.idPerfil;
             ViewBag.UsuarioActual = usuarioActual;
 
-            var listado = hm.consultarListadoReservasPorPersona(Convert.ToInt32(usuarioActual.idPersona));
+            ReservasUsuarioEntity reservas = new ReservasUsuarioEntity();
 
+            List<ReservasUsuarioEntities> listadoReservas = hm.consultarListadoReservasPorPersona(Convert.ToInt32(usuarioActual.idPersona));
+            reservas.reservas = listadoReservas;
 
-            return View(listado);
+            List<SolicitudesUsuarioEntities> listadoSolicitudes = hm.consultarListadoSolicitudesPorPersona(Convert.ToInt32(usuarioActual.idPersona));
+            reservas.solicitudes = listadoSolicitudes;
+            
+            return View(reservas);
         }
+
+
+   
+
+
 
 
         public ActionResult AgregarReserva(string fecha_desde, string fecha_hasta, int? habitacion, string accion, string referencia, string habitacion_text)
