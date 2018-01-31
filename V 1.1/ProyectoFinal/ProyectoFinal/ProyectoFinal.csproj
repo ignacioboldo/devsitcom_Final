@@ -175,6 +175,7 @@
     <Compile Include="Controllers\ComplejoController.cs" />
     <Compile Include="Controllers\DomicilioController.cs" />
     <Compile Include="Controllers\DptoOCabanaController.cs" />
+    <Compile Include="Controllers\EncuestasController.cs" />
     <Compile Include="Controllers\HabitacionesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HotelController.cs" />
@@ -644,6 +645,20 @@
     <Content Include="Views\Reportes\DataTable.cshtml" />
     <Content Include="Views\Reportes\SinDatos.cshtml" />
     <Content Include="Views\Reservas\SolicitudesReserva.cshtml" />
+    <Content Include="Views\Reservas\CheckInReservaModal.cshtml" />
+    <Content Include="Views\Reservas\BuscaPasajeroCheckin.cshtml" />
+    <Content Include="Views\Reservas\AgregarPasajeroCheckIn.cshtml" />
+    <Content Include="Views\Encuestas\Delete.cshtml" />
+    <Content Include="Views\Encuestas\Details.cshtml" />
+    <Content Include="Views\Encuestas\EditEncuesta.cshtml" />
+    <Content Include="Views\Encuestas\EncuestasIndex.cshtml" />
+    <Content Include="Views\Encuestas\EncuestasIndex.cshtml.bak" />
+    <Content Include="Views\Encuestas\EncuestasUsuario.cshtml" />
+    <Content Include="Views\Encuestas\NuevaEncuesta.cshtml" />
+    <Content Include="Views\Encuestas\NuevaPregunta.cshtml" />
+    <Content Include="Views\Encuestas\PreguntasEncuesta.cshtml" />
+    <Content Include="Views\Encuestas\ResponderEncuesta.cshtml" />
+    <Content Include="Views\Encuestas\VerEncuestaUsuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

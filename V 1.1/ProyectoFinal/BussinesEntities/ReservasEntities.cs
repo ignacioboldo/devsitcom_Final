@@ -88,6 +88,14 @@ namespace BussinesEntities
         public String Mensaje { get; set; }
     }
 
+    public class ListadoHabitacionesEnCkeckInEntities
+    {
+        public string Nombre { get; set; }
+        public int idReserva { get; set; }
+        public int idDisponibilidad { get; set; }
+        
+
+    }
 
     public class ReservasComentariosEntities
     {

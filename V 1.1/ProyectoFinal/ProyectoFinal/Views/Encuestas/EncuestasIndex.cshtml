@@ -1,0 +1,204 @@
+﻿@model IEnumerable<BussinesEntities.EncuestaEntityIndex>
+@using GridMvc.Html
+
+<script type="text/javascript">
+
+    var perfil = "@ViewBag.Perfil"
+    var mensaje = "@ViewBag.Mensaje"
+    var negocio = "@ViewBag.IdNegocio"
+
+    $(document).ready(function () {
+
+
+        if (perfil == 1) {
+            $("#btnTusTramites").show();
+            $("#btnTusNegocios").hide();
+            $("#btnTusTramitesAsignados").hide();
+            $("#btnTodosLosTramites").hide();
+            $("#tabSecretaria").hide();
+            $("#btnTusPromociones").show();
+            $("#btnEncuestas").hide();
+        }
+
+        if (perfil == 2) {
+            $("#btnTusTramites").show();
+            $("#btnTusNegocios").show();
+            $("#btnTusTramitesAsignados").hide();
+            $("#btnTodosLosTramites").hide();
+            $("#tabSecretaria").hide();
+            $("#btnTusPromociones").hide();
+            $("#btnEncuestas").hide();
+        }
+
+        if (perfil == 3) {
+            $("#btnTusTramites").show();
+            $("#btnTusNegocios").hide();
+            $("#btnTusTramitesAsignados").show();
+            $("#btnTodosLosTramites").show();
+            $("#tabSecretaria").show();
+            $("#btnTusPromociones").hide();
+            $("#btnEncuestas").show();
+        }
+
+        if (mensaje != "") {
+            alert(mensaje);
+        }
+
+        $("#btnTusTramites").click(function (event) {
+            window.location = '@Url.Action("TramitesUsuario","Tramites")';
+            event.preventDefault();
+        });
+
+        $("#btnTusTramitesAsignados").click(function (event) {
+            window.location = '@Url.Action("TramitesUsuario","Tramites")';
+            event.preventDefault();
+        });
+
+        $("#btnModificarDatos").click(function (event) {
+            window.location = '@Url.Action("EditUsuario","Usuarios")';
+            event.preventDefault();
+        });
+
+        $("#btnNuevaPromocion").click(function (event) {
+            window.location = '../Promociones/NuevaPromocion/?idNegocio=' + negocio;
+            event.preventDefault();
+        });
+
+        $("#btnEncuestas").click(function (event) {
+            window.location = '@Url.Action("EncuestasIndex", "Encuestas")';
+            event.preventDefault();
+        });
+
+        $("#btnNuevaEncuesta").click(function (event) {
+            window.location = '@Url.Action("NuevaEncuesta", "Encuestas")';
+            event.preventDefault();
+        });
+    });
+</script>
+
+
+
+
+
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Panel de Control</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Panel de Control</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+ 
+
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="btn-group" role="group" aria-label="..." style="text-align:center">
+
+                    <a class="btn btn-default" id="btnModificarDatos" style="width:200px;">
+                        MODIFICÁ TUS DATOS
+                    </a>
+
+                    <a class="btn btn-default" id="btnTusNegocios" style="width:200px;">
+                        TUS NEGOCIOS
+                    </a>
+
+                    <a href="" class="btn btn-default" id="btnTusPromociones" style="width:250px;">
+                        TUS PROMOCIONES
+                    </a>
+
+                    <a class="btn btn-default" id="btnTusTramites" style="width:200px;">
+                        TUS TRAMITES
+                    </a>
+
+                    <a class="btn btn-default" id="btnTusTramitesAsignados" style="width:200px;">
+                        TUS TRAMITES ASIGNADOS
+                    </a>
+
+                    <a href="" class="btn btn-default active" id="btnEncuestas" style="width:250px;">
+                        ENCUESTAS
+                    </a>
+
+
+                </div>
+            </div>
+        </div>
+
+
+        <div>
+            <a class="btn btn-default active" id="btnNuevaEncuesta" style="width:200px;">
+                + NUEVA ENCUESTA
+            </a>
+        </div>        
+
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="innerWrapper">
+                    <div class="orderBox myAddress">
+                       <br />
+
+
+                       @if (Model.Count() != 0)
+                       {
+                            @helper botonVer(BussinesEntities.EncuestaEntityIndex e)
+                            {                                                    
+                                <button id="btnVerEncuesta" style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("VerEncuesta","Encuestas",new { idEncuesta = e.idEncuesta })'" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Ver"><i class="fa fa-search"></i></button>
+                                <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("EditEncuesta","Encuestas", new { idEncuesta = e.idEncuesta })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar"><i class="fa fa-edit"></i></button>
+                                <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("PreguntasEncuesta", "Encuestas", new { idEncuesta = e.idEncuesta })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">PREGUNTAS</button>
+                            }
+                        }
+                              
+
+                        @if(Model.Count() > 0 )
+                        { 
+                            @Html.Grid(Model).Columns(columns =>
+                               {
+                                //columns.Add(model => model.fechaAlta).Titled("Fecha Alta");
+                                columns.Add(model => model.NOMBRE).Titled("NOMBRE").SetWidth(30);
+                                columns.Add(model => model.TIPO).Titled("TIPO").SetWidth(100);
+                                columns.Add(model => model.DESCRIPCION).Titled("DESCRIPCION").SetWidth(20);
+                                columns.Add(model => model.ESTADO).Titled("ESTADO").SetWidth(30);
+                                columns.Add(model => model.idEncuesta)
+                                       .Titled("Acción")
+                                       .Encoded(false)
+                                       .Sanitized(false)
+                                       .SetWidth(40)
+                                      .RenderValueAs(n => botonVer(n));
+                            }).WithPaging(10).Sortable(true)
+
+
+                        }
+                        else
+                        {
+                            <div id="NoEncuestas" style="align-self:center; font-size:20px;">
+                                <strong>
+                                       No hay encuestas creadas.
+                                </strong>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

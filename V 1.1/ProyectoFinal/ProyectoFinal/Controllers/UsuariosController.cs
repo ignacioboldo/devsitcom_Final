@@ -198,7 +198,7 @@ namespace ProyectoFinal
             ViewBag.Perfiles = new SelectList(db.Perfiles, "idPerfil", "nombre", usuarioActual.idPerfil);
             ViewBag.Perfil = usuarioActual.idPerfil;
             ViewBag.Mensaje = mensaje;
-            ViewBag.nombre = "pablo";
+          
             return View(usuarioActual);
         }
         protected override void Dispose(bool disposing)

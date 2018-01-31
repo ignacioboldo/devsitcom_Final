@@ -190,5 +190,17 @@ namespace BL
             return p;
         }
 
+        public Preguntas PreguntasEntityToPreguntas(PreguntasEntity preg)
+        {
+            Preguntas p = new Preguntas()
+            {
+                idTipoRespuesta = preg.idTipoRespuesta,
+                idClasifPregunta = preg.idClasifPregunta,
+                idEncuesta = preg.idEncuesta,
+                textoPregunta = preg.textoPregunta
+            };
+
+            return p;
+        }
     }
 }

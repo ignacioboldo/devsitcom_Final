@@ -1,0 +1,74 @@
+﻿@model DAL.Preguntas
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Preguntas</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.textoPregunta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.textoPregunta)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Encuestas.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Encuestas.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Encuestas1.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Encuestas1.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Preguntas1.textoPregunta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Preguntas1.textoPregunta)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Preguntas2.textoPregunta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Preguntas2.textoPregunta)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TiposRespuesta.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TiposRespuesta.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ClasifPregunta.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ClasifPregunta.nombre)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.idPregunta }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

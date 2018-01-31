@@ -109,26 +109,35 @@ namespace BL
             }
         }
 
-        public void RepublicarNegocio(int idNegocio, UsuarioEntity usuarioActual)
+    public void RepublicarNegocio(int idNegocio, UsuarioEntity usuarioActual)
         {
             using(SitcomEntities db = new SitcomEntities())
             {
-                Tramite t = new Tramite()
-                {
-                    idUsuarioSolicitante = usuarioActual.idUsuario,
-                    fechaAlta = DateTime.Now,
-                    idTipoTramite = 5,
-                    idNegocio = idNegocio,
-                    idEstadoTramite = 1
-                };
+                var result = (from tra in db.Tramite
+                              where tra.idNegocio == idNegocio
+                               && tra.idTipoTramite == 5
+                               && tra.idEstadoTramite == 1
+                               select tra).FirstOrDefault();
 
-                db.Tramite.Add(t);
+                if(result == null)
+                {          
+                        Tramite t = new Tramite()
+                        {
+                            idUsuarioSolicitante = usuarioActual.idUsuario,
+                            fechaAlta = DateTime.Now,
+                            idTipoTramite = 5,
+                            idNegocio = idNegocio,
+                            idEstadoTramite = 1
+                        };
 
-                db.SaveChanges();
-            }
+                        db.Tramite.Add(t);
+
+                        db.SaveChanges();
+                }
+           }
         }
 
-        public void BajaNegocio(int idNegocio, UsuarioEntity usuarioActual)
+        public void BajaNegocio(int idNegocio, UsuarioEntity usuarioActual, string motivoBaja)
         {
             using (SitcomEntities db = new SitcomEntities())
             {
@@ -144,7 +153,8 @@ namespace BL
                     fechaAlta = DateTime.Now,
                     idTipoTramite = 4,
                     idNegocio = idNegocio,
-                    idEstadoTramite = 1
+                    idEstadoTramite = 1,
+                    comentario = motivoBaja
                 };
 
                 db.Tramite.Add(t);

@@ -34,11 +34,17 @@
             {
 
                 string desactivado = "";
+                string desactivado2 = "";
 
 
                 if (item.nombreEstado == "RESERVA_ANULADA")
                 {
                     desactivado = "disabled";
+                }
+
+                if (item.nombreEstado == "CHECK-IN")
+                {
+                    desactivado2 = "disabled";
                 }
 
                 <tr>
@@ -63,7 +69,7 @@
                     <td>
 
 
-                        <button style="font-size:10px;  padding: 5px;" @desactivado onclick="return checkin('@item.idReserva');" class="btn btn-xs btn-blue tooltips">Check-in</button>
+                        <button style="font-size:10px;  padding: 5px;" @desactivado @desactivado2 onclick="return checkin('@item.idReserva');" class="btn btn-xs btn-blue tooltips">Check-in</button>
                         <button style="font-size:10px; padding: 5px;" @desactivado onclick="return checkout('@item.idReserva');" class="btn btn-xs btn-blue tooltips">Check-out</button>
                         <button style="font-size:10px; padding: 5px;" @desactivado onclick="return anular('@item.idReserva');" class="btn btn-xs btn-blue tooltips">Anular</button>
                         <button style="font-size:10px;  padding: 5px;" @desactivado onclick="return consultarReserva('@item.idSolicitud','@item.idReserva');" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar</button>

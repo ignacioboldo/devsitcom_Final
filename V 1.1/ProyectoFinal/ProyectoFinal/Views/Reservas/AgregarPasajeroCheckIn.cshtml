@@ -1,0 +1,70 @@
+﻿@model IEnumerable<BussinesEntities.ClientesAgregadosEntities>
+
+@{
+
+    var listadoHabitaciones = Session["ListadoHabitaciones"] as List<BussinesEntities.ListadoHabitacionesEnCkeckInEntities>;
+
+}
+
+
+
+
+@{
+    
+    if(Model.Count() > 0){
+
+<h3><strong>Pasajeros Agregados</strong></h3>
+
+<div class="table-responsive">
+    <table class="table">
+        <tr>
+            <th>Nro de documento</th>
+            <th>Nombre del pasajero</th>
+            <td>Habitación</td>
+            <td></td>
+        </tr>
+
+        @{
+        foreach (var item in Model)
+        {
+
+
+        <tr>
+            <td>31746542</td>
+            <td>@item.nombre</td>
+            <td>
+
+                <select id="habitacion_asignada_@item.idPersona" onchange="asignarHabitacion('@item.idPersona');">
+
+                    <option>--SELECCIONAR--</option>
+                    
+                    @foreach (var l in listadoHabitaciones)
+                    {
+                        string selected = "";
+                        
+                        if(item.idHabitacion == l.idDisponibilidad){
+                            selected = "selected";
+                        };
+                        
+                        <option @selected value="@l.idDisponibilidad">@l.Nombre</option>
+                    }
+                    
+                    
+                </select>
+            </td>
+            <td>
+                <button type="button" onclick="quitarClienteCheckin('@item.idPersona')">
+                    Quitar
+                </button>
+            </td>
+        </tr>
+                }
+
+        }
+            
+    </table>
+</div>
+    
+    }
+    
+}

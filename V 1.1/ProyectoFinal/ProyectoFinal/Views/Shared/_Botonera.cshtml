@@ -32,35 +32,52 @@
 
     $(document).ready(function () {
 
-       if (perfil == 1)
-        {
+        if (perfil == 1) {
             $("#btnTusTramites").show();
             $("#btnTusNegocios").hide();
             $("#btnTusTramitesAsignados").hide();
             $("#btnTodosLosTramites").hide();
             $("#tabSecretaria").hide();
             $("#btnTusPromociones").show();
+            $("#btnEncuestas").hide();
+            $("#btnTusEncuestas").show();
         }
 
-        if (perfil == 2)
-        {
+        if (perfil == 2) {
             $("#btnTusTramites").show();
             $("#btnTusNegocios").show();
             $("#btnTusTramitesAsignados").hide();
             $("#btnTodosLosTramites").hide();
             $("#tabSecretaria").hide();
             $("#btnTusPromociones").hide();
+            $("#btnEncuestas").hide();
+            $("#btnTusEncuestas").hide();
         }
 
-        if (perfil == 3)
-        {
+        if (perfil == 3) {
             $("#btnTusTramites").show();
             $("#btnTusNegocios").hide();
             $("#btnTusTramitesAsignados").show();
             $("#btnTodosLosTramites").show();
             $("#tabSecretaria").show();
             $("#btnTusPromociones").hide();
+            $("#btnEncuestas").show();
+            $("#btnTusEncuestas").hide();
         }
+
+        if (perfil == 4) {
+            $("#btnTusTramites").hide();
+            $("#btnTusNegocios").hide();
+            $("#btnTusTramitesAsignados").hide();
+            $("#btnTodosLosTramites").hide();
+            $("#tabSecretaria").hide();
+            $("#btnTusPromociones").hide();
+            $("#btnEncuestas").hide();
+            $("#btnTusEncuestas").hide();
+            $("#btnGestionUsuarios").show();
+
+        }
+
 
         if (mensaje != "") {
             alert(mensaje);
@@ -101,6 +118,22 @@
             window.location = '@Url.Action("Index", "Reportes")';
             event.preventDefault();
         });
+		
+        $("#btnTusEncuestas").click(function (event) {
+            window.location = '@Url.Action("EncuestasUsuario","Encuestas")';
+            event.preventDefault();
+        });
+
+        $("#btnEncuestas").click(function (event) {
+            window.location = '@Url.Action("EncuestasIndex", "Encuestas")';
+            event.preventDefault();
+        });
+
+        $("#btnGestionUsuarios").click(function (event) {
+            window.location = '@Url.Action("Index", "Usuarios")';
+            event.preventDefault();
+        });
+
 
 
 
@@ -127,11 +160,15 @@
             <a href="" class="btn btn-default" id="btnTusTramites" style="width:220px;">
                 TUS TRAMITES
             </a>
-
+			
+			<a class="btn btn-default" id="btnTusEncuestas" style="width:200px;">
+				TUS ENCUESTAS
+			</a>
+			
             <a href="" class="btn btn-default" id="btnMisReservas" style="width:220px;">
                 TUS RESERVAS
             </a>
-
+			
             <a href="" class="btn btn-default" id="btnTusTramitesAsignados" style="width:220px;">
                 TUS TRAMITES ASIGNADOS
             </a>
@@ -139,6 +176,11 @@
             <a href="" class="btn btn-default" id="btnTusReportes" style="width:220px;">
                 TUS REPORTES
             </a>
+			
+			<a href="" class="btn btn-default" id="btnEncuestas" style="width:250px;">
+				ENCUESTAS
+			</a>
+
 
         </div>
 

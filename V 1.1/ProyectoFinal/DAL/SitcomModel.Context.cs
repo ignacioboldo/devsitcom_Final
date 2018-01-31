@@ -70,6 +70,14 @@ namespace DAL
         public virtual DbSet<TipoTramite> TipoTramite { get; set; }
         public virtual DbSet<Tramite> Tramite { get; set; }
         public virtual DbSet<Usuarios> Usuarios { get; set; }
+        public virtual DbSet<ClasifPregunta> ClasifPregunta { get; set; }
+        public virtual DbSet<Encuestas> Encuestas { get; set; }
+        public virtual DbSet<EncuestasAsignadas> EncuestasAsignadas { get; set; }
+        public virtual DbSet<Preguntas> Preguntas { get; set; }
+        public virtual DbSet<RespuestasPosibles> RespuestasPosibles { get; set; }
+        public virtual DbSet<RtasXEncuestasAsignadas> RtasXEncuestasAsignadas { get; set; }
+        public virtual DbSet<TiposEncuesta> TiposEncuesta { get; set; }
+        public virtual DbSet<TiposRespuesta> TiposRespuesta { get; set; }
     
         public virtual ObjectResult<Nullable<decimal>> Actualizar_Comentarios_Leidos(Nullable<int> idReserva)
         {
@@ -616,6 +624,71 @@ namespace DAL
                 new ObjectParameter("diasBeneficio", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("updatePromociones", idPromocionParameter, fechaVencimientoParameter, tituloParameter, descripcionParameter, diasBeneficioParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> addPregunta(Nullable<int> idEncuesta, Nullable<int> idClasifPregunta, Nullable<int> idTipoRespuesta, string textoPregunta)
+        {
+            var idEncuestaParameter = idEncuesta.HasValue ?
+                new ObjectParameter("idEncuesta", idEncuesta) :
+                new ObjectParameter("idEncuesta", typeof(int));
+    
+            var idClasifPreguntaParameter = idClasifPregunta.HasValue ?
+                new ObjectParameter("idClasifPregunta", idClasifPregunta) :
+                new ObjectParameter("idClasifPregunta", typeof(int));
+    
+            var idTipoRespuestaParameter = idTipoRespuesta.HasValue ?
+                new ObjectParameter("idTipoRespuesta", idTipoRespuesta) :
+                new ObjectParameter("idTipoRespuesta", typeof(int));
+    
+            var textoPreguntaParameter = textoPregunta != null ?
+                new ObjectParameter("textoPregunta", textoPregunta) :
+                new ObjectParameter("textoPregunta", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("addPregunta", idEncuestaParameter, idClasifPreguntaParameter, idTipoRespuestaParameter, textoPreguntaParameter);
+        }
+    
+        public virtual ObjectResult<Nullable<int>> asignarEncuesta(Nullable<int> idTipoEncuesta, Nullable<int> idUsuario, Nullable<int> idNegocio, string checkOutDate)
+        {
+            var idTipoEncuestaParameter = idTipoEncuesta.HasValue ?
+                new ObjectParameter("idTipoEncuesta", idTipoEncuesta) :
+                new ObjectParameter("idTipoEncuesta", typeof(int));
+    
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("idUsuario", idUsuario) :
+                new ObjectParameter("idUsuario", typeof(int));
+    
+            var idNegocioParameter = idNegocio.HasValue ?
+                new ObjectParameter("idNegocio", idNegocio) :
+                new ObjectParameter("idNegocio", typeof(int));
+    
+            var checkOutDateParameter = checkOutDate != null ?
+                new ObjectParameter("checkOutDate", checkOutDate) :
+                new ObjectParameter("checkOutDate", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<int>>("asignarEncuesta", idTipoEncuestaParameter, idUsuarioParameter, idNegocioParameter, checkOutDateParameter);
+        }
+    
+        public virtual ObjectResult<getEncuestas_Result> getEncuestas()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<getEncuestas_Result>("getEncuestas");
+        }
+    
+        public virtual ObjectResult<GetEncuestasAsignadas_Result> GetEncuestasAsignadas(Nullable<int> idUsuario)
+        {
+            var idUsuarioParameter = idUsuario.HasValue ?
+                new ObjectParameter("idUsuario", idUsuario) :
+                new ObjectParameter("idUsuario", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetEncuestasAsignadas_Result>("GetEncuestasAsignadas", idUsuarioParameter);
+        }
+    
+        public virtual ObjectResult<ListarHabitacionesPorNroReserva_CheckIn_Result> ListarHabitacionesPorNroReserva_CheckIn(Nullable<int> idReserva)
+        {
+            var idReservaParameter = idReserva.HasValue ?
+                new ObjectParameter("idReserva", idReserva) :
+                new ObjectParameter("idReserva", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ListarHabitacionesPorNroReserva_CheckIn_Result>("ListarHabitacionesPorNroReserva_CheckIn", idReservaParameter);
         }
     }
 }

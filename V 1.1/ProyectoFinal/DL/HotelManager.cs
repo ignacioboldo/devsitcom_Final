@@ -259,6 +259,18 @@ namespace BL
 
       }
 
+      public List<ListadoHabitacionesEnCkeckInEntities> listarHabitacionesPorNroReserva_CheckIn(int idReserva)
+      {
+
+          using (SitcomEntities db = new SitcomEntities())
+          {
+
+              return db.Database.SqlQuery<ListadoHabitacionesEnCkeckInEntities>("ListarHabitacionesPorNroReserva_CheckIn @idReserva='" + idReserva + "'").ToList();
+
+          }
+
+
+      }
 
 
       public List<ReservasComentariosEntities> consultarComentariosSolicitud(int idSolicitud, int idReserva)
@@ -287,6 +299,21 @@ namespace BL
 
 
       }
+
+      public decimal detalleDisponibilidad_i(int idDisponibilidad, int idPersona)
+      {
+
+
+          using (SitcomEntities db = new SitcomEntities())
+          {
+
+              return db.Database.SqlQuery<decimal>("DetalleDisponibilidad_i @idDisponibilidad='" + idDisponibilidad + "',@idPersona= '" + idPersona + "'").First();
+
+          }
+
+
+      }
+
 
       public decimal disponibilidad_i(DateTime fechaDesde, DateTime fechaHasta, int? idHabitacion, int? idCasaODpto, int? idReserva)
       {

@@ -27,7 +27,17 @@ namespace ProyectoFinal.Controllers
             return View();
         }
 
- 
+        public ActionResult CheckInReservaModal(int id)
+        {
+            Session["AgregarCliente" + id] = null;
+
+            var listado = hm.listarHabitacionesPorNroReserva_CheckIn(id);
+
+            Session["ListadoHabitaciones"] = listado;
+
+            return PartialView("CheckInReservaModal");
+        }
+
 
         public String CheckInReserva(int id)
         {
@@ -108,6 +118,153 @@ namespace ProyectoFinal.Controllers
             var listado = hm.buscarClientes(buscar, idNegocio);
 
             return PartialView("BuscarCliente", listado);
+        }
+
+
+        public ActionResult AgregarCliente(int idPersona, string nombre, int idNegocio, int nroReserva)
+        {
+
+            var agregarCliente = new List<ClientesAgregadosEntities>();
+
+            if (Session["AgregarCliente" + nroReserva] != null)
+            {
+                 agregarCliente = Session["AgregarCliente" + nroReserva] as List<ClientesAgregadosEntities>;
+
+                var obj = new ClientesAgregadosEntities();
+
+                obj.idPersona = idPersona;
+                obj.idNegocio = idNegocio;
+                obj.nombre = nombre;
+                obj.nroReserva = nroReserva;
+
+                var existe = false;
+
+                foreach (var item in agregarCliente)
+                {
+                    if (idPersona == item.idPersona)
+                    {
+                        existe = true;
+                        break;
+                    };
+                };
+
+
+                if (!existe)
+                {
+                    agregarCliente.Add(obj);
+                }
+            }
+            else
+            {
+                var obj = new ClientesAgregadosEntities();
+
+                obj.idPersona = idPersona;
+                obj.idNegocio = idNegocio;
+                obj.nombre = nombre;
+                obj.nroReserva = nroReserva;
+
+                agregarCliente.Add(obj);
+                Session["AgregarCliente" + nroReserva] = agregarCliente;
+            }
+
+
+
+            return PartialView("AgregarPasajeroCheckIn", agregarCliente);
+        }
+
+
+        public string GuardarCheckIn(int idNegocio, int nroReserva)
+        {
+            string codigo = "";
+            bool falta_asignar = true;
+
+            if (Session["AgregarCliente" + nroReserva] == null) {
+                codigo = "sin_datos";
+            }
+            else { 
+
+                var agregarCliente = Session["AgregarCliente" + nroReserva] as List<ClientesAgregadosEntities>;
+
+                var listado_habitaciones = hm.listarHabitacionesPorNroReserva_CheckIn(nroReserva);
+
+                foreach (var item in listado_habitaciones)
+                {
+                    falta_asignar = true;
+
+                    foreach (var a in agregarCliente)
+                    {
+                        if(item.idDisponibilidad == a.idHabitacion){
+                            falta_asignar = false;
+                        }
+                    }
+
+                }
+
+
+                if (falta_asignar) {
+                    codigo = "FALTA_HABITACION";
+                }
+                else
+                {
+                    //gurdamos toda la info
+
+                    foreach (var a in agregarCliente)
+                    {
+                        hm.detalleDisponibilidad_i(a.idHabitacion,a.idPersona);
+                    }
+
+                    hm.reserva_CheckIn(nroReserva);
+
+                    codigo = "ok";
+
+                }
+
+            }
+
+
+
+            return codigo;
+        }
+
+        public ActionResult AsignarHabitacionCliente(int idPersona, int idNegocio, int nroReserva, int idDisponibilidad)
+        {
+
+            var agregarCliente = Session["AgregarCliente" + nroReserva] as List<ClientesAgregadosEntities>;
+
+            var nueva_lista = new List<ClientesAgregadosEntities>();
+
+            foreach (var item in agregarCliente)
+            {
+                if (item.idPersona == idPersona)
+                {
+                    item.idHabitacion = idDisponibilidad;
+                }
+
+                nueva_lista.Add(item);
+            }
+
+            Session["AgregarCliente" + nroReserva] = nueva_lista;
+
+            return PartialView("AgregarPasajeroCheckIn", nueva_lista);
+        }
+
+        public ActionResult EliminarCliente(int idPersona, int nroReserva)
+        {
+
+            var agregarCliente = Session["AgregarCliente" + nroReserva] as List<ClientesAgregadosEntities>;
+
+            var nueva_lista = new List<ClientesAgregadosEntities>();
+
+            foreach (var item in agregarCliente)
+            {
+                if(item.idPersona != idPersona){
+                    nueva_lista.Add(item);
+                }
+            }
+
+            Session["AgregarCliente" + nroReserva] = nueva_lista;
+
+            return PartialView("AgregarPasajeroCheckIn", nueva_lista);
         }
 
         public string RegistrarReserva(int? idPersona, int? idNegocio, int? idSolicitud, int tipo)

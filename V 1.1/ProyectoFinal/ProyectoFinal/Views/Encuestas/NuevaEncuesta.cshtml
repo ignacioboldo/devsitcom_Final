@@ -1,0 +1,58 @@
+﻿@model BussinesEntities.EncuestaEntity
+@{
+    ViewBag.Title = "Nueva Encuesta";
+}
+
+<h2>Nueva Encuesta</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Encuestas</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.nombre, "Nombre: ", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.nombre)
+                @Html.ValidationMessageFor(model => model.nombre)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.descripcion, "Descripción: ", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.descripcion)
+                @Html.ValidationMessageFor(model => model.descripcion)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.idTipoEncuesta, "Tipo: ", new { @class = "'-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownList("idTipoEncuesta", String.Empty)
+                @Html.ValidationMessageFor(model => model.idTipoEncuesta)
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.CheckBoxFor(model => model.setearComoActiva) @Html.Label("Setear como activa")
+            </div>
+        </div>
+
+           
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="CREAR ENCUESTA" class="btn btn-default" />
+                </div>
+            </div>
+     </div>
+}
+
+<div>
+    @Html.ActionLink("VOLVER A ENCUESTAS", "EncuestasIndex")
+</div>

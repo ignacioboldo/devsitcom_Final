@@ -1,0 +1,61 @@
+﻿@model BussinesEntities.PreguntasEntity
+
+@{
+    ViewBag.Title = "Nueva Pregunta";
+}
+
+<h2>Nueva Pregunta</h2>
+
+@using (Html.BeginForm("NuevaPregunta","Encuestas")) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>Preguntas</h4>
+        <hr />
+        @Html.ValidationSummary(true)
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.idClasifPregunta, "CATEGORIA", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.idClasifPregunta, (SelectList)ViewBag.idClasifPregunta, "-- SELECCIONA LA CATEGORIA DE LA PREGUNTA --", new { id = "ddlClasifPregunta" })
+                              
+                @Html.ValidationMessageFor(model => model.idClasifPregunta)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.textoPregunta, "PREGUNTA" , new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.textoPregunta)
+                @Html.ValidationMessageFor(model => model.textoPregunta)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.idTipoRespuesta, "TIPO DE RESPUESTA", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.idTipoRespuesta, (SelectList)ViewBag.idTipoRespuesta, "-- SELECCIONA EL TIPO DE RESPUESTA --", new { id = "ddlTipoRespuesta" })
+                @Html.ValidationMessageFor(model => model.idClasifPregunta)
+            </div>
+        </div>
+
+        <div class="form-group">
+           @Html.HiddenFor(model => model.idEncuesta)
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="CREAR PREGUNTA" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @{
+        int idEncuesta = ViewBag.IdEncuesta;
+        @Html.ActionLink("VOLVER A PREGUNTAS", "PreguntasEncuesta", "Encuestas", new { idEncuesta = idEncuesta },null)
+    }
+</div>

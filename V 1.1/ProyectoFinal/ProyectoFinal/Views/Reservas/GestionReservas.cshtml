@@ -2,9 +2,7 @@
 
 <script type="text/javascript">
 
-    
-
-    function consultarReserva(nro_solicitud,nro_reserva) {
+    function consultarReserva(nro_solicitud, nro_reserva) {
 
         $('#nro_reserva').html(nro_reserva);
         $('#nro_solicitud').html(nro_solicitud);
@@ -21,9 +19,6 @@
         var nro_reserva = $("#nro_reserva").html();
         var nro_solicitud = $("#nro_solicitud").html();
 
-        //alert(nro_reserva);
-        //alert(nro_solicitud);
-
         $.ajax({
             type: 'GET',
             url: 'ListadoDeComentario?idSolicitud=' + nro_solicitud + '&idReserva=' + nro_reserva,
@@ -36,11 +31,13 @@
     }
 
     function anularReserva() {
+
         var nro_reserva = $("#nro_reserva").html();
 
         var result = confirm("Realmente quiere anular la reserva");
 
         if (result) {
+
             $.ajax({
                 type: 'GET',
                 url: 'AnularReserva?id=' + nro_reserva,
@@ -50,33 +47,38 @@
                     $('#myModal').modal('hide');
                 }
             })
+
         }
     }
 
-    function checkin(id) {
-        var nro_reserva = id;
 
-        var result = confirm("Realmente quiere hacer el check-in.");
 
-        if (result) {
-            $.ajax({
-                type: 'GET',
-                url: 'CheckInReserva?id=' + nro_reserva,
-                success: function (response) {
-                    planoListadoReserva()
-                    planoReserva()
-                    $('#myModal').modal('hide');
-                }
-            })
-        }
+    function checkin(nro_reserva) {
+
+        $("#id_reserva_resguardo").val(nro_reserva);
+
+        $.ajax({
+            type: 'GET',
+            url: 'CheckInReservaModal?id=' + nro_reserva,
+            success: function (response) {
+                $("#resultado_checkin").html(response);
+                $('#myModal2').modal('show');
+            }
+        })
+
+
     }
 
     function checkout(id) {
+
         var nro_reserva = id;
+
+        $("#id_reserva_resguardo").val(nro_reserva);
 
         var result = confirm("Realmente quiere hacer el check-out.");
 
         if (result) {
+
             $.ajax({
                 type: 'GET',
                 url: 'CheckOutReserva?id=' + nro_reserva,
@@ -86,7 +88,9 @@
                     $('#myModal').modal('hide');
                 }
             })
-        }
+
+        };
+
     }
 
 
@@ -96,6 +100,7 @@
         var result = confirm("Realmente quiere anular la reserva?.");
 
         if (result) {
+
             $.ajax({
                 type: 'GET',
                 url: 'AnularReserva?id=' + nro_reserva,
@@ -105,12 +110,14 @@
                     $('#myModal').modal('hide');
                 }
             })
+
         }
     }
 
     function actualizar_Comentarios_Leidos() {
 
         var nro_reserva = $("#nro_reserva").html();
+
         $.ajax({
             type: 'GET',
             url: 'Actualizar_Comentarios_Leidos?id=' + nro_reserva,
@@ -119,6 +126,101 @@
                 planoReserva()
             }
         })
+
+    }
+
+    function buscar_cliente() {
+
+        var buscar = $("#buscar_cliente").val();
+        var idNegocio = '@Model.idNegocio';
+
+        $.ajax({
+            url: "BuscarCliente?buscar=" + buscar + '&idNegocio=' + idNegocio
+        }).done(function (data) {
+            $("#lista_clientes").html(data);
+        });
+
+    };
+
+    function quitarClienteCheckin(idPersona) {
+
+        var idNegocio = '@Model.idNegocio';
+        var nroReserva = $("#id_reserva_resguardo").val();
+
+        $.ajax({
+            url: "EliminarCliente?idPersona=" + idPersona + '&idNegocio=' + idNegocio + '&nroReserva=' + nroReserva
+        }).done(function (data) {
+            $("#lista_clientes_asignados").html(data);
+        });
+
+    }
+
+    function guardarCheckIn() {
+
+        var idNegocio = '@Model.idNegocio';
+        var nroReserva = $("#id_reserva_resguardo").val();
+
+        $.ajax({
+            url: "GuardarCheckIn?idNegocio=" + idNegocio + '&nroReserva=' + nroReserva
+        }).done(function (data) {
+
+            if (data == "FALTA_HABITACION") {
+                alert("Debe asignar a cada una de las habitaciones un pasajero.");
+            };
+
+            if (data == "ok") {
+                $('#myModal2').modal('hide');
+                alert("Datos guardados correctamente.");
+                
+            };
+
+            if (data == "sin_datos") {
+                alert("Debe buscar y seleccionar un pasajero para poder asignar las habitaciones.");
+    
+            };
+
+           
+        });
+
+    }
+
+    function asignarHabitacion(idPersona) {
+
+        var idNegocio  = '@Model.idNegocio';
+        var nroReserva = $("#id_reserva_resguardo").val();
+        var idDisponibilidad = $("#habitacion_asignada_" + idPersona).val();
+
+        $.ajax({
+            url: "AsignarHabitacionCliente?idPersona=" + idPersona + '&idNegocio=' + idNegocio + '&nroReserva=' + nroReserva + '&idDisponibilidad=' + idDisponibilidad
+        }).done(function (data) {
+            $("#lista_clientes_asignados").html(data);
+        });
+
+    }
+
+
+    function seleccionarCliente(idPersona, nombre, apellido, sexo, documento) {
+
+        $("#nombre").val(nombre);
+        $("#apellido").val(apellido);
+        $("#idPersona").val(idPersona);
+        $("#sexo").val(sexo);
+        $("#documento").val(documento);
+
+        var nroReserva = $("#id_reserva_resguardo").val();
+        var idNegocio = '@Model.idNegocio';
+
+        $.ajax({
+            url: "AgregarCliente?idPersona=" + idPersona + '&nombre=' + nombre + '&idNegocio=' + idNegocio + '&nroReserva=' + nroReserva
+        }).done(function (data) {
+            $("#lista_clientes_asignados").html(data);
+            $("#lista_clientes").html("");
+            $("#buscar_cliente").val("");
+            $("#buscar_cliente").focus();
+
+        });
+
+        return false;
     }
 
     function enviarConsulta() {
@@ -129,11 +231,8 @@
 
             fdata.append("nro_reserva", $("#nro_reserva").html());
             fdata.append("nro_solicitud", $("#nro_solicitud").html());
-
             fdata.append("consultareserva", $("#consultareserva").val());
-
             fdata.append("filereserva", $("#filereserva")[0].files[0]);
-
             fdata.append("comentarioCliente", "0");
 
 
@@ -481,3 +580,28 @@
 
 </section>
 
+<input id="id_reserva_resguardo" type="hidden" />
+
+        <!-- Modal -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Check-In</h4>
+            </div>
+            <div id="mensajes" class="modal-body">
+
+                <div id="resultado_checkin"></div>
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" onclick="guardarCheckIn()" class="btn btn-link">
+ 
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,49 @@
+﻿@model IEnumerable<BussinesEntities.PreguntasEntity>
+
+@{
+    ViewBag.Title = "Preguntas";
+}
+
+<h2>PREGUNTAS</h2>
+
+<p>
+    @{        
+        int idEncuesta = ViewBag.IdEncuesta;
+        @Html.ActionLink("NUEVA PREGUNTA", "NuevaPregunta", new { idEncuesta = idEncuesta },null)
+    }
+</p>
+<table class="table">
+    <tr>
+        <th>
+            CATEGORIA
+        </th>
+        <th>
+            TEXTO
+        </th>
+        <th>
+            TIPO DE RESPUESTA
+        </th>        
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.ClasifPregunta.nombre)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.textoPregunta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TiposRespuesta.nombre)
+        </td>
+
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.idPregunta }) |
+            @Html.ActionLink("Details", "Details", new { id=item.idPregunta }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.idPregunta })
+        </td>
+    </tr>
+}
+
+</table>

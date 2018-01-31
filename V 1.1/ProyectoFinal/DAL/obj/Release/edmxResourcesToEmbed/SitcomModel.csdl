@@ -241,6 +241,7 @@
     <NavigationProperty Name="Solicitud" Relationship="Self.FK_Solicitud_Negocio" FromRole="Negocio" ToRole="Solicitud" />
     <NavigationProperty Name="Sucursal" Relationship="Self.FK_Sucursal_Negocio" FromRole="Negocio" ToRole="Sucursal" />
     <NavigationProperty Name="Tramite" Relationship="Self.FK_Tramite_Negocio" FromRole="Negocio" ToRole="Tramite" />
+    <NavigationProperty Name="EncuestasAsignadas" Relationship="SitcomModel.FK_EncuestasAsignadas_Negocio" FromRole="Negocio" ToRole="EncuestasAsignadas" />
   </EntityType>
   <EntityType Name="Paginas">
     <Key>
@@ -501,6 +502,7 @@
     <NavigationProperty Name="Solicitud" Relationship="Self.FK_Solicitud_Usuarios" FromRole="Usuarios" ToRole="Solicitud" />
     <NavigationProperty Name="Tramite" Relationship="Self.FK_Tramite_UsuarioResponsable" FromRole="Usuarios" ToRole="Tramite" />
     <NavigationProperty Name="Tramite1" Relationship="Self.FK_Tramite_UsuarioSolicitante" FromRole="Usuarios" ToRole="Tramite" />
+    <NavigationProperty Name="EncuestasAsignadas" Relationship="SitcomModel.FK_EncuestasAsignadas_Usuarios" FromRole="Usuarios" ToRole="EncuestasAsignadas" />
   </EntityType>
   <Association Name="FK_Caracteristica_CategoriaCaracteristicas">
     <End Role="CategoriaCaracteristicas" Type="Self.CategoriaCaracteristicas" Multiplicity="0..1" />
@@ -1478,6 +1480,73 @@
       <Parameter Name="descripcion" Mode="In" Type="String" />
       <Parameter Name="diasBeneficio" Mode="In" Type="Int32" />
     </FunctionImport>
+    <EntitySet Name="ClasifPregunta" EntityType="SitcomModel.ClasifPregunta" />
+    <EntitySet Name="Encuestas" EntityType="SitcomModel.Encuestas" />
+    <EntitySet Name="EncuestasAsignadas" EntityType="SitcomModel.EncuestasAsignadas" />
+    <EntitySet Name="Preguntas" EntityType="SitcomModel.Preguntas" />
+    <EntitySet Name="RespuestasPosibles" EntityType="SitcomModel.RespuestasPosibles" />
+    <EntitySet Name="RtasXEncuestasAsignadas" EntityType="SitcomModel.RtasXEncuestasAsignadas" />
+    <EntitySet Name="TiposEncuesta" EntityType="SitcomModel.TiposEncuesta" />
+    <EntitySet Name="TiposRespuesta" EntityType="SitcomModel.TiposRespuesta" />
+    <AssociationSet Name="FK_Preguntas_ClasifPregunta" Association="SitcomModel.FK_Preguntas_ClasifPregunta">
+      <End Role="ClasifPregunta" EntitySet="ClasifPregunta" />
+      <End Role="Preguntas" EntitySet="Preguntas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Encuestas_TiposEncuesta" Association="SitcomModel.FK_Encuestas_TiposEncuesta">
+      <End Role="TiposEncuesta" EntitySet="TiposEncuesta" />
+      <End Role="Encuestas" EntitySet="Encuestas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Preguntas_Encuestas" Association="SitcomModel.FK_Preguntas_Encuestas">
+      <End Role="Encuestas" EntitySet="Encuestas" />
+      <End Role="Preguntas" EntitySet="Preguntas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EncuestasAsignadas_Negocio" Association="SitcomModel.FK_EncuestasAsignadas_Negocio">
+      <End Role="Negocio" EntitySet="Negocio" />
+      <End Role="EncuestasAsignadas" EntitySet="EncuestasAsignadas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EncuestasAsignadas_TiposEncuesta" Association="SitcomModel.FK_EncuestasAsignadas_TiposEncuesta">
+      <End Role="TiposEncuesta" EntitySet="TiposEncuesta" />
+      <End Role="EncuestasAsignadas" EntitySet="EncuestasAsignadas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_EncuestasAsignadas_Usuarios" Association="SitcomModel.FK_EncuestasAsignadas_Usuarios">
+      <End Role="Usuarios" EntitySet="Usuarios" />
+      <End Role="EncuestasAsignadas" EntitySet="EncuestasAsignadas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Preguntas_Preguntas" Association="SitcomModel.FK_Preguntas_Preguntas">
+      <End Role="Preguntas" EntitySet="Preguntas" />
+      <End Role="Preguntas1" EntitySet="Preguntas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Preguntas_TiposRespuesta" Association="SitcomModel.FK_Preguntas_TiposRespuesta">
+      <End Role="TiposRespuesta" EntitySet="TiposRespuesta" />
+      <End Role="Preguntas" EntitySet="Preguntas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RtasXEncuestasAsignadas_Preguntas" Association="SitcomModel.FK_RtasXEncuestasAsignadas_Preguntas">
+      <End Role="Preguntas" EntitySet="Preguntas" />
+      <End Role="RtasXEncuestasAsignadas" EntitySet="RtasXEncuestasAsignadas" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RespuestasPosibles_TiposRespuesta" Association="SitcomModel.FK_RespuestasPosibles_TiposRespuesta">
+      <End Role="TiposRespuesta" EntitySet="TiposRespuesta" />
+      <End Role="RespuestasPosibles" EntitySet="RespuestasPosibles" />
+    </AssociationSet>
+    <FunctionImport Name="addPregunta" ReturnType="Collection(Int32)">
+      <Parameter Name="idEncuesta" Mode="In" Type="Int32" />
+      <Parameter Name="idClasifPregunta" Mode="In" Type="Int32" />
+      <Parameter Name="idTipoRespuesta" Mode="In" Type="Int32" />
+      <Parameter Name="textoPregunta" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="asignarEncuesta" ReturnType="Collection(Int32)">
+      <Parameter Name="idTipoEncuesta" Mode="In" Type="Int32" />
+      <Parameter Name="idUsuario" Mode="In" Type="Int32" />
+      <Parameter Name="idNegocio" Mode="In" Type="Int32" />
+      <Parameter Name="checkOutDate" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="getEncuestas" ReturnType="Collection(SitcomModel.getEncuestas_Result)" />
+    <FunctionImport Name="GetEncuestasAsignadas" ReturnType="Collection(SitcomModel.GetEncuestasAsignadas_Result)">
+      <Parameter Name="idUsuario" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="ListarHabitacionesPorNroReserva_CheckIn" ReturnType="Collection(SitcomModel.ListarHabitacionesPorNroReserva_CheckIn_Result)">
+      <Parameter Name="idReserva" Mode="In" Type="Int32" />
+    </FunctionImport>
   </EntityContainer>
   <ComplexType Name="cambiarHabitacionesNuevoHotel_Result">
     <Property Type="Int32" Name="Column1" Nullable="true" />
@@ -1563,5 +1632,235 @@
     <Property Type="Int32" Name="numero" Nullable="true" />
     <Property Type="String" Name="dpto" Nullable="true" MaxLength="50" />
     <Property Type="String" Name="barrio" Nullable="true" MaxLength="150" />
+  </ComplexType>
+  <EntityType Name="ClasifPregunta">
+    <Key>
+      <PropertyRef Name="idClasifPregunta" />
+    </Key>
+    <Property Name="idClasifPregunta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Preguntas" Relationship="SitcomModel.FK_Preguntas_ClasifPregunta" FromRole="ClasifPregunta" ToRole="Preguntas" />
+  </EntityType>
+  <EntityType Name="Encuestas">
+    <Key>
+      <PropertyRef Name="idEncuesta" />
+    </Key>
+    <Property Name="idEncuesta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="idTipoEncuesta" Type="Int32" />
+    <Property Name="esActiva" Type="Boolean" />
+    <NavigationProperty Name="TiposEncuesta" Relationship="SitcomModel.FK_Encuestas_TiposEncuesta" FromRole="Encuestas" ToRole="TiposEncuesta" />
+    <NavigationProperty Name="Preguntas" Relationship="SitcomModel.FK_Preguntas_Encuestas" FromRole="Encuestas" ToRole="Preguntas" />
+  </EntityType>
+  <EntityType Name="EncuestasAsignadas">
+    <Key>
+      <PropertyRef Name="idEncuestaAsignada" />
+    </Key>
+    <Property Name="idUsuario" Type="Int32" />
+    <Property Name="idNegocio" Type="Int32" />
+    <Property Name="fechaAsignacion" Type="DateTime" Precision="0" />
+    <Property Name="fechaRespuesta" Type="DateTime" Precision="0" />
+    <Property Name="idEncuestaAsignada" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idTipoEncuesta" Type="Int32" />
+    <NavigationProperty Name="Negocio" Relationship="SitcomModel.FK_EncuestasAsignadas_Negocio" FromRole="EncuestasAsignadas" ToRole="Negocio" />
+    <NavigationProperty Name="TiposEncuesta" Relationship="SitcomModel.FK_EncuestasAsignadas_TiposEncuesta" FromRole="EncuestasAsignadas" ToRole="TiposEncuesta" />
+    <NavigationProperty Name="Usuarios" Relationship="SitcomModel.FK_EncuestasAsignadas_Usuarios" FromRole="EncuestasAsignadas" ToRole="Usuarios" />
+  </EntityType>
+  <EntityType Name="Preguntas">
+    <Key>
+      <PropertyRef Name="idPregunta" />
+    </Key>
+    <Property Name="idPregunta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idClasifPregunta" Type="Int32" />
+    <Property Name="textoPregunta" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="idEncuesta" Type="Int32" />
+    <Property Name="idTipoRespuesta" Type="Int32" />
+    <NavigationProperty Name="ClasifPregunta" Relationship="SitcomModel.FK_Preguntas_ClasifPregunta" FromRole="Preguntas" ToRole="ClasifPregunta" />
+    <NavigationProperty Name="Encuestas" Relationship="SitcomModel.FK_Preguntas_Encuestas" FromRole="Preguntas" ToRole="Encuestas" />
+    <NavigationProperty Name="Preguntas1" Relationship="SitcomModel.FK_Preguntas_Preguntas" FromRole="Preguntas" ToRole="Preguntas1" />
+    <NavigationProperty Name="Preguntas2" Relationship="SitcomModel.FK_Preguntas_Preguntas" FromRole="Preguntas1" ToRole="Preguntas" />
+    <NavigationProperty Name="TiposRespuesta" Relationship="SitcomModel.FK_Preguntas_TiposRespuesta" FromRole="Preguntas" ToRole="TiposRespuesta" />
+    <NavigationProperty Name="RtasXEncuestasAsignadas" Relationship="SitcomModel.FK_RtasXEncuestasAsignadas_Preguntas" FromRole="Preguntas" ToRole="RtasXEncuestasAsignadas" />
+  </EntityType>
+  <EntityType Name="RespuestasPosibles">
+    <Key>
+      <PropertyRef Name="idRtaPosible" />
+    </Key>
+    <Property Name="idRtaPosible" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="valor" Type="Int32" />
+    <Property Name="idTipoRespuesta" Type="Int32" />
+    <NavigationProperty Name="TiposRespuesta" Relationship="SitcomModel.FK_RespuestasPosibles_TiposRespuesta" FromRole="RespuestasPosibles" ToRole="TiposRespuesta" />
+  </EntityType>
+  <EntityType Name="RtasXEncuestasAsignadas">
+    <Key>
+      <PropertyRef Name="idEncuestaAsignada" />
+      <PropertyRef Name="idPregunta" />
+    </Key>
+    <Property Name="idEncuestaAsignada" Type="Int32" Nullable="false" />
+    <Property Name="idPregunta" Type="Int32" Nullable="false" />
+    <Property Name="respuesta" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Preguntas" Relationship="SitcomModel.FK_RtasXEncuestasAsignadas_Preguntas" FromRole="RtasXEncuestasAsignadas" ToRole="Preguntas" />
+  </EntityType>
+  <EntityType Name="TiposEncuesta">
+    <Key>
+      <PropertyRef Name="idTipoEncuesta" />
+    </Key>
+    <Property Name="idTipoEncuesta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Encuestas" Relationship="SitcomModel.FK_Encuestas_TiposEncuesta" FromRole="TiposEncuesta" ToRole="Encuestas" />
+    <NavigationProperty Name="EncuestasAsignadas" Relationship="SitcomModel.FK_EncuestasAsignadas_TiposEncuesta" FromRole="TiposEncuesta" ToRole="EncuestasAsignadas" />
+  </EntityType>
+  <EntityType Name="TiposRespuesta">
+    <Key>
+      <PropertyRef Name="idTipoRespuesta" />
+    </Key>
+    <Property Name="idTipoRespuesta" Type="Int32" Nullable="false" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="descripcion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="Preguntas" Relationship="SitcomModel.FK_Preguntas_TiposRespuesta" FromRole="TiposRespuesta" ToRole="Preguntas" />
+    <NavigationProperty Name="RespuestasPosibles" Relationship="SitcomModel.FK_RespuestasPosibles_TiposRespuesta" FromRole="TiposRespuesta" ToRole="RespuestasPosibles" />
+  </EntityType>
+  <Association Name="FK_Preguntas_ClasifPregunta">
+    <End Type="SitcomModel.ClasifPregunta" Role="ClasifPregunta" Multiplicity="0..1" />
+    <End Type="SitcomModel.Preguntas" Role="Preguntas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ClasifPregunta">
+        <PropertyRef Name="idClasifPregunta" />
+      </Principal>
+      <Dependent Role="Preguntas">
+        <PropertyRef Name="idClasifPregunta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Encuestas_TiposEncuesta">
+    <End Type="SitcomModel.TiposEncuesta" Role="TiposEncuesta" Multiplicity="0..1" />
+    <End Type="SitcomModel.Encuestas" Role="Encuestas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TiposEncuesta">
+        <PropertyRef Name="idTipoEncuesta" />
+      </Principal>
+      <Dependent Role="Encuestas">
+        <PropertyRef Name="idTipoEncuesta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Preguntas_Encuestas">
+    <End Type="SitcomModel.Encuestas" Role="Encuestas" Multiplicity="0..1" />
+    <End Type="SitcomModel.Preguntas" Role="Preguntas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Encuestas">
+        <PropertyRef Name="idEncuesta" />
+      </Principal>
+      <Dependent Role="Preguntas">
+        <PropertyRef Name="idEncuesta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EncuestasAsignadas_Negocio">
+    <End Type="SitcomModel.Negocio" Role="Negocio" Multiplicity="0..1" />
+    <End Type="SitcomModel.EncuestasAsignadas" Role="EncuestasAsignadas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Negocio">
+        <PropertyRef Name="idNegocio" />
+      </Principal>
+      <Dependent Role="EncuestasAsignadas">
+        <PropertyRef Name="idNegocio" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EncuestasAsignadas_TiposEncuesta">
+    <End Type="SitcomModel.TiposEncuesta" Role="TiposEncuesta" Multiplicity="0..1" />
+    <End Type="SitcomModel.EncuestasAsignadas" Role="EncuestasAsignadas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TiposEncuesta">
+        <PropertyRef Name="idTipoEncuesta" />
+      </Principal>
+      <Dependent Role="EncuestasAsignadas">
+        <PropertyRef Name="idTipoEncuesta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_EncuestasAsignadas_Usuarios">
+    <End Type="SitcomModel.Usuarios" Role="Usuarios" Multiplicity="0..1" />
+    <End Type="SitcomModel.EncuestasAsignadas" Role="EncuestasAsignadas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Usuarios">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="EncuestasAsignadas">
+        <PropertyRef Name="idUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Preguntas_Preguntas">
+    <End Type="SitcomModel.Preguntas" Role="Preguntas" Multiplicity="1" />
+    <End Type="SitcomModel.Preguntas" Role="Preguntas1" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="Preguntas">
+        <PropertyRef Name="idPregunta" />
+      </Principal>
+      <Dependent Role="Preguntas1">
+        <PropertyRef Name="idPregunta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Preguntas_TiposRespuesta">
+    <End Type="SitcomModel.TiposRespuesta" Role="TiposRespuesta" Multiplicity="0..1" />
+    <End Type="SitcomModel.Preguntas" Role="Preguntas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TiposRespuesta">
+        <PropertyRef Name="idTipoRespuesta" />
+      </Principal>
+      <Dependent Role="Preguntas">
+        <PropertyRef Name="idTipoRespuesta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RtasXEncuestasAsignadas_Preguntas">
+    <End Type="SitcomModel.Preguntas" Role="Preguntas" Multiplicity="1" />
+    <End Type="SitcomModel.RtasXEncuestasAsignadas" Role="RtasXEncuestasAsignadas" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Preguntas">
+        <PropertyRef Name="idPregunta" />
+      </Principal>
+      <Dependent Role="RtasXEncuestasAsignadas">
+        <PropertyRef Name="idPregunta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RespuestasPosibles_TiposRespuesta">
+    <End Type="SitcomModel.TiposRespuesta" Role="TiposRespuesta" Multiplicity="0..1" />
+    <End Type="SitcomModel.RespuestasPosibles" Role="RespuestasPosibles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TiposRespuesta">
+        <PropertyRef Name="idTipoRespuesta" />
+      </Principal>
+      <Dependent Role="RespuestasPosibles">
+        <PropertyRef Name="idTipoRespuesta" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <ComplexType Name="getEncuestas_Result">
+    <Property Type="Int32" Name="idEncuesta" Nullable="false" />
+    <Property Type="String" Name="NOMBRE" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="TIPO" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="DESCRIPCION" Nullable="true" MaxLength="200" />
+    <Property Type="String" Name="ESTADO" Nullable="false" MaxLength="8" />
+  </ComplexType>
+  <ComplexType Name="GetEncuestasAsignadas_Result">
+    <Property Type="Int32" Name="idEncuestaAsignada" Nullable="false" />
+    <Property Type="String" Name="TIPO" Nullable="true" MaxLength="50" />
+    <Property Type="String" Name="NEGOCIO" Nullable="true" MaxLength="300" />
+    <Property Type="DateTime" Name="ASIGNADA" Nullable="true" />
+    <Property Type="String" Name="RESPUESTA" Nullable="true" MaxLength="30" />
+  </ComplexType>
+  <ComplexType Name="ListarHabitacionesPorNroReserva_CheckIn_Result">
+    <Property Type="Int32" Name="idDisponibilidad" Nullable="false" />
+    <Property Type="String" Name="Nombre" Nullable="true" MaxLength="100" />
+    <Property Type="Int32" Name="idReserva" Nullable="true" />
   </ComplexType>
 </Schema>

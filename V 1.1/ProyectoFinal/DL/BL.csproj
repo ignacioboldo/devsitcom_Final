@@ -52,6 +52,7 @@
     <Compile Include="ComplejoManager.cs" />
     <Compile Include="ConvertidorEntitiesToDAL.cs" />
     <Compile Include="DomicilioManager.cs" />
+    <Compile Include="EncuestasManager.cs" />
     <Compile Include="HabitacionesManager.cs" />
     <Compile Include="HotelManager.cs" />
     <Compile Include="NegociosManager.cs" />

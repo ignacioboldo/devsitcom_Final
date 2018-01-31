@@ -96,6 +96,24 @@
         <AssociationConnector Association="SitcomModel.FK_Tramite_TipoTramite" ManuallyRouted="false" />
         <AssociationConnector Association="SitcomModel.FK_Tramite_UsuarioResponsable" ManuallyRouted="false" />
         <AssociationConnector Association="SitcomModel.FK_Tramite_UsuarioSolicitante" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="SitcomModel.ClasifPregunta" Width="1.5" PointX="7.625" PointY="0.75" />
+        <EntityTypeShape EntityType="SitcomModel.Encuestas" Width="1.5" PointX="7.625" PointY="3.875" />
+        <EntityTypeShape EntityType="SitcomModel.EncuestasAsignadas" Width="1.5" PointX="13.5" PointY="13.5" />
+        <EntityTypeShape EntityType="SitcomModel.Preguntas" Width="1.5" PointX="9.875" PointY="3.5" />
+        <EntityTypeShape EntityType="SitcomModel.RespuestasPosibles" Width="1.5" PointX="9.875" PointY="8.25" />
+        <EntityTypeShape EntityType="SitcomModel.RtasXEncuestasAsignadas" Width="1.5" PointX="12.125" PointY="4.125" />
+        <EntityTypeShape EntityType="SitcomModel.TiposEncuesta" Width="1.5" PointX="5.375" PointY="4" />
+        <EntityTypeShape EntityType="SitcomModel.TiposRespuesta" Width="1.5" PointX="7.625" PointY="7.25" />
+        <AssociationConnector Association="SitcomModel.FK_Preguntas_ClasifPregunta" />
+        <AssociationConnector Association="SitcomModel.FK_Encuestas_TiposEncuesta" />
+        <AssociationConnector Association="SitcomModel.FK_Preguntas_Encuestas" />
+        <AssociationConnector Association="SitcomModel.FK_EncuestasAsignadas_Negocio" />
+        <AssociationConnector Association="SitcomModel.FK_EncuestasAsignadas_TiposEncuesta" />
+        <AssociationConnector Association="SitcomModel.FK_EncuestasAsignadas_Usuarios" />
+        <AssociationConnector Association="SitcomModel.FK_Preguntas_Preguntas" />
+        <AssociationConnector Association="SitcomModel.FK_Preguntas_TiposRespuesta" />
+        <AssociationConnector Association="SitcomModel.FK_RtasXEncuestasAsignadas_Preguntas" />
+        <AssociationConnector Association="SitcomModel.FK_RespuestasPosibles_TiposRespuesta" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

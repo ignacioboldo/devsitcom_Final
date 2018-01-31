@@ -1,0 +1,20 @@
+﻿@model IEnumerable<BussinesEntities.RespuestasEncuestaUsuarioEntity>
+
+@{
+    ViewBag.Title = "Preguntas";
+}
+
+<h2>RESPUESTAS ENCUESTA</h2>
+
+@foreach (var item in Model) {
+    
+      @Html.Label(item.PREGUNTA)
+    <br />  
+      <text>@item.RESPUESTA</text>
+
+    <br />
+    <br />  
+
+}
+
+</table>

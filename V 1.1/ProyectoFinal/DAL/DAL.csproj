@@ -83,6 +83,9 @@
     <Compile Include="CategoriaHospedaje.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="ClasifPregunta.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="ComentariosSolicitud.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
@@ -110,6 +113,12 @@
     <Compile Include="Domicilio.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Encuestas.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EncuestasAsignadas.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EstadoReserva.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
@@ -120,6 +129,12 @@
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="FotosUsuario.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetEncuestasAsignadas_Result.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="getEncuestas_Result.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="getPromocionesOtorgadas_Result.cs">
@@ -138,6 +153,9 @@
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Hotel.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ListarHabitacionesPorNroReserva_CheckIn_Result.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Localidad.cs">
@@ -167,6 +185,9 @@
     <Compile Include="Persona_s_By_IdNegocio_Result.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Preguntas.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Promociones.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
@@ -178,6 +199,12 @@
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Reserva.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RespuestasPosibles.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="RtasXEncuestasAsignadas.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Rubro.cs">
@@ -226,6 +253,12 @@
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TipoLugarHospedaje.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TiposEncuesta.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="TiposRespuesta.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TipoTramite.cs">

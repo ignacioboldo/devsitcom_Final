@@ -22,6 +22,7 @@ namespace DAL
             this.Solicitud = new HashSet<Solicitud>();
             this.Tramite = new HashSet<Tramite>();
             this.Tramite1 = new HashSet<Tramite>();
+            this.EncuestasAsignadas = new HashSet<EncuestasAsignadas>();
         }
     
         public int idUsuario { get; set; }
@@ -38,5 +39,6 @@ namespace DAL
         public virtual ICollection<Solicitud> Solicitud { get; set; }
         public virtual ICollection<Tramite> Tramite { get; set; }
         public virtual ICollection<Tramite> Tramite1 { get; set; }
+        public virtual ICollection<EncuestasAsignadas> EncuestasAsignadas { get; set; }
     }
 }

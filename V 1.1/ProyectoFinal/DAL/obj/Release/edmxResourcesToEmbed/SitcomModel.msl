@@ -597,5 +597,118 @@
     <FunctionImportMapping FunctionImportName="Reserva_CheckOut" FunctionName="SitcomModel.Store.Reserva_CheckOut" />
     <FunctionImportMapping FunctionImportName="Reserva_i" FunctionName="SitcomModel.Store.Reserva_i" />
     <FunctionImportMapping FunctionImportName="updatePromociones" FunctionName="SitcomModel.Store.updatePromociones" />
+    <EntitySetMapping Name="ClasifPregunta">
+      <EntityTypeMapping TypeName="SitcomModel.ClasifPregunta">
+        <MappingFragment StoreEntitySet="ClasifPregunta">
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idClasifPregunta" ColumnName="idClasifPregunta" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Encuestas">
+      <EntityTypeMapping TypeName="SitcomModel.Encuestas">
+        <MappingFragment StoreEntitySet="Encuestas">
+          <ScalarProperty Name="esActiva" ColumnName="esActiva" />
+          <ScalarProperty Name="idTipoEncuesta" ColumnName="idTipoEncuesta" />
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idEncuesta" ColumnName="idEncuesta" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EncuestasAsignadas">
+      <EntityTypeMapping TypeName="SitcomModel.EncuestasAsignadas">
+        <MappingFragment StoreEntitySet="EncuestasAsignadas">
+          <ScalarProperty Name="idTipoEncuesta" ColumnName="idTipoEncuesta" />
+          <ScalarProperty Name="idEncuestaAsignada" ColumnName="idEncuestaAsignada" />
+          <ScalarProperty Name="fechaRespuesta" ColumnName="fechaRespuesta" />
+          <ScalarProperty Name="fechaAsignacion" ColumnName="fechaAsignacion" />
+          <ScalarProperty Name="idNegocio" ColumnName="idNegocio" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Preguntas">
+      <EntityTypeMapping TypeName="SitcomModel.Preguntas">
+        <MappingFragment StoreEntitySet="Preguntas">
+          <ScalarProperty Name="idTipoRespuesta" ColumnName="idTipoRespuesta" />
+          <ScalarProperty Name="idEncuesta" ColumnName="idEncuesta" />
+          <ScalarProperty Name="textoPregunta" ColumnName="textoPregunta" />
+          <ScalarProperty Name="idClasifPregunta" ColumnName="idClasifPregunta" />
+          <ScalarProperty Name="idPregunta" ColumnName="idPregunta" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RespuestasPosibles">
+      <EntityTypeMapping TypeName="SitcomModel.RespuestasPosibles">
+        <MappingFragment StoreEntitySet="RespuestasPosibles">
+          <ScalarProperty Name="idTipoRespuesta" ColumnName="idTipoRespuesta" />
+          <ScalarProperty Name="valor" ColumnName="valor" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idRtaPosible" ColumnName="idRtaPosible" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="RtasXEncuestasAsignadas">
+      <EntityTypeMapping TypeName="SitcomModel.RtasXEncuestasAsignadas">
+        <MappingFragment StoreEntitySet="RtasXEncuestasAsignadas">
+          <ScalarProperty Name="respuesta" ColumnName="respuesta" />
+          <ScalarProperty Name="idPregunta" ColumnName="idPregunta" />
+          <ScalarProperty Name="idEncuestaAsignada" ColumnName="idEncuestaAsignada" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TiposEncuesta">
+      <EntityTypeMapping TypeName="SitcomModel.TiposEncuesta">
+        <MappingFragment StoreEntitySet="TiposEncuesta">
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idTipoEncuesta" ColumnName="idTipoEncuesta" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TiposRespuesta">
+      <EntityTypeMapping TypeName="SitcomModel.TiposRespuesta">
+        <MappingFragment StoreEntitySet="TiposRespuesta">
+          <ScalarProperty Name="descripcion" ColumnName="descripcion" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idTipoRespuesta" ColumnName="idTipoRespuesta" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="addPregunta" FunctionName="SitcomModel.Store.addPregunta" />
+    <FunctionImportMapping FunctionImportName="asignarEncuesta" FunctionName="SitcomModel.Store.asignarEncuesta" />
+    <FunctionImportMapping FunctionImportName="getEncuestas" FunctionName="SitcomModel.Store.getEncuestas">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SitcomModel.getEncuestas_Result">
+          <ScalarProperty Name="idEncuesta" ColumnName="idEncuesta" />
+          <ScalarProperty Name="NOMBRE" ColumnName="NOMBRE" />
+          <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+          <ScalarProperty Name="DESCRIPCION" ColumnName="DESCRIPCION" />
+          <ScalarProperty Name="ESTADO" ColumnName="ESTADO" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="GetEncuestasAsignadas" FunctionName="SitcomModel.Store.GetEncuestasAsignadas">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SitcomModel.GetEncuestasAsignadas_Result">
+          <ScalarProperty Name="idEncuestaAsignada" ColumnName="idEncuestaAsignada" />
+          <ScalarProperty Name="TIPO" ColumnName="TIPO" />
+          <ScalarProperty Name="NEGOCIO" ColumnName="NEGOCIO" />
+          <ScalarProperty Name="ASIGNADA" ColumnName="ASIGNADA" />
+          <ScalarProperty Name="RESPUESTA" ColumnName="RESPUESTA" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="ListarHabitacionesPorNroReserva_CheckIn" FunctionName="SitcomModel.Store.ListarHabitacionesPorNroReserva_CheckIn">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="SitcomModel.ListarHabitacionesPorNroReserva_CheckIn_Result">
+          <ScalarProperty Name="idDisponibilidad" ColumnName="idDisponibilidad" />
+          <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+          <ScalarProperty Name="idReserva" ColumnName="idReserva" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
   </EntityContainerMapping>
 </Mapping>

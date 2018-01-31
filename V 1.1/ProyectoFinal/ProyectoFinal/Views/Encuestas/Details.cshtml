@@ -1,0 +1,66 @@
+﻿@model DAL.Encuestas
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Encuestas</h4>
+	<hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.descripcion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.descripcion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.fechaVencimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.fechaVencimiento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TiposEncuesta.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TiposEncuesta.nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Preguntas.textoPregunta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Preguntas.textoPregunta)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TiposEncuesta1.nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TiposEncuesta1.nombre)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.idEncuesta }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

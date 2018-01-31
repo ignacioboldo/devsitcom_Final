@@ -5,8 +5,6 @@ C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\Antlr3.Runtime.dll
 C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\BussinesEntities.dll
 C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\DAL.dll
 C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\DL.dll
-C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\EntityFramework.dll
-C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\EntityFramework.SqlServer.dll
 C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\GridMvc.dll
 C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\Microsoft.AspNet.Identity.Core.dll
 C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\Microsoft.AspNet.Identity.EntityFramework.dll
@@ -35,8 +33,6 @@ C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\WebGrease.dll
 C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\BussinesEntities.pdb
 C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\DAL.pdb
 C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\DL.pdb
-C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\EntityFramework.xml
-C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\EntityFramework.SqlServer.xml
 C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\System.Web.Helpers.xml
 C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\System.Web.Mvc.xml
 C:\Boldo\V 1.1\ProyectoFinal\ProyectoFinal\bin\System.Web.Optimization.xml

@@ -20,6 +20,7 @@ namespace ProyectoFinal
         public UsuariosManager um = new UsuariosManager();
         private PromocionesManager pm = new PromocionesManager();
         private PersonasManager perm = new PersonasManager();
+        private EncuestasManager em = new EncuestasManager();
 
 
         public ActionResult ObtenerPromocion(int idPromocion)
@@ -165,7 +166,7 @@ namespace ProyectoFinal
             int result = pm.regUsoPromocion(codigo);
 
             ViewBag.Perfil = usuarioActual.idPerfil;
-            
+
             if (result != 0)
             {
                 string mensaje = "El uso de la promocion NO se pudo registrar.";
@@ -175,6 +176,14 @@ namespace ProyectoFinal
             }
             else
             {
+
+                PromocionesOtorgadas proOtor = db.PromocionesOtorgadas.Include("Promociones").Where(pro => pro.codigo == codigo).FirstOrDefault();
+
+                int? idTipoEncuesta = proOtor.Promociones.Negocio.idTipoNegocio;
+
+                em.AsignarEncuesta(idTipoEncuesta, proOtor.idUsuario, proOtor.Promociones.Negocio.idNegocio, null);
+
+
                 string mensaje = "El uso de la promocion se registro correctamente!";
                 ViewBag.Mensaje = mensaje;
                 ViewBag.Status = 1;
