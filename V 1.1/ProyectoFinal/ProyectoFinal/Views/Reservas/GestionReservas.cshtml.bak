@@ -2,9 +2,7 @@
 
 <script type="text/javascript">
 
-    
-
-    function consultarReserva(nro_solicitud,nro_reserva) {
+    function consultarReserva(nro_solicitud, nro_reserva) {
 
         $('#nro_reserva').html(nro_reserva);
         $('#nro_solicitud').html(nro_solicitud);
@@ -33,11 +31,13 @@
     }
 
     function anularReserva() {
+
         var nro_reserva = $("#nro_reserva").html();
 
         var result = confirm("Realmente quiere anular la reserva");
 
         if (result) {
+
             $.ajax({
                 type: 'GET',
                 url: 'AnularReserva?id=' + nro_reserva,
@@ -47,6 +47,7 @@
                     $('#myModal').modal('hide');
                 }
             })
+
         }
     }
 
@@ -407,11 +408,9 @@
 
 
                 <div>
-                    <img alt="" src="@Url.Content("~/Content/img/icono_bandera_amarilla.png")" /> <strong> (Estadía Iniciada)</strong>
+                    <img alt="" src="@Url.Content("~/Content/img/icono_bandera_amarilla.png")" /> <strong> (Ocupado)</strong>
                     <br> <br />
                     <img alt="" src="@Url.Content("~/Content/img/icono_bandera_roja.png")" /> <strong> (Reservado)</strong>
-                    <br> <br />
-                    <img alt="" src="@Url.Content("~/Content/img/icono_bandera_azul.png")" /> <strong> (Estadía Finalizada)</strong>
                 </div>
 
 

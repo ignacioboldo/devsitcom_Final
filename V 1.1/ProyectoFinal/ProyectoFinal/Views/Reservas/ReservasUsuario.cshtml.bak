@@ -245,7 +245,6 @@
             columns.Add(model => model.cantidadPersonas).Titled("Cantidad de Personas").SetWidth(30);
             columns.Add(model => model.Negocio).Titled("Negocio").SetWidth(30);
             columns.Add(model => model.Mensaje).Titled("Mensaje").SetWidth(30);
-            columns.Add(model => model.MensajesSinLeer).Titled("Mensajes Sin Leer").SetWidth(30);
             columns.Add(model => model.idPersona)
               .Titled("Acción")
               .Encoded(false)

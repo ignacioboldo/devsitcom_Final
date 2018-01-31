@@ -190,7 +190,7 @@ namespace BL
             return p;
         }
 
-   public Preguntas PreguntasEntityToPreguntas(PreguntasEntity preg)
+        public Preguntas PreguntasEntityToPreguntas(PreguntasEntity preg)
         {
             Preguntas p = new Preguntas()
             {

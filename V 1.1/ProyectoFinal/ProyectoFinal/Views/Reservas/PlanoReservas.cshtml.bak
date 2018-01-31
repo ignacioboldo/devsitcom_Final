@@ -82,7 +82,7 @@
                             
                             @if (estado == "CHECK-OUT")
                             {
-                                <img alt="" src="@Url.Content("~/Content/img/icono_bandera_azul.png")" />
+                                <img alt="" src="@Url.Content("~/Content/img/icono_bandera_amarilla.png")" />
                             }
                         </div>
                         

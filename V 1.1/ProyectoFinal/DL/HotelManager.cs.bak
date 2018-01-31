@@ -260,21 +260,6 @@ namespace BL
       }
 
     
-public List<SolicitudesNegociosEntities> consultarListadoSolicitudesPorNegocio(int idNegocio)
-      {
-
-          using (SitcomEntities db = new SitcomEntities())
-          {
-
-              return db.Database.SqlQuery<SolicitudesNegociosEntities>("ConsultarListadoSolicitudesPorNegocio @idNegocio='" + idNegocio + "'").ToList();
-
-          }
-
-
-      }
-
-
-
 
 
 

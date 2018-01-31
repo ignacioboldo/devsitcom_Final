@@ -170,7 +170,12 @@ namespace BL
                 cantidadLugares = sol.cantidadLugares,
                 idNegocio = sol.idNegocio,
                 idUsuarioSolicitante = sol.idUsuarioSolicitante,
-                observacion = sol.observacion
+                observacion = sol.observacion,
+                Expirar= sol.Expirar,
+                fechaCreacion= sol.FechaCreacion,
+                FechaExpiracion=sol.FechaExpiracion
+
+
             };
 
             return solicitud;
