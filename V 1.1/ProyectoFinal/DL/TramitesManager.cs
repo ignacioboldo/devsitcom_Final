@@ -21,6 +21,7 @@ namespace BL
                 if (id == 0)
                 {
                     var result = (from t in db.Tramite
+							      orderby t.fechaAlta descending
                                   select new TramiteEntity()
                                   {
                                       idTramite = t.idTramite,
@@ -53,6 +54,7 @@ namespace BL
                 {
                     var result = (from t in db.Tramite
                                   where t.idEstadoTramite == t.idEstadoTramite
+							      orderby t.fechaAlta descending
                                   select new TramiteEntity()
                                   {
                                       idTramite = t.idTramite,
@@ -178,7 +180,7 @@ namespace BL
         {
             using (SitcomEntities db = new SitcomEntities())
             {
-                var result = db.Tramite.Include("Negocio").Where(t => t.idTramite == tramite.idTramite).FirstOrDefault();
+var result = db.Tramite.Include("Negocio").Include("Usuarios").Where(t => t.idTramite == tramite.idTramite).FirstOrDefault();
 
                 if (result != null)
                 {
@@ -195,6 +197,8 @@ namespace BL
                             result.Negocio.estaAprobado = true;
                             result.comentario = tramite.comentario;
 
+							var user = db.Usuarios.Where(u => u.idUsuario == result.idUsuarioSolicitante).FirstOrDefault();
+                            user.idPerfil = 2;
                             db.SaveChanges();
                             break;
 
@@ -409,6 +413,7 @@ namespace BL
                 var result = (from t in db.Tramite
                               where t.idUsuarioSolicitante == us.idUsuario 
                                  || t.idUsuarioResponsable == us.idUsuario
+							  orderby t.fechaAlta descending
                               select new TramiteEntity()
                               {
                                   idTramite = t.idTramite,
