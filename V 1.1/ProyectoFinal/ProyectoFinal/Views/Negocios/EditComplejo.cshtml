@@ -23,7 +23,7 @@
 
 <section class="mainContent clearfix userProfile">
     <div class="container">
-        @using (Html.BeginForm("NuevoLugarHospedaje", "Negocios", new { ReturnUrl = ViewBag.ReturnUrl, TipoHospedaje = 2, IdNegocioOrig = ViewBag.IdNegocio }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
+        @using (Html.BeginForm("EditHospedaje", "Negocios", new { ReturnUrl = ViewBag.ReturnUrl, TipoHospedaje = 2, IdNegocioOrig = ViewBag.IdNegocio }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
         {
 
             <div class="row">
