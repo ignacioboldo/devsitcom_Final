@@ -9,6 +9,16 @@
     $(document).ready(function () {
         if (error == 1)
             alert("Debés aceptar los términos y condiciones");
+
+		$("#btnSolicitarBaja").click(function (event) {
+
+                var motivoBaja = $("#motivoBaja").val();
+                var aceptaCondiciones = $("#aceptaCondiciones").val();
+                var idNegocio = @Model.idNegocio
+
+                window.location = 'BajaNegocio\?idNegocio='+idNegocio+'&motivoBaja='+motivoBaja+'&aceptaCondiciones='+aceptaCondiciones;
+                event.preventDefault();
+          });
     });
 
 </script>
@@ -126,20 +136,15 @@
                 <br />
                 @*<h3>CONDICIONES DE USO</h3>*@
 
-                @using (Html.BeginForm("BajaNegocio", "Negocios", new { idNegocio = Model.idNegocio }, FormMethod.Post, new { id = "bajaDeNegocio", name = "bajaDeNegocio" }))
-                {
+ 				@Html.DisplayText("Motivo de la baja: ")
+                @Html.TextArea("Motivo", new { id = "motivoBaja", style = "width:300px; height:100px;" })
 
-                    @Html.CheckBox("aceptaCondiciones") @Html.Label("Aceptar términos y condiciones")
+                <br />
+            <br />
 
-
-
-                    <br />
-                    <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="BAJA DE NEGOCIO" style="background: yellowgreen; color:white;padding:10px;"  class="btn btn-green col-lg-offset-5" />
-                        </div>
-                    </div>
-                }
+                @Html.CheckBox("aceptaCondiciones", new { id = "aceptaCondiciones" }) @Html.Label("Aceptar términos y condiciones")
+            <br />
+            <button id = "btnSolicitarBaja" style="font-size:15px; padding:5px; width:20px" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">SOLICITAR BAJA DE NEGOCIO</button>
             </div>
         </div>
 
