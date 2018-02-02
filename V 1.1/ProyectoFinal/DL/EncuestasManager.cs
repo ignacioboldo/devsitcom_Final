@@ -93,6 +93,8 @@ namespace BL
                                                    select te).FirstOrDefault()
                               }).FirstOrDefault();
 
+                result.setearComoActiva = (bool)result.esActiva;
+
                 return result;
             }
         }
@@ -117,7 +119,7 @@ namespace BL
             {
 
                 //Si se selecciono setear como activa la encuesta, seteo como NO ACTIVAS la del MISMO TIPO que ya estaba anteriormente.
-                if (enc.setearComoActiva)
+                if ((bool)enc.setearComoActiva)
                 {
                     var result = (from e in db.Encuestas
                                   where e.idTipoEncuesta == enc.idTipoEncuesta
@@ -151,7 +153,7 @@ namespace BL
             {
 
                 //Si se selecciono setear como activa la encuesta, seteo como NO ACTIVAS la del MISMO TIPO que ya estaba anteriormente.
-                if (enc.setearComoActiva)
+                if ((bool)enc.setearComoActiva)
                 {
                     var result = (from e in db.Encuestas
                                   where e.idTipoEncuesta == enc.idTipoEncuesta
