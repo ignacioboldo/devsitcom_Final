@@ -260,6 +260,21 @@ namespace BL
       }
 
     
+public List<SolicitudesNegociosEntities> consultarListadoSolicitudesPorNegocio(int idNegocio)
+      {
+
+          using (SitcomEntities db = new SitcomEntities())
+          {
+
+              return db.Database.SqlQuery<SolicitudesNegociosEntities>("ConsultarListadoSolicitudesPorNegocio @idNegocio='" + idNegocio + "'").ToList();
+
+          }
+
+
+      }
+
+
+
 
 
 
@@ -367,14 +382,14 @@ namespace BL
       //}
 
 
-      public void actualizar_Comentarios_Leidos(int idReserva)
+      public void actualizar_Comentarios_Leidos(int? idReserva, int? idSolicitud)
       {
 
 
           using (SitcomEntities db = new SitcomEntities())
           {
 
-              db.Database.ExecuteSqlCommand("Actualizar_Comentarios_Leidos @idReserva=" + idReserva + "");
+              db.Database.ExecuteSqlCommand("Actualizar_Comentarios_Leidos @idSolicitud=" + idSolicitud + ", @idReserva=" + idReserva + "");
 
           }
 

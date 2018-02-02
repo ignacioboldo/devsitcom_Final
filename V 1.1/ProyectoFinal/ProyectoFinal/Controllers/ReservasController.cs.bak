@@ -57,9 +57,9 @@ namespace ProyectoFinal.Controllers
             return "ok";
         }
 
-        public String Actualizar_Comentarios_Leidos(int id)
+        public String Actualizar_Comentarios_Leidos(int? id, int? nro_solicitud)
         {
-            hm.actualizar_Comentarios_Leidos(id);
+            hm.actualizar_Comentarios_Leidos(id, nro_solicitud);
             return "ok";
         }
 
@@ -489,7 +489,7 @@ namespace ProyectoFinal.Controllers
             }
             else
             {
-                return RedirectToAction("DatosPersonales", "Persona", new { returnUrl = "../Reservas/SolicitarReserva/" + id });
+                return RedirectToAction("Login", "Usuarios");
             }
         }
         [HttpPost]
@@ -500,6 +500,10 @@ namespace ProyectoFinal.Controllers
             solicitud.fechaHasta = Convert.ToDateTime(fechaHasta);
             solicitud.idNegocio = idNegocio;
             solicitud.idUsuarioSolicitante = usuarioActual.idUsuario;
+            solicitud.Expirar = true;
+            solicitud.FechaExpiracion = DateTime.Now.AddDays(5);
+            solicitud.FechaCreacion = DateTime.Now;
+
 
             rm.AddSolicitudReserva(solicitud);
 
@@ -517,11 +521,16 @@ namespace ProyectoFinal.Controllers
         }
         public ActionResult SolicitudesReserva(int idNegocio, int tipo)
         {
-            List<SolicitudEntity> solicitudes = rm.GetSolicitudesReserva(idNegocio);
+            //List<SolicitudEntity> solicitudes = rm.GetSolicitudesReserva(idNegocio);
             ViewBag.idNegocio = idNegocio;
             ViewBag.tipo = tipo;
 
-            return View(solicitudes);
+
+
+            List<SolicitudesNegociosEntities> listadoSolicitudes = hm.consultarListadoSolicitudesPorNegocio(Convert.ToInt32(idNegocio));
+       
+ 
+            return View(listadoSolicitudes);
         }
 
  

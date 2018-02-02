@@ -86,6 +86,7 @@ namespace BussinesEntities
         public string Negocio { get; set; }
         public int idPersona { get; set; }
         public String Mensaje { get; set; }
+        public int MensajesSinLeer { get; set; }
     }
 
     public class ListadoHabitacionesEnCkeckInEntities

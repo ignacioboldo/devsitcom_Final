@@ -1,0 +1,43 @@
+﻿
+<h3><strong>@ViewBag.nombre_reporte</strong></h3>
+
+<script>
+
+    $(document).ready(function () {
+        $('#tabla').DataTable();
+    });
+
+</script>
+
+
+
+<div class="table-responsive">
+
+    <table id="tabla" class="table table-bordered" style="font-size:9px;">
+        <thead>
+            <tr>
+                <th>Fecha</th>
+                <th>@ViewBag.nombre_campo</th>
+                <th>@ViewBag.nombre_valor</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in ViewBag.data as List<BussinesEntities.ReportesCampoFechaValor>)
+            {
+
+                <tr>
+                   
+                    <td>@item.fecha</td>
+                    <td>@item.campo</td>
+                    <td>@item.valor</td>
+                    
+                </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+
+</div>

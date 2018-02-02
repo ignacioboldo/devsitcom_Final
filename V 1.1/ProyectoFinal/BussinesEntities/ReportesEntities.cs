@@ -16,6 +16,17 @@ namespace BussinesEntities
 
     }
 
+    public class ReportesCampoFechaValor
+    {
+
+        public string valor { get; set; }
+        public string campo { get; set; }
+        public string fecha { get; set; }
+
+    }
+
+
+
     //public class ReportesGraficoPieEntities
     //{
 

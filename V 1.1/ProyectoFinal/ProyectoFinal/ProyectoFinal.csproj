@@ -639,10 +639,10 @@
     <Content Include="Views\Shared\_Botonera.cshtml" />
     <Content Include="Views\Negocios\SolicitarBajaNegocio.cshtml" />
     <Content Include="Views\Negocios\SolicitarRepublicacion.cshtml" />
-    <Content Include="Views\Reportes\Index.cshtml" />
+    <Content Include="Views\Reportes\IndexReportes.cshtml" />
     <Content Include="Views\Reportes\GraficoBar.cshtml" />
     <Content Include="Views\Reportes\GraficoPie.cshtml" />
-    <Content Include="Views\Reportes\DataTable.cshtml" />
+    <Content Include="Views\Reportes\DataTable_borrar.cshtml" />
     <Content Include="Views\Reportes\SinDatos.cshtml" />
     <Content Include="Views\Reservas\SolicitudesReserva.cshtml" />
     <Content Include="Views\Reservas\CheckInReservaModal.cshtml" />
@@ -659,6 +659,8 @@
     <Content Include="Views\Encuestas\PreguntasEncuesta.cshtml" />
     <Content Include="Views\Encuestas\ResponderEncuesta.cshtml" />
     <Content Include="Views\Encuestas\VerEncuestaUsuario.cshtml" />
+    <Content Include="Views\Reportes\CampoFechaValor_Tabla.cshtml" />
+    <Content Include="Views\Reportes\CampoFechaValor_Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

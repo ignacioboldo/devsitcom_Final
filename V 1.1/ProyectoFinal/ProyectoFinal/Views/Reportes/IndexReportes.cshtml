@@ -5,6 +5,9 @@
 
 <script>
 
+
+   
+
     function buscarReporte() {
 
         var nombre_reporte = $("#nombre_reporte").val();
@@ -48,7 +51,7 @@
 <section class="mainContent clearfix userProfile">
     <div class="container">
 
-        <div class="row" style="margin-bottom:20px;">
+        @*<div class="row" style="margin-bottom:20px;">
             <div class="col-md-12">
                 <select class="form-control" id="nombre_reporte">
                     <option value="GRAFICO_PIE">GRAFICO_PIE</option>
@@ -59,17 +62,23 @@
             
   
 
-        </div>
+        </div>*@
+ 
 
         <div class="row">
-            <div class="col-md-4">
-                <input class="form-control" placeholder="Fecha Desde" id="fecha_desde" type="text" />
+            @*<div class="col-md-8">
+                <label>Fecha Desde</label>
+                <input type="text" name="fecha_desde" id="fecha_desde" class="form-control date" placeholder="Fecha Desde" value="@Session["fecha_desde"]" />
             </div>
-            <div class="col-md-4">
-                <input class="form-control" placeholder="Fecha Hasta" id="fecha_hasta" type="text" />
-            </div>
-            <div class="col-md-4">
+            <div class="col-md-8">
+                <label>Fecha Desde</label>
+                <input type="text" class="form-control date" id="fecha_hasta" name="fecha_hasta" placeholder="Fecha Hasta" value="@Session["fecha_hasta"]" />
+            </div>*@
+            @*<div class="col-md-8">
                 <button class="btn btn-block" onclick="buscarReporte();" style="background-color:yellowgreen; color:white;height: 33px;padding: 5px;">Buscar</button>
+            </div>*@
+            <div class="col-md-8">
+                <button class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Reservas por Categoria" })' " style=" background-color:yellowgreen; color:white;height: 33px;padding 5px;">Reservas por Categoria</button>
             </div>
 
         </div>

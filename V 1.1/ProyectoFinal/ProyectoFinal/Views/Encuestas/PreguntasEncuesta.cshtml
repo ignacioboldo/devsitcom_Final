@@ -4,46 +4,87 @@
     ViewBag.Title = "Preguntas";
 }
 
-<h2>PREGUNTAS</h2>
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>ENCUESTAS</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="home">INICIO</a>
+                    </li>
+                    <li class="active">ENCUESTAS</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
 
-<p>
-    @{        
-        int idEncuesta = ViewBag.IdEncuesta;
-        @Html.ActionLink("NUEVA PREGUNTA", "NuevaPregunta", new { idEncuesta = idEncuesta },null)
-    }
-</p>
-<table class="table">
-    <tr>
-        <th>
-            CATEGORIA
-        </th>
-        <th>
-            TEXTO
-        </th>
-        <th>
-            TIPO DE RESPUESTA
-        </th>        
-        <th></th>
-    </tr>
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+   
+        <div class="row" style="margin-bottom:20px;">
+            <div class="col-md-6">
+                <div style="font-size:20px;margin-top:10px;"><strong>Listado de Preguntas</strong></div>
+            </div>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.ClasifPregunta.nombre)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.textoPregunta)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TiposRespuesta.nombre)
-        </td>
+            <div class="col-md-6" style="text-align:right;">
+                @{
+                    int idEncuesta = ViewBag.IdEncuesta;
+          
+                }
 
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.idPregunta }) |
-            @Html.ActionLink("Details", "Details", new { id=item.idPregunta }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.idPregunta })
-        </td>
-    </tr>
-}
+                <a class="btn btn-default" href="~/Encuestas/NuevaPregunta?idEncuesta=@idEncuesta" style="width:200px; background:rgba(177, 13, 20, 1); color:white">
+                    + NUEVA PREGUNTA
+                </a>
 
-</table>
+            </div>
+        </div>
+
+     
+        <table class="table">
+            <tr>
+                <th>
+                    CATEGORIA
+                </th>
+                <th>
+                    TEXTO
+                </th>
+                <th>
+                    TIPO DE RESPUESTA
+                </th>
+                <th></th>
+            </tr>
+
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClasifPregunta.nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.textoPregunta)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.TiposRespuesta.nombre)
+                    </td>
+
+                    <td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.idPregunta }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.idPregunta }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.idPregunta })
+                    </td>
+                </tr>
+            }
+
+        </table>    
+         
+    </div>
+</section>
+

@@ -4,58 +4,89 @@
     ViewBag.Title = "Nueva Pregunta";
 }
 
-<h2>Nueva Pregunta</h2>
 
-@using (Html.BeginForm("NuevaPregunta","Encuestas")) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Preguntas</h4>
-        <hr />
-        @Html.ValidationSummary(true)
-
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.idClasifPregunta, "CATEGORIA", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.idClasifPregunta, (SelectList)ViewBag.idClasifPregunta, "-- SELECCIONA LA CATEGORIA DE LA PREGUNTA --", new { id = "ddlClasifPregunta" })
-                              
-                @Html.ValidationMessageFor(model => model.idClasifPregunta)
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>NUEVA PREGUNTA</h2>
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.textoPregunta, "PREGUNTA" , new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.textoPregunta)
-                @Html.ValidationMessageFor(model => model.textoPregunta)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.idTipoRespuesta, "TIPO DE RESPUESTA", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.idTipoRespuesta, (SelectList)ViewBag.idTipoRespuesta, "-- SELECCIONA EL TIPO DE RESPUESTA --", new { id = "ddlTipoRespuesta" })
-                @Html.ValidationMessageFor(model => model.idClasifPregunta)
-            </div>
-        </div>
-
-        <div class="form-group">
-           @Html.HiddenFor(model => model.idEncuesta)
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="CREAR PREGUNTA" class="btn btn-default" />
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="home">INICIO</a>
+                    </li>
+                    <li class="active">NUEVA PREGUNTA</li>
+                </ol>
             </div>
         </div>
     </div>
-}
+</section>
 
-<div>
-    @{
-        int idEncuesta = ViewBag.IdEncuesta;
-        @Html.ActionLink("VOLVER A PREGUNTAS", "PreguntasEncuesta", "Encuestas", new { idEncuesta = idEncuesta },null)
-    }
-</div>
+
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+        @using (Html.BeginForm("NuevaPregunta", "Encuestas"))
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(true)
+
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.idClasifPregunta, "CATEGORIA", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.idClasifPregunta, (SelectList)ViewBag.idClasifPregunta, "-- SELECCIONA LA CATEGORIA DE LA PREGUNTA --", new { id = "ddlClasifPregunta", @class = "form-control", style = "width:300px;" })
+
+                        @Html.ValidationMessageFor(model => model.idClasifPregunta)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.textoPregunta, "PREGUNTA", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.textoPregunta, new { @class = "form-control", style = "width:300px;" })
+                        @Html.ValidationMessageFor(model => model.textoPregunta)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.idTipoRespuesta, "TIPO DE RESPUESTA", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.idTipoRespuesta, (SelectList)ViewBag.idTipoRespuesta, "-- SELECCIONA EL TIPO DE RESPUESTA --", new { id = "ddlTipoRespuesta", @class = "form-control", style = "width:300px;" })
+                        @Html.ValidationMessageFor(model => model.idClasifPregunta)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.HiddenFor(model => model.idEncuesta)
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="CREAR PREGUNTA" class="btn btn-default" style="background: yellowgreen; color:white;padding:10px;" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div>
+            @{
+                int idEncuesta = ViewBag.IdEncuesta;
+                @Html.ActionLink("VOLVER A PREGUNTAS", "PreguntasEncuesta", "Encuestas", new { idEncuesta = idEncuesta }, null)
+            }
+        </div>
+
+
+    </div>
+</section>
+    
+   

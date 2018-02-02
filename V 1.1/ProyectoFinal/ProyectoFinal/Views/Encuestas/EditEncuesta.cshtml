@@ -3,56 +3,87 @@
     ViewBag.Title = "Editar Encuesta";
 }
 
-<h2>Editar Encuesta</h2>
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>Encuestas</h4>
-        <hr />
-        @Html.ValidationSummary(true)
-        @Html.HiddenFor(model => model.idEncuesta)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.nombre, "Nombre: ", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.nombre)
-                @Html.ValidationMessageFor(model => model.nombre)
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>EDITAR ENCUESTA</h2>
+                </div>
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.descripcion, "Descripción: ", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.descripcion)
-                @Html.ValidationMessageFor(model => model.descripcion)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.idTipoEncuesta, "Tipo: ", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownList("idTipoEncuesta", String.Empty)
-                @Html.ValidationMessageFor(model => model.idTipoEncuesta)
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-10">
-                @Html.CheckBoxFor(model => model.setearComoActiva) @Html.Label("Setear como activa")
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="GUARDAR" class="btn btn-default" />
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="home">INICIO</a>
+                    </li>
+                    <li class="active">EDITAR ENCUESTA</li>
+                </ol>
             </div>
         </div>
     </div>
-}
+</section>
 
-<div>
-    @Html.ActionLink("VOLVER A ENCUESTAS", "EncuestasIndex")
-</div>
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="form-horizontal">
+
+                @Html.ValidationSummary(true)
+                @Html.HiddenFor(model => model.idEncuesta)
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.nombre, "Nombre: ", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.nombre, new { @class = "form-control", style = "width:300px;" })
+                        @Html.ValidationMessageFor(model => model.nombre)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.descripcion, "Descripción: ", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(model => model.descripcion, new { @class = "form-control", style = "width:300px;" })
+                        @Html.ValidationMessageFor(model => model.descripcion)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    @Html.LabelFor(model => model.idTipoEncuesta, "Tipo: ", new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownList("idTipoEncuesta", null,String.Empty, new { @class = "form-control", style = "width:300px;" })
+                        @Html.ValidationMessageFor(model => model.idTipoEncuesta)
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-2">
+                    </div>
+                    <div class="col-md-10">
+                        @Html.CheckBoxFor(model => model.setearComoActiva) @Html.Label("Setear como activa")
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="GUARDAR" class="btn btn-default" style="background: yellowgreen; color:white;padding:10px;" />
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div>
+            @Html.ActionLink("VOLVER A ENCUESTAS", "EncuestasIndex")
+        </div>
+
+
+     </div>
+
+</section>
+     

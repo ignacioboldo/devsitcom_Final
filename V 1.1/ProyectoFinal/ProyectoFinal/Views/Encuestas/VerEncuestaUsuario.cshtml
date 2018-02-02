@@ -4,17 +4,59 @@
     ViewBag.Title = "Preguntas";
 }
 
-<h2>RESPUESTAS ENCUESTA</h2>
 
-@foreach (var item in Model) {
-    
-      @Html.Label(item.PREGUNTA)
-    <br />  
-      <text>@item.RESPUESTA</text>
 
-    <br />
-    <br />  
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Ver Respuestas</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="home">INICIO</a>
+                    </li>
+                    <li class="active">Ver Respuestas</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
 
-}
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+    <div style="margin:0 auto; max-width:600px; border: 1px solid gray; padding:20px; border-radius:20px;">
 
-</table>
+        <div style="text-align:center;"><img src="~/Content/img/icon.png" style="height:60px;" /></div>
+
+        <hr />
+
+        @foreach (var item in Model)
+        {
+
+            @Html.Label(item.PREGUNTA)
+            <br />
+            <div style="padding-left:20px;"><text>@item.RESPUESTA</text></div>
+
+
+            <br />
+
+        }
+
+        <hr />
+
+        <div style="text-align:center">
+            <a href="javascript:history.back(1)">Volver a la Página Anterior</a>
+        </div>
+
+    </div>
+     </div>
+</section>
+
+
+

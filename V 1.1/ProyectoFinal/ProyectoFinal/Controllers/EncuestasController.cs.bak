@@ -30,12 +30,7 @@ namespace ProyectoFinal
         // GET: /Encuestas/
         public ActionResult EncuestasIndex()
         {
-
-            ObtenerUsuarioActual();
-            List<EncuestaEntityIndexUsuario> encuestasUsuario = em.GetEncuestasAsignadas(usuarioActual.idUsuario);
-
-            //ViewBag.IdEncuesta = idEncuesta;
-            ViewBag.idPerfil = usuarioActual.idPerfil;
+          
             List<EncuestaEntityIndex> encuestas = em.GetAllEncuestas();
             return View(encuestas);
         }
@@ -209,8 +204,6 @@ namespace ProyectoFinal
             List<EncuestaEntityIndexUsuario> encuestasUsuario = em.GetEncuestasAsignadas(usuarioActual.idUsuario);
 
             //ViewBag.IdEncuesta = idEncuesta;
-            ViewBag.idPerfil = usuarioActual.idPerfil;
-
             return View(encuestasUsuario);
         }
 

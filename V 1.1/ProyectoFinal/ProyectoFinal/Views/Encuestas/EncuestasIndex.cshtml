@@ -1,82 +1,6 @@
 ﻿@model IEnumerable<BussinesEntities.EncuestaEntityIndex>
 @using GridMvc.Html
 
-<script type="text/javascript">
-
-    var perfil = "@ViewBag.Perfil"
-    var mensaje = "@ViewBag.Mensaje"
-    var negocio = "@ViewBag.IdNegocio"
-
-    $(document).ready(function () {
-
-
-        if (perfil == 1) {
-            $("#btnTusTramites").show();
-            $("#btnTusNegocios").hide();
-            $("#btnTusTramitesAsignados").hide();
-            $("#btnTodosLosTramites").hide();
-            $("#tabSecretaria").hide();
-            $("#btnTusPromociones").show();
-            $("#btnEncuestas").hide();
-        }
-
-        if (perfil == 2) {
-            $("#btnTusTramites").show();
-            $("#btnTusNegocios").show();
-            $("#btnTusTramitesAsignados").hide();
-            $("#btnTodosLosTramites").hide();
-            $("#tabSecretaria").hide();
-            $("#btnTusPromociones").hide();
-            $("#btnEncuestas").hide();
-        }
-
-        if (perfil == 3) {
-            $("#btnTusTramites").show();
-            $("#btnTusNegocios").hide();
-            $("#btnTusTramitesAsignados").show();
-            $("#btnTodosLosTramites").show();
-            $("#tabSecretaria").show();
-            $("#btnTusPromociones").hide();
-            $("#btnEncuestas").show();
-        }
-
-        if (mensaje != "") {
-            alert(mensaje);
-        }
-
-        $("#btnTusTramites").click(function (event) {
-            window.location = '@Url.Action("TramitesUsuario","Tramites")';
-            event.preventDefault();
-        });
-
-        $("#btnTusTramitesAsignados").click(function (event) {
-            window.location = '@Url.Action("TramitesUsuario","Tramites")';
-            event.preventDefault();
-        });
-
-        $("#btnModificarDatos").click(function (event) {
-            window.location = '@Url.Action("EditUsuario","Usuarios")';
-            event.preventDefault();
-        });
-
-        $("#btnNuevaPromocion").click(function (event) {
-            window.location = '../Promociones/NuevaPromocion/?idNegocio=' + negocio;
-            event.preventDefault();
-        });
-
-        $("#btnEncuestas").click(function (event) {
-            window.location = '@Url.Action("EncuestasIndex", "Encuestas")';
-            event.preventDefault();
-        });
-
-        $("#btnNuevaEncuesta").click(function (event) {
-            window.location = '@Url.Action("NuevaEncuesta", "Encuestas")';
-            event.preventDefault();
-        });
-    });
-</script>
-
-
 
 
 
@@ -108,46 +32,21 @@
     <div class="container">
  
 
+        @Html.Partial("_Botonera")
+
+
         <div class="row">
+            <div class="col-md-6">
+                <div style="font-size:20px;margin-top:10px;"><strong>Listado de Encuestas</strong></div>
+            </div>
 
-            <div class="col-xs-12">
-                <div class="btn-group" role="group" aria-label="..." style="text-align:center">
-
-                    <a class="btn btn-default" id="btnModificarDatos" style="width:200px;">
-                        MODIFICÁ TUS DATOS
-                    </a>
-
-                    <a class="btn btn-default" id="btnTusNegocios" style="width:200px;">
-                        TUS NEGOCIOS
-                    </a>
-
-                    <a href="" class="btn btn-default" id="btnTusPromociones" style="width:250px;">
-                        TUS PROMOCIONES
-                    </a>
-
-                    <a class="btn btn-default" id="btnTusTramites" style="width:200px;">
-                        TUS TRAMITES
-                    </a>
-
-                    <a class="btn btn-default" id="btnTusTramitesAsignados" style="width:200px;">
-                        TUS TRAMITES ASIGNADOS
-                    </a>
-
-                    <a href="" class="btn btn-default active" id="btnEncuestas" style="width:250px;">
-                        ENCUESTAS
-                    </a>
-
-
-                </div>
+            <div class="col-md-6" style="text-align:right;">
+                <a class="btn btn-default" id="btnNuevaEncuesta" style="width:200px; background:rgba(177, 13, 20, 1); color:white">
+                    + NUEVA ENCUESTA
+                </a>
             </div>
         </div>
-
-
-        <div>
-            <a class="btn btn-default active" id="btnNuevaEncuesta" style="width:200px;">
-                + NUEVA ENCUESTA
-            </a>
-        </div>        
+      
 
 
         <div class="row">

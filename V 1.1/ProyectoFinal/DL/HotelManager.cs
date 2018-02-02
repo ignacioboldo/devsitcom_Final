@@ -382,14 +382,14 @@ public List<SolicitudesNegociosEntities> consultarListadoSolicitudesPorNegocio(i
       //}
 
 
-      public void actualizar_Comentarios_Leidos(int idReserva)
+      public void actualizar_Comentarios_Leidos(int? idReserva, int? idSolicitud, bool cliente)
       {
 
 
           using (SitcomEntities db = new SitcomEntities())
           {
 
-              db.Database.ExecuteSqlCommand("Actualizar_Comentarios_Leidos @idReserva=" + idReserva + "");
+              db.Database.ExecuteSqlCommand("Actualizar_Comentarios_Leidos @cliente=" + cliente + ", @idSolicitud=" + idSolicitud + ", @idReserva=" + idReserva + "");
 
           }
 

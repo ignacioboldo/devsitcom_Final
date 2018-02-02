@@ -1,4 +1,4 @@
-﻿@model IEnumerable<BussinesEntities.SolicitudEntity>
+﻿@model IEnumerable<BussinesEntities.SolicitudesNegociosEntities>
 @using GridMvc.Html
 
 
@@ -190,7 +190,7 @@
 
         @if (Model.Count() != 0)
         {
-            @helper botonVer(BussinesEntities.SolicitudEntity s)
+            @helper botonVer(BussinesEntities.SolicitudesNegociosEntities s)
             {
     
 
@@ -199,15 +199,23 @@
                <button style="font-size:10px;  padding: 5px;"  onclick="return consultarReserva('@s.idSolicitud',0);" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar</button>
 }
 
+            
+      
+                
+                
             @Html.Grid(Model).Columns(columns =>
             {
-                //columns.Add(model => model.fechaAlta).Titled("Fecha Alta");
-                columns.Add(model => model.idSolicitud).Titled("Nro de Solicitud").SetWidth(50);
-                columns.Add(model => model.Usuarios.nombreUsuario).Titled("Usuario").SetWidth(50);
-                columns.Add(model => model.fechaDesde).Titled("Fecha Desde").SetWidth(50);
-                columns.Add(model => model.fechaHasta).Titled("Fecha Hasta").SetWidth(50);
-                columns.Add(model => model.FechaExpiracion).Titled("Fecha Expiración").SetWidth(50);
-                columns.Add(model => model.cantidadPersonas).Titled("Cant. Personas").SetWidth(50);
+                columns.Add(model => model.idSolicitud).Titled("Nro Solicitud").SetWidth(30);
+                columns.Add(model => model.NombreApellido).Titled("Cliente").SetWidth(50);
+                columns.Add(model => model.documento).Titled("Documento").SetWidth(50);               
+                columns.Add(model => model.FechaDesde).Titled("Fecha Desde").SetWidth(30);
+                columns.Add(model => model.fechaHasta).Titled("Fecha Hasta").SetWidth(30);
+                columns.Add(model => model.cantidadLugares).Titled("Cantidad de Lugares").SetWidth(30);
+                columns.Add(model => model.cantidadPersonas).Titled("Cantidad de Personas").SetWidth(30);
+                columns.Add(model => model.Mensaje).Titled("Mensaje").SetWidth(30);
+                columns.Add(model => model.MensajesSinLeer).Titled("Mensajes Sin Leer").SetWidth(30);
+
+
                 columns.Add(model => model.idNegocio)
                     .Titled("Acción")
                     .Encoded(false)
