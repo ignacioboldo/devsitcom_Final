@@ -139,6 +139,7 @@ namespace BL
 
             return t;
         }
+
         //public void TomarTramite(int id, UsuarioEntity us)
         //{
         //    using (SitcomEntities db = new SitcomEntities())
@@ -161,7 +162,7 @@ namespace BL
         {
             switch (tramite.idTipoTramite)
            	{
-                case 1: CETAltaNegocio(tramite,idEstadoACambiar,us);
+                case 1: CETAltaNegocio(tramite,idEstadoACambiar, us);
                         break;
                 case 2: CETModuloReservas(tramite, idEstadoACambiar, us);
                         break;
@@ -180,14 +181,15 @@ namespace BL
         {
             using (SitcomEntities db = new SitcomEntities())
             {
-var result = db.Tramite.Include("Negocio").Include("Usuarios").Where(t => t.idTramite == tramite.idTramite).FirstOrDefault();
+                var result = db.Tramite.Include("Negocio").Include("Usuarios").Where(t => t.idTramite == tramite.idTramite).FirstOrDefault();
 
                 if (result != null)
                 {
                     switch (idEstadoACambiar)
                     {
                         case 2: result.idUsuarioResponsable = us.idUsuario;
-                            result.idEstadoTramite = 2;//2: En revisión
+                                result.idEstadoTramite = 2;//2: En revisión
+                                result.comentario = tramite.comentario;
 
                             db.SaveChanges();
                             break;
@@ -216,8 +218,9 @@ var result = db.Tramite.Include("Negocio").Include("Usuarios").Where(t => t.idTr
                                 db.SaveChanges();
                             break;
 
-                        case 6: result.idEstadoTramite = 6;
-                                
+                        case 6: result.idEstadoTramite = 6; //Pendiente de Correccion
+                                result.comentario = tramite.comentario;    
+
                                db.SaveChanges();
                                break;
 
@@ -281,6 +284,12 @@ var result = db.Tramite.Include("Negocio").Include("Usuarios").Where(t => t.idTr
                             break;
                         case 5: result.fechaFin = DateTime.Now;
                             result.idEstadoTramite = 5; //5: Cancelado
+
+                            db.SaveChanges();
+                            break;
+
+                       case 6: result.idEstadoTramite = 6; //Pendiente de Correccion
+                            result.comentario = tramite.comentario;
 
                             db.SaveChanges();
                             break;

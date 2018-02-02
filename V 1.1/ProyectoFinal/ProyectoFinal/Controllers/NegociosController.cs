@@ -277,6 +277,8 @@ namespace ProyectoFinal.Controllers
                 Domicilio = domEn
             });
 
+            neg.Sucursal.FirstOrDefault().Domicilio.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
+
             if (imagenPrinc == null)
             {
                 ModelState.AddModelError("", "Debés seleccionar una imagen principal.");
@@ -489,9 +491,7 @@ namespace ProyectoFinal.Controllers
             return View(modelo);
  
         }
-
-
-
+        
         public ActionResult ObtenerImagen(int id)
         {
             var img = nm.GetFotoNegocioById(id);
@@ -666,8 +666,14 @@ namespace ProyectoFinal.Controllers
             ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
             return PartialView(neg);
         }
-        public ActionResult EditCasaODpto(int? idNegocio)
+        public ActionResult EditCasaODpto(int? idNegocio, string comentario)
         {
+
+            if (comentario != "")
+            {
+                ViewBag.Comentario = comentario;
+            }
+
             NegocioEntity negocio = nm.GetNegocioById((int)idNegocio);
             negocio.Sucursal.FirstOrDefault().Domicilio.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
 
@@ -701,8 +707,13 @@ namespace ProyectoFinal.Controllers
 
             return PartialView("NuevoHotel", neg);
         }
-        public ActionResult EditHotel(int? idNegocio)
+        public ActionResult EditHotel(int? idNegocio, string comentario)
         {
+            if (comentario != "")
+            {
+                ViewBag.Comentario = comentario;
+            }
+
             NegocioEntity negocio = nm.GetNegocioById((int)idNegocio);
             negocio.Sucursal.FirstOrDefault().Domicilio.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
 
@@ -725,11 +736,12 @@ namespace ProyectoFinal.Controllers
             ViewBag.TiposComplejo = new SelectList(db.TipoComplejo, "idTipoComplejo", "nombreTipoComplejo");
             return PartialView(neg);
         }
-        public ActionResult EditComplejo(int? idNegocio)
-        {
+        public ActionResult EditComplejo(int? idNegocio, string comentario)
+        {        
             NegocioEntity negocio = nm.GetNegocioById((int)idNegocio);
             negocio.Sucursal.FirstOrDefault().Domicilio.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
-            
+
+            ViewBag.Comentario = comentario;
             ViewBag.Carac = nm.GetCaracteristicas();
             ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
             ViewBag.TiposComplejo = new SelectList(db.TipoComplejo, "idTipoComplejo", "nombreTipoComplejo");
@@ -737,18 +749,29 @@ namespace ProyectoFinal.Controllers
 
             return View(negocio);
         }
-        public ActionResult EditHospedaje(int? idNegocio)
+        public ActionResult EditHospedaje(int? idNegocio, bool? esCorreccion)
         {
             ObtenerUsuarioActual();
             NegocioEntity negocio = nm.GetNegocioById((int)idNegocio);
 
+            string comment = "";
+
+            if ((bool)esCorreccion)
+            {
+                foreach (var item in negocio.Tramite)
+                {
+                    if (item.idEstadoTramite == 6)
+                        comment = item.comentario;
+                }
+            }
+
             switch (negocio.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje)
             {
-                case 1: return RedirectToAction("EditCasaODpto", new { idNegocio = negocio.idNegocio });
+                case 1: return RedirectToAction("EditCasaODpto", new { idNegocio = negocio.idNegocio, comentario = comment });
                         break;
-                case 2: return RedirectToAction("EditComplejo", new { idNegocio = negocio.idNegocio });
+                case 2: return RedirectToAction("EditComplejo", new { idNegocio = negocio.idNegocio, comentario = comment });
                         break;
-                case 3: return RedirectToAction("EditHotel", new { idNegocio = negocio.idNegocio });
+                case 3: return RedirectToAction("EditHotel", new { idNegocio = negocio.idNegocio, comentario = comment });
                         break;
                 default: break;
             }
@@ -888,7 +911,7 @@ namespace ProyectoFinal.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-        public ActionResult EditComercio(int? idNegocio)
+        public ActionResult EditComercio(int? idNegocio, bool? esCorreccion)
         {
             ObtenerUsuarioActual();
             neg = nm.GetNegocioById((int)idNegocio);
@@ -896,6 +919,16 @@ namespace ProyectoFinal.Controllers
             ViewBag.Perfil = usuarioActual.idPerfil;
             ViewBag.Rubros = new SelectList(db.Rubro, "idRubro", "nombreRubro", neg.Comercio.FirstOrDefault().idRubro);
             ViewBag.idNegocio = idNegocio;
+
+            if((bool)esCorreccion)
+            {
+                foreach (var item in neg.Tramite)
+                {
+                    if (item.idEstadoTramite == 6)
+                        ViewBag.Comentario = item.comentario;
+                }
+            }
+                
 
             neg.Sucursal.FirstOrDefault().Domicilio.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
    

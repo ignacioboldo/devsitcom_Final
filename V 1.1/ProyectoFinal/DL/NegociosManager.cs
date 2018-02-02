@@ -32,14 +32,14 @@ namespace BL
 
             using (SitcomEntities db = new SitcomEntities())
             {
-                int idEstTra = 0;
+                int idTipTra = 0;
 
                 bool esCorreccion = false;
 
                 //Seteo el estado de tramite segun si es Alta o Modificacion de Negocio.
                 if (n.idNegocioModif != null)
                 {
-                    idEstTra = 3;
+                    idTipTra = 3; //Modificacion de Negocio
 
                     var aprobado = (from nego in db.Negocio
                                    where nego.idNegocio == n.idNegocioModif
@@ -49,7 +49,7 @@ namespace BL
                         esCorreccion = true;
                 }
                 else
-                    idEstTra = 1;
+                    idTipTra = 1; //Alta de Negocio
 
                 Tramite tra = new Tramite();
 
@@ -60,7 +60,7 @@ namespace BL
                     {
                         idUsuarioSolicitante = usuarioActual.idUsuario,
                         fechaAlta = DateTime.Now,
-                        idTipoTramite = idEstTra,
+                        idTipoTramite = idTipTra,
                         idEstadoTramite = 1
                     };
                 }
@@ -104,8 +104,6 @@ namespace BL
 
                     db.SaveChanges();
                 }
-
-
             }
         }
 
