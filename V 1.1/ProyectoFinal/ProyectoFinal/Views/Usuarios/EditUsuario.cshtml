@@ -56,7 +56,7 @@
                         <div class="form-group">
                             @Html.Label("Nombre de Usuario:", new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.TextBoxFor(model => model.nombreUsuario, new { @class = "form-control", style = "width:300px;" })
+                                @Html.TextBoxFor(model => model.nombreUsuario, new { @class = "form-control", style = "width:300px;", disabled = "enabled" })
                                 @Html.ValidationMessageFor(model => model.nombreUsuario)
                             </div>
                         </div>
