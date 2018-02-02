@@ -41,6 +41,9 @@
             $("#btnTusPromociones").show();
             $("#btnEncuestas").hide();
             $("#btnTusEncuestas").show();
+			$("#divTuristaRespNegocio").show();
+            $("#divRespSecretaria").hide();
+            $("#btnTodosLosTramites").hide(); 
         }
 
         if (perfil == 2) {
@@ -52,6 +55,9 @@
             $("#btnTusPromociones").hide();
             $("#btnEncuestas").hide();
             $("#btnTusEncuestas").hide();
+			$("#divTuristaRespNegocio").show();
+            $("#divRespSecretaria").hide();
+            $("#btnTodosLosTramites").hide();
         }
 
         if (perfil == 3) {
@@ -63,6 +69,9 @@
             $("#btnTusPromociones").hide();
             $("#btnEncuestas").show();
             $("#btnTusEncuestas").hide();
+			$("#divTuristaRespNegocio").hide();
+            $("#divRespSecretaria").show();
+            $("#btnTodosLosTramites").show();
         }
 
         if (perfil == 4) {
@@ -75,7 +84,9 @@
             $("#btnEncuestas").hide();
             $("#btnTusEncuestas").hide();
             $("#btnGestionUsuarios").show();
-
+			$("#divTuristaRespNegocio").hide();
+            $("#divRespSecretaria").hide();
+            $("#btnTodosLosTramites").hide();
         }
 
 
@@ -134,6 +145,11 @@
             event.preventDefault();
         });
 
+		$("#btnTodosLosTramites").click(function (event) {
+            window.location = '@Url.Action("TramitesResp", "Tramites")';
+            event.preventDefault();
+        });
+
 
         $("#btnNuevaEncuesta").click(function (event) {
             window.location = '@Url.Action("NuevaEncuesta", "Encuestas")';
@@ -183,6 +199,10 @@
 			<a href="" class="btn btn-default" id="btnEncuestas" style="width:250px; margin-bottom:10px;">
 				ENCUESTAS
 			</a>
+
+			<a href="" class="btn btn-default" id="btnTodosLosTramites" style="width:250px;">
+                TODOS LOS TRAMITES
+            </a>
 
 
         </div>
