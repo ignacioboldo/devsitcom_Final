@@ -16,6 +16,7 @@
             $("#textoAprob").show();
             $("#textoRecha").hide();
             $("#comentario").show();
+            $("#comentarioCorreccion").hide();
             $("#btnConfirmar").show();
             $("#textoSolicCorr").hide();
             accion = 3;
@@ -25,6 +26,7 @@
             $("#textoAprob").hide();
             $("#textoRecha").show();
             $("#comentario").show();
+            $("#comentarioCorreccion").hide();
             $("#btnConfirmar").show();
             $("#textoSolicCorr").hide();
             accion = 4;
@@ -34,14 +36,20 @@
             $("#textoAprob").hide();
             $("#textoRecha").hide();
             $("#textoSolicCorr").show();
-            $("#comentario").show();
+            $("#comentario").hide();
+            $("#comentarioCorreccion").show();
             $("#btnConfirmar").show();
             accion = 6;
         });
 
         $("#btnConfirmar").click(function () {
-            if (confirm('¿Está seguro que desea confirmar la operación?')) {
-                window.location = "../../Tramites/ResolverTramite/?idtramite=" + idtramite + "&accion=" + accion + "&comentario=" + $("#coment").val();
+
+            var comentario = $("#comentarioTexto").val();
+            var comentarioCorreccion = $("#comentarioCorreccionTexto").val();
+            
+            if (confirm('¿Está seguro que desea confirmar la operación?')) {            
+                                              
+                window.location = "../../Tramites/ResolverTramite/?idtramite=" + idtramite + "&accion=" + accion + "&comentario=" + comentario + "&comentarioCorreccion=" + comentarioCorreccion;
             }
         });
 
@@ -242,6 +250,7 @@
                                     el mismo será publicado a la brevedad en el sitio web.
                                 </p>
                             </div>
+
                             <div id="textoRecha" style="display:none" class="alert alert-block alert-danger fade in col-lg-10 col-lg-offset-1">
                                 <h4 class="alert-heading"><i class="fa fa-times"></i> Rechazado</h4>
                                 Atención! Usted esta rechazando la publicacion del siguiente negocio,
@@ -250,9 +259,11 @@
 
                                 <div id="comentario" style="display:none">
                                     <br />
-                                    <textarea id="coment" placeholder="Motivo del Rechazo.." style="width:500px; height:100px;" class="autosize form-control col-lg-offset-4"></textarea>
+                                    <textarea id="comentarioTexto" placeholder="Motivo del Rechazo.." style="width:500px; height:100px;" class="autosize form-control col-lg-offset-4"></textarea>
                                 </div>
                             </div>
+
+
                             <div id="textoSolicCorr" style="display:none" class="alert alert-block alert-danger fade in col-lg-10 col-lg-offset-1">
                                 <h4 class="alert-heading"><i class="fa fa-times"></i> Rechazado</h4>
                                 Atención! Usted esta solicitando una correccion del siguiente negocio,
@@ -260,10 +271,11 @@
                                 hasta 2 correcciones, luego se debera aprobar o rechazar el tramite.
                                 <br />
 
-                                <div id="comentario" style="display:none">
+                                <div id="comentarioCorreccion" style="display:none">
                                     <br />
-                                    <textarea id="coment" placeholder="Comentario.." style="width:500px; height:100px;" class="autosize form-control col-lg-offset-4"></textarea>
+                                    <textarea id="comentarioCorreccionTexto" placeholder="Comentario.." style="width:500px; height:100px;" class="autosize form-control col-lg-offset-4"></textarea>
                                 </div>
+
                             </div>
                             <br />
 

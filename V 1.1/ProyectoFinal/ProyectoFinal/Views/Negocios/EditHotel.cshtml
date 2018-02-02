@@ -9,6 +9,25 @@
                 <div class="page-title">
                     <h2>Editar Hotel</h2>
                 </div>
+
+                @{
+
+                    string comment = ViewBag.Comentario;
+
+                    if (comment != "")
+                    {
+                        <br />
+                        <h5>      CORRECCION SOLICITADA:  </h5>
+                        <br />
+
+                        <text> @comment </text>
+                        <br />
+                        <br />
+
+
+                    }
+                }  
+
             </div>
             <div class="col-xs-6">
                 <ol class="breadcrumb pull-right">
