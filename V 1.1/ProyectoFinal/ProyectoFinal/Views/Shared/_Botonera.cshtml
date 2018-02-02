@@ -41,9 +41,6 @@
             $("#btnTusPromociones").show();
             $("#btnEncuestas").hide();
             $("#btnTusEncuestas").show();
-            $("#divTuristaRespNegocio").show();
-            $("#divRespSecretaria").hide();
-            $("#btnTodosLosTramites").hide();            
         }
 
         if (perfil == 2) {
@@ -55,9 +52,6 @@
             $("#btnTusPromociones").hide();
             $("#btnEncuestas").hide();
             $("#btnTusEncuestas").hide();
-            $("#divTuristaRespNegocio").show();
-            $("#divRespSecretaria").hide();
-            $("#btnTodosLosTramites").hide();
         }
 
         if (perfil == 3) {
@@ -69,9 +63,6 @@
             $("#btnTusPromociones").hide();
             $("#btnEncuestas").show();
             $("#btnTusEncuestas").hide();
-            $("#divTuristaRespNegocio").hide();
-            $("#divRespSecretaria").show();
-            $("#btnTodosLosTramites").show();
         }
 
         if (perfil == 4) {
@@ -84,11 +75,10 @@
             $("#btnEncuestas").hide();
             $("#btnTusEncuestas").hide();
             $("#btnGestionUsuarios").show();
-            $("#divTuristaRespNegocio").hide();
-            $("#divRespSecretaria").hide();
-            $("#btnTodosLosTramites").hide();
+
         }
-        
+
+
         if (mensaje != "") {
             alert(mensaje);
         }
@@ -119,7 +109,7 @@
             event.preventDefault();
         });
 
-        $("#btnTusPromociones").click(function(event) {
+        $("#btnTusPromociones").click(function (event) {
             window.location = '@Url.Action("PromocionesUsuario","Promociones")';
             event.preventDefault();
         });
@@ -144,13 +134,11 @@
             event.preventDefault();
         });
 
-        $("#btnTodosLosTramites").click(function (event) {
-            window.location = '@Url.Action("TramitesResp", "Tramites")';
+
+        $("#btnNuevaEncuesta").click(function (event) {
+            window.location = '@Url.Action("NuevaEncuesta", "Encuestas")';
             event.preventDefault();
         });
-
-
-
 
     });
 
@@ -162,43 +150,39 @@
     <div class="col-xs-12">
         <div class="btn-group" role="group" aria-label="..." style="text-align:center">
 
-            <a href="" class="btn btn-default" id="btnModificarDatos" style="width:220px;">
+            <a href="" class="btn btn-default" id="btnModificarDatos" style="width:220px; margin-bottom:10px;">
                 MODIFICÁ TUS DATOS
             </a>
-            <a href="" class="btn btn-default" id="btnTusNegocios" style="width:220px;">
+            <a href="" class="btn btn-default" id="btnTusNegocios" style="width:220px; margin-bottom:10px;">
                 TUS NEGOCIOS
             </a>
-            <a href="" class="btn btn-default" id="btnTusPromociones" style="width:220px;">
+            <a href="" class="btn btn-default" id="btnTusPromociones" style="width:220px; margin-bottom:10px;">
                 TUS PROMOCIONES
             </a>
 
-            <a href="" class="btn btn-default" id="btnTusTramites" style="width:220px;">
+            <a href="" class="btn btn-default" id="btnTusTramites" style="width:220px; margin-bottom:10px;">
                 TUS TRAMITES
             </a>
 			
-			<a class="btn btn-default" id="btnTusEncuestas" style="width:200px;">
+			<a class="btn btn-default" id="btnTusEncuestas" style="width:200px; margin-bottom:10px;">
 				TUS ENCUESTAS
 			</a>
 			
-            <a href="" class="btn btn-default" id="btnMisReservas" style="width:220px;">
+            <a href="" class="btn btn-default" id="btnMisReservas" style="width:220px; margin-bottom:10px;">
                 TUS RESERVAS
             </a>
 			
-            <a href="" class="btn btn-default" id="btnTusTramitesAsignados" style="width:220px;">
+            <a href="" class="btn btn-default" id="btnTusTramitesAsignados" style="width:220px; margin-bottom:10px;">
                 TUS TRAMITES ASIGNADOS
             </a>
 
-            <a href="" class="btn btn-default" id="btnTusReportes" style="width:220px;">
+            <a href="" class="btn btn-default" id="btnTusReportes" style="width:220px; margin-bottom:10px;">
                 TUS REPORTES
             </a>
 			
-			<a href="" class="btn btn-default" id="btnEncuestas" style="width:250px;">
+			<a href="" class="btn btn-default" id="btnEncuestas" style="width:250px; margin-bottom:10px;">
 				ENCUESTAS
 			</a>
-
-            <a href="" class="btn btn-default" id="btnTodosLosTramites" style="width:250px;">
-                TODOS LOS TRAMITES
-            </a>
 
 
         </div>
