@@ -43,7 +43,12 @@
             $("#btnTusEncuestas").show();
 			$("#divTuristaRespNegocio").show();
             $("#divRespSecretaria").hide();
-            $("#btnTodosLosTramites").hide(); 
+            $("#btnTodosLosTramites").hide();
+            $("#btnMisReservas").show();
+            $("#btnGestionUsuarios").hide();
+            $("#btnGestionPerfiles").hide();
+            $("#btnTusReportes").hide();          
+            
         }
 
         if (perfil == 2) {
@@ -58,10 +63,14 @@
 			$("#divTuristaRespNegocio").show();
             $("#divRespSecretaria").hide();
             $("#btnTodosLosTramites").hide();
+            $("#btnMisReservas").hide();
+            $("#btnGestionUsuarios").hide();
+            $("#btnGestionPerfiles").hide();
+            $("#btnTusReportes").show();
         }
 
         if (perfil == 3) {
-            $("#btnTusTramites").show();
+            $("#btnTusTramites").hide();
             $("#btnTusNegocios").hide();
             $("#btnTusTramitesAsignados").show();
             $("#btnTodosLosTramites").show();
@@ -70,8 +79,11 @@
             $("#btnEncuestas").show();
             $("#btnTusEncuestas").hide();
 			$("#divTuristaRespNegocio").hide();
-            $("#divRespSecretaria").show();
-            $("#btnTodosLosTramites").show();
+			$("#divRespSecretaria").show();
+			$("#btnMisReservas").hide();
+			$("#btnGestionUsuarios").hide();
+			$("#btnGestionPerfiles").hide();
+			$("#btnTusReportes").show();
         }
 
         if (perfil == 4) {
@@ -87,6 +99,10 @@
 			$("#divTuristaRespNegocio").hide();
             $("#divRespSecretaria").hide();
             $("#btnTodosLosTramites").hide();
+            $("#btnMisReservas").hide();
+            $("#btnGestionUsuarios").show();
+            $("#btnGestionPerfiles").show();
+            $("#btnTusReportes").hide();
         }
 
 
@@ -202,6 +218,14 @@
 
 			<a href="" class="btn btn-default" id="btnTodosLosTramites" style="width:250px;">
                 TODOS LOS TRAMITES
+            </a>
+
+            <a href="" class="btn btn-default" id="btnGestionUsuarios" style="width:250px;">
+                GESTION DE USUARIOS
+            </a>
+
+            <a href="" class="btn btn-default" id="btnGestionPerfiles" style="width:250px;">
+                GESTION DE PERFILES
             </a>
 
 
