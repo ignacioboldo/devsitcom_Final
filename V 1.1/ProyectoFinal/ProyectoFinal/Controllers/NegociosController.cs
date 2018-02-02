@@ -463,6 +463,20 @@ namespace ProyectoFinal.Controllers
                 ViewBag.TiposNegocio = new SelectList(db.TipoDeNegocio, "idTipoNegocio", "nombre", neg.idTipoNegocio);
                 ViewBag.CaracHotel = new SelectList(db.Caracteristica, "idCaracteristica", "nombre");
                 ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
+			    ViewBag.TiposComplejo = new SelectList(db.TipoComplejo, "idTipoComplejo", "nombreTipoComplejo");
+                ViewBag.Carac = nm.GetCaracteristicas();
+                List<TipoHabitacion> habs = nm.GetTiposHabitacion();
+                List<HabitacionesEntity> habitaciones = new List<HabitacionesEntity>();
+                foreach (var item in habs)
+                {
+                    habitaciones.Add(new HabitacionesEntity()
+                    {
+                        idTipoHabitacion = item.idTipoHabitacion,
+                        nombre = item.nombre
+                    });
+                }
+                ViewBag.Habitaciones = habitaciones;
+		
 
                 switch (neg.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje)
 	            {
