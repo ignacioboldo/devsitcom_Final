@@ -284,7 +284,33 @@ namespace ProyectoFinal.Controllers
                 ModelState.AddModelError("", "Debés seleccionar una imagen principal.");
                 ViewBag.Perfil = usuarioActual.idPerfil;
                 ViewBag.TiposNegocio = new SelectList(db.TipoDeNegocio, "idTipoNegocio", "nombre", neg.idTipoNegocio);
-                return View("Nuevo", neg);
+
+                ViewBag.Carac = nm.GetCaracteristicas();
+                ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
+                ViewBag.TiposComplejo = new SelectList(db.TipoComplejo, "idTipoComplejo", "nombreTipoComplejo");
+
+                List<TipoHabitacion> habs = nm.GetTiposHabitacion();
+                List<HabitacionesEntity> habitaciones = new List<HabitacionesEntity>();
+                foreach (var item in habs)
+                {
+                    habitaciones.Add(new HabitacionesEntity()
+                    {
+                        idTipoHabitacion = item.idTipoHabitacion,
+                        nombre = item.nombre
+                    });
+                }
+                ViewBag.Habitaciones = habitaciones;
+
+                switch (TipoHospedaje)
+                {
+                    case 1: return View("NuevoCasaODpto", neg);
+
+                    case 2: return View("NuevoComplejo", neg);
+
+                    case 3: return View("NuevoHotel", neg);
+
+                    default: break;
+                }
             }
             // FIN PARTE NEGOCIO //
 
@@ -438,7 +464,17 @@ namespace ProyectoFinal.Controllers
                 ViewBag.CaracHotel = new SelectList(db.Caracteristica, "idCaracteristica", "nombre");
                 ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
 
-                return View("Nuevo", neg);
+                switch (neg.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje)
+	            {
+                    case 1: return View("NuevoCasaODpto", neg);                       
+
+                    case 2: return View("NuevoComplejo", neg);
+
+                    case 3: return View("NuevoHotel", neg);
+
+                    default: break;
+	            }
+                
             }
 
             return RedirectToAction("Index", "Home");
