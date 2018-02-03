@@ -140,7 +140,7 @@ namespace ProyectoFinal.Controllers
                 Domicilio = domEn
             });
 
-            if(imagenPrinc == null)
+            if(!ModelState.IsValid || imagenPrinc == null)
             {
                 ModelState.AddModelError("", "Debés seleccionar una imagen principal.");
                 ViewBag.Perfil = usuarioActual.idPerfil;
