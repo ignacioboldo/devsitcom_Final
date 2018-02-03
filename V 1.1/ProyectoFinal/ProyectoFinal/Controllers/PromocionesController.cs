@@ -148,6 +148,28 @@ namespace ProyectoFinal
             }           
         }
 
+        public string GetPromocioneSinUtilizar()
+        {
+            ObtenerUsuarioActual();
+
+            List<PromocionesOtorgadasUsuario> p = (List<PromocionesOtorgadasUsuario>)pm.getPromocionesOtorgadas(usuarioActual.idUsuario);
+
+            int cantSinUtil = 0;
+            foreach (var item in p)
+            {
+                if (item.ESTADO == "DISPONIBLE")
+                    cantSinUtil++;
+            }
+
+            //ViewBag.IdEncuesta = idEncuesta;
+
+            if (cantSinUtil > 0)
+                return "[" + cantSinUtil + "]";
+            else
+                return "";   
+        }
+
+
         public ActionResult PromocionesUsuario()
         {
             ObtenerUsuarioActual();

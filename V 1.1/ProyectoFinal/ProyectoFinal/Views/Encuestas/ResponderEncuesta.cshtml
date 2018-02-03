@@ -35,6 +35,16 @@
             int idEncuestaAsignada = ViewBag.IdEncuestaAsignada;
         }
 
+        @{
+            if(Model.idTipoEncuesta == 1 || Model.idTipoEncuesta == 2)
+            { 
+                <div class="page-header">
+                    <h3>Por tu visita a <span>@ViewBag.Negocio</span></h3>
+                </div>
+            }
+          }
+
+
         <div>
             @ViewBag.Error
         </div>
@@ -67,16 +77,16 @@
                 @Html.HiddenFor(m => m.Preguntas1[i].idPregunta)
                 @Html.LabelFor(m => m.Preguntas1[i].idPregunta, String.Empty);
 
-                                                                             int j = 0;
-                                                                             foreach (var it in item.TiposRespuesta.RespuestasPosiblesArray)
-                                                                             {
-                                                                                @Html.RadioButtonFor(m => m.Preguntas1[i].respuesta, it.valor)
-                                                                                @Html.HiddenFor(m => m.Preguntas1[i].TiposRespuesta.RespuestasPosiblesArray[j].valor)
+            int j = 0;
+            foreach (var it in item.TiposRespuesta.RespuestasPosiblesArray)
+            {
+            @Html.RadioButtonFor(m => m.Preguntas1[i].respuesta, it.valor)
+            @Html.HiddenFor(m => m.Preguntas1[i].TiposRespuesta.RespuestasPosiblesArray[j].valor)
 
-                                                                                <text> @it.nombre </text>
-                                                                                @Html.HiddenFor(m => m.Preguntas1[i].TiposRespuesta.RespuestasPosiblesArray[j].nombre)
-                                                                                 j++;
-                                                                             }
+            <text> @it.nombre </text>
+            @Html.HiddenFor(m => m.Preguntas1[i].TiposRespuesta.RespuestasPosiblesArray[j].nombre)
+                j++;
+            }
 
 
                                                                              i++;

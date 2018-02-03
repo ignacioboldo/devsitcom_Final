@@ -105,6 +105,22 @@
             $("#btnTusReportes").hide();
         }
 
+        $.ajax({
+            type: 'GET',
+            url: '../../Encuestas/GetEncuestasSinResponder',
+            success: function (response) {
+                $("#encuestasSinResponder").html(response);
+            }
+        })
+
+        $.ajax({
+            type: 'GET',
+            url: '../../Promociones/GetPromocioneSinUtilizar',
+            success: function (response) {
+                $("#promocionesSinUtilizar").html(response);
+            }
+        })
+
 
         if (mensaje != "") {
             alert(mensaje);
@@ -189,7 +205,7 @@
                 TUS NEGOCIOS
             </a>
             <a href="" class="btn btn-default" id="btnTusPromociones" style="width:220px; margin-bottom:10px;">
-                TUS PROMOCIONES
+                TUS PROMOCIONES <label id="promocionesSinUtilizar"></label>
             </a>
 
             <a href="" class="btn btn-default" id="btnTusTramites" style="width:220px; margin-bottom:10px;">
@@ -197,7 +213,7 @@
             </a>
 			
 			<a class="btn btn-default" id="btnTusEncuestas" style="width:200px; margin-bottom:10px;">
-				TUS ENCUESTAS
+				TUS ENCUESTAS <label id="encuestasSinResponder"></label>
 			</a>
 			
             <a href="" class="btn btn-default" id="btnMisReservas" style="width:220px; margin-bottom:10px;">
@@ -213,7 +229,7 @@
             </a>
 			
 			<a href="" class="btn btn-default" id="btnEncuestas" style="width:250px; margin-bottom:10px;">
-				ENCUESTAS
+				ENCUESTAS 
 			</a>
 
 			<a href="" class="btn btn-default" id="btnTodosLosTramites" style="width:250px;">

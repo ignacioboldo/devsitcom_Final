@@ -30,10 +30,22 @@
 <!-- MAIN CONTENT SECTION -->
 <section class="mainContent clearfix userProfile">
     <div class="container">
+
+        @{
+            int idTipoEncuesta = ViewBag.IdTipoEncuesta;
+
+            if (idTipoEncuesta == 1 || idTipoEncuesta == 2)
+            {
+                <div class="page-header">
+                    <h3>Por tu visita a <span>@ViewBag.Negocio</span></h3>
+                </div>
+            }
+        }
+
     <div style="margin:0 auto; max-width:600px; border: 1px solid gray; padding:20px; border-radius:20px;">
 
         <div style="text-align:center;"><img src="~/Content/img/icon.png" style="height:60px;" /></div>
-
+        
         <hr />
 
         @foreach (var item in Model)

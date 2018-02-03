@@ -99,6 +99,19 @@ namespace BL
             }
         }
 
+        public EncuestasAsignadas GetEncuestaAsignadaById(int? id)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                var result = (from ea in db.EncuestasAsignadas.Include("Negocio")
+                              where ea.idEncuestaAsignada == id
+                              select ea).FirstOrDefault();
+
+                return result;
+            }
+        }
+
+
         public void CrearPregunta(PreguntasEntity preg)
         {
 
