@@ -870,8 +870,9 @@ namespace ProyectoFinal.Controllers
             NegocioEntity negocio = nm.GetNegocioById((int)idNegocio);
 
             string comment = "";
+            bool esCorr = esCorreccion != null ? (bool)esCorreccion : false;
 
-            if ((bool)esCorreccion)
+            if (esCorr)
             {
                 foreach (var item in negocio.Tramite)
                 {
@@ -1035,7 +1036,9 @@ namespace ProyectoFinal.Controllers
             ViewBag.Rubros = new SelectList(db.Rubro, "idRubro", "nombreRubro", neg.Comercio.FirstOrDefault().idRubro);
             ViewBag.idNegocio = idNegocio;
 
-            if((bool)esCorreccion)
+            bool esCorr = esCorreccion != null ? (bool)esCorreccion : false;
+
+            if (esCorr)
             {
                 foreach (var item in neg.Tramite)
                 {
