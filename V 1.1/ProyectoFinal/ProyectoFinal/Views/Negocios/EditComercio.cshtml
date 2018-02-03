@@ -3,12 +3,7 @@
     <script type="text/javascript">
 
         var perfil = "@ViewBag.Perfil"
-        var comentario = "@ViewBag.Comentario"
 
-        if (comentario != "")
-            $("#comentarioCorreccion").show();
-        else
-            $("#comentarioCorreccion").hide();
 
         $(document).ready(function(){
 
@@ -49,17 +44,27 @@
 <section class="mainContent clearfix userProfile">
     <div class="container">
 
-        <div id="comentarioCorreccion" class="alert alert-info" role="alert">
+        @{
+            string comment = ViewBag.Comentario;
 
-            <br />
-            <h5>      CORRECCION SOLICITADA:  </h5>
-            <br />
+            if (comment != "NO")
+            {
+                <div id="comentarioCorreccion" class="alert alert-info" role="alert" display:none>
 
-            <text style="font-size:14px;"> @ViewBag.Comentario </text>
-            <br />
-            <br />
+                    <br />
+                    <h5>      CORRECCION SOLICITADA:  </h5>
+                    <br />
 
-        </div>
+                    <label style="font-size:14px;"> @ViewBag.Comentario </label>
+
+                    <br />
+                    <br />
+
+                </div>
+            }
+
+
+        }
 
         @using (Html.BeginForm("EditComercio", "Negocios", new { ReturnUrl = ViewBag.ReturnUrl, IdNegocioOrig = ViewBag.idNegocio }, FormMethod.Post, new { id = "formComercio", @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
         {

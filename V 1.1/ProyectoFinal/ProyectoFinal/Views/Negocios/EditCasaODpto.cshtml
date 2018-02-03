@@ -1,15 +1,5 @@
 ﻿@model BussinesEntities.NegocioEntity
 
-<script type="text/javascript">
-
-        var perfil = "@ViewBag.Perfil"
-        var comentario = "@ViewBag.Comentario"
-
-        if (comentario != "")
-            $("#comentarioCorreccion").show();
-        else
-            $("#comentarioCorreccion").hide();
-</script>
 
 <!-- LIGHT SECTION -->
 <section class="lightSection clearfix pageHeader">
@@ -37,17 +27,27 @@
 <section class="mainContent clearfix userProfile">
     <div class="container">
 
-        <div id="comentarioCorreccion" class="alert alert-info" role="alert">
+        @{
+            string comment = ViewBag.Comentario;
 
-            <br />
-            <h5>      CORRECCION SOLICITADA:  </h5>
-            <br />
+            if (comment != "NO")
+            {
+                <div id="comentarioCorreccion" class="alert alert-info" role="alert" display:none>
 
-            <text style="font-size:14px;"> @ViewBag.Comentario </text>
-            <br />
-            <br />
+                    <br />
+                    <h5>      CORRECCION SOLICITADA:  </h5>
+                    <br />
 
-        </div>
+                    <label style="font-size:14px;"> @ViewBag.Comentario </label>
+
+                    <br />
+                    <br />
+
+                </div>
+            }
+
+
+        }
 
         @using (Html.BeginForm("EditHospedaje", "Negocios", new { ReturnUrl = ViewBag.ReturnUrl, TipoHospedaje = 1, IdNegocioOrig = ViewBag.IdNegocio }, FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
         {

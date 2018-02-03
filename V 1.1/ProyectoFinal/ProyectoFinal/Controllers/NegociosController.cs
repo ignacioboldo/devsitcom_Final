@@ -784,10 +784,9 @@ namespace ProyectoFinal.Controllers
         public ActionResult EditCasaODpto(int? idNegocio, string comentario)
         {
 
-            if (comentario != "")
-            {
-                ViewBag.Comentario = comentario;
-            }
+            string comment = comentario == null || comentario == "" ? "NO" : comentario;
+
+            ViewBag.Comentario = comment;
 
             NegocioEntity negocio = nm.GetNegocioById((int)idNegocio);
             negocio.Sucursal.FirstOrDefault().Domicilio.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
@@ -824,10 +823,10 @@ namespace ProyectoFinal.Controllers
         }
         public ActionResult EditHotel(int? idNegocio, string comentario)
         {
-            if (comentario != "")
-            {
-                ViewBag.Comentario = comentario;
-            }
+            string comment = comentario==null||comentario==""?"NO":comentario;
+            
+            ViewBag.Comentario = comment;
+
 
             NegocioEntity negocio = nm.GetNegocioById((int)idNegocio);
             negocio.Sucursal.FirstOrDefault().Domicilio.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
@@ -856,7 +855,11 @@ namespace ProyectoFinal.Controllers
             NegocioEntity negocio = nm.GetNegocioById((int)idNegocio);
             negocio.Sucursal.FirstOrDefault().Domicilio.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
 
-            ViewBag.Comentario = comentario;
+            string comment = comentario == null || comentario == "" ? "NO" : comentario;
+
+            ViewBag.Comentario = comment;
+
+
             ViewBag.Carac = nm.GetCaracteristicas();
             ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
             ViewBag.TiposComplejo = new SelectList(db.TipoComplejo, "idTipoComplejo", "nombreTipoComplejo");
@@ -922,13 +925,84 @@ namespace ProyectoFinal.Controllers
                 telefono = telefono,
                 Domicilio = domEn
             });
+            neg.Sucursal.FirstOrDefault().Domicilio.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
 
-			if (imagenPrinc == null)
+            LugarHospedajeEntity lug = new LugarHospedajeEntity();
+            lug.idTipoLugarHospedaje = TipoHospedaje;
+            lug.CaracteristicasHospedaje = new List<CaracteristicasHospedajeEntity>();
+            neg.LugarHospedaje = new List<LugarHospedajeEntity>() { lug };
+
+
+            if (!ModelState.IsValid || imagenPrinc == null)
             {
-                ModelState.AddModelError("", "Debés seleccionar una imagen principal.");
+                if(imagenPrinc == null)
+                    ModelState.AddModelError("", "Debés seleccionar una imagen principal.");
+
+
+
+                switch (neg.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje)
+                {
+                    case 1: List<CasaDptoOCabana> casaDptosOCabanas = new List<CasaDptoOCabana>() { new CasaDptoOCabana() };
+                        neg.LugarHospedaje.FirstOrDefault().CasaDptoOCabana = casaDptosOCabanas;
+                        break;
+
+                    case 2: List<ComplejoEntity> complejos = new List<ComplejoEntity>() { new ComplejoEntity() };
+                        neg.LugarHospedaje.FirstOrDefault().Complejo = complejos;
+
+                        break;
+                    case 3: List<HotelEntity> hoteles = new List<HotelEntity>() { new HotelEntity() };
+                        neg.LugarHospedaje.FirstOrDefault().Hotel = hoteles;
+                        break;
+
+                    default:
+                        break;
+                }
+
+                ViewBag.IdNegocio = idNegocioOrig;
                 ViewBag.Perfil = usuarioActual.idPerfil;
+                ViewBag.Rubros = new SelectList(db.Rubro, "idRubro", "nombreRubro");
                 ViewBag.TiposNegocio = new SelectList(db.TipoDeNegocio, "idTipoNegocio", "nombre", neg.idTipoNegocio);
-                return View("EditHospedaje", neg);
+                ViewBag.CaracHotel = new SelectList(db.Caracteristica, "idCaracteristica", "nombre");
+                ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
+                ViewBag.TiposComplejo = new SelectList(db.TipoComplejo, "idTipoComplejo", "nombreTipoComplejo");
+                ViewBag.Carac = nm.GetCaracteristicas();
+
+                /*if (imagenPrinc != null)
+                {
+                     byte[] img = null;
+                     using(var binaryReader = new BinaryReader(imagenPrinc.InputStream))
+                     {
+                         img = binaryReader.ReadBytes(imagenPrinc.ContentLength);
+                     }
+                     string imreBase64Data = Convert.ToBase64String(img);
+                     string imgDataURL = string.Format("data:image/png;base64,{0}", imreBase64Data);
+                     ViewBag.ImgPrinc = imgDataURL;//File(img, "image/jpg", string.Format("{0}.jpg", "imagenPrinc"));
+                }*/
+
+                ViewBag.ImgPrinc = imagenPrinc;
+
+                List<TipoHabitacion> habs = nm.GetTiposHabitacion();
+                List<HabitacionesEntity> habitaciones = new List<HabitacionesEntity>();
+                foreach (var item in habs)
+                {
+                    habitaciones.Add(new HabitacionesEntity()
+                    {
+                        idTipoHabitacion = item.idTipoHabitacion,
+                        nombre = item.nombre
+                    });
+                }
+                ViewBag.Habitaciones = habitaciones;
+
+                switch (neg.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje)
+                {
+                    case 1: return View("EditCasaODpto", neg);
+
+                    case 2: return View("EditComplejo", neg);
+
+                    case 3: return View("EditHotel", neg);
+
+                    default: break;
+                }
             }
 	
             // FIN PARTE NEGOCIO //
@@ -953,13 +1027,7 @@ namespace ProyectoFinal.Controllers
 
             neg.FotosNegocio = fotosNegocio;
 
-            // FIN PARTE IMAGENES //
-
-            // PARTE LUGAR HOSPEDAJE //
-            LugarHospedajeEntity lug = new LugarHospedajeEntity();
-            lug.idTipoLugarHospedaje = TipoHospedaje;
-            lug.CaracteristicasHospedaje = new List<CaracteristicasHospedajeEntity>();
-            neg.LugarHospedaje = new List<LugarHospedajeEntity>() { lug };
+            // FIN PARTE IMAGENES //           
 
             SelectList carac = new SelectList(db.Caracteristica, "idCaracteristica", "nombre");
             foreach (var item in carac)
@@ -980,7 +1048,6 @@ namespace ProyectoFinal.Controllers
                 }
             }
 
-
             switch (neg.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje)
             {
                 case 1: List<CasaDptoOCabana> casaDptosOCabanas = new List<CasaDptoOCabana>() { new CasaDptoOCabana() };
@@ -991,18 +1058,19 @@ namespace ProyectoFinal.Controllers
                     neg.LugarHospedaje.FirstOrDefault().Complejo = complejos;
                     neg.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idCategoria = int.Parse(Request.Form["categ"].ToString());
                     neg.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idTipoComplejo = int.Parse(Request.Form["tipos"].ToString());
-                                  
+
 
                     break;
                 case 3: List<HotelEntity> hoteles = new List<HotelEntity>() { new HotelEntity() };
                     neg.LugarHospedaje.FirstOrDefault().Hotel = hoteles;
                     neg.LugarHospedaje.FirstOrDefault().Hotel.FirstOrDefault().idCategoria = int.Parse(Request.Form["categ"].ToString());
-                                        
+
                     break;
 
                 default:
                     break;
             }
+           
 
             // FIN PARTE LUGAR HOSPEDAJE //
 
