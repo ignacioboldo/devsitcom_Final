@@ -91,6 +91,19 @@ namespace BL
       }
 
 
+      public string consultarDisponibilidadPorNegocio(DateTime fechaDesde, DateTime fechaHasta, int cantPersonas, int cantHabitaciones, int idNegocio)
+      {
+
+
+          using (SitcomEntities db = new SitcomEntities())
+          {
+
+              return db.Database.SqlQuery<string>("ConsultarDisponibilidadPorNegocio @fechaDesde='" + fechaDesde + "',@fechaHasta='" + fechaHasta + "',@cantPersonas=" + cantPersonas + " ,@cantHabitaciones=" + cantHabitaciones + " ,@idNegocio= " + idNegocio).First();
+
+          }
+
+
+      }
 
 
       public List<ReservasEntities> disponiblidad(DateTime? fechaDesde, DateTime? fechaHasta, int? cantPersonas, int? cantHabitaciones, string tipoHospedaje)

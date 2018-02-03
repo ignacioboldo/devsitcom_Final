@@ -35,4 +35,3 @@ C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DAL\bin\Release\Enti
 C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DAL\bin\Release\EntityFramework.SqlServer.xml
 C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DAL\obj\Release\DAL.dll
 C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DAL\obj\Release\DAL.pdb
-C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DAL\obj\Release\DAL.csprojResolveAssemblyReference.cache

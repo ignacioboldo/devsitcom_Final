@@ -53,6 +53,8 @@
         var tieneTramite = "@ViewBag.TieneTramiteMGR"
 
         $(document).ready(function () {
+
+            buscarDispo('@Model.idNegocio', true);
         
             
             if (esDueno == 1) {
@@ -302,6 +304,59 @@
             return 1;
         }
 
+        function buscarDispo(idNegocio, no_mostrar) {
+
+            var fecha_desde           = $("#fecha_desde").val();
+            var fecha_hasta           = $("#fecha_hasta").val();
+            var cantidad_personas     = $("#cantidad_personas").val();
+            var cantidad_habitaciones = $("#cantidad_habitaciones").val();
+
+            if (fecha_desde != '' && fecha_hasta != '') {
+
+                if (!validate_fechaMayorQue(fecha_desde, fecha_hasta)) {
+                    alert("La fecha desde no puede ser mayor a la fecha hasta.");
+                } else {
+                    $("#btn_disponibilidad").hide();
+                    $("#cargando_disponibilidad").show();
+                    $("#postDisponibilidad").val('true');
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '../ConsultarDisponiblidad?fecha_desde=' + fecha_desde + '&fecha_hasta=' + fecha_hasta + '&cantidad_personas=' + cantidad_personas + '&cantidad_habitaciones=' + cantidad_habitaciones + '&idNegocio=' + idNegocio,
+                        success: function (response) {
+
+                            $("#btn_disponibilidad").show();
+                            $("#cargando_disponibilidad").hide();
+                            $(".mensaje_resultado").html(response);
+
+                            if (response == "Este lugar de hospedaje posee disponibilidad para la fecha consultada, solicitá tu reserva cuanto antes") {
+                                $("#btnReservar").show();
+                                $("#btnReservar_desactivado").hide();
+                                $('#myModal2').modal('show');
+                            } else {
+                                $("#btnReservar").hide();
+                                $("#btnReservar_desactivado").show();
+                            }
+
+
+                        }
+                    })
+                }
+
+            } else {
+                if (!no_mostrar) {
+                    alert("Debe ingresar fecha desde y hasta.");
+                }
+                
+            }
+
+
+             
+            return false;
+                        
+
+        }
+
 
     </script>
 
@@ -374,13 +429,10 @@
                         <div class="panel-body">
                             <div class="collapse navbar-collapse navbar-ex1-collapse navbar-side-collapse">
 
-                                @using (Html.BeginForm("ConsultarReserva", "Negocios", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-login" }))
-                                {
+                                @{
                                     string selected = "";
                                     string selected2 = "";
-                                    string selected3 = "";
 
-                                    @Html.AntiForgeryToken()
                                     <div class="form-group">
                                         <label>Fecha Desde</label>
                                         <input type="text" name="fecha_desde" id="fecha_desde" class="form-control date" placeholder="Fecha Desde" value="@Session["fecha_desde"]" />
@@ -393,7 +445,7 @@
                                     <div class="row">
                                         <div class="form-group col-xs-12 col-md-6">
                                             <label>Cant.de Pers.</label>
-                                            <select class="form-control" name="cantidad_personas">
+                                            <select class="form-control" id="cantidad_personas" name="cantidad_personas">
                                                 <option @if (Convert.ToInt32(Session["cantidad_personas"]) == 1) { selected = "selected"; } else { selected = ""; } @selected>1</option>
                                                 <option @if (Convert.ToInt32(Session["cantidad_personas"]) == 2) { selected = "selected"; } else { selected = ""; } @selected>2</option>
                                                 <option @if (Convert.ToInt32(Session["cantidad_personas"]) == 3) { selected = "selected"; } else { selected = ""; } @selected>3</option>
@@ -406,7 +458,7 @@
                                         </div>
                                         <div class="form-group col-xs-12 col-md-6">
                                             <label>Cant. de Hab.</label>
-                                            <select class="form-control" name="cantidad_habitaciones">
+                                            <select class="form-control" id="cantidad_habitaciones" name="cantidad_habitaciones">
                                                 <option @if (Convert.ToInt32(Session["cantidad_habitaciones"]) == 1) { selected2 = "selected"; } else { selected2 = ""; } @selected2>1</option>
                                                 <option @if (Convert.ToInt32(Session["cantidad_habitaciones"]) == 2) { selected2 = "selected"; } else { selected2 = ""; } @selected2>2</option>
                                                 <option @if (Convert.ToInt32(Session["cantidad_habitaciones"]) == 3) { selected2 = "selected"; } else { selected2 = ""; } @selected2>3</option>
@@ -420,16 +472,11 @@
 
                                     </div>
 
-                                    <div class="form-group">
-                                        <label>Tipo Hospedaje</label>
-                                        <select class="form-control" name="tipo_hospedaje">
-                                            <option @if (Session["tipo_hospedaje"] == "HOTEL") { selected3 = "selected"; } else { selected3 = ""; } @selected3>HOTEL</option>
-                                            <option @if (Session["tipo_hospedaje"] == "COMPLEJO") { selected3 = "selected"; } else { selected3 = ""; } @selected3>COMPLEJO</option>
-                                        </select>
-                                    </div>
+ 
 
                                     <div>
-                                        <button class="btn btn-primary btn-block" id="btnConsultar" type="submit">Consultar!</button>
+                                        <button class="btn btn-primary btn-block" id="btn_disponibilidad" onclick="buscarDispo('@Model.idNegocio');">Consultar!</button>
+                                        <div id="cargando_disponibilidad" style="display:none">Buscando disponibilidad porfavor espere.</div>
                                     </div>
 
                                 }
@@ -447,11 +494,9 @@
 
                 <div class="col-xs-12 col-md-6">
 
-                    <div class="titulodesc">
-                        <br>
-                        <h3><strong>@Model.nombre</strong></h3>
-                    </div>
-                    <br />
+                    <div class="alert alert-info" role="alert"> <strong>Atención!</strong> <span class="mensaje_resultado">Tu reserva a un solo click. Por favor inicia una búsqueda de disponibilidad. </span> </div>
+
+           
                     <div class="desc-des" style="font-size:17px;">
                         @Model.descripcion
                         <br />
@@ -545,6 +590,10 @@
                                     ¡RESERVÁ AHORA!
                                 </button>
 
+                                <button class="btn btn-primary btn-block active" id="btnReservar_desactivado" disabled="disabled" style=" background-color: rgba(177, 13, 20, 1);display:none; display:none">
+                                    ¡RESERVÁ AHORA!
+                                </button>
+
      
                             </div>
                         </div>
@@ -579,6 +628,31 @@
             </div>
         </div>
     </div>
+
+
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                <h4 class="modal-title">Reservar Hospedaje</h4>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-info" role="alert"> <strong>Atención!</strong> <span class="mensaje_resultado">Tu reserva a un solo click. Por favor inicia una búsqueda de disponibilidad. </span> </div>
+
+                <button class="btn btn-primary btn-block active" id="btnReservar" onclick="return reservaAhora('@Url.Action("SolicitarReserva","Reservas", new { id = Model.idNegocio })'); " style=" background-color: rgba(177, 13, 20, 1)">
+                    ¡RESERVÁ AHORA!
+                </button>
+            </div>
+            <div class="modal-footer">
+
+                <a class="btn btn-default" style="padding: 10px;" data-dismiss="modal" href="javascript:void(0);">Salir</a>
+
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <script type="text/javascript">
 

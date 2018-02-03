@@ -74,10 +74,9 @@ namespace ProyectoFinal.Controllers
             Session["post"] = "si";
 
             var resultadoModelo = hm.disponiblidad(fecha_desde, fecha_hasta, cantidad_personas, cantidad_habitaciones, tipo_hospedaje);
-            
-            return RedirectToAction("IndexHospedajes", "Negocios",resultadoModelo);
-           
 
+            return View("IndexHospedajes", resultadoModelo);
+          
         }
 
         public ActionResult Nuevo() //PANTALLA CREAR NUEVO - NEGOCIOS
@@ -277,12 +276,40 @@ namespace ProyectoFinal.Controllers
                 Domicilio = domEn
             });
 
+            neg.Sucursal.FirstOrDefault().Domicilio.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
+
             if (imagenPrinc == null)
             {
                 ModelState.AddModelError("", "Debés seleccionar una imagen principal.");
                 ViewBag.Perfil = usuarioActual.idPerfil;
                 ViewBag.TiposNegocio = new SelectList(db.TipoDeNegocio, "idTipoNegocio", "nombre", neg.idTipoNegocio);
-                return View("Nuevo", neg);
+
+                ViewBag.Carac = nm.GetCaracteristicas();
+                ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
+                ViewBag.TiposComplejo = new SelectList(db.TipoComplejo, "idTipoComplejo", "nombreTipoComplejo");
+
+                List<TipoHabitacion> habs = nm.GetTiposHabitacion();
+                List<HabitacionesEntity> habitaciones = new List<HabitacionesEntity>();
+                foreach (var item in habs)
+                {
+                    habitaciones.Add(new HabitacionesEntity()
+                    {
+                        idTipoHabitacion = item.idTipoHabitacion,
+                        nombre = item.nombre
+                    });
+                }
+                ViewBag.Habitaciones = habitaciones;
+
+                switch (TipoHospedaje)
+                {
+                    case 1: return View("NuevoCasaODpto", neg);
+
+                    case 2: return View("NuevoComplejo", neg);
+
+                    case 3: return View("NuevoHotel", neg);
+
+                    default: break;
+                }
             }
             // FIN PARTE NEGOCIO //
 
@@ -435,8 +462,32 @@ namespace ProyectoFinal.Controllers
                 ViewBag.TiposNegocio = new SelectList(db.TipoDeNegocio, "idTipoNegocio", "nombre", neg.idTipoNegocio);
                 ViewBag.CaracHotel = new SelectList(db.Caracteristica, "idCaracteristica", "nombre");
                 ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
+			    ViewBag.TiposComplejo = new SelectList(db.TipoComplejo, "idTipoComplejo", "nombreTipoComplejo");
+                ViewBag.Carac = nm.GetCaracteristicas();
+                List<TipoHabitacion> habs = nm.GetTiposHabitacion();
+                List<HabitacionesEntity> habitaciones = new List<HabitacionesEntity>();
+                foreach (var item in habs)
+                {
+                    habitaciones.Add(new HabitacionesEntity()
+                    {
+                        idTipoHabitacion = item.idTipoHabitacion,
+                        nombre = item.nombre
+                    });
+                }
+                ViewBag.Habitaciones = habitaciones;
+		
 
-                return View("Nuevo", neg);
+                switch (neg.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje)
+	            {
+                    case 1: return View("NuevoCasaODpto", neg);                       
+
+                    case 2: return View("NuevoComplejo", neg);
+
+                    case 3: return View("NuevoHotel", neg);
+
+                    default: break;
+	            }
+                
             }
 
             return RedirectToAction("Index", "Home");
@@ -447,39 +498,35 @@ namespace ProyectoFinal.Controllers
             return View(result);
         }
 
-        public ActionResult IndexHospedajes()
+      public ActionResult IndexHospedajes()
         {
 
+            Session["fecha_desde"] = null;
+            Session["fecha_hasta"] = null;
+            Session["cantidad_personas"] = null;
+            Session["cantidad_habitaciones"] = null;
+            Session["tipo_hospedaje"] = null;
 
+            Session["post"] = null;
 
-
-            if (Session["post"] != "si")
-            {
-
-                Session["fecha_desde"] = null;
-                Session["fecha_hasta"] = null;
-                Session["cantidad_personas"] = null;
-                Session["cantidad_habitaciones"] = null;
-                Session["tipo_hospedaje"] = null;
-
-                var result = hm.disponiblidad(null, null, null, null, null);
-                return View(result);
-
-            }
-            else
-            {
-
-                Session["post"] = null;
-
-
-                var result = hm.disponiblidad(Convert.ToDateTime(Session["fecha_desde"]),Convert.ToDateTime(Session["fecha_hasta"]), Convert.ToInt32(Session["cantidad_personas"]),Convert.ToInt32(Session["cantidad_habitaciones"]), Convert.ToString(Session["tipo_hospedaje"]));
-                return View(result);
-
-
-            }
-
+            var result = hm.disponiblidad(null, null, null, null, null);
+            return View(result);
 
             
+        }
+
+       public string ConsultarDisponiblidad(string fecha_desde, string fecha_hasta, int cantidad_personas, int cantidad_habitaciones, int idNegocio)
+        {
+            //prohibido CODIGO CACA!!
+
+            Session["fecha_desde"] = fecha_desde;
+            Session["fecha_hasta"] = fecha_hasta;
+            Session["cantidad_personas"] = cantidad_personas;
+            Session["cantidad_habitaciones"] = cantidad_habitaciones;
+
+            var result = hm.consultarDisponibilidadPorNegocio(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), cantidad_personas, cantidad_habitaciones, idNegocio);
+
+            return result;
         }
 
         [HttpPost]
@@ -531,10 +578,25 @@ namespace ProyectoFinal.Controllers
 
             return View(negs);
         }
+
+ 
+
+
         public ActionResult VerHospedaje(int? id)
         {
             ObtenerUsuarioActual();
             NegocioEntity neg = nm.GetNegocioById((int)id);
+            if (Session["post"] != "si")
+            {
+
+                Session["fecha_desde"] = null;
+                Session["fecha_hasta"] = null;
+                Session["cantidad_personas"] = null;
+                Session["cantidad_habitaciones"] = null;
+                Session["tipo_hospedaje"] = null;
+
+
+            }
 
             ViewBag.Perfiles = new SelectList(db.Perfiles, "idPerfil", "nombre", usuarioActual.idPerfil);
             ViewBag.Perfil = usuarioActual.idPerfil;
@@ -666,8 +728,14 @@ namespace ProyectoFinal.Controllers
             ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
             return PartialView(neg);
         }
-        public ActionResult EditCasaODpto(int? idNegocio)
+        public ActionResult EditCasaODpto(int? idNegocio, string comentario)
         {
+
+            if (comentario != "")
+            {
+                ViewBag.Comentario = comentario;
+            }
+
             NegocioEntity negocio = nm.GetNegocioById((int)idNegocio);
             negocio.Sucursal.FirstOrDefault().Domicilio.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
 
@@ -701,8 +769,13 @@ namespace ProyectoFinal.Controllers
 
             return PartialView("NuevoHotel", neg);
         }
-        public ActionResult EditHotel(int? idNegocio)
+        public ActionResult EditHotel(int? idNegocio, string comentario)
         {
+            if (comentario != "")
+            {
+                ViewBag.Comentario = comentario;
+            }
+
             NegocioEntity negocio = nm.GetNegocioById((int)idNegocio);
             negocio.Sucursal.FirstOrDefault().Domicilio.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
 
@@ -725,11 +798,12 @@ namespace ProyectoFinal.Controllers
             ViewBag.TiposComplejo = new SelectList(db.TipoComplejo, "idTipoComplejo", "nombreTipoComplejo");
             return PartialView(neg);
         }
-        public ActionResult EditComplejo(int? idNegocio)
-        {
+        public ActionResult EditComplejo(int? idNegocio, string comentario)
+        {        
             NegocioEntity negocio = nm.GetNegocioById((int)idNegocio);
             negocio.Sucursal.FirstOrDefault().Domicilio.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
-            
+
+            ViewBag.Comentario = comentario;
             ViewBag.Carac = nm.GetCaracteristicas();
             ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
             ViewBag.TiposComplejo = new SelectList(db.TipoComplejo, "idTipoComplejo", "nombreTipoComplejo");
@@ -737,18 +811,29 @@ namespace ProyectoFinal.Controllers
 
             return View(negocio);
         }
-        public ActionResult EditHospedaje(int? idNegocio)
+        public ActionResult EditHospedaje(int? idNegocio, bool? esCorreccion)
         {
             ObtenerUsuarioActual();
             NegocioEntity negocio = nm.GetNegocioById((int)idNegocio);
 
+            string comment = "";
+
+            if ((bool)esCorreccion)
+            {
+                foreach (var item in negocio.Tramite)
+                {
+                    if (item.idEstadoTramite == 6)
+                        comment = item.comentario;
+                }
+            }
+
             switch (negocio.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje)
             {
-                case 1: return RedirectToAction("EditCasaODpto", new { idNegocio = negocio.idNegocio });
+                case 1: return RedirectToAction("EditCasaODpto", new { idNegocio = negocio.idNegocio, comentario = comment });
                         break;
-                case 2: return RedirectToAction("EditComplejo", new { idNegocio = negocio.idNegocio });
+                case 2: return RedirectToAction("EditComplejo", new { idNegocio = negocio.idNegocio, comentario = comment });
                         break;
-                case 3: return RedirectToAction("EditHotel", new { idNegocio = negocio.idNegocio });
+                case 3: return RedirectToAction("EditHotel", new { idNegocio = negocio.idNegocio, comentario = comment });
                         break;
                 default: break;
             }
@@ -888,7 +973,7 @@ namespace ProyectoFinal.Controllers
 
             return RedirectToAction("Index", "Home");
         }
-        public ActionResult EditComercio(int? idNegocio)
+        public ActionResult EditComercio(int? idNegocio, bool? esCorreccion)
         {
             ObtenerUsuarioActual();
             neg = nm.GetNegocioById((int)idNegocio);
@@ -896,6 +981,16 @@ namespace ProyectoFinal.Controllers
             ViewBag.Perfil = usuarioActual.idPerfil;
             ViewBag.Rubros = new SelectList(db.Rubro, "idRubro", "nombreRubro", neg.Comercio.FirstOrDefault().idRubro);
             ViewBag.idNegocio = idNegocio;
+
+            if((bool)esCorreccion)
+            {
+                foreach (var item in neg.Tramite)
+                {
+                    if (item.idEstadoTramite == 6)
+                        ViewBag.Comentario = item.comentario;
+                }
+            }
+                
 
             neg.Sucursal.FirstOrDefault().Domicilio.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
    
@@ -931,6 +1026,15 @@ namespace ProyectoFinal.Controllers
                 Domicilio = domEn
             });
 
+
+            if (imagenPrinc == null)
+            {
+                ModelState.AddModelError("", "Debés seleccionar una imagen principal.");
+                ViewBag.Perfil = usuarioActual.idPerfil;
+                ViewBag.Rubros = new SelectList(db.Rubro, "idRubro", "nombreRubro", neg.Comercio.FirstOrDefault().idRubro);
+                ViewBag.TiposNegocio = new SelectList(db.TipoDeNegocio, "idTipoNegocio", "nombre", neg.idTipoNegocio);
+                return View("EditComercio", neg);
+            }
             byte[] buffer = null;
             using (var binaryReader = new BinaryReader(imagenPrinc.InputStream))
             {

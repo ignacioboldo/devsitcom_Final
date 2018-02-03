@@ -74,10 +74,9 @@ namespace ProyectoFinal.Controllers
             Session["post"] = "si";
 
             var resultadoModelo = hm.disponiblidad(fecha_desde, fecha_hasta, cantidad_personas, cantidad_habitaciones, tipo_hospedaje);
-            
-            return RedirectToAction("IndexHospedajes", "Negocios",resultadoModelo);
-           
 
+            return View("IndexHospedajes", resultadoModelo);
+          
         }
 
         public ActionResult Nuevo() //PANTALLA CREAR NUEVO - NEGOCIOS
@@ -502,36 +501,32 @@ namespace ProyectoFinal.Controllers
         public ActionResult IndexHospedajes()
         {
 
+            Session["fecha_desde"] = null;
+            Session["fecha_hasta"] = null;
+            Session["cantidad_personas"] = null;
+            Session["cantidad_habitaciones"] = null;
+            Session["tipo_hospedaje"] = null;
 
+            Session["post"] = null;
 
-
-            if (Session["post"] != "si")
-            {
-
-                Session["fecha_desde"] = null;
-                Session["fecha_hasta"] = null;
-                Session["cantidad_personas"] = null;
-                Session["cantidad_habitaciones"] = null;
-                Session["tipo_hospedaje"] = null;
-
-                var result = hm.disponiblidad(null, null, null, null, null);
-                return View(result);
-
-            }
-            else
-            {
-
-                Session["post"] = null;
-
-
-                var result = hm.disponiblidad(Convert.ToDateTime(Session["fecha_desde"]),Convert.ToDateTime(Session["fecha_hasta"]), Convert.ToInt32(Session["cantidad_personas"]),Convert.ToInt32(Session["cantidad_habitaciones"]), Convert.ToString(Session["tipo_hospedaje"]));
-                return View(result);
-
-
-            }
-
+            var result = hm.disponiblidad(null, null, null, null, null);
+            return View(result);
 
             
+        }
+     
+   public string ConsultarDisponiblidad(string fecha_desde, string fecha_hasta, int cantidad_personas, int cantidad_habitaciones, int idNegocio)
+        {
+            //prohibido CODIGO CACA!!
+
+            Session["fecha_desde"] = fecha_desde;
+            Session["fecha_hasta"] = fecha_hasta;
+            Session["cantidad_personas"] = cantidad_personas;
+            Session["cantidad_habitaciones"] = cantidad_habitaciones;
+
+            var result = hm.consultarDisponibilidadPorNegocio(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), cantidad_personas, cantidad_habitaciones, idNegocio);
+
+            return result;
         }
 
         [HttpPost]
@@ -541,7 +536,9 @@ namespace ProyectoFinal.Controllers
             return View(modelo);
  
         }
-        
+
+
+
         public ActionResult ObtenerImagen(int id)
         {
             var img = nm.GetFotoNegocioById(id);
@@ -581,10 +578,25 @@ namespace ProyectoFinal.Controllers
 
             return View(negs);
         }
+
+ 
+
+
         public ActionResult VerHospedaje(int? id)
         {
             ObtenerUsuarioActual();
             NegocioEntity neg = nm.GetNegocioById((int)id);
+            if (Session["post"] != "si")
+            {
+
+                Session["fecha_desde"] = null;
+                Session["fecha_hasta"] = null;
+                Session["cantidad_personas"] = null;
+                Session["cantidad_habitaciones"] = null;
+                Session["tipo_hospedaje"] = null;
+
+
+            }
 
             ViewBag.Perfiles = new SelectList(db.Perfiles, "idPerfil", "nombre", usuarioActual.idPerfil);
             ViewBag.Perfil = usuarioActual.idPerfil;

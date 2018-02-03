@@ -40,6 +40,7 @@
             alert("La fecha desde no puede ser mayor a la fecha hasta.");
         } else {
             //submit
+
             document.frm.submit();
         }
 
@@ -148,11 +149,11 @@
                                 <div class="form-group">
                                     <label>Tipo Hospedaje</label>
                                     <select class="form-control" name="tipo_hospedaje">
-                                        <option  @if (Session["tipo_hospedaje"] == "HOTEL") { selected3 = "selected"; } else { selected3 = ""; } @selected3>HOTEL</option>
-                                        <option  @if (Session["tipo_hospedaje"] == "COMPLEJO") { selected3 = "selected"; } else { selected3 = ""; } @selected3>COMPLEJO</option>
+                                        <option  @if (Convert.ToString(Session["tipo_hospedaje"]) == "HOTEL") { selected3 = "selected"; } else { selected3 = ""; } @selected3>HOTEL</option>
+                                        <option  @if (Convert.ToString(Session["tipo_hospedaje"]) == "COMPLEJO") { selected3 = "selected"; } else { selected3 = ""; } @selected3>COMPLEJO</option>
                                     </select>
                                 </div>
-
+                        
                                 <div>
                                     <button class="btn btn-primary btn-block" onclick="enviar();" type="button">Consultar!</button>
                                 </div>

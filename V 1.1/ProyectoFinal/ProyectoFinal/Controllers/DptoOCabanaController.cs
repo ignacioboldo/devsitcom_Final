@@ -6,12 +6,21 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using BussinesEntities;
 using DAL;
+using BL;
 
 namespace ProyectoFinal.Controllers
 {
     public class DptoOCabanaController : Controller
     {
+
+        ConjuntoDisponibildiadEntity conju = new ConjuntoDisponibildiadEntity();
+        NegociosManager nm = new NegociosManager();
+        private static int idDptoCasaActual;
+        List<DisponibilidadEntity> listDispo = new List<DisponibilidadEntity>();
+
+
         private SitcomEntities db = new SitcomEntities();
 
         // GET: /CasaODpto/
@@ -121,6 +130,28 @@ namespace ProyectoFinal.Controllers
             db.SaveChanges();
             return RedirectToAction("Index", new { idComplejo = idComplejo });
         }
+
+
+        //public ActionResult Disponibilidad(int? id)
+        //{
+        //    NegocioEntity neg = nm.GetNegocioById((int)id);
+        //    //idDptoCasaActual = neg.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idComplejo;
+        //    idDptoCasaActual = neg.LugarHospedaje.FirstOrDefault().CasaDptoOCabana.FirstOrDefault().idCasaDptoOCabana;
+           
+
+        //    conju.ListaDisponibilidad = listDispo;
+
+        //    List<CasaDptoOCabana> listCasa = cm.getCasaDptoById(idComplejoActual);
+        //    ViewBag.Casas = listCasa;
+
+
+        //    return View(conju);
+
+        //}
+
+
+
+
         protected override void Dispose(bool disposing)
         {
             if (disposing)

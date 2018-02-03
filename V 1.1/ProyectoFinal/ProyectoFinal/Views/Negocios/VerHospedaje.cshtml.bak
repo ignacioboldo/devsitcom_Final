@@ -1,0 +1,600 @@
+﻿@model BussinesEntities.NegocioEntity
+@{
+    ViewBag.Title = "Lugar de Hospedaje";
+    ViewBag.postDisponibilidad = Session["fecha_desde"];
+}
+
+<script type="text/javascript">
+
+
+
+    $(document).ready(function () {
+
+        $('.date').mask('00-00-0000');
+
+        $('#fecha_desde').datetimepicker({
+            locale: 'es',
+            format: 'DD-MM-YYYY'
+        });
+
+        $('#fecha_hasta').datetimepicker({
+            locale: 'es',
+            format: 'DD-MM-YYYY'
+        });
+
+
+    });
+
+    function soloNumeros(e) {
+
+        var key = window.Event ? e.which : e.keyCode
+
+        return (key >= 48 && key <= 57)
+
+    }
+
+
+
+</script>
+
+
+
+    <script type="text/javascript">
+        $(function () {
+            $('#datetimepicker1').datetimepicker();
+        });
+    </script>
+
+<script src="http://maps.google.com/maps/api/js?sensor=true&key=AIzaSyC-zIIzu7G8S6LR58CXQKGuveSVRoJ1z3o" type="text/javascript"></script>
+
+    <script type="text/javascript">
+        var esDueno = "@ViewBag.EsDueno"
+        var tieneMGR = "@Model.LugarHospedaje.FirstOrDefault().moduloReservas"
+        var tieneTramite = "@ViewBag.TieneTramiteMGR"
+
+        $(document).ready(function () {
+        
+            
+            if (esDueno == 1) {
+                
+                
+                    $("#btnReservar").hide();
+                    
+                }
+            
+            else {
+               
+                if (tieneMGR == "True")
+                {
+                    //alert(tieneMGR);
+
+                    $("#btnReservar").show();
+
+                }
+                else
+                {
+
+
+                    $("#btnReservar").hide();
+
+                }
+            }
+
+            $("#btnSolicitarMGR").click(function () {
+                if (tieneTramite == "1") {
+                    alert("Ya tiene un trámite pendiente para un Modulo de Gestion de Reservas.")
+                }
+                else {
+                    window.location = '@Url.Action("SolicitarModulo","Reservas", new { idNegocio = Model.idNegocio })';
+                }
+            });
+
+            @*$("#btnDisponibilidad").click(function () {
+                window.location = '@Url.Action("Disponibilidad","Reservas", new { idNegocio = Model.idNegocio })';
+            })*@
+
+            var perfil = "@Model.idPerfil"
+
+            if (perfil == 3) {
+                desactivarLink('btnReservar');
+                desactivarBtn('btnConsultar');
+            }
+
+
+
+
+
+
+
+            var lat = 0;
+            var long = 0;
+            var address = "@ViewBag.Address"
+
+
+            // alert(address);
+
+            $.ajax({
+                // En data puedes utilizar un objeto JSON, un array o un query string
+                //data: { "address": "Emerson+297,+Villa+Carlos+Paz,+Cordoba,+Argentina", "key": "AIzaSyAaOfr-JwTwmibyW_MpVSSY5-nkQuNRA_0" },
+                //Cambiar a type: POST si necesario
+                type: "GET",
+                // Formato de datos que se espera en la respuesta
+                dataType: "json",
+                // URL a la que se enviará la solicitud Ajax
+                url: address
+                //url: 'https://maps.googleapis.com/maps/api/geocode/json?address=Juan%20b%20Justo+1582,+Resistencia,+Chaco,+Argentina'
+            })
+                       .done(function (data, textStatus, jqXHR) {
+                           lat = data.results[0].geometry.location.lat;
+                           long = data.results[0].geometry.location.lng;
+
+                           //alert(lat);
+                           //alert(long);
+
+                           Initialize(lat, long);
+                       })
+            .fail(function (jqXHR, textStatus, errorThrown) {
+                alert("no se pudo consultar la ubicacion de la direccion.");
+            });
+
+            //alert(lat);
+            //alert(long);
+
+
+            // Where all the fun happens
+            function Initialize(latitude, longitude) {
+
+
+                var nomComercio = "@ViewBag.NombreNegocio"
+                var addressShow = "@ViewBag.AddressShow"
+
+                // Google has tweaked their interface somewhat - this tells the api to use that new UI
+                google.maps.visualRefresh = true;
+                var Tunisie = new google.maps.LatLng(latitude, longitude);
+
+                //alert(Tunisie);
+
+                var Argentina = new google.maps.LatLng(-31.411003, -64.503992);
+
+
+
+
+                /*for (var i = 0; i < result.results.length; i++) {
+                    myAddress[i] = result.results[i].lat;
+                }*/
+
+                // These are options that set initial zoom level, where the map is centered globally to start, and the type of map to show
+                var mapOptions = {
+                    zoom: 17,
+                    center: Tunisie,
+                    mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
+                };
+
+                var mapOptions_2 = {
+                    zoom: 17,
+                    center: Argentina,
+                    mapTypeId: google.maps.MapTypeId.G_NORMAL_MAP
+                };
+
+
+                // This makes the div with id "map_canvas" a google map
+                var map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+
+                longitude = longitude.toString();
+                latitude = latitude.toString();
+
+                // a sample list of JSON encoded data of places to visit in Tunisia
+                // you can either make up a JSON list server side, or call it from a controller using JSONResult
+                var data = [
+                          { "Id": 1, "PlaceName": "Mi Casa", "GeoLong": latitude, "GeoLat": longitude }
+                          /*{ "Id": 1, "PlaceName": "Zaghouan", "GeoLong": "36.401081", "GeoLat": "10.16596" },
+                          { "Id": 2, "PlaceName": "Hammamet ", "GeoLong": "36.4", "GeoLat": "10.616667" },
+                          { "Id": 3, "PlaceName": "Sousse", "GeoLong": "35.8329809", "GeoLat": "10.63875" },
+                          { "Id": 4, "PlaceName": "Sfax", "GeoLong": "34.745159", "GeoLat": "10.7613" }*/
+                ];
+
+                // Using the JQuery "each" selector to iterate through the JSON list and drop marker pins
+                $.each(data, function (i, item) {
+                    var marker = new google.maps.Marker({
+                        'position': new google.maps.LatLng(item.GeoLong, item.GeoLat),
+                        'map': map,
+                        'title': item.PlaceName
+                    });
+
+                    // Make the marker-pin blue!
+                    marker.setIcon('http://maps.google.com/mapfiles/ms/icons/blue-dot.png')
+
+                    // put in some information about each json object - in this case, the opening hours.
+                    var infowindow = new google.maps.InfoWindow({
+                        content: "<div class='infoDiv'><h4>" + nomComercio + "</h4><br /><h5>" + addressShow + "</h5></div></div>"
+                    });
+
+                    // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
+                    google.maps.event.addListener(marker, 'click', function () {
+                        infowindow.open(map, marker);
+                    });
+
+                });
+            }
+
+
+
+
+
+
+        });
+
+
+    </script>
+
+    <style>
+        .infoDiv {
+            height: 100px;
+            width: 200px;
+            -webkit-user-select: none;
+            background-color: rgb(254, 255, 153);
+        }
+    </style>
+
+    <script type="text/javascript">
+        $(document).on('ready', function () {
+
+            $('#foto1').on('click', function () {
+                var src = $('#foto1 img').attr('src');
+                $('#divImagenPrincipal img').attr('src', src)
+                return false;
+            });// click en foto 1
+            $('#foto2').on('click', function () {
+                var src = $('#foto2 img').attr('src');
+                $('#divImagenPrincipal img').attr('src', src)
+                return false;
+            });// click en foto 2
+            $('#foto3').on('click', function () {
+                var src = $('#foto3 img').attr('src');
+                $('#divImagenPrincipal img').attr('src', src)
+                return false;
+            });// click en foto 3
+            $('#foto4').on('click', function () {
+                var src = $('#foto4 img').attr('src');
+                $('#divImagenPrincipal img').attr('src', src)
+                return false;
+            });// click en foto 4
+            $('#foto5').on('click', function () {
+                var src = $('#foto5 img').attr('src');
+                $('#divImagenPrincipal img').attr('src', src)
+                return false;
+            });// click en foto 5
+
+        });
+
+        function reservaAhora(url) {
+
+            var fecha_desde = $("#fecha_desde").val();
+            var fecha_hasta = $("#fecha_hasta").val();
+            var postDisponibilidad = $("#postDisponibilidad").val();
+       
+
+            if (fecha_desde != '' && fecha_hasta != '' && postDisponibilidad != '') {
+
+                if (!validate_fechaMayorQue(fecha_desde, fecha_hasta)) {
+                    alert("La fecha desde no puede ser mayor a la fecha hasta.");
+                } else {
+                    window.location = url;
+                }
+
+            } else {
+                alert("Debe consultar disponibilidad para poder reservar. ");
+            }
+
+            return false;
+        }
+
+        function validate_fechaMayorQue(fechaInicial, fechaFinal) {
+            valuesStart = fechaInicial.split("-");
+            valuesEnd = fechaFinal.split("-");
+
+            // Verificamos que la fecha no sea posterior a la actual
+            var dateStart = new Date(valuesStart[2], (valuesStart[1] - 1), valuesStart[0]);
+            var dateEnd = new Date(valuesEnd[2], (valuesEnd[1] - 1), valuesEnd[0]);
+            if (dateStart > dateEnd) {
+                return 0;
+            }
+            return 1;
+        }
+
+
+    </script>
+
+
+    <input id="postDisponibilidad" type="hidden" value="@ViewBag.postDisponibilidad" />
+
+
+    <section class="lightSection clearfix pageHeader">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-6">
+                    <div class="page-title">
+                        <h2>
+
+                            @Model.nombre @{
+                                int i = 0;
+                                if (Model.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 2)
+                                {
+                                    for (i = 0; i < Model.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idCategoria; i++)
+                                    {
+                                        <i class="fa fa-star" style="color:gold;"></i>
+                                    }
+                                }
+                                else
+                                {
+                                    if (Model.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 3)
+                                    {
+                                        for (i = 0; i < Model.LugarHospedaje.FirstOrDefault().Hotel.FirstOrDefault().idCategoria; i++)
+                                        {
+                                            <i class="fa fa-star" style="color:gold;"></i>
+                                        }
+                                    }
+                                }
+
+
+                            }
+
+                        </h2>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <ol class="breadcrumb pull-right">
+                        <li>
+                            <a href="portada.htm">INICIO</a>
+                        </li>
+                        <li class="active">
+                            @Model.nombre
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </section>
+
+<section  class="mainContent clearfix userProfile">
+
+
+    <div class="container">
+
+
+            <div class="row" style=" margin-bottom:30px;">
+
+                <div class="col-sm-12 col-md-3 sideBar">
+
+
+                    <div class="panel panel-default">
+
+                        <div class="panel-heading">Consultar Disponibilidad</div>
+                        <div class="panel-body">
+                            <div class="collapse navbar-collapse navbar-ex1-collapse navbar-side-collapse">
+
+                                @using (Html.BeginForm("ConsultarReserva", "Negocios", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-login" }))
+                                {
+                                    string selected = "";
+                                    string selected2 = "";
+                                    string selected3 = "";
+
+                                    @Html.AntiForgeryToken()
+                                    <div class="form-group">
+                                        <label>Fecha Desde</label>
+                                        <input type="text" name="fecha_desde" id="fecha_desde" class="form-control date" placeholder="Fecha Desde" value="@Session["fecha_desde"]" />
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Fecha Desde</label>
+                                        <input type="text" class="form-control date" id="fecha_hasta" name="fecha_hasta" placeholder="Fecha Hasta" value="@Session["fecha_hasta"]" />
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="form-group col-xs-12 col-md-6">
+                                            <label>Cant.de Pers.</label>
+                                            <select class="form-control" name="cantidad_personas">
+                                                <option @if (Convert.ToInt32(Session["cantidad_personas"]) == 1) { selected = "selected"; } else { selected = ""; } @selected>1</option>
+                                                <option @if (Convert.ToInt32(Session["cantidad_personas"]) == 2) { selected = "selected"; } else { selected = ""; } @selected>2</option>
+                                                <option @if (Convert.ToInt32(Session["cantidad_personas"]) == 3) { selected = "selected"; } else { selected = ""; } @selected>3</option>
+                                                <option @if (Convert.ToInt32(Session["cantidad_personas"]) == 4) { selected = "selected"; } else { selected = ""; } @selected>4</option>
+                                                <option @if (Convert.ToInt32(Session["cantidad_personas"]) == 5) { selected = "selected"; } else { selected = ""; } @selected>5</option>
+                                                <option @if (Convert.ToInt32(Session["cantidad_personas"]) == 6) { selected = "selected"; } else { selected = ""; } @selected>6</option>
+                                                <option @if (Convert.ToInt32(Session["cantidad_personas"]) == 7) { selected = "selected"; } else { selected = ""; } @selected>7</option>
+                                                <option @if (Convert.ToInt32(Session["cantidad_personas"]) == 8) { selected = "selected"; } else { selected = ""; } @selected>8</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-group col-xs-12 col-md-6">
+                                            <label>Cant. de Hab.</label>
+                                            <select class="form-control" name="cantidad_habitaciones">
+                                                <option @if (Convert.ToInt32(Session["cantidad_habitaciones"]) == 1) { selected2 = "selected"; } else { selected2 = ""; } @selected2>1</option>
+                                                <option @if (Convert.ToInt32(Session["cantidad_habitaciones"]) == 2) { selected2 = "selected"; } else { selected2 = ""; } @selected2>2</option>
+                                                <option @if (Convert.ToInt32(Session["cantidad_habitaciones"]) == 3) { selected2 = "selected"; } else { selected2 = ""; } @selected2>3</option>
+                                                <option @if (Convert.ToInt32(Session["cantidad_habitaciones"]) == 4) { selected2 = "selected"; } else { selected2 = ""; } @selected2>4</option>
+                                                <option @if (Convert.ToInt32(Session["cantidad_habitaciones"]) == 5) { selected2 = "selected"; } else { selected2 = ""; } @selected2>5</option>
+                                                <option @if (Convert.ToInt32(Session["cantidad_habitaciones"]) == 6) { selected2 = "selected"; } else { selected2 = ""; } @selected2>6</option>
+                                                <option @if (Convert.ToInt32(Session["cantidad_habitaciones"]) == 7) { selected2 = "selected"; } else { selected2 = ""; } @selected2>7</option>
+                                                <option @if (Convert.ToInt32(Session["cantidad_habitaciones"]) == 8) { selected2 = "selected"; } else { selected2 = ""; } @selected2>8</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label>Tipo Hospedaje</label>
+                                        <select class="form-control" name="tipo_hospedaje">
+                                            <option @if (Session["tipo_hospedaje"] == "HOTEL") { selected3 = "selected"; } else { selected3 = ""; } @selected3>HOTEL</option>
+                                            <option @if (Session["tipo_hospedaje"] == "COMPLEJO") { selected3 = "selected"; } else { selected3 = ""; } @selected3>COMPLEJO</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <button class="btn btn-primary btn-block" id="btnConsultar" type="submit">Consultar!</button>
+                                    </div>
+
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+
+
+                <div class="col-xs-12 col-md-6">
+
+                    <div class="titulodesc">
+                        <br>
+                        <h3><strong>@Model.nombre</strong></h3>
+                    </div>
+                    <br />
+                    <div class="desc-des" style="font-size:17px;">
+                        @Model.descripcion
+                        <br />
+                        <br />
+                    </div>
+                    <div class="desc-des">
+
+                        <div class="row">
+                            @foreach (var item in Model.LugarHospedaje.FirstOrDefault().CaracteristicasHospedaje)
+                            {
+                                <div class="col-md-3">
+                                    <span class="glyphicon glyphicon-ok" aria-hidden="true" style="color:lightgreen;font-size: 16px;"></span>
+                                    @item.Caracteristica.nombre
+
+                                </div>
+                            }
+                        </div>
+
+                        <br />
+
+                    </div>
+
+                    <div class="titulodesc">
+                        <br>
+                        <h3><strong>Galeria de Fotos</strong></h3>
+                    </div>
+
+
+                    <div class="row">
+                        @{
+                            int index = 0;
+
+                            foreach (var item in Model.FotosNegocio)
+                            {
+
+                                string activo = "";
+                                if (index == 0) { activo = "active"; }
+
+                                <div class="col-xs-6 col-md-3" style="padding:6px">
+                                    <div class="item @activo" data-thumb="@index">
+                                        <img src="@Url.Action("ObtenerImagen","Negocios",new { id = item.idFoto })" onclick="modal('@index')" id="foto_@index" style="cursor: pointer;width:100px; " class="img-thumbnail">
+                                    </div>
+                                </div>
+
+
+                                index++;
+                            }
+                        }
+                    </div>
+
+                    <div class="titulodesc">
+                        <br>
+                        <h3><strong>Dirección</strong></h3>
+                    </div>
+
+
+                    <div style="width:100%; height:300px;">
+                        <div style="width:100%; height:100%" id="map_canvas"></div>
+                    </div>
+
+
+
+                    </div>
+
+                <div class="col-xs-12 col-md-3">
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <div class="btn-group" role="group" aria-label="...">
+                                @*<div class="col-xs-6 col-md-12 padding">
+                                    <a href="#" onclick="return reservaAhora('@Url.Action("SolicitarReserva","Reservas", new { id = Model.idNegocio })');" class="btn btn-default btn-block active">¡RESERVA AHORA!</a>
+                                </div>
+
+                                <div class="col-xs-6 col-md-12 padding">
+                                    <a href="cargar_competidor.htm" class="btn btn-default btn-block">CONTACTA AL DUEÑO</a>
+                                </div>*@
+
+                                @*<button class="btn btn-primary btn-block" id="btnDisponibilidad" style="background-color: rgba(177, 13, 20, 1);display:none">
+                                    DISPONIBILIDAD
+                                </button>*@
+
+                                @*<button class="btn btn-primary btn-block" id="btnModificarNegocio" onclick="window.location = '@Url.Action("EditHospedaje","Negocios", new { idNegocio = Model.idNegocio })'" style="background-color: rgba(177, 13, 20, 1); display:none">
+                                    MODIFICAR DATOS
+                                </button>*@
+
+                                @*<button class="btn btn-primary btn-block" id="btnGestionReservas" onclick="window.location = '@Url.Action("GestionReservas","Reservas", new { idNegocio = Model.idNegocio })'" style=" background-color: rgba(177, 13, 20, 1);display:none">
+                                    GESTION DE RESERVAS
+                                </button>*@
+                                <!--id="btnReservar"-->
+                                <button class="btn btn-primary btn-block active" id="btnReservar" onclick="return reservaAhora('@Url.Action("SolicitarReserva","Reservas", new { id = Model.idNegocio })'); " style=" background-color: rgba(177, 13, 20, 1);display:none">
+                                    ¡RESERVÁ AHORA!
+                                </button>
+
+     
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+    </section>
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <img class="img-responsive" style="width:100%; height:100%" id="img_modal" src="">
+                </div>
+                <div class="modal-footer">
+
+                    <a class="btn btn-default" style="padding: 10px;" data-dismiss="modal" href="javascript:void(0);">Cerrar</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script type="text/javascript">
+
+    function modal(id) {
+        $("#myModalLabel").html('Foto');
+        var src = $("#foto_" + id).attr("src");
+        $("#img_modal").attr("src", src);
+        $('#myModal').modal('show');
+    };
+
+
+</script>
+
+
+
+
+
+
+
