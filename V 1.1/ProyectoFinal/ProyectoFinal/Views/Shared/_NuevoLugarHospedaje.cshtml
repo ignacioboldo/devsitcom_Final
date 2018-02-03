@@ -13,15 +13,18 @@
         }
 
         $("#btnComplejo").click(function () {
-            $("#divLugarHospedaje").load('@Url.Action("NuevoComplejo","Negocios")');
+            window.location = '@Url.Action("NuevoComplejo","Negocios")';
+           // $("#divLugarHospedaje").load('Url.Action("NuevoComplejo","Negocios")');
         });
 
         $("#btnHotel").click(function () {
-            $("#divLugarHospedaje").load('@Url.Action("NuevoHotel","Negocios")');
+            window.location = '@Url.Action("NuevoHotel","Negocios")';
+            //$("#divLugarHospedaje").load('Url.Action("NuevoHotel","Negocios")');
         });
 
         $("#btnCasaODpto").click(function () {
-            $("#divLugarHospedaje").load('@Url.Action("NuevoCasaODpto","Negocios")');
+            window.location = '@Url.Action("NuevoCasaODpto","Negocios")';
+           // $("#divLugarHospedaje").load('Url.Action("NuevoCasaODpto","Negocios")');
         });
 
     });
