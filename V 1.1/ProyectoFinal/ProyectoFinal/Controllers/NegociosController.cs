@@ -74,9 +74,10 @@ namespace ProyectoFinal.Controllers
             Session["post"] = "si";
 
             var resultadoModelo = hm.disponiblidad(fecha_desde, fecha_hasta, cantidad_personas, cantidad_habitaciones, tipo_hospedaje);
+            
+            return RedirectToAction("IndexHospedajes", "Negocios",resultadoModelo);
+           
 
-            return View("IndexHospedajes", resultadoModelo);
-          
         }
 
         public ActionResult Nuevo() //PANTALLA CREAR NUEVO - NEGOCIOS
@@ -363,8 +364,18 @@ namespace ProyectoFinal.Controllers
 
             switch (neg.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje)
             {
-                case 1: List<CasaDptoOCabana> casaDptosOCabanas = new List<CasaDptoOCabana>() { new CasaDptoOCabana() };
-                        neg.LugarHospedaje.FirstOrDefault().CasaDptoOCabana = casaDptosOCabanas;
+                case 1: //La Casa o Departamento se dara de alta como un complejo con una sola unidad.
+                    
+                        List<ComplejoEntity> complejosCasaODpto = new List<ComplejoEntity>() { new ComplejoEntity() };
+                        neg.LugarHospedaje.FirstOrDefault().Complejo = complejosCasaODpto;
+                        neg.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idCategoria = int.Parse(Request.Form["categ"].ToString());
+                        neg.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idTipoComplejo = 4;
+                    
+                        List<CasaDptoOCabana> casaDptosOCabanas = new List<CasaDptoOCabana>() { new CasaDptoOCabana() };                        
+                        casaDptosOCabanas.FirstOrDefault().capacidadMaxima = int.Parse(Request.Form["capacidadMaxima"].ToString());
+                        casaDptosOCabanas.FirstOrDefault().nombreCasaDptoOCabana = "Alojamiento 1 " + "(" + casaDptosOCabanas.FirstOrDefault().capacidadMaxima + " pax)";
+                        
+                        neg.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().CasaDptoOCabana = casaDptosOCabanas;
                     break;
 
                 case 2: List<ComplejoEntity> complejos = new List<ComplejoEntity>() { new ComplejoEntity() };
@@ -388,10 +399,11 @@ namespace ProyectoFinal.Controllers
 
                             for (int i = 0; i < cantidad; i++)
                             {
-                                casasDptosOCabanas.Add(new CasaDptoOCabana()
+                                    casasDptosOCabanas.Add(new CasaDptoOCabana()
                                     {
-                                        nombreCasaDptoOCabana = "Alojamiento " + k,
-                                        capacidadMaxima = capacidad
+                                        capacidadMaxima = capacidad,
+                                        nombreCasaDptoOCabana = "Alojamiento " + k + " (" + capacidad + " pax)"
+                                        
                                     });
                                 k++;
                             }
@@ -420,8 +432,9 @@ namespace ProyectoFinal.Controllers
                                  {
                                 habitaciones.Add(new Habitacion()
                                 {
-                                    nombreHabitacion = "Habitación " + m,
-                                    idTipoHabitacion = int.Parse(item.Value)
+                                    idTipoHabitacion = int.Parse(item.Value),
+                                    nombreHabitacion = "Habitación " + m + " (" + db.TipoHabitacion.Where(t => t.idTipoHabitacion == int.Parse(item.Value)).Select(t => t.idTipoHabitacion).FirstOrDefault().ToString() + ")"
+                                    
                                 });
                                 m++;
                                  }
@@ -440,8 +453,13 @@ namespace ProyectoFinal.Controllers
             // PARTE INSERCIÓN NEGOCIO //
             if (ModelState.IsValid)
             {
-                if (nm.ValidarExisteNegocio(neg.nombre,null))
+                if (nm.ValidarExisteNegocio(neg.nombre, null))
+                {
+                    if (neg.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 1)
+                        neg.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje = 2;
+
                     nm.AddNegocio(neg, usuarioActual);
+                }
                 else
                 {
                     ModelState.AddModelError("", "Un comercio con el mismo nombre ya está registrado. Por favor elige otro.");
@@ -501,32 +519,36 @@ namespace ProyectoFinal.Controllers
         public ActionResult IndexHospedajes()
         {
 
-            Session["fecha_desde"] = null;
-            Session["fecha_hasta"] = null;
-            Session["cantidad_personas"] = null;
-            Session["cantidad_habitaciones"] = null;
-            Session["tipo_hospedaje"] = null;
 
-            Session["post"] = null;
 
-            var result = hm.disponiblidad(null, null, null, null, null);
-            return View(result);
+
+            if (Session["post"] != "si")
+            {
+
+                Session["fecha_desde"] = null;
+                Session["fecha_hasta"] = null;
+                Session["cantidad_personas"] = null;
+                Session["cantidad_habitaciones"] = null;
+                Session["tipo_hospedaje"] = null;
+
+                var result = hm.disponiblidad(null, null, null, null, null);
+                return View(result);
+
+            }
+            else
+            {
+
+                Session["post"] = null;
+
+
+                var result = hm.disponiblidad(Convert.ToDateTime(Session["fecha_desde"]),Convert.ToDateTime(Session["fecha_hasta"]), Convert.ToInt32(Session["cantidad_personas"]),Convert.ToInt32(Session["cantidad_habitaciones"]), Convert.ToString(Session["tipo_hospedaje"]));
+                return View(result);
+
+
+            }
+
 
             
-        }
-     
-   public string ConsultarDisponiblidad(string fecha_desde, string fecha_hasta, int cantidad_personas, int cantidad_habitaciones, int idNegocio)
-        {
-            //prohibido CODIGO CACA!!
-
-            Session["fecha_desde"] = fecha_desde;
-            Session["fecha_hasta"] = fecha_hasta;
-            Session["cantidad_personas"] = cantidad_personas;
-            Session["cantidad_habitaciones"] = cantidad_habitaciones;
-
-            var result = hm.consultarDisponibilidadPorNegocio(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), cantidad_personas, cantidad_habitaciones, idNegocio);
-
-            return result;
         }
 
         [HttpPost]
@@ -536,9 +558,7 @@ namespace ProyectoFinal.Controllers
             return View(modelo);
  
         }
-
-
-
+        
         public ActionResult ObtenerImagen(int id)
         {
             var img = nm.GetFotoNegocioById(id);
@@ -578,25 +598,10 @@ namespace ProyectoFinal.Controllers
 
             return View(negs);
         }
-
- 
-
-
         public ActionResult VerHospedaje(int? id)
         {
             ObtenerUsuarioActual();
             NegocioEntity neg = nm.GetNegocioById((int)id);
-            if (Session["post"] != "si")
-            {
-
-                Session["fecha_desde"] = null;
-                Session["fecha_hasta"] = null;
-                Session["cantidad_personas"] = null;
-                Session["cantidad_habitaciones"] = null;
-                Session["tipo_hospedaje"] = null;
-
-
-            }
 
             ViewBag.Perfiles = new SelectList(db.Perfiles, "idPerfil", "nombre", usuarioActual.idPerfil);
             ViewBag.Perfil = usuarioActual.idPerfil;

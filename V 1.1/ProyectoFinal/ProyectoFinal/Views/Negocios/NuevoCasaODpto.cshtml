@@ -137,7 +137,38 @@
    <div class="row">
        <h4 class="panel-title">Características <span class="text-bold">Casa/Departamento</span></h4>
        <hr>
-       <div class="col-lg-10 col-lg-offset-2">
+
+       <div class="form-group col-lg-offset-1">
+           @Html.Label("Categoría:", new { @class = "control-label" })
+           <br />
+           @{
+        SelectList categ = ViewBag.Categorias;
+        int i = 0;
+        foreach (var item in categ)
+        {
+            i++;
+           @Html.RadioButton("categ", item.Value, new { id = item.Value })
+            for (int j = 0; j < i; j++)
+            {
+               <i class="fa fa-star" style="color:gold;"></i>
+            }
+           <br />
+               @*@Html.Label(item.Text, new { @class = "control-label" })
+                <br />*@
+        }
+           }
+       </div>
+
+       <div class="form-group">
+           <div class="col-xs-12 col-lg-offset-1">
+               @Html.Label("Capacidad máxima de pasajeros:", new { @class = "control-label" })
+
+               @Html.Editor("capacidadMaxima", new { @class = "form-control", style = "width:100px;" })
+           </div>
+       </div>
+
+       <div class="col-lg-10 col-lg-offset-2">        
+           <br />
     <div class="form-group">
         @Html.Label("Características:", new { @class = "control-label" })
         <ul>
