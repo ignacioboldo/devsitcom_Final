@@ -1,0 +1,641 @@
+﻿@model BussinesEntities.NegocioEntity
+
+<script type="text/javascript">
+
+    function consultarReserva(nro_solicitud, nro_reserva) {
+
+        $('#nro_reserva').html(nro_reserva);
+        $('#nro_solicitud').html(nro_solicitud);
+
+
+        $('#myModal').modal('show');
+        listarComentarios();
+
+        return false;
+    }
+
+    function listarComentarios() {
+
+        var nro_reserva = $("#nro_reserva").html();
+        var nro_solicitud = $("#nro_solicitud").html();
+
+        $.ajax({
+            type: 'GET',
+            url: 'ListadoDeComentario?idSolicitud=' + nro_solicitud + '&idReserva=' + nro_reserva,
+            success: function (response) {
+                $("#consultas").html(response);
+                actualizar_Comentarios_Leidos();
+            }
+        })
+
+    }
+
+    function anularReserva() {
+
+        var nro_reserva = $("#nro_reserva").html();
+
+        var result = confirm("Realmente quiere anular la reserva");
+
+        if (result) {
+
+            $.ajax({
+                type: 'GET',
+                url: 'AnularReserva?id=' + nro_reserva,
+                success: function (response) {
+                    planoListadoReserva()
+                    planoReserva()
+                    $('#myModal').modal('hide');
+                }
+            })
+
+        }
+    }
+
+
+
+    function checkin(nro_reserva) {
+
+        $("#id_reserva_resguardo").val(nro_reserva);
+
+        $.ajax({
+            type: 'GET',
+            url: 'CheckInReservaModal?id=' + nro_reserva,
+            success: function (response) {
+                $("#resultado_checkin").html(response);
+                $('#myModal2').modal('show');
+            }
+        })
+
+
+    }
+
+    function checkout(id) {
+
+        var nro_reserva = id;
+
+        $("#id_reserva_resguardo").val(nro_reserva);
+
+        var result = confirm("Realmente quiere hacer el check-out.");
+
+        if (result) {
+
+            $.ajax({
+                type: 'GET',
+                url: 'CheckOutReserva?id=' + nro_reserva,
+                success: function (response) {
+                    planoListadoReserva()
+                    planoReserva()
+                    $('#myModal').modal('hide');
+                }
+            })
+
+        };
+
+    }
+
+
+    function anular(id) {
+        var nro_reserva = id;
+
+        var result = confirm("Realmente quiere anular la reserva?.");
+
+        if (result) {
+
+            $.ajax({
+                type: 'GET',
+                url: 'AnularReserva?id=' + nro_reserva,
+                success: function (response) {
+                    planoListadoReserva()
+                    planoReserva()
+                    $('#myModal').modal('hide');
+                }
+            })
+
+        }
+    }
+
+    function actualizar_Comentarios_Leidos() {
+
+        var nro_reserva = $("#nro_reserva").html();
+        var nro_solicitud = $("#nro_solicitud").html();
+
+        $.ajax({
+            type: 'GET',
+            url: 'Actualizar_Comentarios_Leidos?id=' + nro_reserva + '&nro_solicitud=' + nro_solicitud + '&cliente=true',
+            success: function (response) {
+                planoListadoReserva()
+                planoReserva()
+            }
+        })
+
+    }
+
+    function buscar_cliente() {
+
+        var buscar = $("#buscar_cliente").val();
+        var idNegocio = '@Model.idNegocio';
+
+        $.ajax({
+            url: "BuscarCliente?buscar=" + buscar + '&idNegocio=' + idNegocio
+        }).done(function (data) {
+            $("#lista_clientes").html(data);
+        });
+
+    };
+
+    function quitarClienteCheckin(idPersona) {
+
+        var idNegocio = '@Model.idNegocio';
+        var nroReserva = $("#id_reserva_resguardo").val();
+
+        $.ajax({
+            url: "EliminarCliente?idPersona=" + idPersona + '&idNegocio=' + idNegocio + '&nroReserva=' + nroReserva
+        }).done(function (data) {
+            $("#lista_clientes_asignados").html(data);
+        });
+
+    }
+
+    function guardarCheckIn() {
+
+        var idNegocio = '@Model.idNegocio';
+        var nroReserva = $("#id_reserva_resguardo").val();
+
+        $.ajax({
+            url: "GuardarCheckIn?idNegocio=" + idNegocio + '&nroReserva=' + nroReserva
+        }).done(function (data) {
+
+            if (data == "FALTA_HABITACION") {
+                alert("Debe asignar a cada una de las habitaciones un pasajero.");
+            };
+
+            if (data == "ok") {
+                $('#myModal2').modal('hide');
+                planoListadoReserva()
+                planoReserva()
+                alert("Datos guardados correctamente.");
+                
+            };
+
+            if (data == "sin_datos") {
+                alert("Debe buscar y seleccionar un pasajero para poder asignar las habitaciones.");
+    
+            };
+
+           
+        });
+
+    }
+
+    function asignarHabitacion(idPersona) {
+
+        var idNegocio  = '@Model.idNegocio';
+        var nroReserva = $("#id_reserva_resguardo").val();
+        var idDisponibilidad = $("#habitacion_asignada_" + idPersona).val();
+
+        $.ajax({
+            url: "AsignarHabitacionCliente?idPersona=" + idPersona + '&idNegocio=' + idNegocio + '&nroReserva=' + nroReserva + '&idDisponibilidad=' + idDisponibilidad
+        }).done(function (data) {
+            $("#lista_clientes_asignados").html(data);
+        });
+
+    }
+
+
+    function seleccionarCliente(idPersona, nombre, apellido, sexo, documento) {
+
+        $("#nombre").val(nombre);
+        $("#apellido").val(apellido);
+        $("#idPersona").val(idPersona);
+        $("#sexo").val(sexo);
+        $("#documento").val(documento);
+
+        var nroReserva = $("#id_reserva_resguardo").val();
+        var idNegocio = '@Model.idNegocio';
+
+        $.ajax({
+            url: "AgregarCliente?idPersona=" + idPersona + '&nombre=' + nombre + '&idNegocio=' + idNegocio + '&nroReserva=' + nroReserva
+        }).done(function (data) {
+            $("#lista_clientes_asignados").html(data);
+            $("#lista_clientes").html("");
+            $("#buscar_cliente").val("");
+            $("#buscar_cliente").focus();
+
+        });
+
+        return false;
+    }
+
+    function enviarConsulta() {
+
+        if ($("#consultareserva").val() != "") {
+
+            var fdata = new FormData();
+
+            fdata.append("nro_reserva", $("#nro_reserva").html());
+            fdata.append("nro_solicitud", $("#nro_solicitud").html());
+            fdata.append("consultareserva", $("#consultareserva").val());
+            fdata.append("filereserva", $("#filereserva")[0].files[0]);
+            fdata.append("comentarioCliente", "0");
+
+
+            $.ajax({
+                type: 'POST',
+                url: 'GuardarConsulta',
+                data: fdata,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    $("#consultas").html(response);
+                    $("#filereserva").val('');
+                    $("#consultareserva").val('');
+                }
+            })
+
+        } else {
+            alert("Debe enviar un comentario.");
+        }
+
+
+    }
+
+
+</script>
+
+
+
+<style>
+    .reserva-pregunta {
+        margin-left: 40px;
+        padding: 10px;
+        background-color: gray;
+        color: white;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .reserva-respuesta {
+        margin-right: 40px;
+        padding: 10px;
+        background-color: rgba(177, 13, 20, 1);
+        color: white;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .reserva-pregunta-imagen {
+        margin-left: 40px;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+    }
+
+    .reserva-respuesta-imagen {
+        text-align: right;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+
+    .reserva-fecha-comentario {
+        text-align: right;
+        font-size: 10px;
+    }
+
+    .modal-body {
+        position: relative;
+        padding: 15px;
+        height: 400px;
+        overflow: auto;
+    }
+</style>
+
+
+<script>
+
+
+    
+
+    $(document).ready(function () {
+        planoReserva();
+    });
+
+
+</script>
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Gestion de Disponibilidad</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                @*<ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Gestion de Reservas</li>
+                </ol>*@
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel">Consultar Reserva Nro: <span id="nro_reserva"></span><span id="nro_solicitud" style="display:none"></span></h4>
+                        <button type="button" onclick="anularReserva()" class="btn btn-link">
+                            Anular Reserva
+                        </button>
+                    </div>
+                    <div id="mensajes" class="modal-body">
+
+                        <div id="consultas"></div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <!-- Deemphasize a button by making it look like a link while maintaining button behavior -->
+                        <input type="file" id="filereserva" name="filereserva">
+                        <textarea class="form-control" rows="3" id="consultareserva" name="consultareserva"></textarea>
+
+                        <button type="button" onclick="enviarConsulta()" class="btn btn-link">
+                            <span class="glyphicon glyphicon-send" aria-hidden="true"></span>
+                            Enviar Mensaje
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div><h3><strong>@Model.nombre</strong></h3></div>
+        <div class="row">
+
+            <div class="col-xs-12 col-md-2">
+
+                @{
+                    if (Model.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 2)
+                    {<br />
+                    <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnTusDptosOCabana" onclick="window.location = '@Url.Action("TusDptosOCabanas", "Reservas", new { idLugarHospedaje = Model.LugarHospedaje.FirstOrDefault().idLugarHospedaje })'">
+                        TUS DPTOS Ó CABAÑAS
+                    </button><br />
+                <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnDisponibilidadCabana" onclick="window.location = '@Url.Action("Disponibilidad", "Complejo", new { id = Model.idNegocio })'">
+                    REGISTRAR DISPONIBILIDAD
+                </button><br />
+
+                    }
+                    else
+                    {<br />
+                <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnTusHabitaciones" onclick="window.location = '@Url.Action("TusHabitaciones","Reservas", new { idLugarHospedaje = Model.LugarHospedaje.FirstOrDefault().idLugarHospedaje })'">
+                    TUS HABITACIONES
+                </button><br />
+    <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnDisponibilidadHotel" onclick="window.location = '@Url.Action("Disponibilidad", "Hotel", new { id = Model.idNegocio })'">
+        REGISTRAR DISPONIBILIDAD
+    </button><br />
+
+                    }
+
+}
+
+
+
+
+        @*@helper botonVer(DAL.Negocio n)
+            {
+                if (n.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 3)
+                {
+                         <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("Disponibilidad", "Hotel", new { id = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar Disponibilidad</button>
+                }
+                    if (n.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 2)
+                           {
+                          <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("Disponibilidad", "Complejo", new { id = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar Disponibilidad</button>
+                           }
+            }*@
+
+
+
+
+
+        @*<button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnSolicitudes" onclick="window.location = '@Url.Action("SolicitudesReserva", "Reservas", new { idNegocio = Model.idNegocio, tipo = Model.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje })'">
+                SOLICITUDES
+            </button><br />*@
+
+        @*<button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnSolicitudes" onclick="window.location = '@Url.Action("VerSolicitudReserva", "Reservas", new { idNegocio = Model.idNegocio, idSolicitud = 0, tipo = Model.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje })'">
+                CREAR RESERVA
+            </button><br />*@
+
+
+        <div>
+            @*<img alt="" src="@Url.Content("~/Content/img/icono_bandera_amarilla.png")" /> <strong> (Ocupado)</strong>
+            <br> <br />*@
+            <img alt="" src="@Url.Content("~/Content/img/icono_bandera_roja.png")" /> <strong> (Ocupado)</strong>
+            @*<br> <br />
+            <img alt="" src="@Url.Content("~/Content/img/icono_bandera_azul.png")" /> <strong> (Estadía Finalizada)</strong>*@
+        </div>
+
+
+</div>
+            <div class="col-xs-12 col-md-10">
+
+               
+
+                @{
+
+                    DateTime Hoy = DateTime.Today;
+                    var anio = Hoy.Year;
+                    var mes = Hoy.ToString("MMMM").ToUpper();
+                    var valueMes = Hoy.Month;
+                    var selected = "selected=selected";
+                }
+
+
+                <script>
+
+                    function daysInMonth(humanMonth, year) {
+                        return new Date(year || new Date().getFullYear(), humanMonth, 0).getDate();
+                    }
+
+
+
+                    function planoListadoReserva() {
+                        var idNegocio = '@Model.idNegocio';
+                        var mes = $('#month option:selected').val();
+                        var anio = $('#year option:selected').val();
+                        var dias = daysInMonth(mes, anio);
+                        var year = $("#year").val();
+                        var url = 'ListadoPlanoDisponibilidad/?dias=' + dias + '&mes=' + mes + "&idNegocio=" + idNegocio + "&year=" + year;
+                        $.ajax({
+                            url: url,
+                            type: "get",
+                            cache: false,
+                            success: function (retorno) {
+                                $("#planolistadoreserva").html(retorno);
+                            },
+                            error: function () {
+
+                            }
+                        });
+
+                    };
+
+                    function planoReserva() {
+                        var idNegocio = '@Model.idNegocio';
+                        var mes = $('#month option:selected').val();
+                        var anio = $('#year option:selected').val();
+                        var dias = daysInMonth(mes, anio);
+                        var year = $("#year").val();
+                        var url = 'PlanoDisponibilidad/?dias=' + dias + '&mes=' + mes + "&idNegocio=" + idNegocio + "&year=" + year;
+                        $.ajax({
+                            url: url,
+                            type: "get",
+                            cache: false,
+                            success: function (retorno) {
+                                $("#planoreserva").html(retorno);
+                                planoListadoReserva();
+                            },
+                            error: function () {
+
+                            }
+                        });
+
+                    };
+
+                    function ver_grafico() {
+
+                        $("#planoreserva").show();
+                        $("#planolistadoreserva").hide();
+                        return false;
+                    };
+
+                    function ver_listado() {
+                        $("#planoreserva").hide();
+                        $("#planolistadoreserva").show();
+                        return false;
+                    };
+
+                    $(document).ready(function () {
+                        $("#planolistadoreserva").hide();
+                    });
+
+
+
+
+</script>
+
+
+                <div class="row">
+
+                    <div class="col-xs-12" style="padding-top:10px;">
+                        <h4 class="page-header">
+                            Calendario de Ocupación.
+                        </h4>
+                    </div>
+                </div>
+
+
+
+                <div class="row">
+
+                    <div class="col-xs-12 col-md-6">
+
+                        <div class="form-group">
+                            <label>Año</label>
+
+                            <select class="form-control" id="year" onchange="planoReserva();">
+
+                                @{
+                                    for (int i = 2017; i < 2020; i++)
+                                    {
+                                        <option value="@i" @if (anio == i) { @selected        ; }>@i</option>
+                                    }
+                                }
+
+                            </select>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-xs-12 col-md-6">
+
+                        <div class="form-group">
+                            <label>Mes</label>
+
+                            <select class="form-control" id="month" onchange="planoReserva();">
+                                <option value="01" @if (valueMes == 01) { @selected      ; }>ENERO</option>
+                                <option value="02" @if (valueMes == 02) { @selected      ; }>FEBRERO</option>
+                                <option value="03" @if (valueMes == 03) { @selected      ; }>MARZO</option>
+                                <option value="04" @if (valueMes == 04) { @selected      ; }>ABRIL</option>
+                                <option value="05" @if (valueMes == 05) { @selected      ; }>MAYO</option>
+                                <option value="06" @if (valueMes == 06) { @selected      ; }>JUNIO</option>
+                                <option value="07" @if (valueMes == 07) { @selected      ; }>JULIO</option>
+                                <option value="08" @if (valueMes == 08) { @selected      ; }>AGOSTO</option>
+                                <option value="09" @if (valueMes == 09) { @selected      ; }>SEPTIEMBRE</option>
+                                <option value="10" @if (valueMes == 10) { @selected      ; }>OCTUBRE</option>
+                                <option value="11" @if (valueMes == 11) { @selected      ; }>NOVIEMBRE</option>
+                                <option value="12" @if (valueMes == 12) { @selected      ; }>DICIEMBRE</option>
+                            </select>
+
+
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+
+                <a href="#" onclick="return ver_grafico();">Ver Grafico</a> | <a href="#" onclick="return ver_listado();">Ver Listado</a>
+
+                <div id="planoreserva"></div>
+                <div id="planolistadoreserva"></div>
+
+
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+</section>
+
+<input id="id_reserva_resguardo" type="hidden" />
+
+        <!-- Modal -->
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Check-In</h4>
+            </div>
+            <div id="mensajes" class="modal-body">
+
+                <div id="resultado_checkin"></div>
+
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" onclick="guardarCheckIn()" class="btn btn-link">
+ 
+                    Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

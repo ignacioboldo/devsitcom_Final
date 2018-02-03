@@ -10,9 +10,14 @@ using DAL;
 using System.Globalization;
 
 
+
+
+
+
 namespace ProyectoFinal.Controllers
 {
-    public class ComplejoController : Controller
+         
+    public class HotelController : Controller
     {
         UsuarioEntity usuarioActual = new UsuarioEntity();
         UsuariosManager um = new UsuariosManager();
@@ -21,176 +26,88 @@ namespace ProyectoFinal.Controllers
         List<DisponibilidadEntity> listDispo = new List<DisponibilidadEntity>();
         ConjuntoDisponibildiadEntity conju = new ConjuntoDisponibildiadEntity();
         NegociosManager nm = new NegociosManager();
-        ComplejoManager cm = new ComplejoManager();
-        private static int idComplejoActual;
-
-
+        
         private CalendarManager _calendar = new CalendarManager();
-     
+        private static int idHotelActual;
+        
+        HotelManager hm = new HotelManager();
 
-
-
-
+        // GET: /Hotel/
         public ActionResult Index()
         {
             return View();
         }
-
-
-
         public ActionResult Disponibilidad(int? id)
         {
             NegocioEntity neg = nm.GetNegocioById((int)id);
-            idComplejoActual = neg.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idComplejo;
 
-            ViewBag.IdNegocio = id;
             conju.ListaDisponibilidad = listDispo;
+            idHotelActual = neg.LugarHospedaje.FirstOrDefault().Hotel.FirstOrDefault().idHotel;
 
-            List<CasaDptoOCabana> listCasa = cm.getCasaDptoById(idComplejoActual);
-            ViewBag.Casas = listCasa;
+            List<Habitacion> listHabi = hm.getHabitacionesByHotel(neg.LugarHospedaje.FirstOrDefault().Hotel.FirstOrDefault().idHotel);
+            ViewBag.Habitaciones = listHabi;
 
-
+            
             return View(conju);
-
         }
-
         [HttpPost]
         public ActionResult Disponibilidad(ConjuntoDisponibildiadEntity conj)
         {
 
-            int i = 1;
+            int i=1;
             String indice = "FechaDesde_" + i;
 
             ConjuntoDisponibildiadEntity conju = new ConjuntoDisponibildiadEntity();
             List<DisponibilidadEntity> lstDisponibilidad = new List<DisponibilidadEntity>();
 
 
-            try
+            while (Request.Form[indice] != null)
             {
+                DisponibilidadEntity objDisp = new DisponibilidadEntity();
 
-                while (Request.Form[indice] != null)
-                {
-                    DisponibilidadEntity objDisp = new DisponibilidadEntity();
+               
 
-
-
-                    int idCasa = int.Parse(Request.Form["idCasa_" + i]);
-                    String fechaDesde = Request.Form["fechaDesde_" + i];
-                    String fechaHasta = Request.Form["fechaHasta_" + i];
+                int idHabitacion = int.Parse(  Request.Form["idHabitacion_" + i]);
+                String fechaDesde = Request.Form["fechaDesde_" + i];
+                String fechaHasta = Request.Form["fechaHasta_" + i];
 
 
-                    objDisp.idCasaODpto = idCasa;
-                    objDisp.fechaDesde = Convert.ToDateTime(fechaDesde);
-                    objDisp.fechaHasta = Convert.ToDateTime(fechaHasta);
+                objDisp.idHabitacion = idHabitacion;
+                objDisp.fechaDesde = Convert.ToDateTime(fechaDesde);
+                objDisp.fechaHasta = Convert.ToDateTime(fechaHasta);
 
 
-                    lstDisponibilidad.Add(objDisp);
+                lstDisponibilidad.Add(objDisp);
+               
+                i++;
 
-                    i++;
+                indice = "FechaDesde_" + i;
 
-                    indice = "FechaDesde_" + i;
-
-
-                }
-
-
-                foreach (var item in lstDisponibilidad)
-                {
-
-                    item.habilitado = true;
-                    item.idEstado = 1;
-                    cm.registrarDisponibilidad(item);
-
-                }
-
-                conju.mensaje = "Datos guardados correctamente.";
-                conju.codigo = "success";
-  
-            }
-            catch (Exception)
-            {
-                conju.codigo = "danger";
-                conju.mensaje = "Los datos ingresados son incorrectos por favor ferifique e intenten nuevamente.";
+            
             }
 
-            List<CasaDptoOCabana> listCasa = cm.getCasaDptoById(idComplejoActual);
-            ViewBag.Casas = listCasa;
 
-            return View(conju);
+            foreach (var item in lstDisponibilidad)
+            {
+
+                item.habilitado = true;
+                item.idEstado = 1;
+                hm.registrarDisponibilidad(item);
+
+            }
+
+
+            List<Habitacion> listHabi = hm.getHabitacionesByHotel(idHotelActual);
+            ViewBag.Habitaciones = listHabi;
+           
+            return View(conju); 
 
         }
-
-
-        public ActionResult AgregarReserva(string fecha_desde, string fecha_hasta, int? habitacion, string accion, string referencia, string habitacion_text)
-        {
-
-            if (accion == "agregar")
-            {
-                GestionReservaEntities gre = new GestionReservaEntities();
-                List<GestionReservaEntities> greList = new List<GestionReservaEntities>();
-
-                gre.FechaDesde = Convert.ToDateTime(fecha_desde);
-                gre.FechaHasta = Convert.ToDateTime(fecha_hasta);
-                gre.HabitacionText = habitacion_text;
-                gre.IdHabitacion = habitacion;
-
-                if (Session["AgregarReservaList"] != null)
-                {
-                    var greListSession = Session["AgregarReservaList"] as List<GestionReservaEntities>;
-
-                    var agregar = true;
-                    foreach (var item in greListSession)
-                    {
-                        if (habitacion_text == item.HabitacionText)
-                        {
-                            agregar = false;
-                        }
-                    };
-
-                    if (agregar)
-                    {
-                        greListSession.Add(gre);
-                    }
-
-                    Session["AgregarReservaList"] = greListSession;
-                }
-                else
-                {
-                    greList.Add(gre);
-                    Session["AgregarReservaList"] = greList;
-                }
-
-            };
-
-
-            if (accion == "eliminar")
-            {
-
-                var greListSession = Session["AgregarReservaList"] as List<GestionReservaEntities>;
-                List<GestionReservaEntities> newList = new List<GestionReservaEntities>();
-
-                foreach (var item in greListSession)
-                {
-                    if (referencia != item.HabitacionText)
-                    {
-                        newList.Add(item);
-                    }
-                };
-
-                Session["AgregarReservaList"] = newList;
-
-            }
-
-
-            return PartialView("AgregarReserva");
-        }
-
-
         public ActionResult ConsultarDisponibilidad(string fechaDesde, string fechaHasta, int cantidadPersonas, int cantidadHabitaciones, int idNegocio)
         {
 
             NegocioEntity neg = nm.GetNegocioById(idNegocio);
-            int idComplejo = neg.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idComplejo;
+            int idHotel = neg.LugarHospedaje.FirstOrDefault().Hotel.FirstOrDefault().idHotel;
 
             DateTime fechaDes = Convert.ToDateTime(fechaDesde);
             DateTime fechaHas = Convert.ToDateTime(fechaHasta);
@@ -198,17 +115,49 @@ namespace ProyectoFinal.Controllers
             List<DisponibilidadEntity> lista = new List<DisponibilidadEntity>();
             DisponibilidadEntity objDispo = new DisponibilidadEntity();
             var model = _calendar.getCalender(fechaDes.Month, fechaDes.Year);
+            
+            lista = hm.consultarDisponibilidad(idHotel, cantidadHabitaciones, cantidadPersonas, fechaDes.Year, fechaDes.Month);
 
-            lista = cm.consultarDisponibilidad(idComplejo, cantidadHabitaciones, cantidadPersonas, fechaDes.Year, fechaDes.Month);
+            string mes ="";
+            switch (fechaDes.Month)
+            {
+                case 1: mes = "Enero";
+                    break;
+                case 2: mes = "Febrero";
+                    break;
+                case 3: mes = "Marzo";
+                    break;
+                case 4: mes = "Abril";
+                    break;
+                case 5: mes = "Mayo";
+                    break;
+                case 6: mes = "Junio";
+                    break;
+                case 7: mes = "Julio";
+                    break;
+                case 8: mes = "Agosto";
+                    break;
+                case 9: mes = "Septiembre";
+                    break;
+                case 10: mes = "Octubre";
+                    break;
+                case 11: mes = "Noviembre";
+                    break;
+                case 12: mes = "Diciembre";
+                    break;
+
+                default:
+                    break;
+            }
+
+            ViewBag.Mes = mes;
+            ViewBag.Año = fechaDes.Year;
 
 
             foreach (var dispo in lista)
             {
-
-
                 foreach (var diaSemana1 in model.Week1)
                 {
-
                     if (diaSemana1 != null)
                     {
 
@@ -216,32 +165,19 @@ namespace ProyectoFinal.Controllers
                         {
                             diaSemana1.estaOcupado = true;
                         }
-
-
                     }
-
-
-
-
                 }
 
 
                 foreach (var diaSemana2 in model.Week2)
                 {
-
                     if (diaSemana2 != null)
                     {
-
                         if (diaSemana2.Date == dispo.fechaDisponible && dispo.estaOcupado == 1)
                         {
                             diaSemana2.estaOcupado = true;
                         }
-
-
                     }
-
-
-
                 }
 
                 foreach (var diaSemana3 in model.Week3)
@@ -253,10 +189,7 @@ namespace ProyectoFinal.Controllers
                         {
                             diaSemana3.estaOcupado = true;
                         }
-
-
                     }
-
                 }
 
                 foreach (var diaSemana4 in model.Week4)
@@ -300,19 +233,9 @@ namespace ProyectoFinal.Controllers
                         {
                             diaSemana6.estaOcupado = true;
                         }
-
-
                     }
-
-
                 }
-
-
             }
-
-
-
-
 
             ObtenerUsuarioActual();
             var tieneTramiteMGR = db.Tramite.Where(t => t.idNegocio == neg.idNegocio && (t.idTipoTramite == 2 && t.idEstadoTramite == 1 || t.idEstadoTramite == 2)).FirstOrDefault();
@@ -333,10 +256,9 @@ namespace ProyectoFinal.Controllers
 
             ViewBag.ModelCalendar = model;
 
-            return View("../Negocios/VerHospedaje", neg);
-
+            return View("../Negocios/VerHospedaje",neg);        
+        
         }
-
         public bool ValidarPermisoVista(string controlador, string vista) //METODO ÚNICO DEL CONTROLADOR PARA VALIDAR PERMISO DE LA VISTA (LLAMA AL MANEJADOR).
         {
             ObtenerUsuarioActual();
@@ -348,6 +270,6 @@ namespace ProyectoFinal.Controllers
         }
 
 
-
-	}
+    }
 }
+

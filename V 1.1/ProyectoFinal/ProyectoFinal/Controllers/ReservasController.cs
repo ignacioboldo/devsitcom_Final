@@ -81,6 +81,23 @@ namespace ProyectoFinal.Controllers
 
 
 
+        public ActionResult ListadoPlanoDisponibilidad(string dias, string mes, int idNegocio, int year)
+        {
+            var fecha_desde = Convert.ToDateTime("01/" + mes + "/" + year);
+
+            var fecha_hasta = Convert.ToDateTime(dias + "/" + mes + "/" + year);
+
+            var listado = hm.listadoDisponibilidadPlaning(fecha_desde, fecha_hasta, idNegocio, true);
+
+            ViewBag.dias = Convert.ToInt32(dias);
+            ViewBag.mes = Convert.ToInt32(mes);
+            ViewBag.anio = Convert.ToInt32(year);
+
+            return PartialView("ListadoPlanoDisponibilidad", listado);
+        }
+
+
+
         public ActionResult PlanoReserva(string dias, string mes, int idNegocio, int year)
         {
             var fecha_desde = Convert.ToDateTime("01/" + mes + "/" + year);
@@ -102,6 +119,30 @@ namespace ProyectoFinal.Controllers
             ViewBag.anio = Convert.ToInt32(year);
 
             return PartialView("PlanoReservas", listado);
+        }
+
+
+        public ActionResult PlanoDisponibilidad(string dias, string mes, int idNegocio, int year)
+        {
+            var fecha_desde = Convert.ToDateTime("01/" + mes + "/" + year);
+
+            var fecha_hasta = Convert.ToDateTime(dias + "/" + mes + "/" + year);
+
+            //var listado = hm.calendario(fecha_desde,fecha_hasta, idNegocio);
+            List<CalendarioEntities> listado = hm.calendario(fecha_desde, fecha_hasta, idNegocio);
+            var listadoHabitaciones = hm.calendarioNombresHabitacion(fecha_desde, fecha_hasta, idNegocio);
+
+            listado.FirstOrDefault().nombresHabitacion = listadoHabitaciones;
+
+            var planoReserva = hm.planoReserva(fecha_desde, fecha_hasta, idNegocio);
+
+            Session["PLANO_RESERVA"] = planoReserva;
+
+            ViewBag.dias = Convert.ToInt32(dias);
+            ViewBag.mes = Convert.ToInt32(mes);
+            ViewBag.anio = Convert.ToInt32(year);
+
+            return PartialView("PlanoDisponibilidad", listado);
         }
 
         public ActionResult BuscarHabitacionesDisponibles(string fecha_desde, string fecha_hasta, string idNegocio)
@@ -466,6 +507,13 @@ namespace ProyectoFinal.Controllers
             return View(neg);
         }
         public ActionResult GestionReservas(int idNegocio)
+        {
+            NegocioEntity neg = nm.GetNegocioById(idNegocio);
+
+            return View(neg);
+        }
+
+        public ActionResult GestionDisponibilidad(int idNegocio)
         {
             NegocioEntity neg = nm.GetNegocioById(idNegocio);
 

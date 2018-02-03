@@ -69,17 +69,20 @@
                                        }
                                    else
                                    {
-                                       if (n.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 3)  
-                                             {
-                                            <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("Disponibilidad", "Hotel", new { id = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar Disponibilidad</button>
-                                             }
-                                       if (n.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 2)
-                                              {                                      
-                                             <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("Disponibilidad", "Complejo", new { id = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar Disponibilidad</button>
-                                              }
 
-                                            <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("SolicitarModulo", "Reservas", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Solicitar Modulo Gestión de Reservas</button>
+                                    <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("GestionDisponibilidad", "Reservas", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar Disponibilidad</button>
+                                    <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("SolicitarModulo", "Reservas", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Solicitar Modulo Gestión de Reservas</button>
 
+                                       @*if (n.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 3)
+          {
+         <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("Disponibilidad", "Hotel", new { id = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar Disponibilidad</button>
+          }
+    if (n.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 2)
+           {
+          <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("Disponibilidad", "Complejo", new { id = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar Disponibilidad</button>
+           }
+
+                                    *@
                                    }
                                 }
                                 else

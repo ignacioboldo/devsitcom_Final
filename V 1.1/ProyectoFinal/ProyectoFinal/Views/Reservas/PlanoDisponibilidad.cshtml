@@ -1,0 +1,103 @@
+﻿@model IEnumerable<BussinesEntities.CalendarioEntities>
+
+@{
+
+    DateTime Hoy = DateTime.Today;
+    var dia = Hoy.Day;
+    var style_dia = "color:Red";
+}
+
+<div class="table-responsive">
+
+    <table class="table table-bordered" style="font-size:9px;">
+
+        <tr style="background:#F6F5F5;">
+            <th>Hab.</th>
+            @for (int i = 1; i <= ViewBag.dias; i++)
+            {
+                <th style="@if(i==dia){@style_dia}">@i.ToString().PadLeft(2, '0')</th>
+            }
+        </tr>
+
+        @foreach (var item in Model.FirstOrDefault().nombresHabitacion)
+        {
+
+            <tr>
+                <td><strong>@item.Nombre</strong></td>
+
+                @for (int i = 1; i <= ViewBag.dias; i++)
+                {
+                    string estado = "";
+                    int? nroReserva = 0;
+                    string tooltip2 = "";
+                    var planoList = Session["PLANO_RESERVA"] as List<BussinesEntities.CalendarioEntities>;
+                    var fecha = Convert.ToDateTime(i + "/" + ViewBag.mes + "/" + ViewBag.anio);
+
+
+                    foreach (var item1 in planoList)
+                    {
+                        if (item1.Id == item.Id && item1.Fecha.Equals(fecha))
+                        {
+                            if (item1.Estado == "RESERVA_ASIGNADA")
+                            {
+                                estado = "RESERVA_ASIGNADA";
+                            }
+
+                            if (item1.Estado == "CHECK-IN")
+                            {
+                                estado = "CHECK-IN";
+                            }
+
+                            if (item1.Estado == "CHECK-OUT")
+                            {
+                                estado = "CHECK-OUT";
+                            }
+
+                            nroReserva = item1.idReserva;
+                            if (nroReserva!=null)
+                            {
+                                tooltip2 = "Nro Reserva: " + Convert.ToString(nroReserva);
+                            }
+                           
+
+                        }
+                    }
+                    
+
+                    <td>
+
+                        <div  style=" height:33px; text-align:center; padding-top:8px" rel="tooltip">          
+                            @if (estado == "RESERVA_ASIGNADA")
+                            {
+                                <img alt="" src="@Url.Content("~/Content/img/icono_bandera_roja.png")" />
+                              
+                            }
+                            
+                            @if (estado == "CHECK-IN")
+                            {
+                                <img alt="" src="@Url.Content("~/Content/img/icono_bandera_amarilla.png")" />
+                            }
+                            
+                          
+                            
+                            @if (estado == "CHECK-OUT")
+                            {
+                                <img alt="" src="@Url.Content("~/Content/img/icono_bandera_azul.png")" />
+                            }
+                        </div>
+                        
+                     
+               
+
+
+                    </td>
+                }
+
+            </tr>
+
+        }
+
+    </table>
+
+</div>
+

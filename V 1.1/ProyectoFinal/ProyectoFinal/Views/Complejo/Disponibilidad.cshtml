@@ -1,361 +1,225 @@
 ﻿@model  BussinesEntities.ConjuntoDisponibildiadEntity
 
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <title></title>
 
-
-    <link href='http://fonts.googleapis.com/css?family=Raleway:400,300,500,600,700,200,100,800' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" href="~/assets/plugins/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/font-awesome/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/iCheck/skins/all.css">
-    <link rel="stylesheet" href="~/assets/plugins/perfect-scrollbar/src/perfect-scrollbar.css">
-    <link rel="stylesheet" href="~/assets/plugins/animate.css/animate.min.css">
-    <!-- end: MAIN CSS -->
-    <!-- start: CSS REQUIRED FOR SUBVIEW CONTENTS -->
-    <link rel="stylesheet" href="~/assets/plugins/owl-carousel/owl-carousel/owl.carousel.css">
-    <link rel="stylesheet" href="~/assets/plugins/owl-carousel/owl-carousel/owl.theme.css">
-    <link rel="stylesheet" href="~/assets/plugins/owl-carousel/owl-carousel/owl.transitions.css">
-    <link rel="stylesheet" href="~/assets/plugins/summernote/dist/summernote.css">
-    <link rel="stylesheet" href="~/assets/plugins/fullcalendar/fullcalendar/fullcalendar.css">
-    <link rel="stylesheet" href="~/assets/plugins/toastr/toastr.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/bootstrap-select/bootstrap-select.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/DataTables/media/css/DT_bootstrap.css">
-    <link rel="stylesheet" href="~/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css">
-    <!-- end: CSS REQUIRED FOR THIS SUBVIEW CONTENTS-->
-    <!-- start: CSS REQUIRED FOR THIS PAGE ONLY -->
-    <link rel="stylesheet" href="~/assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/select2/select2.css">
-    <link rel="stylesheet" href="~/assets/plugins/datepicker/css/datepicker.css">
-    <link rel="stylesheet" href="~/assets/plugins/bootstrap-timepicker/css/bootstrap-timepicker.min.css">
-    <link rel="stylesheet" href="~/assets/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.css">
-    <link rel="stylesheet" href="~/assets/plugins/bootstrap-colorpalette/css/bootstrap-colorpalette.css">
-    <link rel="stylesheet" href="~/assets/plugins/jQuery-Tags-Input/jquery.tagsinput.css">
-    <!-- end: CSS REQUIRED FOR THIS PAGE ONLY -->
-    <!-- start: CORE CSS -->
-    <link rel="stylesheet" href="~/assets/css/styles.css">
-    <link rel="stylesheet" href="~/assets/css/styles-responsive.css">
-    <link rel="stylesheet" href="~/assets/css/plugins.css">
-    <link rel="stylesheet" href="~/assets/css/themes/theme-default.css" type="text/css" id="skin_color">
-    <link rel="stylesheet" href="~/assets/css/print.css" type="text/css" media="print" />
-    <!-- end: CORE CSS -->
-    <link rel="shortcut icon" href="favicon.ico" />
-
-
-
-</head>
-<body>
-
-    <br />
-    <br />
- 
-
-
-
-    @using (Html.BeginForm())
-    {
-
-        @Html.ValidationSummary(true)
-
-
-
-
-        <div class="panel panel-white">
-
-            <div class="panel-body">
-
-                <div id="color">
-
-
-                    <div>
-                        <button id="btnAddBook" type="button" class="btn btn-green" onclick="addRow();" value="Agregar Ocupación" >
-                            <i class="fa fa-plus">
-                                Agregar
-                            </i> 
-                        </button>
-                        <br />
-                    </div>
-
-                    <br />
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Registrar ocupación</h2>
                 </div>
-
-                <!-- end: DATE/TIME PICKER PANEL -->
-
-
-
-
-
-                @*<div class="editor-label">
-
-
-
-                </div>
-                <div class="editor-field">
-
-
-
-
-                </div>*@
-@*  *@
-
-
-                <div class="col-lg-offset-5">
-                    <button class="btn btn-green"  type="submit">Registrar Ocupación <i class="fa fa-calendar" ></i></button>
-                </div>
-
-
-
-
-
-
-
-
-                
-
-
-
-
-
-
-                <div id="readNote">
-
-                    <div class="noteWrap col-md-8 col-md-offset-2">
-                        <div class="panel panel-note">
-                            <div class="e-slider owl-carousel owl-theme">
-
-                                <div class="item">
-
-                                </div>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-              
-
-
-
-
-
-
-
             </div>
-            <div class="panel-footer">
-                @Html.ActionLink("Volver", "Index")
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="home">INICIO</a>
+                    </li>
+                    <li class="active">Registrar ocupación</li>
+                </ol>
             </div>
         </div>
+    </div>
+</section>
 
+
+<section class="mainContent clearfix blogPage singleBlog">
+    <div class="container">
+
+     
+
+
+        <div id="datos_reserva">
+
+            <div class="row">
+                <div class="col-xs-12" style="padding-top:10px;">
+                    <h4 class="page-header">
+                        Detalle de Reserva
+                    </h4>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="col-xs-12 col-md-3">
+
+                    <div class="form-group">
+                        <label>Fecha Desde</label>
+                        <input type="text" class="form-control date" onblur="buscarHabitacionesDisponibles();" id="fecha_desde" placeholder="Fecha Desde">
+                    </div>
+
+                </div>
+
+
+                <div class="col-xs-12 col-md-3">
+
+                    <div class="form-group">
+                        <label>Fecha Hasta</label>
+                        <input type="text" class="form-control date" onblur="buscarHabitacionesDisponibles();" id="fecha_hasta" placeholder="Fecha Hasta">
+                    </div>
+
+                </div>
+
+                <div class="col-xs-12 col-md-3">
+
+                    <div class="form-group">
+                        <label>Habitación</label>
+
+                        <select id="habitacion" class="form-control habitaciones-select"></select>
+
+                    </div>
+
+                </div>
+
+                <div class="col-xs-12 col-md-3">
+
+                    <div class="form-group">
+                        <label>&nbsp;</label>
+
+                        <button type="button" class="btn btn-success btn-block" style="background-color: rgba(177, 13, 20, 1);" onclick="controlReserva('agregar');" style="padding: 7px;">
+                            Agregar
+                        </button>
+
+
+                    </div>
+
+                </div>
+
+
+
+
+            </div>
+
+
+            <div id="lista_reserva"></div>
+
+
+
+
+
+        </div>
+
+
+
+
+    </div>
+</section>
+
+
+
+
+<script>
+
+    var idnegocio = @ViewBag.IdNegocio
+
+    function buscarHabitacionesDisponibles() {
+
+        var fecha_desde = $("#fecha_desde").val();
+        var fecha_hasta = $("#fecha_hasta").val();
+
+        //alert(idnegocio);
+
+        if (fecha_desde != '' && fecha_hasta != '') {
+            $(".habitaciones-select").html('<option>Cargando...</option>');
+            $.ajax({
+                url: "../../Reservas/BuscarHabitacionesDisponibles?fecha_desde=" + fecha_desde + "&fecha_hasta=" + fecha_hasta + "&idNegocio=" + idnegocio
+            }).done(function (data) {
+                $(".habitaciones-select").html(data);
+
+            });
+        }
 
 
     }
 
 
+    function validate_fechaMayorQue(fechaInicial, fechaFinal) {
+        valuesStart = fechaInicial.split("-");
+        valuesEnd = fechaFinal.split("-");
 
-    <script language="javascript" type="text/javascript">
-    function addRow() {
-
-
-
-
-
-        var index = $("#color").children("div").length;
-
-
-
-
-        @{
-
-
-            List<DAL.CasaDptoOCabana> list = ViewBag.Casas;
-            String idCasa = "";
-            String nombreCasa="";
-
-            foreach (var item in list)
-            {
-                idCasa = idCasa + "," + item.idCasaDptoOCabana.ToString();
-                nombreCasa = nombreCasa + "," + item.nombreCasaDptoOCabana.ToString();
-            };
-
-
-
-
-
-
-        };
-
-
-
-        var x = String('@idCasa');
-        var y =String('@nombreCasa');
-
-        var idCasas =  x.split(',');
-        var nombreCasas = y.split(',');
-
-
-        var x = "<select name='idCasa_" + index + "'>";
-
-        for (var i = 0; i < idCasas.length; i++) {
-
-            x = x + "<option value='" + idCasas[i] + "'>" + nombreCasas[i] + "</option>";
-
+        // Verificamos que la fecha no sea posterior a la actual
+        var dateStart = new Date(valuesStart[2], (valuesStart[1] - 1), valuesStart[0]);
+        var dateEnd = new Date(valuesEnd[2], (valuesEnd[1] - 1), valuesEnd[0]);
+        if (dateStart > dateEnd) {
+            return 0;
         }
-
-        x = x + " </select>";
-
-
+        return 1;
+    }
 
 
+    function controlReserva(accion, referencia) {
 
+        var fecha_desde = $("#fecha_desde").val();
+        var fecha_hasta = $("#fecha_hasta").val();
+        var habitacion = $("#habitacion").val();
+        var habitacion_text = $("#habitacion option:selected").text();
 
-            var div = "<div class='row' id='index_" + index + "'> " +
-                              " <div class='col-lg-3'>" +
-
-x
-
-                                    +
-
-                              " </div>  " +
-                             "  <div class='col-lg-3'>  " +
-                                    "   <div class='input-group'> " +
-                                           "<input name='FechaDesde_" + index + "' type='text' data-date-format='dd-mm-yyyy' data-date-viewmode='years' class='form-control date-picker' value=''>" +
-                                           "<span class='input-group-addon'> <i class='fa fa-calendar'></i> </span>" +
-                                      " </div>  <br/>" +
-                               "</div>" +
-                                "<div class='col-lg-3'>" +
-                                  "   <div class='input-group'> " +
-                                           "<input name='FechaHasta_" + index + "' type='text' data-date-format='dd-mm-yyyy' data-date-viewmode='years' class='form-control date-picker' value=''>" +
-                                           "<span class='input-group-addon'> <i class='fa fa-calendar'></i> </span>" +
-                                      " </div>  <br/>" +
-                                "</div>" +
-
-                             "<div class='col-lg-3'>" +
-                             "  <button id='btnAddBook' class='btn btn-red' onclick='removeRow(" + index + ");'><i class='fa fa-trash-o'></i> Eliminar </button>" +
-                                "</div> <br/>" +
-                            "</div>"
-
-        var newRow = div;
+        var idPersona = $("#idPersona").val();
 
 
 
-            $("#color").append(newRow);
+        if (fecha_desde == '' || fecha_hasta == '' || habitacion == '') {
+            alert("Debe completar los campos: Fecha Desde, Fecha Hasta y Habitación.");
+        } else {
+
+            if (idPersona == "") {
+                alert("Debe seleccionar un cliente.");
+            } else {
 
 
-            // Coloco este jquery para que me refresque los css y pueda ver el datatimepicker generado en tiempo de ejecución ok.
+                if (!validate_fechaMayorQue(fecha_desde, fecha_hasta)) {
+                    alert("La fecha desde no puede ser mayor a la fecha hasta.");
+                } else {
 
-            jQuery(document).ready(function () {
-                Main.init();
-                SVExamples.init();
-                FormElements.init();
-            });
+                    $.ajax({
+                        url: "../../AgregarReserva?fecha_desde=" + fecha_desde + "&fecha_hasta=" + fecha_hasta + "&habitacion=" + habitacion + "&accion=" + accion + "&referencia=" + referencia + "&habitacion_text=" + habitacion_text
+                    }).done(function (data) {
+                        $("#lista_reserva").html(data);
+                    });
+
+                }
 
 
-        }
 
-        function removeRow(id) {
-            var controlToBeRemoved = "#index_" + id;
-            $(controlToBeRemoved).remove();
+            }
+
         }
 
 
 
+        return false;
+
+    };
 
 
 
 
+    $(document).ready(function () {
 
+        $('.date').mask('00-00-0000');
 
-
-
-
-
-
-
-
-
-    </script>
-
-
-
-
-
-    <script src="~/assets/plugins/jQuery/jquery-2.1.1.min.js"></script>
-    <!--<![endif]-->
-    <script src="~/assets/plugins/jquery-ui/jquery-ui-1.10.2.custom.min.js"></script>
-    <script src="~/assets/plugins/bootstrap/js/bootstrap.min.js"></script>
-    <script src="~/assets/plugins/blockUI/jquery.blockUI.js"></script>
-    <script src="~/assets/plugins/iCheck/jquery.icheck.min.js"></script>
-    <script src="~/assets/plugins/moment/min/moment.min.js"></script>
-    <script src="~/assets/plugins/perfect-scrollbar/src/jquery.mousewheel.js"></script>
-    <script src="~/assets/plugins/perfect-scrollbar/src/perfect-scrollbar.js"></script>
-    <script src="~/assets/plugins/bootbox/bootbox.min.js"></script>
-    <script src="~/assets/plugins/jquery.scrollTo/jquery.scrollTo.min.js"></script>
-    <script src="~/assets/plugins/ScrollToFixed/jquery-scrolltofixed-min.js"></script>
-    <script src="~/assets/plugins/jquery.appear/jquery.appear.js"></script>
-    <script src="~/assets/plugins/jquery-cookie/jquery.cookie.js"></script>
-    <script src="~/assets/plugins/velocity/jquery.velocity.min.js"></script>
-    <script src="~/assets/plugins/TouchSwipe/jquery.touchSwipe.min.js"></script>
-    <!-- end: MAIN JAVASCRIPTS -->
-    <!-- start: JAVASCRIPTS REQUIRED FOR SUBVIEW CONTENTS -->
-    <script src="~/assets/plugins/owl-carousel/owl-carousel/owl.carousel.js"></script>
-    <script src="~/assets/plugins/jquery-mockjax/jquery.mockjax.js"></script>
-    <script src="~/assets/plugins/toastr/toastr.js"></script>
-    <script src="~/assets/plugins/bootstrap-modal/js/bootstrap-modal.js"></script>
-    <script src="~/assets/plugins/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
-    <script src="~/assets/plugins/fullcalendar/fullcalendar/fullcalendar.min.js"></script>
-    <script src="~/assets/plugins/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
-    <script src="~/assets/plugins/bootstrap-select/bootstrap-select.min.js"></script>
-    <script src="~/assets/plugins/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min.js"></script>
-    <script src="~/assets/plugins/DataTables/media/js/jquery.dataTables.min.js"></script>
-    <script src="~/assets/plugins/DataTables/media/js/DT_bootstrap.js"></script>
-    <script src="~/assets/plugins/truncate/jquery.truncate.js"></script>
-    <script src="~/assets/plugins/summernote/dist/summernote.min.js"></script>
-    <script src="~/assets/plugins/bootstrap-daterangepicker/daterangepicker.js"></script>
-    <script src="~/assets/js/subview.js"></script>
-    <script src="~/assets/js/subview-examples.js"></script>
-    <!-- end: JAVASCRIPTS REQUIRED FOR SUBVIEW CONTENTS -->
-    <!-- start: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
-    <script src="~/assets/plugins/jquery-inputlimiter/jquery.inputlimiter.1.3.1.min.js"></script>
-    <script src="~/assets/plugins/autosize/jquery.autosize.min.js"></script>
-    <script src="~/assets/plugins/select2/select2.min.js"></script>
-    <script src="~/assets/plugins/jquery.maskedinput/src/jquery.maskedinput.js"></script>
-    <script src="~/assets/plugins/jquery-inputlimiter/jquery.inputlimiter.1.3.1.min.js"></script>
-    <script src="~/assets/plugins/jquery-maskmoney/jquery.maskMoney.js"></script>
-    <script src="~/assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
-    <script src="~/assets/plugins/bootstrap-timepicker/js/bootstrap-timepicker.min.js"></script>
-    <script src="~/assets/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
-    <script src="~/assets/plugins/bootstrap-colorpicker/js/commits.js"></script>
-    <script src="~/assets/plugins/bootstrap-colorpalette/js/bootstrap-colorpalette.js"></script>
-    <script src="~/assets/plugins/bootstrap-touchspin/dist/jquery.bootstrap-touchspin.min.js"></script>
-    <script src="~/assets/plugins/jQuery-Tags-Input/jquery.tagsinput.js"></script>
-    <script src="~/assets/plugins/bootstrap-fileupload/bootstrap-fileupload.min.js"></script>
-    <script src="~/assets/plugins/ckeditor/ckeditor.js"></script>
-    <script src="~/assets/plugins/ckeditor/adapters/jquery.js"></script>
-    <script src="~/assets/js/form-elements.js"></script>
-    <!-- end: JAVASCRIPTS REQUIRED FOR THIS PAGE ONLY -->
-    <!-- start: CORE JAVASCRIPTS  -->
-    <script src="~/assets/js/main.js"></script>
-    <!-- end: CORE JAVASCRIPTS  -->
-    <script>
-        jQuery(document).ready(function () {
-            Main.init();
-            SVExamples.init();
-            FormElements.init();
+        $('#fecha_desde').datetimepicker({
+            locale: 'es',
+            format: 'DD-MM-YYYY'
         });
-    </script>
+
+        $('#fecha_hasta').datetimepicker({
+            locale: 'es',
+            format: 'DD-MM-YYYY'
+        });
+
+
+    })
+
+
+
+
+</script>
+
+
+ 
 
 
 
 
 
-
-
-
-
-
-</body>
-
-</html>

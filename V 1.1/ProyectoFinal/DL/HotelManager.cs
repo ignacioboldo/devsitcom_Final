@@ -218,13 +218,30 @@ namespace BL
 
       }
 
+
+      public List<ListadoDisponibilidadPlanoEntities> listadoDisponibilidadPlaning(DateTime fecha_desde, DateTime fecha_hasta, int? idNegocio, bool tipo_comentario)
+      {
+
+
+          using (SitcomEntities db = new SitcomEntities())
+          {
+
+              return db.Database.SqlQuery<ListadoDisponibilidadPlanoEntities>("ConsultarListadDisponibilidadPorFechaYNegocio_Planning @tipoComentario = 0, @fechaDesde='" + fecha_desde + "',@fechaHasta='" + fecha_hasta + "',@idNegocio=" + idNegocio).ToList();
+
+          }
+
+
+      }
+
+
+
       public List<HabitacionesDisponiblesEntities> buscarDisponibilidadHabitaciones(DateTime fecha_desde, DateTime fecha_hasta, int idNegocio)
       {
 
           using (SitcomEntities db = new SitcomEntities())
           {
 
-              return db.Database.SqlQuery<HabitacionesDisponiblesEntities>("ConsultarHabitacionesDisponiblesPorFechaYNegocio @fechaDesde='" + fecha_desde + "',@fechaHasta= '" + fecha_hasta + "',@idNegocio=" + idNegocio + "").ToList();
+              return db.Database.SqlQuery<HabitacionesDisponiblesEntities>("ConsultarHabitacionesDisponiblesPorFechaYNegocio_FiltroReserva @fechaDesde='" + fecha_desde + "',@fechaHasta= '" + fecha_hasta + "',@idNegocio=" + idNegocio + "").ToList();
 
           }
 

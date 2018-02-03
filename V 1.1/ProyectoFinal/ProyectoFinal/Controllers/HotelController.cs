@@ -50,59 +50,74 @@ namespace ProyectoFinal.Controllers
             
             return View(conju);
         }
+
         [HttpPost]
         public ActionResult Disponibilidad(ConjuntoDisponibildiadEntity conj)
         {
 
-            int i=1;
+            int i = 1;
             String indice = "FechaDesde_" + i;
 
             ConjuntoDisponibildiadEntity conju = new ConjuntoDisponibildiadEntity();
             List<DisponibilidadEntity> lstDisponibilidad = new List<DisponibilidadEntity>();
 
 
-            while (Request.Form[indice] != null)
-            {
-                DisponibilidadEntity objDisp = new DisponibilidadEntity();
-
-               
-
-                int idHabitacion = int.Parse(  Request.Form["idHabitacion_" + i]);
-                String fechaDesde = Request.Form["fechaDesde_" + i];
-                String fechaHasta = Request.Form["fechaHasta_" + i];
-
-
-                objDisp.idHabitacion = idHabitacion;
-                objDisp.fechaDesde = Convert.ToDateTime(fechaDesde);
-                objDisp.fechaHasta = Convert.ToDateTime(fechaHasta);
-
-
-                lstDisponibilidad.Add(objDisp);
-               
-                i++;
-
-                indice = "FechaDesde_" + i;
-
-            
-            }
-
-
-            foreach (var item in lstDisponibilidad)
+            try
             {
 
-                item.habilitado = true;
-                item.idEstado = 1;
-                hm.registrarDisponibilidad(item);
+                while (Request.Form[indice] != null)
+                {
+                    DisponibilidadEntity objDisp = new DisponibilidadEntity();
+
+
+
+                    int idCasa = int.Parse(Request.Form["idCasa_" + i]);
+                    String fechaDesde = Request.Form["fechaDesde_" + i];
+                    String fechaHasta = Request.Form["fechaHasta_" + i];
+
+
+                    objDisp.idCasaODpto = idCasa;
+                    objDisp.fechaDesde = Convert.ToDateTime(fechaDesde);
+                    objDisp.fechaHasta = Convert.ToDateTime(fechaHasta);
+
+
+                    lstDisponibilidad.Add(objDisp);
+
+                    i++;
+
+                    indice = "FechaDesde_" + i;
+
+
+                }
+
+
+                foreach (var item in lstDisponibilidad)
+                {
+
+                    item.habilitado = true;
+                    item.idEstado = 1;
+                    hm.registrarDisponibilidad(item);
+
+
+                }
+
+                conju.mensaje = "Datos guardados correctamente.";
+                conju.codigo = "success";
 
             }
-
+            catch (Exception)
+            {
+                conju.codigo = "danger";
+                conju.mensaje = "Los datos ingresados son incorrectos por favor ferifique e intenten nuevamente.";
+            }
 
             List<Habitacion> listHabi = hm.getHabitacionesByHotel(idHotelActual);
             ViewBag.Habitaciones = listHabi;
-           
-            return View(conju); 
+
+            return View(conju);
 
         }
+
         public ActionResult ConsultarDisponibilidad(string fechaDesde, string fechaHasta, int cantidadPersonas, int cantidadHabitaciones, int idNegocio)
         {
 

@@ -11,8 +11,7 @@ namespace BussinesEntities
 
 
         //public List<DisponibilidadEntity> ListaDisponibilidad { get; set; }
-        public string mensaje { get; set; }
-        public string codigo { get; set; } 
+
         public virtual List<DisponibilidadEntity> ListaDisponibilidad { get; set; }
 
     }

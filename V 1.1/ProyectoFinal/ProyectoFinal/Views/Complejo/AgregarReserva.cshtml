@@ -1,0 +1,59 @@
+﻿
+@{
+    
+    var greListSession = Session["AgregarReservaList"] as List<BussinesEntities.GestionReservaEntities>;
+    
+}
+
+
+
+<table class="table">
+
+    <tr>
+        <th>Fecha Desde</th>
+        <th>Fecha Hasta</th>
+        <th>Habitación</th>
+        <th></th>
+    </tr>
+
+
+    @{
+        foreach (var item in greListSession)
+        {
+
+            <tr>
+                <td>@item.FechaDesde</td>
+                <td>@item.FechaHasta</td>
+                <td>@item.HabitacionText</td>
+                <td><a href="#" onclick="return controlReserva('eliminar', '@item.HabitacionText');"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a></td>
+            </tr>
+
+        }
+
+    }
+
+</table>
+
+<div class="row">
+    <div class="col-xs-12 col-md-3"></div>
+
+
+    <div class="col-xs-12 col-md-3"></div>
+
+    <div class="col-xs-12 col-md-3"></div>
+
+    <div class="col-xs-12 col-md-3">
+
+        <div class="form-group">
+            <label>&nbsp;</label>
+
+            <button type="button" class="btn btn-success btn-block" style="background-color: rgba(177, 13, 20, 1);" onclick="registrarReserva();">
+                Registrar Reserva
+            </button>
+
+
+        </div>
+
+    </div>
+
+</div>

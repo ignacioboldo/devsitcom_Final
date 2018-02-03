@@ -171,6 +171,20 @@ namespace BussinesEntities
         
     }
 
+
+    public class ListadoDisponibilidadPlanoEntities
+    {
+        public DateTime FechaDesde { get; set; }
+        public DateTime fechaHasta { get; set; }
+        public int idDisponibilidad { get; set; }
+        public int idEstado { get; set; }
+        public string nombreEstado { get; set; }
+        public int idNegocio { get; set; }  
+        public string nombreHabitacion { get; set; }
+
+    }
+
+
     
 
         }

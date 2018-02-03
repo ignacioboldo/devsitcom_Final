@@ -7,112 +7,56 @@
         <div class="row">
             <div class="col-xs-6">
                 <div class="page-title">
-                    <h2>DISPONIBILIDAD</h2>
+                    <h2>Registrar ocupación</h2>
                 </div>
             </div>
             <div class="col-xs-6">
                 <ol class="breadcrumb pull-right">
                     <li>
-                        <a href="#">INICIO</a>
+                        <a href="home">INICIO</a>
                     </li>
-                    <li class="active">DISPONIBILIDAD</li>
+                    <li class="active">Registrar ocupación</li>
                 </ol>
             </div>
         </div>
     </div>
 </section>
 
+
+<!-- MAIN CONTENT SECTION -->
 <section class="mainContent clearfix userProfile">
     <div class="container">
+
+        @if (Model.mensaje != null && Model.mensaje != "")
+        {
+            <div id="alert_mensaje">
+                <div class="alert alert-@Model.codigo" role="alert">@Model.mensaje</div>
+            </div>
+        }
+
 
         @using (Html.BeginForm())
         {
 
             @Html.ValidationSummary(true)
 
+            <div class="row">
+                <div class="col-md-4">
 
 
+                    <div>
 
-            <div class="panel panel-white">
-
-                <div class="panel-body">
-
-                    <div id="color">
-
-
-                        <div>
-                            <button id="btnAddBook" type="button" class="btn btn-green" onclick="addRow();" value="Agregar Ocupación">
-                                <i class="fa fa-plus">
-                                    Agregar
-                                </i>
-                            </button>
-                            <br />
-                        </div>
-
-                        <br />
+                        <button id="btnAddBook" type="button" class="btn" style="color:white; background-color:yellowgreen; margin-bottom:20px; padding:10px; width:60%;" onclick="addRow();" value="Agregar Ocupación">
+                            <i class="fa fa-plus">
+                                Agregar
+                            </i>
+                        </button>
 
                     </div>
 
-                    <!-- end: DATE/TIME PICKER PANEL -->
+                </div>
+                <div class="col-md-4">
 
-
-
-
-
-
-
-
-
-
-
-                    <div class="editor-label">
-
-
-
-                    </div>
-                    <div class="editor-field">
-
-
-
-
-                    </div>
-
-
-
-                    <div class="col-lg-offset-5">
-                        <button class="btn btn-green" type="submit">Registrar Ocupación <i class="fa fa-calendar"></i></button>
-                    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                    <div id="readNote">
-
-                        <div class="noteWrap col-md-8 col-md-offset-2">
-                            <div class="panel panel-note">
-                                <div class="e-slider owl-carousel owl-theme">
-
-                                    <div class="item">
-
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <input type="text" id="prueba" name="prueba" value="hola" style="display:none" />
 
 
 
@@ -121,9 +65,22 @@
 
 
                 </div>
-                @Html.ActionLink("Volver", "Index")
+                <div class="col-md-4"></div>
             </div>
 
+            <div id="color">
+                <div id="readNote">
+                    <div class="item"></div>
+                </div>
+            </div>
+
+            <div class="col-md-4"></div>
+            <div class="col-md-4" style="text-align:center;">
+                <button class="btn btn-green" id="btn_registrar" style="color:white; background-color:yellowgreen; padding:10px; display:none" type="submit">Registrar Ocupación <i class="fa fa-calendar"></i></button>
+            </div>
+            <div class="col-md-4">
+
+            </div>
 
 
         }
@@ -131,11 +88,30 @@
 
 
         <script language="javascript" type="text/javascript">
+
+
+            $(document).ready(function () {
+
+                $('.date').mask('00-00-0000');
+
+                $('.fecha').datetimepicker({
+                    locale: 'es',
+                    format: 'DD-MM-YYYY'
+                });
+
+            });
+
             function addRow() {
 
 
 
+                var htmlTiene = $("#color").html();
+                $("#alert_mensaje").html("");
 
+
+                if (htmlTiene != "") {
+                    $('#btn_registrar').show();
+                }
 
                 var index = $("#color").children("div").length;
 
@@ -145,14 +121,14 @@
                 @{
 
 
-            List<DAL.Habitacion> list = ViewBag.Habitaciones;
-            String idHab = "";
-            String nombreHab="";
+            List<DAL.CasaDptoOCabana> list = ViewBag.Casas;
+            String idCasa = "";
+            String nombreCasa="";
 
             foreach (var item in list)
             {
-                idHab = idHab + "," + item.idHabitacion.ToString();
-                nombreHab = nombreHab + "," + item.nombreHabitacion.ToString();
+                idCasa = idCasa + "," + item.idCasaDptoOCabana.ToString();
+                nombreCasa = nombreCasa + "," + item.nombreCasaDptoOCabana.ToString();
             };
 
 
@@ -164,18 +140,18 @@
 
 
 
-                var x = String('@idHab');
-                var y = String('@nombreHab');
+                var x = String('@idCasa');
+                var y = String('@nombreCasa');
 
-                var idHabitaciones = x.split(',');
-                var nombreHabitaciones = y.split(',');
+                var idCasas = x.split(',');
+                var nombreCasas = y.split(',');
 
 
-                var x = "<select name='idHabitacion_" + index + "'>";
+                var x = "<select class='form-control' name='idCasa_" + index + "'>";
 
-                for (var i = 0; i < idHabitaciones.length; i++) {
+                for (var i = 0; i < idCasas.length; i++) {
 
-                    x = x + "<option value='" + idHabitaciones[i] + "'>" + nombreHabitaciones[i] + "</option>";
+                    x = x + "<option value='" + idCasas[i] + "'>" + nombreCasas[i] + "</option>";
 
                 }
 
@@ -186,30 +162,30 @@
 
 
 
-                var div = "<div class='row' id='index_" + index + "'> " +
-                                  " <div class='col-lg-3'>" +
+                var div = "<div class='row tiene' id='index_" + index + "'> " +
+                                  " <div class='col-md-3'>" +
 
     x
 
                                         +
 
-                                  " </div> " +
-                                 "  <div class='col-lg-3'>  " +
+                                  " </div>  " +
+                                 "  <div class='col-md-3'>  " +
                                         "   <div class='input-group'> " +
-                                               "<input name='FechaDesde_" + index + "' type='text' data-date-format='dd-mm-yyyy' data-date-viewmode='years' class='form-control date-picker' value=''>" +
+                                               "<input name='FechaDesde_" + index + "' type='text'  class='form-control  date fecha' value=''>" +
                                                "<span class='input-group-addon'> <i class='fa fa-calendar'></i> </span>" +
                                           " </div>  <br/>" +
                                    "</div>" +
-                                    "<div class='col-lg-3'>" +
+                                    "<div class='col-md-3'>" +
                                       "   <div class='input-group'> " +
-                                               "<input name='FechaHasta_" + index + "' type='text' data-date-format='dd-mm-yyyy' data-date-viewmode='years' class='form-control date-picker' value=''>" +
+                                               "<input name='FechaHasta_" + index + "' type='text'  class='form-control date fecha' value=''>" +
                                                "<span class='input-group-addon'> <i class='fa fa-calendar'></i> </span>" +
                                           " </div>  <br/>" +
                                     "</div>" +
 
-                                 "<div class='col-lg-3'>" +
-                                 "  <button id='btnAddBook' class='btn btn-red' onclick='removeRow(" + index + ");'><i class='fa fa-trash-o'></i> Eliminar</button>" +
-                                    "</div>  <br/>" +
+                                 "<div class='col-md-3'>" +
+                                 "  <button id='btnAddBook' class='btn btn-red btn-block' style='color:white; background-color:rgba(177, 13, 20, 1); '  onclick='removeRow(" + index + ");'><i class='fa fa-trash-o'></i> Eliminar </button>" +
+                                    "</div> <br/>" +
                                 "</div>"
 
                 var newRow = div;
@@ -219,12 +195,9 @@
                 $("#color").append(newRow);
 
 
-                // Coloco este jquery para que me refresque los css y pueda ver el datatimepicker generado en tiempo de ejecución ok.
-
-                jQuery(document).ready(function () {
-                    Main.init();
-                    SVExamples.init();
-                    FormElements.init();
+                $('.fecha').datetimepicker({
+                    locale: 'es',
+                    format: 'DD-MM-YYYY'
                 });
 
 
@@ -233,6 +206,11 @@
             function removeRow(id) {
                 var controlToBeRemoved = "#index_" + id;
                 $(controlToBeRemoved).remove();
+                var htmlTiene = $(".tiene").html();
+
+                if (htmlTiene == null) {
+                    $('#btn_registrar').hide();
+                }
             }
 
 
@@ -255,7 +233,13 @@
 
 
 
-
-</div>
+    </div>
 </section>
+
+
+
+
+
+
+
 

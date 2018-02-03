@@ -662,6 +662,10 @@
     <Content Include="Views\Encuestas\VerEncuestaUsuario.cshtml" />
     <Content Include="Views\Reportes\CampoFechaValor_Tabla.cshtml" />
     <Content Include="Views\Reportes\CampoFechaValor_Index.cshtml" />
+    <Content Include="Views\Reservas\GestionDisponibilidad.cshtml" />
+    <Content Include="Views\Reservas\ListadoPlanoDisponibilidad.cshtml" />
+    <Content Include="Views\Reservas\PlanoDisponibilidad.cshtml" />
+    <Content Include="Views\Complejo\AgregarReserva.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

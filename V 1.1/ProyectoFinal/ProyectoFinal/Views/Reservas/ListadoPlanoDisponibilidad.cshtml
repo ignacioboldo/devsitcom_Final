@@ -1,0 +1,43 @@
+﻿@model IEnumerable<BussinesEntities.ListadoDisponibilidadPlanoEntities>
+
+<script>
+
+    $(document).ready(function () {
+        $('#reserva').DataTable();
+    });
+
+</script>
+
+
+
+<div class="table-responsive">
+
+    <table id="reserva" class="table table-bordered" style="font-size:9px;">
+        <thead>
+            <tr style="background:#F6F5F5;"> 
+                <th>Habitacion / Casa / Dpto</th> 
+                <th>Fecha Desde</th>
+                <th>Fecha Hasta</th>
+                <th>Estado</th> 
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                
+                <tr>
+                    <td>@item.nombreHabitacion</td>
+                    <td>@item.FechaDesde</td>
+                    <td>@item.fechaHasta</td>
+                    <td>@item.nombreEstado</td>
+                </tr>
+
+            }
+
+        </tbody>
+
+    </table>
+
+</div>
