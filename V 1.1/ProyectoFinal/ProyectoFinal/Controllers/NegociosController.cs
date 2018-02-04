@@ -1075,8 +1075,16 @@ namespace ProyectoFinal.Controllers
 
             switch (neg.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje)
             {
-                case 1: List<CasaDptoOCabana> casaDptosOCabanas = new List<CasaDptoOCabana>() { new CasaDptoOCabana() };
-                    neg.LugarHospedaje.FirstOrDefault().CasaDptoOCabana = casaDptosOCabanas;
+                case 1: List<ComplejoEntity> complejosCasaODpto = new List<ComplejoEntity>() { new ComplejoEntity() };
+                    neg.LugarHospedaje.FirstOrDefault().Complejo = complejosCasaODpto;
+                    neg.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idCategoria = int.Parse(Request.Form["categ"].ToString());
+                    neg.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idTipoComplejo = 4;
+
+                    List<CasaDptoOCabana> casaDptosOCabanas = new List<CasaDptoOCabana>() { new CasaDptoOCabana() };
+                    casaDptosOCabanas.FirstOrDefault().capacidadMaxima = int.Parse(Request.Form["capacidadMaxima"].ToString());
+                    casaDptosOCabanas.FirstOrDefault().nombreCasaDptoOCabana = "Alojamiento 1 " + "(" + casaDptosOCabanas.FirstOrDefault().capacidadMaxima + " pax)";
+
+                    neg.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().CasaDptoOCabana = casaDptosOCabanas;
                     break;
 
                 case 2: List<ComplejoEntity> complejos = new List<ComplejoEntity>() { new ComplejoEntity() };
