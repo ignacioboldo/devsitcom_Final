@@ -670,6 +670,7 @@
     <Content Include="Views\Test\GraficoBarra.cshtml" />
     <Content Include="Views\Test\GraficoTorta.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\Complejo\BuscarHabitacionesDisponibles_Disponibilidad.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

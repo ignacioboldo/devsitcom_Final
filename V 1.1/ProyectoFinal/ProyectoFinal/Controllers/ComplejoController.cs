@@ -23,6 +23,7 @@ namespace ProyectoFinal.Controllers
         NegociosManager nm = new NegociosManager();
         ComplejoManager cm = new ComplejoManager();
         private static int idComplejoActual;
+        HotelManager hm = new HotelManager();
 
 
         private CalendarManager _calendar = new CalendarManager();
@@ -38,19 +39,31 @@ namespace ProyectoFinal.Controllers
 
 
 
-        public ActionResult Disponibilidad(int? id)
+        public ActionResult Disponibilidad(int? id, int? idTipo)
         {
-            NegocioEntity neg = nm.GetNegocioById((int)id);
-            idComplejoActual = neg.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idComplejo;
 
-            ViewBag.IdNegocio = id;
-            conju.ListaDisponibilidad = listDispo;
+           
 
-            List<CasaDptoOCabana> listCasa = cm.getCasaDptoById(idComplejoActual);
-            ViewBag.Casas = listCasa;
+            Session["AgregarReservaList"] = null;
+
+       
+            ViewBag.idNegocio = id;
+            ViewBag.tipo = idTipo;
+             
+
+       
+
+            //NegocioEntity neg = nm.GetNegocioById((int)id);
+            //idComplejoActual = neg.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idComplejo;
+
+            
+            //conju.ListaDisponibilidad = listDispo;
+
+            //List<CasaDptoOCabana> listCasa = cm.getCasaDptoById(idComplejoActual);
+            //ViewBag.Casas = listCasa;
 
 
-            return View(conju);
+            return View();
 
         }
 
@@ -118,6 +131,40 @@ namespace ProyectoFinal.Controllers
 
             return View(conju);
 
+        }
+
+
+        public ActionResult BuscarHabitacionesDisponibles_Disponibilidad(string fecha_desde, string fecha_hasta, string idNegocio)
+        {
+
+            var listado = hm.buscarDisponibilidadHabitaciones(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), Convert.ToInt32(idNegocio));
+
+            return PartialView("BuscarHabitacionesDisponibles_Disponibilidad", listado);
+        }
+
+        public string RegistrarReserva(int? idNegocio, int tipo)
+        {
+
+            var greListSession = Session["AgregarReservaList"] as List<GestionReservaEntities>;
+
+           // decimal id = hm.reserva_i(idPersona, idNegocio, idSolicitud);
+
+            foreach (var item in greListSession)
+            {
+
+                if (tipo != 3) // Si no es hotel cargo idCasaDptoOCabana sino idHabitacion
+                {
+                    hm.disponibilidad_i(item.FechaDesde, item.FechaHasta, null, item.IdHabitacion, 9999999);
+                }
+                else
+                {
+                    hm.disponibilidad_i(item.FechaDesde, item.FechaHasta, item.IdHabitacion, null, 9999999);
+                }
+
+            };
+
+
+            return Convert.ToString("Hola");
         }
 
 

@@ -57,6 +57,13 @@ namespace ProyectoFinal.Controllers
             return "ok";
         }
 
+        public String AnularDisponibilidad(int id)
+        {
+            hm.disponibilidad_Anular(id);
+            return "ok";
+        }
+
+
         public String Actualizar_Comentarios_Leidos(int? id, int? nro_solicitud, bool cliente)
         {
             hm.actualizar_Comentarios_Leidos(id, nro_solicitud, cliente);
@@ -513,9 +520,10 @@ namespace ProyectoFinal.Controllers
             return View(neg);
         }
 
-        public ActionResult GestionDisponibilidad(int idNegocio)
+        public ActionResult GestionDisponibilidad(int idNegocio , int? idTipo)
         {
             NegocioEntity neg = nm.GetNegocioById(idNegocio);
+            ViewBag.idTipo = idTipo;
 
             return View(neg);
         }

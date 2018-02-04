@@ -373,6 +373,7 @@ public List<SolicitudesNegociosEntities> consultarListadoSolicitudesPorNegocio(i
 
       public decimal disponibilidad_i(DateTime fechaDesde, DateTime fechaHasta, int? idHabitacion, int? idCasaODpto, int? idReserva)
       {
+      
 
 
           using (SitcomEntities db = new SitcomEntities())
@@ -448,6 +449,20 @@ public List<SolicitudesNegociosEntities> consultarListadoSolicitudesPorNegocio(i
           {
 
               db.Database.ExecuteSqlCommand("Reserva_Anular @idReserva=" + idReserva + "");
+          }
+
+
+      }
+
+
+      public void disponibilidad_Anular(int idReserva)
+      {
+
+
+          using (SitcomEntities db = new SitcomEntities())
+          {
+
+              db.Database.ExecuteSqlCommand("Disponibilidad_d @idDisponibilidad=" + idReserva + "");
           }
 
 

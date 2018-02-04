@@ -6,6 +6,10 @@
         $('#reserva').DataTable();
     });
 
+
+
+
+
 </script>
 
 
@@ -19,6 +23,7 @@
                 <th>Fecha Desde</th>
                 <th>Fecha Hasta</th>
                 <th>Estado</th> 
+                <th>Acción</th> 
             </tr>
         </thead>
 
@@ -32,7 +37,10 @@
                     <td>@item.FechaDesde</td>
                     <td>@item.fechaHasta</td>
                     <td>@item.nombreEstado</td>
-                </tr>
+                    <td>
+                        <button style="font-size:10px; padding: 5px;" onclick="return anularDispo('@item.idDisponibilidad');" class="btn btn-xs btn-blue tooltips">Eliminar</button>
+                    </td>
+</tr>
 
             }
 

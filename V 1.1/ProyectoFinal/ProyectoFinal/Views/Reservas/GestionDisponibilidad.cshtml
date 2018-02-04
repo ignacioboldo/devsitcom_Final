@@ -30,17 +30,17 @@
 
     }
 
-    function anularReserva() {
+    function anularDisponibilidad() {
 
         var nro_reserva = $("#nro_reserva").html();
 
-        var result = confirm("Realmente quiere anular la reserva");
+        var result = confirm("¿Realmente eliminar la disponibilidad?");
 
         if (result) {
 
             $.ajax({
                 type: 'GET',
-                url: 'AnularReserva?id=' + nro_reserva,
+                url: 'AnularDisponibilidad?id=' + nro_reserva,
                 success: function (response) {
                     planoListadoReserva()
                     planoReserva()
@@ -94,16 +94,16 @@
     }
 
 
-    function anular(id) {
+    function anularDispo(id) {
         var nro_reserva = id;
 
-        var result = confirm("Realmente quiere anular la reserva?.");
+        var result = confirm("Realmente quiere anular la disponibildiad?.");
 
         if (result) {
 
             $.ajax({
                 type: 'GET',
-                url: 'AnularReserva?id=' + nro_reserva,
+                url: 'AnularDisponibilidad?id=' + nro_reserva,
                 success: function (response) {
                     planoListadoReserva()
                     planoReserva()
@@ -391,7 +391,7 @@
                     <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnTusDptosOCabana" onclick="window.location = '@Url.Action("TusDptosOCabanas", "Reservas", new { idLugarHospedaje = Model.LugarHospedaje.FirstOrDefault().idLugarHospedaje })'">
                         TUS DPTOS Ó CABAÑAS
                     </button><br />
-                <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnDisponibilidadCabana" onclick="window.location = '@Url.Action("Disponibilidad", "Complejo", new { id = Model.idNegocio })'">
+                <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnDisponibilidadCabana" onclick="window.location = '@Url.Action("Disponibilidad", "Complejo", new { id = Model.idNegocio , idTipo= ViewBag.idTipo})'">
                     REGISTRAR DISPONIBILIDAD
                 </button><br />
 
@@ -401,9 +401,9 @@
                 <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnTusHabitaciones" onclick="window.location = '@Url.Action("TusHabitaciones","Reservas", new { idLugarHospedaje = Model.LugarHospedaje.FirstOrDefault().idLugarHospedaje })'">
                     TUS HABITACIONES
                 </button><br />
-    <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnDisponibilidadHotel" onclick="window.location = '@Url.Action("Disponibilidad", "Hotel", new { id = Model.idNegocio })'">
-        REGISTRAR DISPONIBILIDAD
-    </button><br />
+                <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnDisponibilidadHotel" onclick="window.location = '@Url.Action("Disponibilidad", "Complejo", new { id = Model.idNegocio , idTipo= ViewBag.idTipo})'">
+                    REGISTRAR DISPONIBILIDAD
+                </button><br />
 
                     }
 

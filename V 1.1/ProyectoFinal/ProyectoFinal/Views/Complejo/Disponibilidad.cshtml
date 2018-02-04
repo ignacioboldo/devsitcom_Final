@@ -30,7 +30,6 @@
 
 
         <div id="datos_reserva">
-
             <div class="row">
                 <div class="col-xs-12" style="padding-top:10px;">
                     <h4 class="page-header">
@@ -122,7 +121,7 @@
         if (fecha_desde != '' && fecha_hasta != '') {
             $(".habitaciones-select").html('<option>Cargando...</option>');
             $.ajax({
-                url: "../../Reservas/BuscarHabitacionesDisponibles?fecha_desde=" + fecha_desde + "&fecha_hasta=" + fecha_hasta + "&idNegocio=" + idnegocio
+                url: "../BuscarHabitacionesDisponibles_Disponibilidad?fecha_desde=" + fecha_desde + "&fecha_hasta=" + fecha_hasta + "&idNegocio=" + idnegocio
             }).done(function (data) {
                 $(".habitaciones-select").html(data);
 
@@ -145,6 +144,28 @@
         }
         return 1;
     }
+
+    function registrarReserva() {
+
+
+        var idPersona = $("#idPersona").val();
+        var idNegocio = '@ViewBag.idNegocio';
+        var idSolicitud = '@ViewBag.idSolicitud';
+        var tipo = '@ViewBag.tipo';
+
+        $.ajax({
+            url: "../RegistrarReserva?idPersona=" + idPersona + "&idNegocio=" + idNegocio + "&idSolicitud=" + idSolicitud + "&tipo=" + tipo
+        }).done(function (data) {
+            $("#mensaje_reserva").show();
+            $("#datos_reserva").hide();
+            $("#nro_reserva").html(data);
+        });
+
+
+
+        return false;
+    }
+
 
 
     function controlReserva(accion, referencia) {
@@ -172,7 +193,7 @@
                 } else {
 
                     $.ajax({
-                        url: "../../AgregarReserva?fecha_desde=" + fecha_desde + "&fecha_hasta=" + fecha_hasta + "&habitacion=" + habitacion + "&accion=" + accion + "&referencia=" + referencia + "&habitacion_text=" + habitacion_text
+                        url: "../AgregarReserva?fecha_desde=" + fecha_desde + "&fecha_hasta=" + fecha_hasta + "&habitacion=" + habitacion + "&accion=" + accion + "&referencia=" + referencia + "&habitacion_text=" + habitacion_text
                     }).done(function (data) {
                         $("#lista_reserva").html(data);
                     });
