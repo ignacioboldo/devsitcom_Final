@@ -97,9 +97,10 @@
 
             var perfil = "@Model.idPerfil"
 
-            if (perfil == 3) {
+            if (perfil == 3 || perfil==2) {
                 desactivarLink('btnReservar');
                 desactivarBtn('btnConsultar');
+                desactivarBtn('btn_disponibilidad');
             }
 
 

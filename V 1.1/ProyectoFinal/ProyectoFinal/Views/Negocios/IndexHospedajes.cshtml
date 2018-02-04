@@ -6,7 +6,7 @@
     $(document).ready(function () {
 
         $('.date').mask('00-00-0000');
- 
+
         $('#fecha_desde').datetimepicker({
             locale: 'es',
             format: 'DD-MM-YYYY'
@@ -16,6 +16,17 @@
             locale: 'es',
             format: 'DD-MM-YYYY'
         });
+
+
+        var perfil = "@ViewBag.idPerfil"
+
+       // alert(@ViewBag.idPerfil)
+
+        if (perfil == 3 || perfil == 2) {
+            desactivarLink('btnReservar');
+            desactivarBtn('btnConsultar');
+            desactivarBtn('btn_disponibilidad');
+        }
 
 
     });
@@ -32,9 +43,9 @@
 
         var fecha_desde = $("#fecha_desde").val();
         var fecha_hasta = $("#fecha_hasta").val();
-       
 
- 
+
+
 
         if (!validate_fechaMayorQue(fecha_desde, fecha_hasta)) {
             alert("La fecha desde no puede ser mayor a la fecha hasta.");
@@ -155,7 +166,7 @@
                                 </div>
                         
                                 <div>
-                                    <button class="btn btn-primary btn-block" onclick="enviar();" type="button">Consultar!</button>
+                                    <button class="btn btn-primary btn-block" id="btn_disponibilidad" onclick="enviar();" type="button">Consultar!</button>
                                 </div>
              
                     }
