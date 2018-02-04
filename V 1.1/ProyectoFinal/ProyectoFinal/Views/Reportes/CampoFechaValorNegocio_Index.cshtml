@@ -20,25 +20,31 @@
             format: 'DD/MM/YYYY'
         });
 
+        $('#fecha_hasta').datetimepicker({
+            locale: 'es',
+            format: 'DD/MM/YYYY'
+        });
+
 
     });
 
 
 
-    function ReporteCampoFechaValor() {
+    function ReporteCampoFechaValorPorNegocio() {
 
         var tipo_reporte = $("#tipo_reporte").val();
         //var nombre_reporte = $("#nombre_reporte").val();
         var nombre_reporte = "@ViewBag.nombre_reporte";
         var fecha_desde    = $("#fecha_desde").val();
         var fecha_hasta    = $("#fecha_hasta").val();
+        var negocio = $("#Negocios").val();
 
         //alert(fecha_desde);
         //alert(fecha_hasta);
 
         $.ajax({
             type: 'GET',
-            url: 'ReporteCampoFechaValor?tipo_reporte=' + tipo_reporte + '&nombre_reporte=' + nombre_reporte + '&fecha_desde=' + fecha_desde + '&fecha_hasta=' + fecha_hasta,
+            url: 'ReporteCampoFechaValorPorNegocio?tipo_reporte=' + tipo_reporte + '&nombre_reporte=' + nombre_reporte + '&fecha_desde=' + fecha_desde + '&fecha_hasta=' + fecha_hasta + '&negocio='+negocio,
             success: function (response) {
                 $("#resultado").html(response);
             }
@@ -53,7 +59,9 @@
         <div class="row">
             <div class="col-xs-6">
                 <div class="page-title">
-                    <h2>Gestion de Reportes - @ViewBag.nombre_reporte </h2>
+                    <h2>Gestion de Reportes </h2>
+                    <br />
+                    <h3>@ViewBag.nombre_reporte</h3>
                 </div>
             </div>
             <div class="col-xs-6">
@@ -74,7 +82,7 @@
     <div class="container">
 
         <div class="row" style="margin-bottom:20px;">
-            <div class="col-md-12">
+            <div class="col-md-3">
                 <select class="form-control" id="tipo_reporte">
                     <option value="Diaria">Diaria</option>
                     <option value="Mensual">Mensual</option>
@@ -83,7 +91,11 @@
                 </select>
             </div>
 
+            <div class="col-md-3">
 
+                @Html.DropDownList("Negocios", new SelectList(ViewBag.lista_negocios, "idNegocio", "nombre", String.Empty), new { @class = "form-control" })
+
+            </div>
 
         </div>
 
@@ -100,11 +112,10 @@
 
             <div class="col-md-4">
 
-                <button class="btn btn-block" onclick="ReporteCampoFechaValor();" style="background-color:yellowgreen; color:white;">Buscar</button>
+                <button class="btn btn-block" onclick="ReporteCampoFechaValorPorNegocio();" style="background-color:yellowgreen; color:white;">Buscar</button>
             </div>
 
         </div>
-
 
 
         <div id="resultado"></div>

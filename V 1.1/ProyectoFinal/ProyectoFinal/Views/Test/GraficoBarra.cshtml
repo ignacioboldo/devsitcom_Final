@@ -1,0 +1,147 @@
+﻿
+<script>
+
+    $(document).ready(function () {
+        armar_grafico();
+    });
+
+    function armar_grafico() {
+
+        $("#cargando_grafico").show();
+
+        $.ajax({
+            type: 'GET',
+            url: 'DataGraficoTorta?un_parametro=Hola Picho',
+            success: function (response) {
+
+                var valores = [];
+                var etiquetas = [];
+
+                response.forEach(function (element) {
+                    valores.push(element.Valor);
+                    etiquetas.push(element.Etiqueta);
+                });
+
+                var color = Chart.helpers.color;
+
+                var barChartData = {
+                    labels: etiquetas,
+                    datasets: [{
+                        label: 'Representa',
+                        backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+                        borderColor: window.chartColors.green,
+                        borderWidth: 1,
+                        data: valores
+                    }]
+
+                };
+
+                var ctx = document.getElementById("canvas").getContext("2d");
+                window.myBar = new Chart(ctx, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: 'Nombre del reporte'
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+
+                $("#cargando_grafico").hide();
+
+            }
+        })
+
+    }
+
+    function colores(internalData) {
+
+        var graphColors = [];
+        var graphOutlines = [];
+        var hoverColor = [];
+
+        var internalDataLength = internalData.length;
+        i = 0;
+        while (i <= internalDataLength) {
+            var randomR = Math.floor((Math.random() * 130) + 100);
+            var randomG = Math.floor((Math.random() * 130) + 100);
+            var randomB = Math.floor((Math.random() * 130) + 100);
+
+            var graphBackground = "rgb("
+                    + randomR + ", "
+                    + randomG + ", "
+                    + randomB + ")";
+            graphColors.push(graphBackground);
+
+            var graphOutline = "rgb("
+                    + (randomR - 80) + ", "
+                    + (randomG - 80) + ", "
+                    + (randomB - 80) + ")";
+            graphOutlines.push(graphOutline);
+
+            var hoverColors = "rgb("
+                    + (randomR + 25) + ", "
+                    + (randomG + 25) + ", "
+                    + (randomB + 25) + ")";
+            hoverColor.push(hoverColors);
+
+            i++;
+        };
+
+        return hoverColor;
+
+    }
+
+</script>
+
+
+
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Grafico de barra</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="home">INICIO</a>
+                    </li>
+                    <li class="active">Grafico de barra</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+        <div id="cargando_grafico" style="display:none; text-align:center">Cargando grafico por favor espere...</div>
+
+
+        <div id="container" style="width: 100%;">
+            <canvas id="canvas"></canvas>
+        </div>
+
+
+
+    </div>
+</section>

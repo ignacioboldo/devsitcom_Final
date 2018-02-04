@@ -546,26 +546,6 @@ namespace BL
                 return result;
             }
         }
-
-        public List<Negocio> GetComercioByUsuario(int id)
-        {
-            using (var db = new SitcomEntities())
-            {
-                var result = db.Negocio.Include("TipoDeNegocio").Where(n => n.idUsuario == id && n.estaAprobado == true && n.idTipoNegocio == 2).ToList();
-
-                return result;
-            }
-        }
-
-        public List<Negocio> GetHospedajeByUsuario(int id)
-        {
-            using (var db = new SitcomEntities())
-            {
-                var result = db.Negocio.Include("TipoDeNegocio").Where(n => n.idUsuario == id && n.estaAprobado == true && n.idTipoNegocio == 1).ToList();
-
-                return result;
-            }
-        }
         public List<Caracteristica> GetCaracteristicas()
         {
             using (var db = new SitcomEntities())

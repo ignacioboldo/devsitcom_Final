@@ -537,7 +537,7 @@ namespace ProyectoFinal.Controllers
             }
             else
             {
-                return RedirectToAction("Login", "Usuarios");
+                return RedirectToAction("DatosPersonales", "Persona", new { returnUrl = "../Reservas/SolicitarReserva/"+id });
             }
         }
         [HttpPost]

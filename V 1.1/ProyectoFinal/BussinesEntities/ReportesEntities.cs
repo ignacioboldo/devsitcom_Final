@@ -11,8 +11,8 @@ namespace BussinesEntities
     public class ReportesDataTableEntitiesFechaValor
     {
 
-        public decimal  valor { get; set; }
-        public DateTime? fecha { get; set; }
+        public decimal valor { get; set; }
+        public string fecha { get; set; }
 
     }
 
@@ -25,6 +25,16 @@ namespace BussinesEntities
 
     }
 
+    public class ReportesFechaValor
+    {
+
+        public string valor { get; set; }
+        public string campo { get; set; }
+        public string fecha { get; set; }
+
+    }
+
+   
 
 
     //public class ReportesGraficoPieEntities
@@ -44,5 +54,5 @@ namespace BussinesEntities
 
     //}
 
-   
+
 }

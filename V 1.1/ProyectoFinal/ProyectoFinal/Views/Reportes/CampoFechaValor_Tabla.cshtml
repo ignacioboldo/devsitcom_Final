@@ -15,26 +15,83 @@
 
     <table id="tabla" class="table table-bordered" style="font-size:9px;">
         <thead>
-            <tr>
-                <th>Fecha</th>
-                <th>@ViewBag.nombre_campo</th>
-                <th>@ViewBag.nombre_valor</th>
-            </tr>
-        </thead>
 
-        <tbody>
-            @foreach (var item in ViewBag.data as List<BussinesEntities.ReportesCampoFechaValor>)
+
+            @switch ((string)ViewBag.clase_reporte)
             {
 
+                case "ReportesCampoFechaValor":
+                    <tr>
+                        @if (@ViewBag.tipo_reporte != "General")
+                        {
+                            <th>Fecha</th>
+                        }
+                        <th>@ViewBag.nombre_campo</th>
+                        <th>@ViewBag.nombre_valor</th>
+
+                    </tr>
+                        break;
+                        
+                        case "ReportesFechaValor":
+                    <tr>
+                        @if (@ViewBag.tipo_reporte != "General")
+                        {
+                            <th>Fecha</th>
+                        }
+                        
+                        <th>@ViewBag.nombre_valor</th>
+
+                    </tr>
+                        break;
+
+            }
+        </thead>
+       
+        <tbody>
+
+            @switch ((string)ViewBag.clase_reporte)
+            { 
+            
+                case "ReportesCampoFechaValor":
+                        
+                    foreach (var item in ViewBag.data as List<BussinesEntities.ReportesCampoFechaValor>)
+                      {
+
                 <tr>
-                   
-                    <td>@item.fecha</td>
+                    @if (@ViewBag.tipo_reporte != "General")
+                    {
+                       <td>@item.fecha</td>
+                    }
+                    
                     <td>@item.campo</td>
                     <td>@item.valor</td>
-                    
+
                 </tr>
 
             }
+                    break;
+                    
+                       case "ReportesFechaValor":
+                        
+                    foreach (var item in ViewBag.data as List<BussinesEntities.ReportesCampoFechaValor>)
+                      {
+
+                <tr>
+                    @if (@ViewBag.tipo_reporte != "General")
+                    {
+                       <td>@item.fecha</td>
+                    }
+                    
+                  
+                    <td>@item.valor</td>
+
+                </tr>
+
+            }
+                    break;
+            }
+
+        
 
         </tbody>
 

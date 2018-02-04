@@ -185,6 +185,7 @@
     <Compile Include="Controllers\PromocionesController.cs" />
     <Compile Include="Controllers\ReportesController.cs" />
     <Compile Include="Controllers\ReservasController.cs" />
+    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Controllers\TipoHabitacionController.cs" />
     <Compile Include="Controllers\TramitesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -666,6 +667,9 @@
     <Content Include="Views\Reservas\ListadoPlanoDisponibilidad.cshtml" />
     <Content Include="Views\Reservas\PlanoDisponibilidad.cshtml" />
     <Content Include="Views\Complejo\AgregarReserva.cshtml" />
+    <Content Include="Views\Test\GraficoBarra.cshtml" />
+    <Content Include="Views\Test\GraficoTorta.cshtml" />
+    <Content Include="Views\Test\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

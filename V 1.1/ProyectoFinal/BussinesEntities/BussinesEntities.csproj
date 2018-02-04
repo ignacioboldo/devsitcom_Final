@@ -63,6 +63,7 @@
     <Compile Include="EstadoReservaEntity.cs" />
     <Compile Include="EstadoTramiteEntity.cs" />
     <Compile Include="GestionReservaEntities.cs" />
+    <Compile Include="GraficoTest.cs" />
     <Compile Include="HabitacionEntity.cs" />
     <Compile Include="HabitacionesEntity.cs" />
     <Compile Include="HotelEntity.cs" />
