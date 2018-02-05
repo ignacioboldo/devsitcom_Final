@@ -13,7 +13,7 @@
             if (item.rutaAdjunto != null && item.rutaAdjunto != "")
             {
                 <div class="reserva-pregunta-imagen">
-                    <img alt="140x140" class="img-thumbnail" src="~/Content/img/@item.rutaAdjunto" style="width: 140px; height: 140px;">
+                    <img alt="140x140" class="img-thumbnail" src="~/Content/img/@item.rutaAdjunto" onclick="modal('@item.idComentarioSolicitud')" id="foto_@item.idComentarioSolicitud" style="width: 140px; height: 140px; cursor:pointer">
                     <div>@item.comentario</div>
                     <div class="reserva-fecha-comentario">@item.fechaEnvioComentario</div>
                 </div>
@@ -33,7 +33,7 @@
             if (item.rutaAdjunto != null && item.rutaAdjunto != "")
             {
                 <div class="reserva-respuesta-imagen">
-                    <img alt="140x140" class="img-thumbnail" src="~/Content/img/@item.rutaAdjunto" style="width: 140px; height: 140px;">
+                    <img alt="140x140" class="img-thumbnail" src="~/Content/img/@item.rutaAdjunto" onclick="modal('@item.idComentarioSolicitud')" id="foto_@item.idComentarioSolicitud" style="width: 140px; height: 140px; cursor:pointer">
                     <div>@item.comentario</div>
                     <div class="reserva-fecha-comentario">@item.fechaEnvioComentario</div>
                 </div>

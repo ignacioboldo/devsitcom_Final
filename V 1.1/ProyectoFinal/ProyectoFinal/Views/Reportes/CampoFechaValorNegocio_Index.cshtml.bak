@@ -1,0 +1,124 @@
+﻿@{
+    ViewBag.Title = "Gestion de Reportes";
+}
+
+
+<script>
+
+
+    $(document).ready(function () {
+
+        $('.date').mask('00-00-0000');
+
+        $('#fecha_desde').datetimepicker({
+            locale: 'es',
+            format: 'DD/MM/YYYY'
+        });
+
+        $('#fecha_hasta').datetimepicker({
+            locale: 'es',
+            format: 'DD/MM/YYYY'
+        });
+
+        $('#fecha_hasta').datetimepicker({
+            locale: 'es',
+            format: 'DD/MM/YYYY'
+        });
+
+
+    });
+
+
+
+    function ReporteCampoFechaValorPorNegocio() {
+
+        var tipo_reporte = $("#tipo_reporte").val();
+        //var nombre_reporte = $("#nombre_reporte").val();
+        var nombre_reporte = "@ViewBag.nombre_reporte";
+        var fecha_desde    = $("#fecha_desde").val();
+        var fecha_hasta    = $("#fecha_hasta").val();
+        var negocio = $("#Negocios").val();
+
+        //alert(fecha_desde);
+        //alert(fecha_hasta);
+
+        $.ajax({
+            type: 'GET',
+            url: 'ReporteCampoFechaValorPorNegocio?tipo_reporte=' + tipo_reporte + '&nombre_reporte=' + nombre_reporte + '&fecha_desde=' + fecha_desde + '&fecha_hasta=' + fecha_hasta + '&negocio='+negocio,
+            success: function (response) {
+                $("#resultado").html(response);
+            }
+        })
+    }
+
+</script>
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Gestion de Reportes </h2>
+                    <br />
+                    <h3>@ViewBag.nombre_reporte</h3>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Gestion de Reportes</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+        <div class="row" style="margin-bottom:20px;">
+            <div class="col-md-3">
+                <select class="form-control" id="tipo_reporte">
+                    <option value="Diaria">Diaria</option>
+                    <option value="Mensual">Mensual</option>
+                    <option value="Anual">Anual</option>
+                    <option value="General">General</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+
+                @Html.DropDownList("Negocios", new SelectList(ViewBag.lista_negocios, "idNegocio", "nombre", String.Empty), new { @class = "form-control" })
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-4">
+
+                <input type="text" name="fecha_desde" id="fecha_desde" class="form-control date" placeholder="Fecha Desde" value="@Session["fecha_desde"]" />
+            </div>
+            <div class="col-md-4">
+
+                <input type="text" class="form-control date" id="fecha_hasta" name="fecha_hasta" placeholder="Fecha Hasta" value="@Session["fecha_hasta"]" />
+            </div>
+
+            <div class="col-md-4">
+
+                <button class="btn btn-block" onclick="ReporteCampoFechaValorPorNegocio();" style="background-color:yellowgreen; color:white;">Buscar</button>
+            </div>
+
+        </div>
+
+
+        <div id="resultado"></div>
+
+    </div>
+</section>

@@ -121,7 +121,7 @@
 
         $.ajax({
             type: 'GET',
-            url: 'Actualizar_Comentarios_Leidos?id=' + nro_reserva + '&nro_solicitud=' + nro_solicitud,
+            url: 'Actualizar_Comentarios_Leidos?id=' + nro_reserva + '&nro_solicitud=' + nro_solicitud + '&cliente=true',
             success: function (response) {
                 planoListadoReserva()
                 planoReserva()

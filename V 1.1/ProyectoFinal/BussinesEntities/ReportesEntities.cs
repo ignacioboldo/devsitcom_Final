@@ -25,12 +25,32 @@ namespace BussinesEntities
 
     }
 
+    public class ReportesCampoValor
+    {
+
+        public string Valor { get; set; }
+        public string Campo { get; set; }
+       
+
+    }
+
     public class ReportesFechaValor
     {
 
         public string valor { get; set; }
         public string campo { get; set; }
         public string fecha { get; set; }
+
+    }
+
+    public class ReportesCampoValorDinamico
+    {
+
+        
+        public string Campo { get; set; }
+        public string Valor { get; set; }
+        public string Valor_2 { get; set; }
+        public string Valor_3 { get; set; }
 
     }
 

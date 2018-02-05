@@ -1,0 +1,57 @@
+﻿@model IEnumerable<BussinesEntities.ReservasComentariosEntities>
+
+
+
+@{
+
+    foreach (var item in Model.ToList())
+    {
+
+        if (item.comentarioCliente != null && item.comentarioCliente == true)
+        {
+
+            if (item.rutaAdjunto != null && item.rutaAdjunto != "")
+            {
+                <div class="reserva-pregunta-imagen">
+                    <img alt="140x140" class="img-thumbnail" src="~/Content/img/@item.rutaAdjunto" style="width: 140px; height: 140px;">
+                    <div>@item.comentario</div>
+                    <div class="reserva-fecha-comentario">@item.fechaEnvioComentario</div>
+                </div>
+            }
+            else
+            {
+                <div class="reserva-pregunta">
+                    @item.comentario
+                    <div class="reserva-fecha-comentario">@item.fechaEnvioComentario</div>
+                </div>
+            }
+
+
+        }
+        else
+        {
+            if (item.rutaAdjunto != null && item.rutaAdjunto != "")
+            {
+                <div class="reserva-respuesta-imagen">
+                    <img alt="140x140" class="img-thumbnail" src="~/Content/img/@item.rutaAdjunto" style="width: 140px; height: 140px;">
+                    <div>@item.comentario</div>
+                    <div class="reserva-fecha-comentario">@item.fechaEnvioComentario</div>
+                </div>
+            }
+            else
+            {
+                <div class="reserva-respuesta">
+                    @item.comentario
+                    <div class="reserva-fecha-comentario">@item.fechaEnvioComentario</div>
+                </div>
+            }
+
+        }
+
+
+
+    }
+
+}
+
+

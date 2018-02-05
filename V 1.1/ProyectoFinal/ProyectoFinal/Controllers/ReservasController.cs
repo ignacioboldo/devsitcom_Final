@@ -63,8 +63,7 @@ namespace ProyectoFinal.Controllers
             return "ok";
         }
 
-
-        public String Actualizar_Comentarios_Leidos(int? id, int? nro_solicitud, bool cliente)
+       public String Actualizar_Comentarios_Leidos(int? id, int? nro_solicitud, bool cliente)
         {
             hm.actualizar_Comentarios_Leidos(id, nro_solicitud, cliente);
             return "ok";
@@ -545,7 +544,7 @@ namespace ProyectoFinal.Controllers
             }
             else
             {
-                return RedirectToAction("DatosPersonales", "Persona", new { returnUrl = "../Reservas/SolicitarReserva/"+id });
+                return RedirectToAction("DatosPersonales", "Persona", new { returnUrl = "../Reservas/SolicitarReserva/", idNegocio = id });
             }
         }
         [HttpPost]

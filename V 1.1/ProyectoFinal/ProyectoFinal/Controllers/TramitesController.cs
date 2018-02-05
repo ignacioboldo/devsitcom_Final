@@ -79,10 +79,21 @@ namespace ProyectoFinal.Controllers
            
             }
         }
-        public ActionResult ResolverTramite(int idtramite, int accion, string comentario)
+        public ActionResult ResolverTramite(int idtramite, int accion, string comentario, string comentarioCorreccion)
         {
             ObtenerUsuarioActual();
             TramiteEntity tra = tm.GetTramiteById(idtramite);
+
+            string comment = "";
+
+            if (accion == 4)
+                comment = comentario == null ? "" : comentario;
+
+            if (accion == 6)
+                comment = comentarioCorreccion == null ? "" : comentarioCorreccion;
+
+            tra.comentario = comment;
+
             tm.CambiarEstadoTramite(tra, accion, usuarioActual);
 
       

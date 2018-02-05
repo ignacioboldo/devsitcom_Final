@@ -28,7 +28,7 @@
                 @for (int i = 1; i <= ViewBag.dias; i++)
                 {
                     string estado = "";
-                    int? nroReserva = 0;
+                    string nroReserva = "";
                     string tooltip2 = "";
                     var planoList = Session["PLANO_RESERVA"] as List<BussinesEntities.CalendarioEntities>;
                     var fecha = Convert.ToDateTime(i + "/" + ViewBag.mes + "/" + ViewBag.anio);
@@ -53,8 +53,14 @@
                                 estado = "CHECK-OUT";
                             }
 
-                            nroReserva = item1.idReserva;
-                            if (nroReserva!=null)
+                            
+                            nroReserva = item1.idReserva.ToString();
+                            //tooltip2 = "Nro Reserva: " + Convert.ToString(nroReserva);
+                            if (nroReserva==null || nroReserva=="" )
+                            {
+                                tooltip2 = "";
+                            }
+                            else
                             {
                                 tooltip2 = "Nro Reserva: " + Convert.ToString(nroReserva);
                             }
@@ -89,11 +95,9 @@
                      
                        
 
-                            @*<span title="Soy un tooltip">@tooltip2 </span>
+                        @tooltip2.ToString()
 
-                            @i.ToString().PadLeft(2, '0');*@
-                            
-                          @tooltip2.ToString().PadLeft(2,'0');
+                         @* @tooltip2.ToString().PadLeft(2,'0')*@
 
 
 </td>

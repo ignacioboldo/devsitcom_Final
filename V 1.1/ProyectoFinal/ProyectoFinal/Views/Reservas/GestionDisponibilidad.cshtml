@@ -389,10 +389,10 @@
                     if (Model.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 2)
                     {<br />
                     <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnTusDptosOCabana" onclick="window.location = '@Url.Action("TusDptosOCabanas", "Reservas", new { idLugarHospedaje = Model.LugarHospedaje.FirstOrDefault().idLugarHospedaje })'">
-                        TUS DPTOS Ó CABAÑAS
+                     DPTOS Ó CABAÑAS
                     </button><br />
                 <button class="btn btn-success btn-lg btn-block" style="background-color: rgba(177, 13, 20, 1);" id="btnDisponibilidadCabana" onclick="window.location = '@Url.Action("Disponibilidad", "Complejo", new { id = Model.idNegocio , idTipo= ViewBag.idTipo})'">
-                    REGISTRAR DISPONIBILIDAD
+                    DISPONIBILIDAD
                 </button><br />
 
                     }
@@ -608,7 +608,9 @@
 
         </div>
 
-
+        <a href="javascript:history.back()" class="btn btn-info" style="padding:10px; margin-top:20px; width: 200px;">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  Volver
+        </a>
 
     </div>
 

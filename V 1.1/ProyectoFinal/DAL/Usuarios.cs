@@ -16,13 +16,13 @@ namespace DAL
     {
         public Usuarios()
         {
+            this.EncuestasAsignadas = new HashSet<EncuestasAsignadas>();
             this.FotosUsuario = new HashSet<FotosUsuario>();
             this.Negocio = new HashSet<Negocio>();
             this.PromocionesOtorgadas = new HashSet<PromocionesOtorgadas>();
             this.Solicitud = new HashSet<Solicitud>();
             this.Tramite = new HashSet<Tramite>();
             this.Tramite1 = new HashSet<Tramite>();
-            this.EncuestasAsignadas = new HashSet<EncuestasAsignadas>();
         }
     
         public int idUsuario { get; set; }
@@ -31,6 +31,7 @@ namespace DAL
         public Nullable<int> idPerfil { get; set; }
         public Nullable<int> idPersona { get; set; }
     
+        public virtual ICollection<EncuestasAsignadas> EncuestasAsignadas { get; set; }
         public virtual ICollection<FotosUsuario> FotosUsuario { get; set; }
         public virtual ICollection<Negocio> Negocio { get; set; }
         public virtual Perfiles Perfiles { get; set; }
@@ -39,6 +40,5 @@ namespace DAL
         public virtual ICollection<Solicitud> Solicitud { get; set; }
         public virtual ICollection<Tramite> Tramite { get; set; }
         public virtual ICollection<Tramite> Tramite1 { get; set; }
-        public virtual ICollection<EncuestasAsignadas> EncuestasAsignadas { get; set; }
     }
 }

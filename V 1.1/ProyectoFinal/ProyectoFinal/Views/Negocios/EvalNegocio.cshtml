@@ -109,8 +109,15 @@
                                         }
                                         else
                                         {
-                                            @Html.Label("  -  ") @Model.LugarHospedaje.FirstOrDefault().TipoLugarHospedaje.nombre
-                                            @Html.Label(" de ") @Model.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().TipoComplejo.nombreTipoComplejo
+                                            if (Model.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idTipoComplejo == 4)
+                                            {
+                                                @Html.Label("  -  Casa o Departamento") 
+                                            }
+                                            else
+                                            {                                     
+                                                 @Html.Label("  -  ") @Model.LugarHospedaje.FirstOrDefault().TipoLugarHospedaje.nombre
+                                                 @Html.Label(" de ") @Model.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().TipoComplejo.nombreTipoComplejo
+                                            }
                                         }
 
                                     }
@@ -191,7 +198,7 @@
                                         if (item.esPrincipal == true)
                                         {
                                             <div id="divImagenPrincipal">
-                                                <img src="@Url.Action("ObtenerImagen","Negocios",new { id = item.idFoto })" alt="Alternate Text" style="width: 500px; height: 500px;" />
+                                                <img src="@Url.Action("ObtenerImagen","Negocios", new { id = item.idFoto })" alt="Alternate Text" style="width: 500px; height: 500px;" />
                                             </div>
                                         }
                                     }
@@ -265,7 +272,7 @@
 
 
                             <div id="textoSolicCorr" style="display:none" class="alert alert-block alert-danger fade in col-lg-10 col-lg-offset-1">
-                                <h4 class="alert-heading"><i class="fa fa-times"></i> Rechazado</h4>
+                                <h4 class="alert-heading"><i class="fa fa-times"></i> Solicitud de Correccion</h4>
                                 Atención! Usted esta solicitando una correccion del siguiente negocio,
                                 el mismo no se hará publico en el sitio web hasta no ser aprobado. Recordá que se pueden solicitar
                                 hasta 2 correcciones, luego se debera aprobar o rechazar el tramite.

@@ -21,6 +21,11 @@ namespace ProyectoFinal.Controllers
             return View();
         }
 
+        public ActionResult GraficoBarra()
+        {
+            return View();
+        }
+
         public JsonResult DataGraficoTorta(string un_parametro)
         {
             GraficoTestManager gm = new GraficoTestManager();
@@ -30,10 +35,12 @@ namespace ProyectoFinal.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public ActionResult GraficoBarra()
+     
+   public ActionResult GraficoBarraDinamico()
         {
             return View();
         }
+
 
         public JsonResult DataGraficoBarra(string un_parametro)
         {

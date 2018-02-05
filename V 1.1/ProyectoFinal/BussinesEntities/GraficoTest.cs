@@ -8,7 +8,9 @@ namespace BussinesEntities
 {
     public class GraficoTest
     {
-        public int Valor { get; set; }
+        public string Valor { get; set; }
+        public string Valor_2 { get; set; }
+        public string Valor_3 { get; set; }
         public string Etiqueta { get; set; }
     }
 }

@@ -117,6 +117,7 @@ namespace BussinesEntities
 
     public class ReservasComentariosEntities
     {
+        public int idComentarioSolicitud { get; set; }
         public string comentario { get; set; }
         public string rutaAdjunto { get; set; }
         public int idSolicitud { get; set; }

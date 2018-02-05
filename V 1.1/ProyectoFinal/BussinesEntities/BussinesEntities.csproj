@@ -69,6 +69,7 @@
     <Compile Include="HotelEntity.cs" />
     <Compile Include="LugarHospedajeEntity.cs" />
     <Compile Include="NegocioEntity.cs" />
+    <Compile Include="NotificacionesEntity.cs" />
     <Compile Include="PersonaEntity.cs" />
     <Compile Include="PreguntasEntity.cs" />
     <Compile Include="PromocionesEntity.cs" />

@@ -27,6 +27,9 @@ namespace ProyectoFinal.Controllers
                 ViewBag.ReturnUrl = returnUrl;
                 ViewBag.idNegocio = idNegocio;
 
+               // string msj = mensaje == null ? "" : mensaje.ToString();
+               // ViewBag.Mensaje = msj;
+
                 per.idNegocio = idNegocio;
 
                 per.Domicilio = new DomicilioEntity()
@@ -41,15 +44,46 @@ namespace ProyectoFinal.Controllers
         [HttpPost]
         public ActionResult DatosPersonales(PersonaEntity per, string returnUrl, int? idNegocio)
         {
+
             ObtenerUsuarioActual();
-            
+
             per.Usuarios.Add(usuarioActual);
-            int idPersona = pm.AddPersona(per);
 
-            usuarioActual.idPersona = idPersona;
-            Session["User"] = usuarioActual;
+            if (ModelState.IsValid)
+            {
+                
+                int idPersona = pm.AddPersona(per);
 
-            return RedirectToAction(returnUrl);
+                usuarioActual.idPersona = idPersona;
+                Session["User"] = usuarioActual;
+
+                if (idNegocio != null)
+                    returnUrl = returnUrl + idNegocio.ToString();
+
+                return RedirectToAction(returnUrl);
+            }
+            else 
+            {
+                if (idNegocio != null)
+                    returnUrl = returnUrl + idNegocio.ToString();
+
+                ViewBag.ReturnUrl = returnUrl;
+                ViewBag.IdNegocio = idNegocio;
+                ViewBag.Sexos = new SelectList(db.Sexo, "idSexo", "nombre");
+                ViewBag.TiposDocumento = new SelectList(db.TipoDocumento, "idTipoDocumento", "nombre");
+
+                per.idNegocio = idNegocio;
+
+                per.Domicilio = new DomicilioEntity()
+                {
+                    listPaises = dm.GetAllPaises(),
+                    listProvincias = new List<Provincia>(),
+                    listLocalidades = new List<Localidad>()
+                };
+
+                return View("DatosPersonales",per);
+            }          
+           
         }
         public ActionResult PaisSeleccionado([Bind(Include = "nombre,apellido,idTipoDocumento,documento,idSexo,email,idNegocio")] PersonaEntity persona, int? idPaisSeleccionado, string returnUrl)
         {

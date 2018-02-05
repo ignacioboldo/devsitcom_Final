@@ -1,0 +1,255 @@
+﻿
+
+@{
+    var id_perfil = 0;
+
+    try
+    {
+        id_perfil = Model.idPerfil;
+    }
+    catch (Exception)
+    {
+        
+
+        try
+        {
+            id_perfil = ViewBag.idPerfil;
+        }
+        catch (Exception)
+        {
+            Response.Redirect("~/Usuarios/Login");
+        }
+    }
+}
+
+
+
+<script type="text/javascript">
+
+    var perfil = "@id_perfil"
+    var mensaje = "@ViewBag.Mensaje"
+    var negocio = "@ViewBag.IdNegocio"
+
+    $(document).ready(function () {
+
+        $.ajax({
+            type: 'GET',
+            url: '../../Encuestas/GetEncuestasSinResponder',
+            success: function (response) {
+                $("#encuestasSinResponder").html(response);
+            },
+            async:false
+         });
+
+        $.ajax({
+            type: 'GET',
+            url: '../../Promociones/GetPromocioneSinUtilizar',  
+            success: function (response) {
+                $("#promocionesSinUtilizar").html(response);
+            },
+            async:false
+        });
+
+        if (perfil == 1) {
+            $("#btnTusTramites").show();
+            $("#btnTusNegocios").hide();
+            $("#btnTusTramitesAsignados").hide();
+            $("#btnTodosLosTramites").hide();
+            $("#tabSecretaria").hide();
+            $("#btnTusPromociones").show();
+            $("#btnEncuestas").hide();
+            $("#btnTusEncuestas").show();
+			$("#divTuristaRespNegocio").show();
+            $("#divRespSecretaria").hide();
+            $("#btnTodosLosTramites").hide();
+            $("#btnMisReservas").show();
+            $("#btnGestionUsuarios").hide();
+            $("#btnGestionPerfiles").hide();
+            $("#btnTusReportes").hide();          
+            
+        }
+
+        if (perfil == 2) {
+            $("#btnTusTramites").show();
+            $("#btnTusNegocios").show();
+            $("#btnTusTramitesAsignados").hide();
+            $("#btnTodosLosTramites").hide();
+            $("#tabSecretaria").hide();
+            $("#btnTusPromociones").hide();
+            $("#btnEncuestas").hide();
+            $("#btnTusEncuestas").hide();
+			$("#divTuristaRespNegocio").show();
+            $("#divRespSecretaria").hide();
+            $("#btnTodosLosTramites").hide();
+            $("#btnMisReservas").hide();
+            $("#btnGestionUsuarios").hide();
+            $("#btnGestionPerfiles").hide();
+            $("#btnTusReportes").show();
+        }
+
+        if (perfil == 3) {
+            $("#btnTusTramites").hide();
+            $("#btnTusNegocios").hide();
+            $("#btnTusTramitesAsignados").show();
+            $("#btnTodosLosTramites").show();
+            $("#tabSecretaria").show();
+            $("#btnTusPromociones").hide();
+            $("#btnEncuestas").show();
+            $("#btnTusEncuestas").hide();
+			$("#divTuristaRespNegocio").hide();
+			$("#divRespSecretaria").show();
+			$("#btnMisReservas").hide();
+			$("#btnGestionUsuarios").hide();
+			$("#btnGestionPerfiles").hide();
+			$("#btnTusReportes").show();
+        }
+
+        if (perfil == 4) {
+            $("#btnTusTramites").hide();
+            $("#btnTusNegocios").hide();
+            $("#btnTusTramitesAsignados").hide();
+            $("#btnTodosLosTramites").hide();
+            $("#tabSecretaria").hide();
+            $("#btnTusPromociones").hide();
+            $("#btnEncuestas").hide();
+            $("#btnTusEncuestas").hide();
+            $("#btnGestionUsuarios").show();
+			$("#divTuristaRespNegocio").hide();
+            $("#divRespSecretaria").hide();
+            $("#btnTodosLosTramites").hide();
+            $("#btnMisReservas").hide();
+            $("#btnGestionUsuarios").show();
+            $("#btnGestionPerfiles").show();
+            $("#btnTusReportes").hide();
+        }
+               
+
+
+        if (mensaje != "") {
+            alert(mensaje);
+        }
+
+        $("#btnTusTramites").click(function (event) {
+            window.location = '@Url.Action("TramitesUsuario","Tramites")';
+            event.preventDefault();
+        });
+
+        $("#btnTusTramitesAsignados").click(function (event) {
+            window.location = '@Url.Action("TramitesUsuario","Tramites")';
+            event.preventDefault();
+        });
+
+        $("#btnModificarDatos").click(function (event) {
+            window.location = '@Url.Action("EditUsuario","Usuarios")';
+            event.preventDefault();
+        });
+
+        $("#btnTusNegocios").click(function (event) {
+            window.location = '@Url.Action("NegociosUsuario","Negocios")';
+            event.preventDefault();
+        });
+
+
+        $("#btnMisReservas").click(function (event) {
+            window.location = '@Url.Action("ReservasUsuario", "Reservas")';
+            event.preventDefault();
+        });
+
+        $("#btnTusPromociones").click(function (event) {
+            window.location = '@Url.Action("PromocionesUsuario","Promociones")';
+            event.preventDefault();
+        });
+
+        $("#btnTusReportes").click(function (event) {
+            window.location = '@Url.Action("Index", "Reportes")';
+            event.preventDefault();
+        });
+		
+        $("#btnTusEncuestas").click(function (event) {
+            window.location = '@Url.Action("EncuestasUsuario","Encuestas")';
+            event.preventDefault();
+        });
+
+        $("#btnEncuestas").click(function (event) {
+            window.location = '@Url.Action("EncuestasIndex", "Encuestas")';
+            event.preventDefault();
+        });
+
+        $("#btnGestionUsuarios").click(function (event) {
+            window.location = '@Url.Action("Index", "Usuarios")';
+            event.preventDefault();
+        });
+
+		$("#btnTodosLosTramites").click(function (event) {
+            window.location = '@Url.Action("TramitesResp", "Tramites")';
+            event.preventDefault();
+        });
+
+
+        $("#btnNuevaEncuesta").click(function (event) {
+            window.location = '@Url.Action("NuevaEncuesta", "Encuestas")';
+            event.preventDefault();
+        });
+
+    });
+
+</script>
+
+
+<div class="row">
+
+    <div class="col-xs-12">
+        <div class="btn-group" role="group" aria-label="..." style="text-align:center">
+
+            <a href="" class="btn btn-default" id="btnModificarDatos" style="width:220px; margin-bottom:10px;">
+                MODIFICÁ TUS DATOS
+            </a>
+            <a href="" class="btn btn-default" id="btnTusNegocios" style="width:220px; margin-bottom:10px;">
+                TUS NEGOCIOS
+            </a>
+            <a href="" class="btn btn-default" id="btnTusPromociones" style="width:220px; margin-bottom:10px;">
+                TUS PROMOCIONES <label id="promocionesSinUtilizar"></label>
+            </a>
+
+            <a href="" class="btn btn-default" id="btnTusTramites" style="width:220px; margin-bottom:10px;">
+                TUS TRAMITES
+            </a>
+			
+			<a class="btn btn-default" id="btnTusEncuestas" style="width:200px; margin-bottom:10px;">
+				TUS ENCUESTAS <label id="encuestasSinResponder"></label>
+			</a>
+			
+            <a href="" class="btn btn-default" id="btnMisReservas" style="width:220px; margin-bottom:10px;">
+                TUS RESERVAS
+            </a>
+			
+            <a href="" class="btn btn-default" id="btnTusTramitesAsignados" style="width:220px; margin-bottom:10px;">
+                TUS TRAMITES ASIGNADOS
+            </a>
+
+            <a href="" class="btn btn-default" id="btnTusReportes" style="width:220px; margin-bottom:10px;">
+                TUS REPORTES
+            </a>
+			
+			<a href="" class="btn btn-default" id="btnEncuestas" style="width:250px; margin-bottom:10px;">
+				ENCUESTAS 
+			</a>
+
+			<a href="" class="btn btn-default" id="btnTodosLosTramites" style="width:250px;">
+                TODOS LOS TRAMITES
+            </a>
+
+            <a href="" class="btn btn-default" id="btnGestionUsuarios" style="width:250px;">
+                GESTION DE USUARIOS
+            </a>
+
+            <a href="" class="btn btn-default" id="btnGestionPerfiles" style="width:250px;">
+                GESTION DE PERFILES
+            </a>
+
+
+        </div>
+
+    </div>
+
+</div>

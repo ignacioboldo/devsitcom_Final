@@ -74,6 +74,13 @@ namespace ProyectoFinal
                     return View("Nuevo", usuario);
                 }
             }
+            else
+            {
+                ModelState.AddModelError("", "Hay errores en los campos completados.");
+                ViewBag.Perfil = usuarioActual.idPerfil;
+                ViewBag.Perfiles = new SelectList(db.Perfiles, "idPerfil", "nombre");
+                return View("Nuevo", usuario);
+            }
 
             return RedirectToAction("Index","Home");
         }

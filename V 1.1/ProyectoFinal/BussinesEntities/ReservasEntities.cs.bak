@@ -86,6 +86,7 @@ namespace BussinesEntities
         public string Negocio { get; set; }
         public int idPersona { get; set; }
         public String Mensaje { get; set; }
+        public int MensajesSinLeer { get; set; }
     }
 
     public class ListadoHabitacionesEnCkeckInEntities
@@ -93,9 +94,26 @@ namespace BussinesEntities
         public string Nombre { get; set; }
         public int idReserva { get; set; }
         public int idDisponibilidad { get; set; }
-        
-
     }
+
+    public class SolicitudesNegociosEntities
+    {
+        public int idSolicitud { get; set; }
+        public DateTime FechaDesde { get; set; }
+        public DateTime fechaHasta { get; set; }
+        public int cantidadPersonas { get; set; }
+        public int cantidadLugares { get; set; }
+        public string observacion { get; set; }
+        public Boolean Expirar { get; set; }
+        public DateTime FechaExpiracion { get; set; }
+        public DateTime fechaCreacion { get; set; }
+        public string NombreApellido { get; set; }
+        public int documento { get; set; }
+        public String Mensaje { get; set; }
+        public int idNegocio { get; set; }
+        public int MensajesSinLeer { get; set; }
+    }
+
 
     public class ReservasComentariosEntities
     {
@@ -153,4 +171,21 @@ namespace BussinesEntities
         
     }
 
-}
+
+    public class ListadoDisponibilidadPlanoEntities
+    {
+        public DateTime FechaDesde { get; set; }
+        public DateTime fechaHasta { get; set; }
+        public int idDisponibilidad { get; set; }
+        public int idEstado { get; set; }
+        public string nombreEstado { get; set; }
+        public int idNegocio { get; set; }  
+        public string nombreHabitacion { get; set; }
+
+    }
+
+
+    
+
+        }
+

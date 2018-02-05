@@ -1,0 +1,170 @@
+﻿
+@{
+    ViewBag.Title = "Gestion de Reportes";
+
+    var id_perfil = 0;
+
+    try
+    {
+        id_perfil = ViewBag.idPerfil;
+    }
+    catch (Exception)
+    {
+        Response.Redirect("~/Usuarios/Login");
+    }
+    
+}
+
+
+<script>
+    var perfil =  "@ViewBag.idPerfil"
+    var mensaje = "@ViewBag.Mensaje"
+    var negocio = "@ViewBag.IdNegocio"
+    var countComercio = "@ViewBag.countComercio"
+    var countHospedaje = "@ViewBag.countHospedaje"
+
+
+    $(document).ready(function () {
+
+        //if (perfil == 1)
+        //{
+        //    $("#btnTusTramites").show();
+        //    $("#btnTusNegocios").hide();
+        //    $("#btnTusTramitesAsignados").hide();
+        //    $("#btnTodosLosTramites").hide();
+        //    $("#tabSecretaria").hide();
+        //    $("#btnTusPromociones").show();
+        //}
+
+        if (perfil == 2 ) 
+        {
+            
+
+
+            if(countComercio > 0)
+            {
+                $("#btnReservasCategoria").hide();
+                $("#btnReservasProvincia").hide();
+                $("#btnPromocionesComercio").hide();
+                $("#btnReservasPorSolicitud").hide();
+                $("#btnReservasProvinciaNegocio").hide();
+                $("#btnPromocionesNoUtilizadas").show();
+                
+            }
+            
+            if(countHospedaje > 0 )
+            {
+                $("#btnReservasCategoria").hide();
+                $("#btnReservasProvincia").hide();
+                $("#btnPromocionesComercio").hide();
+                $("#btnReservasPorSolicitud").hide();
+                $("#btnReservasProvinciaNegocio").show();
+                $("#btnPromocionesNoUtilizadas").hide();
+            }
+
+            if(countComercio > 0 & countHospedaje > 0){
+                $("#btnReservasCategoria").hide();
+                $("#btnReservasProvincia").hide();
+                $("#btnPromocionesComercio").hide();
+                $("#btnReservasPorSolicitud").hide();
+                $("#btnReservasProvinciaNegocio").show();
+                $("#btnPromocionesNoUtilizadas").show();
+            }
+          
+         } 
+
+        if (perfil == 3) {
+
+            $("#btnReservasCategoria").show();
+            $("#btnReservasProvincia").show();
+            $("#btnPromocionesComercio").show();
+            $("#btnReservasPorSolicitud").show();
+            $("#btnReservasProvinciaNegocio").hide();
+            $("#btnPromocionesNoUtilizadas").hide();
+        }
+
+        if (mensaje != "") {
+            alert(mensaje);
+        }
+
+
+        function buscarReporte() {
+
+            var nombre_reporte = $("#nombre_reporte").val();
+            var fecha_desde = $("#fecha_desde").val();
+            var fecha_hasta = $("#fecha_hasta").val();
+
+            $.ajax({
+                type: 'GET',
+                url: 'Reportes/BuscarReporte?nombre_reporte=' + nombre_reporte + '&fecha_desde=' + fecha_desde + '&fecha_hasta=' + fecha_hasta,
+                success: function (response) {
+                    $("#resultado").html(response);
+                }
+            })
+        }
+    });
+
+
+</script>
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Gestion de Reportes</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Gestion de Reportes</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+ 
+
+
+        <div class="row">
+        
+            <div class="col-md-6">
+                <button id="btnReservasCategoria" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Reservas por Categoria" })' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px;">Reservas por Categoria</button>
+            </div>
+            <br />
+            <div class="col-md-6">
+                <button id="btnReservasProvincia" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Reservas por Origen" })' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px;">Reservas por Provincia</button>
+            </div>
+            <div class="col-md-6">
+                <button id="btnPromocionesComercio" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Promociones por Comercio" })' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px;">Promociones por Comercio</button>
+            </div>
+
+            <div class="col-md-6">
+                <button id="btnReservasPorSolicitud" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Reservas por Solicitud" })' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px;">Reservas por Solicitud</button>
+            </div>
+
+            <div class="col-md-6">
+                <button id="btnReservasProvinciaNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValorNegocio_Index", "Reportes", new { nombre_reporte = "Reservas por Origen Negocio", idTipoReporte = 1 })' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px;">Reservas por Provincia</button>
+            </div>
+
+            <div class="col-md-6">
+                <button id="btnPromocionesNoUtilizadas" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValorNegocio_Index", "Reportes", new { nombre_reporte = "Promociones no Utilizadas Negocio", idTipoReporte = 2 })' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px;">Promociones no Utilizadas Por Comercio</button>
+            </div>
+        </div>
+
+        <hr />
+
+        <div id="resultado"></div>
+
+    </div>
+</section>

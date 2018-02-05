@@ -65,6 +65,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Armar_Grafico_Result.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="cambiarHabitacionesNuevoHotel_Result.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
@@ -99,6 +102,9 @@
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ConsultarListadoReservasPorPersona_Result.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ConsultarListadoSolicitudesPorNegocio_Result.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="ConsultarListadoSolicitudesPorPersona_Result.cs">
@@ -144,6 +150,9 @@
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="getPromocionOtorgada_Result.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="GetRespuestasEncuesta_Result.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="getUltimaPromocionOtorgada_Result.cs">
@@ -235,6 +244,9 @@
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="Telefono.cs">
+      <DependentUpon>SitcomModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Test.cs">
       <DependentUpon>SitcomModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TipoCaracteristica.cs">

@@ -23,9 +23,163 @@
 
     });
 
+    function armar_graficoTorta() {
 
+        var tipo_reporte = $("#tipo_reporte").val();
+       
+        var nombre_reporte = "@ViewBag.nombre_reporte";
+        var fecha_desde = $("#fecha_desde").val();
+        var fecha_hasta = $("#fecha_hasta").val();
+        
 
-    function ReporteCampoFechaValor() {
+        $("#resultado").hide();
+        $("#cargando_grafico").show();
+
+        $.ajax({
+            type: 'GET',
+            url: 'DataGraficoTortaDinamico?tipo_reporte=' + tipo_reporte + '&nombre_reporte=' + nombre_reporte + '&fecha_desde=' + fecha_desde + '&fecha_hasta=' + fecha_hasta ,
+            success: function (response) {
+
+                var valores = [];
+                var etiquetas = [];
+
+                response.forEach(function (element) {
+                    valores.push(element.Valor);
+                    etiquetas.push(element.Campo);
+                });
+
+                var config = {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: valores,
+                            label: 'Dataset 1',
+                            backgroundColor: colores(valores)
+                        }],
+                        labels: etiquetas
+                    },
+                    options: {
+                        responsive: true
+                    }
+                };
+
+                var ctx = document.getElementById("chart-area").getContext("2d");
+                window.myPie = new Chart(ctx, config);
+
+                $("#cargando_grafico").hide();
+
+                $("#canvas-holder").show();
+                $("#chart-area").show();
+                $("#canvas").hide();
+            }
+        })
+
+    }
+
+    function armar_graficoBarraDinamico() {
+
+        var tipo_reporte = $("#tipo_reporte").val();
+        
+        var nombre_reporte = "@ViewBag.nombre_reporte";
+        var fecha_desde = $("#fecha_desde").val();
+        var fecha_hasta = $("#fecha_hasta").val();
+        var string1 = "@ViewBag.valor1";
+        var string2 = "@ViewBag.valor2";
+        var string3 = "@ViewBag.valor3";
+        
+
+        $("#cargando_grafico").show();
+
+        $.ajax({
+            type: 'GET',
+            url: 'DataGraficoTortaDinamico?tipo_reporte=' + tipo_reporte + '&nombre_reporte=' + nombre_reporte + '&fecha_desde=' + fecha_desde + '&fecha_hasta=' + fecha_hasta,
+            success: function (response) {
+
+                var valores = [];
+                var valores_2 = [];
+                var valores_3 = [];
+                var etiquetas = [];
+
+                response.forEach(function (element) {
+
+                    valores.push(element.Valor);
+                    valores_2.push(element.Valor_2);
+                    valores_3.push(element.Valor_3);
+
+                    etiquetas.push(element.Campo);
+                   
+
+                  
+                });
+
+                var color = Chart.helpers.color;
+
+             
+
+                var barChartData = {
+                    labels: etiquetas,
+                    datasets: [{
+                        label: string1,
+                        backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                        borderColor: window.chartColors.green,
+                        borderWidth: 1,
+                        data: valores
+                    },
+                    {
+                        label: string2,
+                        backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                        borderColor: window.chartColors.green,
+                        borderWidth: 1,
+                        data: valores_2
+                    },
+                    {
+                        label: string3,
+                        backgroundColor: color(window.chartColors.yellow).alpha(0.5).rgbString(),
+                        borderColor: window.chartColors.green,
+                        borderWidth: 1,
+                        data: valores_3
+                    }]
+
+                };
+
+                
+
+                var ctx = document.getElementById("canvas").getContext("2d");
+                window.myBar = new Chart(ctx, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: nombre_reporte
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+
+               
+                $("#cargando_grafico").hide();
+
+            }
+        })
+
+        $("#cargando_grafico").hide();
+        $("#canvas").show();
+        $("#canvas-holder").hide();
+        $("#chart-area").hide();
+    }
+
+    @*function ReporteCampoFechaValor() {
 
         var tipo_reporte = $("#tipo_reporte").val();
         //var nombre_reporte = $("#nombre_reporte").val();
@@ -33,8 +187,7 @@
         var fecha_desde    = $("#fecha_desde").val();
         var fecha_hasta    = $("#fecha_hasta").val();
 
-        //alert(fecha_desde);
-        //alert(fecha_hasta);
+     
 
         $.ajax({
             type: 'GET',
@@ -43,6 +196,59 @@
                 $("#resultado").html(response);
             }
         })
+    }*@
+
+    function colores(internalData) {
+
+        var graphColors = [];
+        var graphOutlines = [];
+        var hoverColor = [];
+
+        var internalDataLength = internalData.length;
+        i = 0;
+        while (i <= internalDataLength) {
+            var randomR = Math.floor((Math.random() * 130) + 100);
+            var randomG = Math.floor((Math.random() * 130) + 100);
+            var randomB = Math.floor((Math.random() * 130) + 100);
+
+            var graphBackground = "rgb("
+                    + randomR + ", "
+                    + randomG + ", "
+                    + randomB + ")";
+            graphColors.push(graphBackground);
+
+            var graphOutline = "rgb("
+                    + (randomR - 80) + ", "
+                    + (randomG - 80) + ", "
+                    + (randomB - 80) + ")";
+            graphOutlines.push(graphOutline);
+
+            var hoverColors = "rgb("
+                    + (randomR + 25) + ", "
+                    + (randomG + 25) + ", "
+                    + (randomB + 25) + ")";
+            hoverColor.push(hoverColors);
+
+            i++;
+        };
+
+        return hoverColor;
+
+    }
+
+
+    
+
+
+    function llamarReporte() {
+        var tipo_reporte = $("#tipo_reporte").val();
+
+
+
+        if (tipo_reporte == "General")
+            armar_graficoTorta();
+        else
+            armar_graficoBarraDinamico();
     }
 
 </script>
@@ -53,7 +259,9 @@
         <div class="row">
             <div class="col-xs-6">
                 <div class="page-title">
-                    <h2>Gestion de Reportes - @ViewBag.nombre_reporte </h2>
+                    <h2>Gestion de Reportes </h2>
+                    <br />
+                    <h3>@ViewBag.nombre_reporte</h3>
                 </div>
             </div>
             <div class="col-xs-6">
@@ -100,14 +308,23 @@
 
             <div class="col-md-4">
 
-                <button class="btn btn-block" onclick="ReporteCampoFechaValor();" style="background-color:yellowgreen; color:white;">Buscar</button>
+                <button class="btn btn-block" onclick="llamarReporte();" style="background-color:yellowgreen; color:white;">Buscar</button>
             </div>
 
         </div>
 
 
-
         <div id="resultado"></div>
+
+        <div id="cargando_grafico" style="display:none; text-align:center">Cargando grafico por favor espere...</div>
+        <div id="canvas-holder" style="width:80%">
+            <br />
+            <br />
+            <canvas id="chart-area" />
+        </div>
+
+        <br />
+        <canvas id="canvas"></canvas>
 
     </div>
 </section>

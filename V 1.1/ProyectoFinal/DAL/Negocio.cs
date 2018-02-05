@@ -17,6 +17,7 @@ namespace DAL
         public Negocio()
         {
             this.Comercio = new HashSet<Comercio>();
+            this.EncuestasAsignadas = new HashSet<EncuestasAsignadas>();
             this.FotosNegocio = new HashSet<FotosNegocio>();
             this.LugarHospedaje = new HashSet<LugarHospedaje>();
             this.Negocio1 = new HashSet<Negocio>();
@@ -24,7 +25,6 @@ namespace DAL
             this.Solicitud = new HashSet<Solicitud>();
             this.Sucursal = new HashSet<Sucursal>();
             this.Tramite = new HashSet<Tramite>();
-            this.EncuestasAsignadas = new HashSet<EncuestasAsignadas>();
         }
     
         public int idNegocio { get; set; }
@@ -38,6 +38,7 @@ namespace DAL
         public Nullable<bool> estaAnulado { get; set; }
     
         public virtual ICollection<Comercio> Comercio { get; set; }
+        public virtual ICollection<EncuestasAsignadas> EncuestasAsignadas { get; set; }
         public virtual ICollection<FotosNegocio> FotosNegocio { get; set; }
         public virtual ICollection<LugarHospedaje> LugarHospedaje { get; set; }
         public virtual ICollection<Negocio> Negocio1 { get; set; }
@@ -48,6 +49,5 @@ namespace DAL
         public virtual ICollection<Solicitud> Solicitud { get; set; }
         public virtual ICollection<Sucursal> Sucursal { get; set; }
         public virtual ICollection<Tramite> Tramite { get; set; }
-        public virtual ICollection<EncuestasAsignadas> EncuestasAsignadas { get; set; }
     }
 }

@@ -55,6 +55,7 @@
     <Compile Include="EncuestasManager.cs" />
     <Compile Include="GraficoTestManager.cs" />
     <Compile Include="HabitacionesManager.cs" />
+    <Compile Include="NotificacionesManager.cs" />
     <Compile Include="HotelManager.cs" />
     <Compile Include="NegociosManager.cs" />
     <Compile Include="PerfilesManager.cs" />

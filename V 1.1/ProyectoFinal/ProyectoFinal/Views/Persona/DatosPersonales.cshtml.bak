@@ -1,0 +1,272 @@
+﻿@model BussinesEntities.PersonaEntity
+@{
+    ViewBag.Title = "Datos Personales";
+}
+<script type="text/javascript">
+
+    var returnUrl = "@ViewBag.ReturnUrl"
+
+    $(document).ready(function () {
+        $("#ddlPaises").change(function () {
+            nombre = $("#nombre").val();
+            idNegocio = $("#idNegocio").val();
+            $("#idNegocio").val(idNegocio)
+            apellido = $("#apellido").val();
+            idTipoDocumento = $("#idTipoDocumento").val();
+            documento = $("#documento").val();
+            idSexo = $("#idSexo").val();
+            email = $("#email").val();
+            idPaisSeleccionado = $("#ddlPaises").val();
+            datos = "idNegocio=" + idNegocio + "&";
+            datos = datos + "nombre=" + nombre + "&";
+            datos = datos + "apellido=" + apellido + "&";
+            datos = datos + "idTipoDocumento=" + idTipoDocumento + "&";
+            datos = datos + "documento=" + documento + "&";
+            datos = datos + "idSexo=" + idSexo + "&";
+            datos = datos + "email=" + email + "&";
+            datos = datos + "idPaisSeleccionado=" + idPaisSeleccionado + "&";
+            datos = datos + "returnUrl=" + returnUrl;
+            window.location = "../../Persona/PaisSeleccionado/?" + datos;
+            //$.ajax({
+            //    url: "../Persona/PaisSeleccionado",
+            //    type: "POST",
+            //    data: {
+            //        nombre: $("#nombre").val(),
+            //        apellido: $("#apellido").val(),
+            //        idTipoDocumento: $("#idTipoDocumento").val(),
+            //        documento: $("#documento").val(),
+            //        idSexo: $("#idSexo").val(),
+            //        email: $("#email").val(),
+            //        idPaisSeleccionado: $("#ddlPaises").val()
+            //    }
+            //});
+            //var f = $("#formPersona");
+            //var action = "../Persona/PaisSeleccionado";
+            //$.post(action, f.serialize());
+        });
+
+        $("#ddlProvincias").change(function () {
+            nombre = $("#nombre").val();
+            idNegocio = $("#idNegocio").val();
+            $("#idNegocio").val(idNegocio)
+            apellido = $("#apellido").val();
+            idTipoDocumento = $("#idTipoDocumento").val();
+            documento = $("#documento").val();
+            idSexo = $("#idSexo").val();
+            email = $("#email").val();
+            idPaisSeleccionado = $("#ddlPaises").val();
+            idProvinciaSeleccionada = $("#ddlProvincias").val();
+            datos = "idNegocio=" + idNegocio + "&";
+            datos = datos + "nombre=" + nombre + "&";
+            datos = datos + "apellido=" + apellido + "&";
+            datos = datos + "idTipoDocumento=" + idTipoDocumento + "&";
+            datos = datos + "documento=" + documento + "&";
+            datos = datos + "idSexo=" + idSexo + "&";
+            datos = datos + "email=" + email + "&";
+            datos = datos + "idPaisSeleccionado=" + idPaisSeleccionado + "&";
+            datos = datos + "idProvinciaSeleccionada=" + idProvinciaSeleccionada + "&";
+            datos = datos + "returnUrl=" + returnUrl;
+            window.location = "../../Persona/ProvinciaSeleccionada/?" + datos;
+        });
+    });
+
+</script>
+
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Datos Personales</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Datos Personales</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+
+        @using (Html.BeginForm("DatosPersonales", "Persona", new { returnUrl = ViewBag.ReturnUrl }))
+        {
+            @Html.AntiForgeryToken()
+
+            @Html.ValidationSummary(true)
+            
+            @Html.HiddenFor(model => model.idNegocio)
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-white">
+                        <div class="panel-heading">
+
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-horizontal">
+
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <h4 class="panel-title">Datos <span class="text-bold">Personales</span></h4>
+                                        <hr />
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                @Html.Label("Nombre: ", new { @class = "control-label" })
+                                                <br />
+                                                @Html.TextBoxFor(model => model.nombre, new { @class = "form-control", style = "" })
+                                                @Html.ValidationMessageFor(model => model.nombre)
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                @Html.Label("Apellido: ", new { @class = "control-label" })
+                                                <br />
+                                                @Html.TextBoxFor(model => model.apellido, new { @class = "form-control", style = "" })
+                                                @Html.ValidationMessageFor(model => model.apellido)
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                @Html.Label("Sexo: ", new { @class = "control-label" })
+                                                <br />
+                                                @Html.DropDownListFor(m => m.idSexo, (SelectList)ViewBag.Sexos, string.Empty, new { @class = "form-control", style = "" })
+                                                @Html.ValidationMessageFor(model => model.idSexo)
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                @Html.Label("Tipo de Documento: ", new { @class = "control-label" })
+                                                <br />
+                                                @Html.DropDownListFor(m => m.idTipoDocumento, (SelectList)ViewBag.TiposDocumento, string.Empty, new { @class = "form-control", style = "" })
+                                                @Html.ValidationMessageFor(model => model.idTipoDocumento)
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                @Html.Label("N° Documento: ", new { @class = "control-label" })
+                                                <br />
+                                                @Html.TextBoxFor(model => model.documento, new { @class = "form-control", style = "" })
+                                                @Html.ValidationMessageFor(model => model.documento)
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                @Html.Label("E-Mail Alternativo: ", new { @class = "control-label" })
+                                                <br />
+                                                @Html.TextBoxFor(model => model.email, new { @class = "form-control", style = "" })
+                                                @Html.ValidationMessageFor(model => model.email)
+                                            </div>
+                                        </div>
+
+                                        <br />
+                                    </div>
+
+
+                                    <div class="col-lg-6">
+                                        <h4 class="panel-title">Datos <span class="text-bold">Domicilio</span></h4>
+                                        <hr />
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                @Html.Label("Paises", new { @class = "control-label" })
+                                                <br />
+                                                @Html.DropDownListFor(m => m.Domicilio.Localidad.Provincia.idPais, new SelectList(Model.Domicilio.listPaises, "idPais", "nombrePais", Model.Domicilio.paisSeleccionado), string.Empty, new { id = "ddlPaises", @class = "form-control", style = "" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                @Html.Label("Provincia:", new { @class = "control-label" })
+                                                <br />
+
+                                                @Html.DropDownListFor(m => m.Domicilio.Localidad.idProvincia, new SelectList(Model.Domicilio.listProvincias, "idProvincia", "nombreProvincia", Model.Domicilio.provinciaSeleccionada), string.Empty, new { id = "ddlProvincias", @class = "form-control", style = "" })
+
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                @Html.Label("Localidad:", new { @class = "control-label" })
+                                                <br />
+                                                @Html.DropDownListFor(m => m.Domicilio.localidadSeleccionada, new SelectList(Model.Domicilio.listLocalidades, "idLocalidad", "nombreLocalidad", Model.Domicilio.localidadSeleccionada), string.Empty, new { id = "ddlLocalidades", @class = "form-control", style = "" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                @Html.Label("Barrio:", new { @class = "control-label" })
+                                                <br />
+                                                @Html.TextBoxFor(model => model.Domicilio.barrio, new { id = "barrio", @class = "form-control", style = "" })
+                                                @Html.ValidationMessageFor(model => model.Domicilio.barrio)
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                @Html.Label("Calle:", new { @class = "control-label" })
+                                                <br />
+                                                @Html.TextBoxFor(model => model.Domicilio.calle, new { id = "calle", @class = "form-control", style = "" })
+                                                @Html.ValidationMessageFor(model => model.Domicilio.calle)
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                @Html.Label("Número:", new { @class = "control-label" })
+                                                <br />
+                                                @Html.TextBoxFor(model => model.Domicilio.numero, new { id = "numero", @class = "form-control", style = "" })
+                                                @Html.ValidationMessageFor(model => model.Domicilio.numero)
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-xs-12">
+                                                @Html.Label("Depto:", new { @class = "control-label" })
+                                                <br />
+                                                @Html.TextBoxFor(model => model.Domicilio.dpto, new { id = "depto", @class = "form-control", style = "" })
+                                                @Html.ValidationMessageFor(model => model.Domicilio.dpto)
+                                            </div>
+                                        </div>
+                                        <br />
+                                        <br />
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group">
+                                    <div class="col-md-12" style="text-align:right">
+                                        <button type="submit" value="Registrar Datos Personales" style="background: yellowgreen; color:white;padding:10px;" class="btn btn-green">
+                                            REGISTRAR
+                                            <i class="fa fa-arrow-circle-right"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+
+
+    </div>
+</section>

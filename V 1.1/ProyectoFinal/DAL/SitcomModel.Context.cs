@@ -32,12 +32,15 @@ namespace DAL
         public virtual DbSet<CasaDptoOCabana> CasaDptoOCabana { get; set; }
         public virtual DbSet<CategoriaCaracteristicas> CategoriaCaracteristicas { get; set; }
         public virtual DbSet<CategoriaHospedaje> CategoriaHospedaje { get; set; }
+        public virtual DbSet<ClasifPregunta> ClasifPregunta { get; set; }
         public virtual DbSet<ComentariosSolicitud> ComentariosSolicitud { get; set; }
         public virtual DbSet<Comercio> Comercio { get; set; }
         public virtual DbSet<Complejo> Complejo { get; set; }
         public virtual DbSet<DetalleDisponibilidad> DetalleDisponibilidad { get; set; }
         public virtual DbSet<Disponibilidad> Disponibilidad { get; set; }
         public virtual DbSet<Domicilio> Domicilio { get; set; }
+        public virtual DbSet<Encuestas> Encuestas { get; set; }
+        public virtual DbSet<EncuestasAsignadas> EncuestasAsignadas { get; set; }
         public virtual DbSet<EstadoReserva> EstadoReserva { get; set; }
         public virtual DbSet<EstadoTramite> EstadoTramite { get; set; }
         public virtual DbSet<FotosNegocio> FotosNegocio { get; set; }
@@ -52,40 +55,46 @@ namespace DAL
         public virtual DbSet<Pais> Pais { get; set; }
         public virtual DbSet<Perfiles> Perfiles { get; set; }
         public virtual DbSet<Persona> Persona { get; set; }
+        public virtual DbSet<Preguntas> Preguntas { get; set; }
         public virtual DbSet<Promociones> Promociones { get; set; }
         public virtual DbSet<PromocionesOtorgadas> PromocionesOtorgadas { get; set; }
         public virtual DbSet<Provincia> Provincia { get; set; }
         public virtual DbSet<Reserva> Reserva { get; set; }
+        public virtual DbSet<RespuestasPosibles> RespuestasPosibles { get; set; }
+        public virtual DbSet<RtasXEncuestasAsignadas> RtasXEncuestasAsignadas { get; set; }
         public virtual DbSet<Rubro> Rubro { get; set; }
         public virtual DbSet<Sexo> Sexo { get; set; }
         public virtual DbSet<Solicitud> Solicitud { get; set; }
         public virtual DbSet<Sucursal> Sucursal { get; set; }
         public virtual DbSet<Telefono> Telefono { get; set; }
+        public virtual DbSet<Test> Test { get; set; }
         public virtual DbSet<TipoCaracteristica> TipoCaracteristica { get; set; }
         public virtual DbSet<TipoComplejo> TipoComplejo { get; set; }
         public virtual DbSet<TipoDeNegocio> TipoDeNegocio { get; set; }
         public virtual DbSet<TipoDocumento> TipoDocumento { get; set; }
         public virtual DbSet<TipoHabitacion> TipoHabitacion { get; set; }
         public virtual DbSet<TipoLugarHospedaje> TipoLugarHospedaje { get; set; }
+        public virtual DbSet<TiposEncuesta> TiposEncuesta { get; set; }
+        public virtual DbSet<TiposRespuesta> TiposRespuesta { get; set; }
         public virtual DbSet<TipoTramite> TipoTramite { get; set; }
         public virtual DbSet<Tramite> Tramite { get; set; }
         public virtual DbSet<Usuarios> Usuarios { get; set; }
-        public virtual DbSet<ClasifPregunta> ClasifPregunta { get; set; }
-        public virtual DbSet<Encuestas> Encuestas { get; set; }
-        public virtual DbSet<EncuestasAsignadas> EncuestasAsignadas { get; set; }
-        public virtual DbSet<Preguntas> Preguntas { get; set; }
-        public virtual DbSet<RespuestasPosibles> RespuestasPosibles { get; set; }
-        public virtual DbSet<RtasXEncuestasAsignadas> RtasXEncuestasAsignadas { get; set; }
-        public virtual DbSet<TiposEncuesta> TiposEncuesta { get; set; }
-        public virtual DbSet<TiposRespuesta> TiposRespuesta { get; set; }
     
-        public virtual ObjectResult<Nullable<decimal>> Actualizar_Comentarios_Leidos(Nullable<int> idReserva)
+        public virtual ObjectResult<Nullable<decimal>> Actualizar_Comentarios_Leidos(Nullable<int> idReserva, Nullable<int> idSolicitud, Nullable<bool> cliente)
         {
             var idReservaParameter = idReserva.HasValue ?
                 new ObjectParameter("idReserva", idReserva) :
                 new ObjectParameter("idReserva", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("Actualizar_Comentarios_Leidos", idReservaParameter);
+            var idSolicitudParameter = idSolicitud.HasValue ?
+                new ObjectParameter("idSolicitud", idSolicitud) :
+                new ObjectParameter("idSolicitud", typeof(int));
+    
+            var clienteParameter = cliente.HasValue ?
+                new ObjectParameter("cliente", cliente) :
+                new ObjectParameter("cliente", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<decimal>>("Actualizar_Comentarios_Leidos", idReservaParameter, idSolicitudParameter, clienteParameter);
         }
     
         public virtual ObjectResult<Nullable<int>> altaPromocion(Nullable<int> idNegocio, Nullable<System.DateTime> fechaVencimiento, string titulo, string descripcion, Nullable<int> diasBeneficio, Nullable<int> ofertaMaxima)
@@ -689,6 +698,228 @@ namespace DAL
                 new ObjectParameter("idReserva", typeof(int));
     
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ListarHabitacionesPorNroReserva_CheckIn_Result>("ListarHabitacionesPorNroReserva_CheckIn", idReservaParameter);
+        }
+    
+        public virtual ObjectResult<Armar_Grafico_Result> Armar_Grafico()
+        {
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Armar_Grafico_Result>("Armar_Grafico");
+        }
+    
+        public virtual int ConsultarDisponibilidadPorNegocio(Nullable<System.DateTime> fechaDesde, Nullable<System.DateTime> fechaHasta, Nullable<int> cantPersonas, Nullable<int> cantHabitaciones, Nullable<int> idNegocio)
+        {
+            var fechaDesdeParameter = fechaDesde.HasValue ?
+                new ObjectParameter("fechaDesde", fechaDesde) :
+                new ObjectParameter("fechaDesde", typeof(System.DateTime));
+    
+            var fechaHastaParameter = fechaHasta.HasValue ?
+                new ObjectParameter("fechaHasta", fechaHasta) :
+                new ObjectParameter("fechaHasta", typeof(System.DateTime));
+    
+            var cantPersonasParameter = cantPersonas.HasValue ?
+                new ObjectParameter("cantPersonas", cantPersonas) :
+                new ObjectParameter("cantPersonas", typeof(int));
+    
+            var cantHabitacionesParameter = cantHabitaciones.HasValue ?
+                new ObjectParameter("cantHabitaciones", cantHabitaciones) :
+                new ObjectParameter("cantHabitaciones", typeof(int));
+    
+            var idNegocioParameter = idNegocio.HasValue ?
+                new ObjectParameter("idNegocio", idNegocio) :
+                new ObjectParameter("idNegocio", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ConsultarDisponibilidadPorNegocio", fechaDesdeParameter, fechaHastaParameter, cantPersonasParameter, cantHabitacionesParameter, idNegocioParameter);
+        }
+    
+        public virtual int ConsultarHabitacionesDisponiblesPorFechaYNegocio_FiltroReserva(Nullable<System.DateTime> fechaDesde, Nullable<System.DateTime> fechaHasta, Nullable<int> idNegocio)
+        {
+            var fechaDesdeParameter = fechaDesde.HasValue ?
+                new ObjectParameter("fechaDesde", fechaDesde) :
+                new ObjectParameter("fechaDesde", typeof(System.DateTime));
+    
+            var fechaHastaParameter = fechaHasta.HasValue ?
+                new ObjectParameter("fechaHasta", fechaHasta) :
+                new ObjectParameter("fechaHasta", typeof(System.DateTime));
+    
+            var idNegocioParameter = idNegocio.HasValue ?
+                new ObjectParameter("idNegocio", idNegocio) :
+                new ObjectParameter("idNegocio", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ConsultarHabitacionesDisponiblesPorFechaYNegocio_FiltroReserva", fechaDesdeParameter, fechaHastaParameter, idNegocioParameter);
+        }
+    
+        public virtual int ConsultarListadDisponibilidadPorFechaYNegocio_Planning(Nullable<System.DateTime> fechaDesde, Nullable<System.DateTime> fechaHasta, Nullable<int> idNegocio, Nullable<bool> tipoComentario)
+        {
+            var fechaDesdeParameter = fechaDesde.HasValue ?
+                new ObjectParameter("fechaDesde", fechaDesde) :
+                new ObjectParameter("fechaDesde", typeof(System.DateTime));
+    
+            var fechaHastaParameter = fechaHasta.HasValue ?
+                new ObjectParameter("fechaHasta", fechaHasta) :
+                new ObjectParameter("fechaHasta", typeof(System.DateTime));
+    
+            var idNegocioParameter = idNegocio.HasValue ?
+                new ObjectParameter("idNegocio", idNegocio) :
+                new ObjectParameter("idNegocio", typeof(int));
+    
+            var tipoComentarioParameter = tipoComentario.HasValue ?
+                new ObjectParameter("tipoComentario", tipoComentario) :
+                new ObjectParameter("tipoComentario", typeof(bool));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ConsultarListadDisponibilidadPorFechaYNegocio_Planning", fechaDesdeParameter, fechaHastaParameter, idNegocioParameter, tipoComentarioParameter);
+        }
+    
+        public virtual ObjectResult<ConsultarListadoSolicitudesPorNegocio_Result> ConsultarListadoSolicitudesPorNegocio(Nullable<int> idNegocio)
+        {
+            var idNegocioParameter = idNegocio.HasValue ?
+                new ObjectParameter("idNegocio", idNegocio) :
+                new ObjectParameter("idNegocio", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<ConsultarListadoSolicitudesPorNegocio_Result>("ConsultarListadoSolicitudesPorNegocio", idNegocioParameter);
+        }
+    
+        public virtual int Disponibilidad_d(Nullable<int> idDisponibilidad)
+        {
+            var idDisponibilidadParameter = idDisponibilidad.HasValue ?
+                new ObjectParameter("idDisponibilidad", idDisponibilidad) :
+                new ObjectParameter("idDisponibilidad", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("Disponibilidad_d", idDisponibilidadParameter);
+        }
+    
+        public virtual ObjectResult<GetRespuestasEncuesta_Result> GetRespuestasEncuesta(Nullable<int> idEncuestaAsignada)
+        {
+            var idEncuestaAsignadaParameter = idEncuestaAsignada.HasValue ?
+                new ObjectParameter("idEncuestaAsignada", idEncuestaAsignada) :
+                new ObjectParameter("idEncuestaAsignada", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<GetRespuestasEncuesta_Result>("GetRespuestasEncuesta", idEncuestaAsignadaParameter);
+        }
+    
+        public virtual int ObtenerOrigenDeReservasPorFecha(Nullable<System.DateTime> fechaDesde, Nullable<System.DateTime> fechaHasta, string vista)
+        {
+            var fechaDesdeParameter = fechaDesde.HasValue ?
+                new ObjectParameter("fechaDesde", fechaDesde) :
+                new ObjectParameter("fechaDesde", typeof(System.DateTime));
+    
+            var fechaHastaParameter = fechaHasta.HasValue ?
+                new ObjectParameter("fechaHasta", fechaHasta) :
+                new ObjectParameter("fechaHasta", typeof(System.DateTime));
+    
+            var vistaParameter = vista != null ?
+                new ObjectParameter("vista", vista) :
+                new ObjectParameter("vista", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ObtenerOrigenDeReservasPorFecha", fechaDesdeParameter, fechaHastaParameter, vistaParameter);
+        }
+    
+        public virtual int ObtenerOrigenDeReservasPorNegocio(Nullable<System.DateTime> fechaDesde, Nullable<System.DateTime> fechaHasta, string vista, Nullable<int> idNegocio)
+        {
+            var fechaDesdeParameter = fechaDesde.HasValue ?
+                new ObjectParameter("fechaDesde", fechaDesde) :
+                new ObjectParameter("fechaDesde", typeof(System.DateTime));
+    
+            var fechaHastaParameter = fechaHasta.HasValue ?
+                new ObjectParameter("fechaHasta", fechaHasta) :
+                new ObjectParameter("fechaHasta", typeof(System.DateTime));
+    
+            var vistaParameter = vista != null ?
+                new ObjectParameter("vista", vista) :
+                new ObjectParameter("vista", typeof(string));
+    
+            var idNegocioParameter = idNegocio.HasValue ?
+                new ObjectParameter("idNegocio", idNegocio) :
+                new ObjectParameter("idNegocio", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ObtenerOrigenDeReservasPorNegocio", fechaDesdeParameter, fechaHastaParameter, vistaParameter, idNegocioParameter);
+        }
+    
+        public virtual int ObtenerPromocionesNoUtilizadasPorNegocio(Nullable<int> idNegocio, string vista, Nullable<System.DateTime> fechaDesde, Nullable<System.DateTime> fechaHasta)
+        {
+            var idNegocioParameter = idNegocio.HasValue ?
+                new ObjectParameter("idNegocio", idNegocio) :
+                new ObjectParameter("idNegocio", typeof(int));
+    
+            var vistaParameter = vista != null ?
+                new ObjectParameter("vista", vista) :
+                new ObjectParameter("vista", typeof(string));
+    
+            var fechaDesdeParameter = fechaDesde.HasValue ?
+                new ObjectParameter("fechaDesde", fechaDesde) :
+                new ObjectParameter("fechaDesde", typeof(System.DateTime));
+    
+            var fechaHastaParameter = fechaHasta.HasValue ?
+                new ObjectParameter("fechaHasta", fechaHasta) :
+                new ObjectParameter("fechaHasta", typeof(System.DateTime));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ObtenerPromocionesNoUtilizadasPorNegocio", idNegocioParameter, vistaParameter, fechaDesdeParameter, fechaHastaParameter);
+        }
+    
+        public virtual int obtenerPromocionesPorComercio(Nullable<System.DateTime> fechaDesde, Nullable<System.DateTime> fechaHasta, string vista)
+        {
+            var fechaDesdeParameter = fechaDesde.HasValue ?
+                new ObjectParameter("fechaDesde", fechaDesde) :
+                new ObjectParameter("fechaDesde", typeof(System.DateTime));
+    
+            var fechaHastaParameter = fechaHasta.HasValue ?
+                new ObjectParameter("fechaHasta", fechaHasta) :
+                new ObjectParameter("fechaHasta", typeof(System.DateTime));
+    
+            var vistaParameter = vista != null ?
+                new ObjectParameter("vista", vista) :
+                new ObjectParameter("vista", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("obtenerPromocionesPorComercio", fechaDesdeParameter, fechaHastaParameter, vistaParameter);
+        }
+    
+        public virtual int obtenerReservasPorCategoria(Nullable<System.DateTime> fechaDesde, Nullable<System.DateTime> fechaHasta, string vista)
+        {
+            var fechaDesdeParameter = fechaDesde.HasValue ?
+                new ObjectParameter("fechaDesde", fechaDesde) :
+                new ObjectParameter("fechaDesde", typeof(System.DateTime));
+    
+            var fechaHastaParameter = fechaHasta.HasValue ?
+                new ObjectParameter("fechaHasta", fechaHasta) :
+                new ObjectParameter("fechaHasta", typeof(System.DateTime));
+    
+            var vistaParameter = vista != null ?
+                new ObjectParameter("Vista", vista) :
+                new ObjectParameter("Vista", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("obtenerReservasPorCategoria", fechaDesdeParameter, fechaHastaParameter, vistaParameter);
+        }
+    
+        public virtual int ObtenerSolicitudesDeReservasNoConfirmadas1(Nullable<System.DateTime> fechaDesde, Nullable<System.DateTime> fechaHasta, string vista)
+        {
+            var fechaDesdeParameter = fechaDesde.HasValue ?
+                new ObjectParameter("fechaDesde", fechaDesde) :
+                new ObjectParameter("fechaDesde", typeof(System.DateTime));
+    
+            var fechaHastaParameter = fechaHasta.HasValue ?
+                new ObjectParameter("fechaHasta", fechaHasta) :
+                new ObjectParameter("fechaHasta", typeof(System.DateTime));
+    
+            var vistaParameter = vista != null ?
+                new ObjectParameter("vista", vista) :
+                new ObjectParameter("vista", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ObtenerSolicitudesDeReservasNoConfirmadas1", fechaDesdeParameter, fechaHastaParameter, vistaParameter);
+        }
+    
+        public virtual int obtenerSolicitudesReservaVsReservaDirecta(Nullable<System.DateTime> fechaDesde, Nullable<System.DateTime> fechaHasta, string vista)
+        {
+            var fechaDesdeParameter = fechaDesde.HasValue ?
+                new ObjectParameter("fechaDesde", fechaDesde) :
+                new ObjectParameter("fechaDesde", typeof(System.DateTime));
+    
+            var fechaHastaParameter = fechaHasta.HasValue ?
+                new ObjectParameter("fechaHasta", fechaHasta) :
+                new ObjectParameter("fechaHasta", typeof(System.DateTime));
+    
+            var vistaParameter = vista != null ?
+                new ObjectParameter("vista", vista) :
+                new ObjectParameter("vista", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("obtenerSolicitudesReservaVsReservaDirecta", fechaDesdeParameter, fechaHastaParameter, vistaParameter);
         }
     }
 }

@@ -181,6 +181,7 @@
     <Compile Include="Controllers\HotelController.cs" />
     <Compile Include="Controllers\List.cs" />
     <Compile Include="Controllers\NegociosController.cs" />
+    <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
     <Compile Include="Controllers\PromocionesController.cs" />
     <Compile Include="Controllers\ReportesController.cs" />
@@ -204,6 +205,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\Gridmvc.css" />
+    <Content Include="Content\Images\lugares-para-fotografiar.png" />
     <Content Include="Content\img\1.png" />
     <Content Include="Content\img\icon.png" />
     <Content Include="Content\img\icono_bandera_amarilla.png" />
@@ -671,6 +673,7 @@
     <Content Include="Views\Test\GraficoTorta.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\Complejo\BuscarHabitacionesDisponibles_Disponibilidad.cshtml" />
+    <Content Include="Views\Test\GraficoBarraDinamico.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
