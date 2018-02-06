@@ -78,6 +78,38 @@ namespace BL
             }
         }
 
+        public List<ReportesCampoValorDinamico> ObtenerPorcentajeOcupacionGrafico(DateTime FechaDesde, DateTime FechaHasta, String Vista)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", FechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", FechaHasta);
+                SqlParameter paramVista = new SqlParameter("@pVista", Vista);
+
+
+                return db.Database.SqlQuery<ReportesCampoValorDinamico>("EXEC [Reportes].[ObtenerPorcentajeOcupacion_Grafico] @fechaDesde=@pfechaDesde , @fechaHasta=@pfechaHasta  , @vista=@pVista", paramFechaDesde, paramFechaHasta, paramVista).ToList();
+
+
+
+            }
+        }
+        public List<ReportesCampoValorDinamico> ObtenerPorcentajeOcupacionNegocioGrafico(DateTime FechaDesde, DateTime FechaHasta, String Vista, Int32 Negocio)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", FechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", FechaHasta);
+                SqlParameter paramVista = new SqlParameter("@pVista", Vista);
+                SqlParameter paramNegocio = new SqlParameter("@pNegocio", Negocio);
+
+
+                return db.Database.SqlQuery<ReportesCampoValorDinamico>("EXEC [Reportes].[ObtenerPorcentajeOcupacionPorNegocio_Grafico] @fechaDesde=@pfechaDesde , @fechaHasta=@pfechaHasta  , @vista=@pVista, @idNegocio=@pNegocio", paramFechaDesde, paramFechaHasta, paramVista, paramNegocio).ToList();
+
+
+
+            }
+        }
+
         public List<ReportesCampoValorDinamico> ObtenerReservasPorCategoriaGrafico(DateTime FechaDesde, DateTime FechaHasta, String Vista)
         {
             using (SitcomEntities db = new SitcomEntities())
@@ -125,6 +157,89 @@ namespace BL
 
             }
         }
+
+
+        public List<ReportesCampoValor> ObtenerCantidadPasajerosGrafico(DateTime FechaDesde, DateTime FechaHasta, String Vista)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", FechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", FechaHasta);
+                SqlParameter paramVista = new SqlParameter("@pVista", Vista);
+
+
+                return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[ObtenerCantidadPasajerosHospedados_Grafico] @fechaDesde=@pfechaDesde , @fechaHasta=@pfechaHasta  , @vista=@pVista", paramFechaDesde, paramFechaHasta, paramVista).ToList();
+
+
+
+            }
+        }
+        public List<ReportesCampoFechaValor> ObtenerReservasPorSolicitud(DateTime FechaDesde, DateTime FechaHasta, String Vista)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", FechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", FechaHasta);
+                SqlParameter paramVista = new SqlParameter("@pVista", Vista);
+
+
+                return db.Database.SqlQuery<ReportesCampoFechaValor>("EXEC [Reportes].[obtenerSolicitudesReservaVsReservaDirecta] @fechaDesde=@pfechaDesde , @fechaHasta=@pfechaHasta  , @vista=@pVista", paramFechaDesde, paramFechaHasta, paramVista).ToList();
+
+
+
+            }
+        }
+        public List<ReportesCampoValorValor> ObtenerReservasPorSolicitudGrafico(DateTime FechaDesde, DateTime FechaHasta, String Vista)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", FechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", FechaHasta);
+                SqlParameter paramVista = new SqlParameter("@pVista", Vista);
+
+
+                return db.Database.SqlQuery<ReportesCampoValorValor>("EXEC [Reportes].[obtenerSolicitudesReservaVsReservaDirecta_Grafico] @fechaDesde=@pfechaDesde , @fechaHasta=@pfechaHasta  , @vista=@pVista", paramFechaDesde, paramFechaHasta, paramVista).ToList();
+
+
+
+            }
+        }
+
+        public List<ReportesCampoValorValor> ObtenerReservasPorSolicitudPorNegocio(DateTime FechaDesde, DateTime FechaHasta, String Vista, Int32 Negocio)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", FechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", FechaHasta);
+                SqlParameter paramVista = new SqlParameter("@pVista", Vista);
+                SqlParameter paramNegocio = new SqlParameter("@pNegocio", Negocio);
+
+                return db.Database.SqlQuery<ReportesCampoValorValor>("EXEC [Reportes].[obtenerSolicitudesReservaVsReservaDirectaPorNegocio] @fechaDesde=@pfechaDesde , @fechaHasta=@pfechaHasta  , @vista=@pVista, @idNegocio=@pNegocio", paramFechaDesde, paramFechaHasta, paramVista, paramNegocio).ToList();
+
+
+
+            }
+        }
+
+
+
+        public List<ReportesCampoValorDinamico> ObtenerReservasPorSolicitudPorNegocioGrafico(DateTime FechaDesde, DateTime FechaHasta, String Vista, Int32 Negocio)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", FechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", FechaHasta);
+                SqlParameter paramVista = new SqlParameter("@pVista", Vista);
+                SqlParameter paramNegocio = new SqlParameter("@pNegocio", Negocio);
+
+                return db.Database.SqlQuery<ReportesCampoValorDinamico>("EXEC [Reportes].[obtenerSolicitudesReservaVsReservaDirectaPorNegocio] @fechaDesde=@pfechaDesde , @fechaHasta=@pfechaHasta  , @vista=@pVista, @idNegocio=@pNegocio", paramFechaDesde, paramFechaHasta, paramVista, paramNegocio).ToList();
+
+
+
+            }
+        }
+
+        
 
         public List<ReportesCampoFechaValor> ObtenerPromocionesNoUtilizadasPorNegocio(DateTime FechaDesde, DateTime FechaHasta, String Vista, Int32 Negocio)
         {

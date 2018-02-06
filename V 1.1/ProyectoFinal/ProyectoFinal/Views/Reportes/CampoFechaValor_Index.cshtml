@@ -71,6 +71,7 @@
                 $("#canvas-holder").show();
                 $("#chart-area").show();
                 $("#canvas").hide();
+                $("#resultado").hide();
             }
         })
 
@@ -177,9 +178,10 @@
         $("#canvas").show();
         $("#canvas-holder").hide();
         $("#chart-area").hide();
+        $("#resultado").hide();
     }
 
-    @*function ReporteCampoFechaValor() {
+    function ReporteCampoFechaValor() {
 
         var tipo_reporte = $("#tipo_reporte").val();
         //var nombre_reporte = $("#nombre_reporte").val();
@@ -196,7 +198,13 @@
                 $("#resultado").html(response);
             }
         })
-    }*@
+
+        $("#cargando_grafico").hide();
+        $("#canvas").hide();
+        $("#canvas-holder").hide();
+        $("#chart-area").hide();
+        $("#resultado").show();
+    }
 
     function colores(internalData) {
 
@@ -298,22 +306,30 @@
 
         <div class="row">
 
-            <div class="col-md-4">
+            <div class="col-md-3">
 
                 <input type="text" name="fecha_desde" id="fecha_desde" class="form-control date" placeholder="Fecha Desde" value="@Session["fecha_desde"]" />
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
 
                 <input type="text" class="form-control date" id="fecha_hasta" name="fecha_hasta" placeholder="Fecha Hasta" value="@Session["fecha_hasta"]" />
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
 
-                <button class="btn btn-block" onclick="llamarReporte();" style="background-color:yellowgreen; color:white;">Buscar</button>
+                <button class="btn btn-block" onclick="llamarReporte();" style="background-color:yellowgreen; color:white;">Graficar</button>
+            </div>
+
+            <div class="col-md-3">
+
+                <button class="btn btn-block" onclick="ReporteCampoFechaValor();" style="background-color:yellowgreen; color:white;">Listar</button>
             </div>
 
         </div>
-
+        
+       
+        <br />
+        <br />
 
         <div id="resultado"></div>
 

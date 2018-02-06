@@ -66,7 +66,17 @@ namespace ProyectoFinal.Controllers
                     ViewBag.valor2 = "4 ESTRELLAS";
                     ViewBag.valor3 = "5 ESTRELLAS";
                     break;
+                case "Reservas por Solicitud":
+                    ViewBag.valor1 = "RESERVAS DIRECTAS";
+                    ViewBag.valor2 = "RESERVAS CON SOLICITUD";
+                    break;
 
+                case "Porcentaje Ocupacion":
+                     
+                    ViewBag.valor1 = "OCUPADO";
+                    ViewBag.valor2 = "LIBRE";
+                    
+                    break;
                 default:
                     break;
             }
@@ -95,6 +105,15 @@ namespace ProyectoFinal.Controllers
                     ViewBag.valor2 = "CORDOBA";
                     ViewBag.valor3 = "ENTRE RIOS";
                     break;
+
+                case "Porcentaje Ocupacion Negocio":
+                     ViewBag.valor1 = "OCUPADO";
+                    ViewBag.valor2 = "LIBRE";
+                    ViewBag.valor3 = null;
+                    break;
+
+                default:
+                    break;
             
             }
           
@@ -106,6 +125,7 @@ namespace ProyectoFinal.Controllers
         {
 
             var lista = new List<ReportesCampoFechaValor>();
+            var listaValor = new List<ReportesCampoValor>();
             
             var vista_reporte = "";
 
@@ -140,6 +160,24 @@ namespace ProyectoFinal.Controllers
 
                     break;
 
+                case "Reservas por Solicitud":
+                    lista = rm.ObtenerReservasPorSolicitud(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte);
+                    ViewBag.data = lista;
+                    ViewBag.nombre_campo = "Reservas Directas";
+                    ViewBag.nombre_valor = "Reservas con Solicitud";
+                    ViewBag.clase_reporte = "ReportesCampoFechaValor";
+                    vista_reporte = "CampoFechaValor_Tabla";
+                    break;
+                  
+                case "Cantidad Pasajeros Hospedados":
+                    listaValor = rm.ObtenerCantidadPasajerosGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte);
+                    ViewBag.data = listaValor;
+                    ViewBag.nombre_campo = "Fecha";
+                    ViewBag.nombre_valor = "Cantidad Pasajeros Hospedados";
+                    ViewBag.clase_reporte = "ReportesCampoValor";
+                    vista_reporte = "CampoFechaValor_Tabla";
+
+                    break;
 
                 default:
 
@@ -240,6 +278,7 @@ namespace ProyectoFinal.Controllers
                     ViewBag.clase_reporte = "ReportesCampoValor";
                     break;
 
+                
                 case "Promociones Vencidas Negocio":
                    
 
@@ -247,8 +286,12 @@ namespace ProyectoFinal.Controllers
 
                 case "Promociones por Provincia Negocio":
                    
+                    break;
 
-                    
+                case "Porcentaje Ocupacion Negocio":
+
+                    resultNegocio = rm.ObtenerPorcentajeOcupacionNegocioGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
+
 
                     break;
                 default:
@@ -267,28 +310,46 @@ namespace ProyectoFinal.Controllers
         public JsonResult DataGraficoTortaDinamico(string tipo_reporte, string nombre_reporte, String fecha_desde, String fecha_hasta)
         {
             var result = new List<ReportesCampoValorDinamico>();
+            var resultValor = new List<ReportesCampoValorValor>();
+            var resultCampo = new List<ReportesCampoValor>();
 
 
             switch (nombre_reporte)
             {
                 case "Reservas por Origen":
                     result = rm.ObtenerReservasPorOrigenGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte);
-                    
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                    break;
+
+                case "Porcentaje Ocupacion":
+                    result = rm.ObtenerPorcentajeOcupacionGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte);
+                    return Json(result, JsonRequestBehavior.AllowGet);
                     break;
 
                 case "Reservas por Categoria":
                     result = rm.ObtenerReservasPorCategoriaGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte);
-                  
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                    break;
+
+                case "Reservas por Solicitud":
+                    resultValor = rm.ObtenerReservasPorSolicitudGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte);
+                    return Json(resultValor, JsonRequestBehavior.AllowGet);
+                    break;
+                case "Cantidad Pasajeros Hospedados":
+                    resultCampo = rm.ObtenerCantidadPasajerosGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte);
+                    return Json(resultCampo, JsonRequestBehavior.AllowGet);
+                    
                     break;
 
                 default:
+                    return Json(result, JsonRequestBehavior.AllowGet);
                     break;
             }
 
             ViewBag.nombre_reporte = nombre_reporte;
             ViewBag.tipo_reporte = tipo_reporte;
 
-            return Json(result, JsonRequestBehavior.AllowGet);
+            
         }
 
 

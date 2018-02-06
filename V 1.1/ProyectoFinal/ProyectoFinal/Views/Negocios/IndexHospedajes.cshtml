@@ -160,8 +160,12 @@
                                 <div class="form-group">
                                     <label>Tipo Hospedaje</label>
                                     <select class="form-control" name="tipo_hospedaje">
-                                        <option  @if (Convert.ToString(Session["tipo_hospedaje"]) == "HOTEL") { selected3 = "selected"; } else { selected3 = ""; } @selected3>HOTEL</option>
-                                        <option  @if (Convert.ToString(Session["tipo_hospedaje"]) == "COMPLEJO") { selected3 = "selected"; } else { selected3 = ""; } @selected3>COMPLEJO</option>
+                                        <option  @if (Convert.ToString(Session["tipo_hospedaje"]) == "Hotel") { selected3 = "selected"; } else { selected3 = ""; } @selected3 value="Hotel">Hotel</option>
+                                        <option @if (Convert.ToString(Session["tipo_hospedaje"]) == "Departamentos") { selected3 = "selected"; } else { selected3 = ""; } @selected3 value="Departamentos">Complejo Dptos</option>
+                                        <option @if (Convert.ToString(Session["tipo_hospedaje"]) == "Cabañas") { selected3 = "selected"; } else { selected3 = ""; } @selected3 value="Cabañas">Complejo Cabañas</option>
+                                        <option @if (Convert.ToString(Session["tipo_hospedaje"]) == "Casa o Departamento") { selected3 = "selected"; } else { selected3 = ""; } @selected3 value="Casa o Departamento">Casa o Dpto</option>
+
+                                    
                                     </select>
                                 </div>
                         

@@ -34,36 +34,47 @@
 
                 $("#btnReservasCategoria").hide();
                 $("#btnReservasProvincia").hide();
-                $("#btnPromocionesComercio").hide();
+                $("#btnPromocionesComercio").show();
                 $("#btnReservasPorSolicitud").hide();
                 $("#btnReservasProvinciaNegocio").hide();
+                $("#btnReservasPorSolicitudNegocio").hide();
                 $("#btnPromocionesNoUtilizadas").show();
                 $("#btnPromocionesVencidas").show();
                 $("#btnPromocionesPorProvincia").show();
-                $("#btnEncuestasNegocio").show();                
-                
+                $("#btnPorcentajeOcupacion").hide();
+                $("#btnPorcentajeOcupacionNegocio").hide();
+                $("#btnCantidadPasajerosHospedados").hide();
                 
             }else if(countHospedaje > 0 & countComercio == 0){
                 $("#btnReservasCategoria").hide();
                 $("#btnReservasProvincia").hide();
                 $("#btnPromocionesComercio").hide();
                 $("#btnReservasPorSolicitud").hide();
+                $("#btnReservasPorSolicitudNegocio").show();
                 $("#btnReservasProvinciaNegocio").show();
                 $("#btnPromocionesNoUtilizadas").hide();
                 $("#btnPromocionesVencidas").hide();
                 $("#btnPromocionesPorProvincia").hide();
-                $("#btnEncuestasNegocio").show();
+                $("#btnPorcentajeOcupacion").hide();
+                $("#btnPorcentajeOcupacionNegocio").show();
+                $("#btnCantidadPasajerosHospedados").hide();
             }
             else if(countHospedaje > 0 & countComercio > 0){
                 $("#btnReservasCategoria").hide();
                 $("#btnReservasProvincia").hide();
-                $("#btnPromocionesComercio").hide();
+                $("#btnPromocionesComercio").show();
                 $("#btnReservasPorSolicitud").hide();
                 $("#btnReservasProvinciaNegocio").show();
                 $("#btnPromocionesNoUtilizadas").show();
                 $("#btnPromocionesVencidas").show();
                 $("#btnPromocionesPorProvincia").show();
-                $("#btnEncuestasNegocio").show();
+                $("#btnReservasPorSolicitudNegocio").show();
+                $("#btnPorcentajeOcupacion").hide();
+                $("#btnPorcentajeOcupacionNegocio").show();
+                $("#btnCantidadPasajerosHospedados").hide();
+
+                
+                
             }
             else
                 alert("No posee negocios registrados");
@@ -76,7 +87,7 @@
 
             $("#btnReservasCategoria").show();
             $("#btnReservasProvincia").show();
-            $("#btnPromocionesComercio").show();
+            $("#btnPromocionesComercio").hide();
             $("#btnReservasPorSolicitud").show();
             $("#btnEncuestasSecretaria").show();
             $("#btnReservasProvinciaNegocio").hide();
@@ -84,6 +95,10 @@
             $("#btnPromocionesVencidas").hide();
             $("#btnPromocionesPorProvincia").hide();
             $("#btnEncuestasNegocio").hide();
+            $("#btnReservasPorSolicitudNegocio").hide();
+            $("#btnPorcentajeOcupacion").show();
+            $("#btnPorcentajeOcupacionNegocio").hide();
+            $("#btnCantidadPasajerosHospedados").show();
         }
 
         if (mensaje != "") {
@@ -174,15 +189,33 @@
                     <button id="btnPromocionesPorProvincia" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValorNegocio_Index", "Reportes", new { nombre_reporte = "Promociones por Provincia Negocio", idTipoReporte = 2 })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Promociones por Provincia </button>
                 </div>
 
-	            <div class="col-md-12">
-	                <button id="btnEncuestasNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("RespuestasEncuestaNegocio", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px;">Tus Encuestas </button>
-	            </div>
-	
-	            <div class="col-md-12">
-	                <button id="btnEncuestasSecretaria" class="btn btn-block" onclick="window.location = '@Url.Action("RespuestasEncuestaSecretaria", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px;">Encuestas </button>
-	            </div>
-            <div class="col-md-3"></div>
+                <div class="col-md-12">
+                    <button id="btnEncuestasNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("RespuestasEncuestaNegocio", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Tus Encuestas </button>
+                </div>
 
+                <div class="col-md-12">
+                    <button id="btnEncuestasSecretaria" class="btn btn-block" onclick="window.location = '@Url.Action("RespuestasEncuestaSecretaria", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Encuestas </button>
+                </div>
+
+                <div class="col-md-12">
+                    <button id="btnReservasPorSolicitudNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValorNegocio_Index", "Reportes", new { nombre_reporte = "Reservas por Solicitud Negocio", idTipoReporte = 1 })' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Reservas por Solicitud</button>
+                </div>
+
+                <div class="col-md-12">
+                    <button id="btnPorcentajeOcupacion" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Porcentaje Ocupacion"})' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Porcentaje Ocupacion</button>
+                </div>
+
+                <div class="col-md-12">
+                    <button id="btnPorcentajeOcupacionNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValorNegocio_Index", "Reportes", new { nombre_reporte = "Porcentaje Ocupacion Negocio", idTipoReporte = 1 })' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Porcentaje Ocupacion</button>
+                </div>
+
+                <div class="col-md-12">
+                    <button id="btnCantidadPasajerosHospedados" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Cantidad Pasajeros Hospedados" })' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Cantidad Pasajeros Hospedados</button>
+                </div>
+
+                <div class="col-md-3"></div>
+
+            </div>
         </div>
  
 
@@ -199,5 +232,5 @@
 
 
 
-    </div>
+    </d iv>
 </section>

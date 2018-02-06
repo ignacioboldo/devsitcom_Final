@@ -173,7 +173,14 @@
                 <div class="col-md-12">
                     <button id="btnPromocionesPorProvincia" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValorNegocio_Index", "Reportes", new { nombre_reporte = "Promociones por Provincia Negocio", idTipoReporte = 2 })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Promociones por Provincia </button>
                 </div>
-            </div>
+
+	            <div class="col-md-12">
+	                <button id="btnEncuestasNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("RespuestasEncuestaNegocio", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px;">Tus Encuestas </button>
+	            </div>
+	
+	            <div class="col-md-12">
+	                <button id="btnEncuestasSecretaria" class="btn btn-block" onclick="window.location = '@Url.Action("RespuestasEncuestaSecretaria", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px;">Encuestas </button>
+	            </div>
             <div class="col-md-3"></div>
 
         </div>

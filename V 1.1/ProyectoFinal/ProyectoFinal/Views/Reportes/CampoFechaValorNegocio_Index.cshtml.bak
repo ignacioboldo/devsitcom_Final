@@ -332,8 +332,7 @@
             <div class="col-xs-6">
                 <div class="page-title">
                     <h2>Gestion de Reportes </h2>
-                    <br />
-                    <h3>@ViewBag.nombre_reporte</h3>
+            
                 </div>
             </div>
             <div class="col-xs-6">
@@ -352,6 +351,8 @@
 <!-- MAIN CONTENT SECTION -->
 <section class="mainContent clearfix userProfile">
     <div class="container">
+
+        <h3><strong>@ViewBag.nombre_reporte</strong></h3>
 
         <div class="row" style="margin-bottom:20px;">
             <div class="col-md-3">

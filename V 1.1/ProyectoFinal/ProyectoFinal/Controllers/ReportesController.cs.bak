@@ -331,6 +331,16 @@ namespace ProyectoFinal.Controllers
             if(idEncuesta != null)
             { 
                  List<PreguntasEntity> pregs = em.GetPreguntasEncuesta((int)idEncuesta);
+
+                 List<ReportesCampoValor> result = rm.ObtenerRespuestasPorPreguntaNegocio((int)idEncuesta, (int)pregs.FirstOrDefault().idPregunta, (int)idNegocio);
+
+                 int cantEnc = 0;
+                 foreach (var item in result)
+                 {
+                     cantEnc += int.Parse(item.Valor);
+                 }
+
+                 ViewBag.CantEncuestasResp = cantEnc;
                  ViewBag.IdEncuesta = idEncuesta; 
                  ViewBag.IdNegocio = idNegocio;
                  
