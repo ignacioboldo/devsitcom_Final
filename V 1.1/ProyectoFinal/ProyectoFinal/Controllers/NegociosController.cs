@@ -82,6 +82,14 @@ namespace ProyectoFinal.Controllers
         public ActionResult Nuevo() //PANTALLA CREAR NUEVO - NEGOCIOS
         {
             ObtenerUsuarioActual();
+
+            if (usuarioActual.idUsuario == 0)
+            {
+                Session["ReturnUrl"] = "../Negocios/Nuevo";
+                return RedirectToAction("Login", "Usuarios");
+            }
+                
+
             if(usuarioActual.idPersona != null)
             {
                 /*if (ValidarPermisoVista("Negocios", "Nuevo"))
@@ -104,6 +112,7 @@ namespace ProyectoFinal.Controllers
             }
             else
             {
+                //string msj = "Aun no hemos terminado de completar tus datos. Para poder dar de alta un negocio debes completar tus datos personales.";
                 return RedirectToAction("DatosPersonales", "Persona", new { returnUrl = "../Negocios/Nuevo" });
             }
             /*}
@@ -141,7 +150,9 @@ namespace ProyectoFinal.Controllers
 
             if(!ModelState.IsValid || imagenPrinc == null)
             {
-                ModelState.AddModelError("", "Debés seleccionar una imagen principal.");
+                if (imagenPrinc == null)
+                    ModelState.AddModelError("", "Debés seleccionar una imagen principal.");
+
                 ViewBag.Perfil = usuarioActual.idPerfil;
                 ViewBag.Rubros = new SelectList(db.Rubro, "idRubro", "nombreRubro", neg.Comercio.FirstOrDefault().idRubro);
                 ViewBag.TiposNegocio = new SelectList(db.TipoDeNegocio, "idTipoNegocio", "nombre", neg.idTipoNegocio);
@@ -170,7 +181,10 @@ namespace ProyectoFinal.Controllers
             if (ModelState.IsValid)
             {
                 if (nm.ValidarExisteNegocio(neg.nombre,null))
+                {
                     nm.AddNegocio(neg,usuarioActual);
+                    return RedirectToAction("Index", "Mensajes", new { codigo = "NEG-ALT-200" });
+                }
                 else
                 {
                     ModelState.AddModelError("", "Un comercio con el mismo nombre ya está registrado. Por favor elige otro.");
@@ -180,8 +194,12 @@ namespace ProyectoFinal.Controllers
                     return View("Nuevo", neg);
                 }
             }
+            else
+            {
+                return RedirectToAction("Index", "Mensajes", new { codigo = "NEG-ALT-200" });
+            }
 
-            return RedirectToAction("Index", "Home");
+            
         }
         public ActionResult SolicitarBajaNegocio(int idNegocio)
         {
@@ -284,12 +302,15 @@ namespace ProyectoFinal.Controllers
 
             if (!ModelState.IsValid || imagenPrinc == null)
             {
+                if (imagenPrinc == null)
+                    ModelState.AddModelError("", "Debés seleccionar una imagen principal.");
+
                 ViewBag.Perfil = usuarioActual.idPerfil;
                 ViewBag.Rubros = new SelectList(db.Rubro, "idRubro", "nombreRubro");
                 ViewBag.TiposNegocio = new SelectList(db.TipoDeNegocio, "idTipoNegocio", "nombre", neg.idTipoNegocio);
                 ViewBag.CaracHotel = new SelectList(db.Caracteristica, "idCaracteristica", "nombre");
                 ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
-			    ViewBag.TiposComplejo = new SelectList(db.TipoComplejo, "idTipoComplejo", "nombreTipoComplejo");
+			    ViewBag.TiposComplejo = new SelectList(db.TipoComplejo.Where(tp => tp.idTipoComplejo != 4).ToList(), "idTipoComplejo", "nombreTipoComplejo");
                 ViewBag.Carac = nm.GetCaracteristicas();
 
                 /*if (imagenPrinc != null)
@@ -411,8 +432,7 @@ namespace ProyectoFinal.Controllers
 
             switch (neg.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje)
             {
-                case 1: //La Casa o Departamento se dara de alta como un complejo con una sola unidad.
-                    
+                case 1: //La Casa o Departamento se dara de alta como un complejo con una sola unidad.                  
                         List<ComplejoEntity> complejosCasaODpto = new List<ComplejoEntity>() { new ComplejoEntity() };
                         neg.LugarHospedaje.FirstOrDefault().Complejo = complejosCasaODpto;
                         neg.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idCategoria = int.Parse(Request.Form["categ"].ToString());
@@ -477,12 +497,13 @@ namespace ProyectoFinal.Controllers
                                  int num = int.Parse(Request.Form[item.Text]);
                                  for (int i = 0; i < num; i++)
                                  {
-                                habitaciones.Add(new Habitacion()
-                                {
-                                    idTipoHabitacion = int.Parse(item.Value),
-                                    nombreHabitacion = "Habitación " + m + " (" + db.TipoHabitacion.Where(t => t.idTipoHabitacion == int.Parse(item.Value)).Select(t => t.idTipoHabitacion).FirstOrDefault().ToString() + ")"
+                                     int idTipoHab = int.Parse(item.Value);
+                                    habitaciones.Add(new Habitacion()
+                                    {
+                                        idTipoHabitacion = idTipoHab,
+                                        nombreHabitacion = "Habitación " + m + " (" + db.TipoHabitacion.Where(t => t.idTipoHabitacion == idTipoHab).Select(t => t.idTipoHabitacion).FirstOrDefault().ToString() + ")"
                                     
-                                });
+                                    });
                                 m++;
                                  }
                              }
@@ -506,6 +527,10 @@ namespace ProyectoFinal.Controllers
                         neg.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje = 2;
 
                     nm.AddNegocio(neg, usuarioActual);
+
+                    return RedirectToAction("Index", "Mensajes", new { codigo = "NEG-ALT-200" });
+
+
                 }
                 else
                 {
@@ -517,7 +542,7 @@ namespace ProyectoFinal.Controllers
                     ViewBag.CaracHotel = new SelectList(db.Caracteristica, "idCaracteristica", "nombre");
                     ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
 
-                    return View("Nuevo", neg);
+                    return RedirectToAction("Index", "Mensajes", new { codigo = "NEG-ALT-300" });
                 }
             }
             else 
@@ -527,7 +552,7 @@ namespace ProyectoFinal.Controllers
                 ViewBag.TiposNegocio = new SelectList(db.TipoDeNegocio, "idTipoNegocio", "nombre", neg.idTipoNegocio);
                 ViewBag.CaracHotel = new SelectList(db.Caracteristica, "idCaracteristica", "nombre");
                 ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
-			    ViewBag.TiposComplejo = new SelectList(db.TipoComplejo, "idTipoComplejo", "nombreTipoComplejo");
+                ViewBag.TiposComplejo = new SelectList(db.TipoComplejo.Where(tp => tp.idTipoComplejo != 4).ToList(), "idTipoComplejo", "nombreTipoComplejo");
                 ViewBag.Carac = nm.GetCaracteristicas();
                 List<TipoHabitacion> habs = nm.GetTiposHabitacion();
                 List<HabitacionesEntity> habitaciones = new List<HabitacionesEntity>();
@@ -563,7 +588,7 @@ namespace ProyectoFinal.Controllers
             return View(result);
         }
 
-        public ActionResult IndexHospedajes()
+       public ActionResult IndexHospedajes()
         {
 
             ObtenerUsuarioActual();
@@ -585,8 +610,8 @@ namespace ProyectoFinal.Controllers
 
             
         }
-     
-   public string ConsultarDisponiblidad(string fecha_desde, string fecha_hasta, int cantidad_personas, int cantidad_habitaciones, int idNegocio)
+
+	public string ConsultarDisponiblidad(string fecha_desde, string fecha_hasta, int cantidad_personas, int cantidad_habitaciones, int idNegocio)
         {
             //prohibido CODIGO CACA!!
 
@@ -606,10 +631,7 @@ namespace ProyectoFinal.Controllers
 
             return View(modelo);
  
-        }
-
-
-
+        }    
         public ActionResult ObtenerImagen(int id)
         {
             var img = nm.GetFotoNegocioById(id);
@@ -653,7 +675,7 @@ namespace ProyectoFinal.Controllers
         {
             ObtenerUsuarioActual();
             NegocioEntity neg = nm.GetNegocioById((int)id);
-            if (Session["post"] != "si")
+			if (Session["post"] != "si")
             {
 
                 Session["fecha_desde"] = null;
@@ -861,7 +883,8 @@ namespace ProyectoFinal.Controllers
             neg.Sucursal.Add(suc);
             ViewBag.Carac = nm.GetCaracteristicas();
             ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
-            ViewBag.TiposComplejo = new SelectList(db.TipoComplejo, "idTipoComplejo", "nombreTipoComplejo");
+            //Filtro por idTipoComplejo distinto de 4 ya que ese corresponde a casa o departamento.
+            ViewBag.TiposComplejo = new SelectList(db.TipoComplejo.Where(tp => tp.idTipoComplejo != 4).ToList(), "idTipoComplejo", "nombreTipoComplejo");
             return View(neg);
         }
         public ActionResult EditComplejo(int? idNegocio, string comentario)
@@ -900,17 +923,20 @@ namespace ProyectoFinal.Controllers
 
             switch (negocio.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje)
             {
-                case 1: return RedirectToAction("EditCasaODpto", new { idNegocio = negocio.idNegocio, comentario = comment });
-                        break;
-                case 2: return RedirectToAction("EditComplejo", new { idNegocio = negocio.idNegocio, comentario = comment });
-                        break;
+                case 2: if ( negocio.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idTipoComplejo == 4)
+                            return RedirectToAction("EditCasaODpto", new { idNegocio = negocio.idNegocio, comentario = comment });
+                        else
+                            return RedirectToAction("EditComplejo", new { idNegocio = negocio.idNegocio, comentario = comment });
+
                 case 3: return RedirectToAction("EditHotel", new { idNegocio = negocio.idNegocio, comentario = comment });
                         break;
+
                 default: break;
             }
 
             return View(neg);
         }
+
         [HttpPost]
         public ActionResult EditHospedaje([Bind(Include = "nombre,descripcion")] NegocioEntity negocio,
                                           [Bind(Include = "localidadSeleccionada,barrio,calle,dpto,numero")] DomicilioEntity domEn,
@@ -1099,8 +1125,12 @@ namespace ProyectoFinal.Controllers
             // PARTE INSERCIÓN NEGOCIO //
             if (ModelState.IsValid)
             {
-                if (nm.ValidarExisteNegocio(neg.nombre,neg.idNegocioModif))
+                if (nm.ValidarExisteNegocio(neg.nombre,neg.idNegocioModif)){
+
                     nm.AddNegocio(neg, usuarioActual);
+                    return RedirectToAction("Index", "Mensajes", new { codigo = "NEG-ALT-200" });
+                }
+                    
                 else
                 {
                     ModelState.AddModelError("", "Un comercio con el mismo nombre ya está registrado. Por favor elige otro.");
@@ -1111,7 +1141,7 @@ namespace ProyectoFinal.Controllers
                     ViewBag.CaracHotel = new SelectList(db.Caracteristica, "idCaracteristica", "nombre");
                     ViewBag.Categorias = new SelectList(db.CategoriaHospedaje, "idCategoria", "nombre");
 
-                    return RedirectToAction("EditHospedaje", new { idNegocio = neg.idNegocio });
+                    return RedirectToAction("Index", "Mensajes", new { codigo = "NEG-ALT-300" });
                 }
             }
 
@@ -1128,15 +1158,20 @@ namespace ProyectoFinal.Controllers
 
             bool esCorr = esCorreccion != null ? (bool)esCorreccion : false;
 
+            string comment = "";
+
             if (esCorr)
             {
                 foreach (var item in neg.Tramite)
                 {
                     if (item.idEstadoTramite == 6)
-                        ViewBag.Comentario = item.comentario;
+                        comment = item.comentario;
                 }
             }
-                
+
+            comment = comment == "" || comment == null ? "NO" : comment;
+
+            ViewBag.Comentario = comment;               
 
             neg.Sucursal.FirstOrDefault().Domicilio.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
    
@@ -1154,7 +1189,8 @@ namespace ProyectoFinal.Controllers
                                   HttpPostedFileBase imagenMuestra4,
                                   HttpPostedFileBase imagenMuestra5,
                                   HttpPostedFileBase imagenMuestra6,
-                                  int idNegocioOrig)
+                                  int idNegocioOrig,
+                                  string comentario)
         {
             ObtenerUsuarioActual();
 
@@ -1165,6 +1201,8 @@ namespace ProyectoFinal.Controllers
             neg.descripcion = negocio.descripcion;
             neg.Comercio = new List<ComercioEntity>() { comercio };
 
+            domEn.listLocalidadesCercanas = dm.GetLocalidadesCercanas();
+
             neg.Sucursal.Add(new SucursalEntity()
             {
                 esPrincipal = true,
@@ -1173,14 +1211,20 @@ namespace ProyectoFinal.Controllers
             });
 
 
-            if (imagenPrinc == null)
+            if (!ModelState.IsValid || imagenPrinc == null)
             {
-                ModelState.AddModelError("", "Debés seleccionar una imagen principal.");
+                if (imagenPrinc == null)
+                    ModelState.AddModelError("", "Debés seleccionar una imagen principal.");
+               
                 ViewBag.Perfil = usuarioActual.idPerfil;
                 ViewBag.Rubros = new SelectList(db.Rubro, "idRubro", "nombreRubro", neg.Comercio.FirstOrDefault().idRubro);
                 ViewBag.TiposNegocio = new SelectList(db.TipoDeNegocio, "idTipoNegocio", "nombre", neg.idTipoNegocio);
+                ViewBag.Comentario = comentario;
+                ViewBag.idNegocio = idNegocioOrig;
                 return View("EditComercio", neg);
             }
+
+
             byte[] buffer = null;
             using (var binaryReader = new BinaryReader(imagenPrinc.InputStream))
             {
@@ -1203,12 +1247,14 @@ namespace ProyectoFinal.Controllers
             if (ModelState.IsValid)
             {
                 nm.AddNegocio(neg, usuarioActual);
+                return RedirectToAction("Index", "Mensajes", new { codigo = "NEG-ALT-200" });
             }
             else
             {
                 ViewBag.Perfil = usuarioActual.idPerfil;
                 ViewBag.Rubros = new SelectList(db.Rubro, "idRubro", "nombreRubro", neg.Comercio.FirstOrDefault().idRubro);
                 ViewBag.TiposNegocio = new SelectList(db.TipoDeNegocio, "idTipoNegocio", "nombre", neg.idTipoNegocio);
+                ViewBag.Comentario = comentario;
                 return View("EditComercio/"+idNegocioOrig, neg);
             }
 

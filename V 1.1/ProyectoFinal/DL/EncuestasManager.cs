@@ -110,8 +110,7 @@ namespace BL
                 return result;
             }
         }
-
-
+        
         public void CrearPregunta(PreguntasEntity preg)
         {
 
@@ -123,6 +122,43 @@ namespace BL
                 SqlParameter paramTextoPregunta = new SqlParameter("@pTextoPregunta", preg.textoPregunta);
 
                 int result = db.Database.SqlQuery<Int32>("addPregunta @idEncuesta=@pIdEncuesta, @idClasifPregunta=@pIdClasifPregunta, @idTipoRespuesta=@pIdTipoRespuesta, @textoPregunta=@pTextoPregunta", paramIdEncuesta, paramIdClasifPregunta, paramIdTipoRespuesta, paramTextoPregunta).FirstOrDefault();
+            }
+        }
+
+        public void EditPregunta(PreguntasEntity p)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                  var result = (from preg in db.Preguntas
+                                where preg.idPregunta == p.idPregunta
+                                select preg).FirstOrDefault();
+
+                  result.textoPregunta = p.textoPregunta;
+                  result.idTipoRespuesta = p.idTipoRespuesta;
+                  result.idClasifPregunta = p.idClasifPregunta;               
+
+                  db.SaveChanges();
+            }
+        }
+
+        public PreguntasEntity GetPreguntaById(int idPregunta)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                var result = (from preg in db.Preguntas
+                              where preg.idPregunta == idPregunta
+                              select new PreguntasEntity()
+                              {
+                                  idPregunta = preg.idPregunta,
+                                  idTipoRespuesta = preg.idTipoRespuesta,
+                                  idClasifPregunta = preg.idClasifPregunta,
+                                  idEncuesta = preg.idEncuesta,
+                                  textoPregunta = preg.textoPregunta
+
+                              }).FirstOrDefault();
+
+
+                return result;
             }
         }
 
@@ -203,6 +239,7 @@ namespace BL
                               select new PreguntasEntity()
                               {
                                   idPregunta = preg.idPregunta,
+                                  idEncuesta = preg.idEncuesta,
                                   idTipoRespuesta = preg.idTipoRespuesta,
                                   textoPregunta = preg.textoPregunta,
                                   TiposRespuesta = (from tres in db.TiposRespuesta
@@ -219,7 +256,10 @@ namespace BL
                                   idClasifPregunta = preg.idClasifPregunta,
                                   ClasifPregunta = (from clasif in db.ClasifPregunta
                                                     where clasif.idClasifPregunta == preg.idClasifPregunta
-                                                    select clasif).FirstOrDefault()
+                                                    select clasif).FirstOrDefault(),
+                                  Encuesta = (from encu in db.Encuestas
+                                              where encu.idEncuesta == preg.idEncuesta
+                                              select encu).FirstOrDefault()
                               }).ToList();
 
 
@@ -287,6 +327,22 @@ namespace BL
             }
         }
 
+        public List<EncuestasRespEntity> GetEncuestasRespondidasNegocio(int idNegocio)
+        {
+            using(SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramIdNegocio = new SqlParameter("pIdNegocio", idNegocio);
 
+                return db.Database.SqlQuery<EncuestasRespEntity>("GetEncuestasRespondidasNegocio @idNegocio=@pIdNegocio", paramIdNegocio).ToList();
+            }
+        }
+
+        public List<EncuestasRespEntity> GetEncuestasRespondidas()
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                return db.Database.SqlQuery<EncuestasRespEntity>("GetEncuestasRespondidas").ToList();
+            }
+        }
     }
 }

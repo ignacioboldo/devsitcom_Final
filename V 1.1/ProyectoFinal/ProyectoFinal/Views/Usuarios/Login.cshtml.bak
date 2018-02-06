@@ -1,0 +1,95 @@
+﻿@model BussinesEntities.UsuarioEntity
+@{
+    ViewBag.Title = "";
+}
+
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>INICIAR SESIÓN</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">INICIAR SESIÓN</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section class="mainContent clearfix stepsWrapper">
+    <div class="container">
+
+
+
+        <div class="row">
+
+            <div class="innerWrapper clearfix stepsPage">
+
+
+                <div class="col-xs-12 col-sm-3">
+
+
+
+
+                </div>
+                <div class="col-xs-12 col-sm-6">
+
+                    <br /><br />
+                    <div class="page-header">
+                        <h4>INICIAR SESION</h4>
+                    </div>
+
+                    @ViewBag.Error
+
+                    <br />
+
+                    @using (Html.BeginForm("LoginUser", "Usuarios", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-login" }))
+                    {
+
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true)
+
+                        <div class="form-group col-sm-12 col-xs-12">
+                            @Html.TextBoxFor(m => Model.nombreUsuario, new { @class = "form-control", name = "username", placeholder = "Username" })
+                            @Html.ValidationMessageFor(m => Model.nombreUsuario)
+                        </div>
+                        <div class="form-group col-sm-12 col-xs-12">
+                            @Html.PasswordFor(m => Model.password, new { @class = "form-control", name = "password", placeholder = "Password" })
+                            @Html.ValidationMessageFor(m => Model.password)
+                        </div>
+                        <div class="form-group col-sm-12 col-xs-12">
+                            @Html.ActionLink("Registrate", "Nuevo", "Usuarios") - 
+                            @Html.ActionLink("¿Olvidaste tu contraseña?", "Login", "Usuarios")
+                        </div>
+
+                        <div class="col-xs-12">
+                            <div class="well well-lg clearfix">
+                                <button class="btn btn-primary btn-block" type="submit">Ingresar</button>
+                            </div>
+                        </div>
+
+                    }
+
+                </div>
+
+                <div class="col-xs-12 col-sm-3">
+
+
+ 
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>

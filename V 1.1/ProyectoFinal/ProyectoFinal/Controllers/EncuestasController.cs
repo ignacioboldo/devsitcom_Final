@@ -32,8 +32,6 @@ namespace ProyectoFinal
         {
           
 			ObtenerUsuarioActual();
-            List<EncuestaEntityIndexUsuario> encuestasUsuario = em.GetEncuestasAsignadas(usuarioActual.idUsuario);
-
             //ViewBag.IdEncuesta = idEncuesta;
             ViewBag.idPerfil = usuarioActual.idPerfil;
             List<EncuestaEntityIndex> encuestas = em.GetAllEncuestas();
@@ -60,7 +58,18 @@ namespace ProyectoFinal
         public ActionResult EditEncuesta(int? idEncuesta)
         {
 
-       
+            List<EncuestaEntityIndex> encuestas = em.GetAllEncuestas();
+
+            bool tieneRespuestas = false;
+
+            foreach (var item in encuestas)
+            {
+                if(item.idEncuesta==idEncuesta)
+                {
+                    tieneRespuestas = item.RESPUESTAS > 0 ? true : false;
+                }
+            }
+
             if (idEncuesta == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -72,6 +81,7 @@ namespace ProyectoFinal
                 return HttpNotFound();
             }
 
+            ViewBag.TieneRespuestas = tieneRespuestas;
             ViewBag.idTipoEncuesta = new SelectList(db.TiposEncuesta, "idTipoEncuesta", "nombre", en.idTipoEncuesta);
             //ViewBag.idEncuesta = new SelectList(db.TiposEncuesta, "idTipoEncuesta", "nombre", en.idEncuesta);
 
@@ -98,6 +108,43 @@ namespace ProyectoFinal
             ViewBag.idTipoEncuesta = new SelectList(db.TiposEncuesta, "idTipoEncuesta", "nombre", en.idTipoEncuesta);
 
             return View(en);
+        }
+
+
+        // GET: /Preguntas/Create
+        public ActionResult EditPregunta(int idPregunta)
+        {
+            PreguntasEntity p = em.GetPreguntaById(idPregunta);
+            ViewBag.idTipoRespuesta = new SelectList(db.TiposRespuesta, "idTipoRespuesta", "nombre", p.idTipoRespuesta);
+            ViewBag.idClasifPregunta = new SelectList(db.ClasifPregunta, "idClasifPregunta", "nombre", p.idClasifPregunta);
+            ViewBag.IdEncuesta = p.idEncuesta;
+            return View(p);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditPregunta([Bind(Include = "idPregunta,textoPregunta,idClasifPregunta,idTipoRespuesta,idEncuesta")] PreguntasEntity p)
+        {
+            if (ModelState.IsValid)
+            {
+                em.EditPregunta(p);
+                return RedirectToAction("PreguntasEncuesta", new { idEncuesta = p.idEncuesta });
+            }
+
+            ViewBag.idTipoRespuesta = new SelectList(db.TiposRespuesta, "idTipoRespuesta", "nombre");
+            ViewBag.idClasifPregunta = new SelectList(db.ClasifPregunta, "idClasifPregunta", "nombre");
+            ViewBag.IdEncuesta = p.idEncuesta;
+            return View(p);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeletePregunta(int idPregunta)
+        {
+            Preguntas preg = db.Preguntas.Find(idPregunta);
+            db.Preguntas.Remove(preg);
+            db.SaveChanges();
+            return RedirectToAction("PreguntasEncuesta", new { idEncuesta = preg.idEncuesta });
         }
 
 
@@ -142,10 +189,20 @@ namespace ProyectoFinal
         }
 
         public ActionResult PreguntasEncuesta(int idEncuesta)
-        {
-            
+        {            
             List<PreguntasEntity> pregsEncuesta = em.GetPreguntasEncuesta(idEncuesta);
 
+            ViewBag.IdEncuesta = idEncuesta;
+            return View(pregsEncuesta);
+        }
+
+        public ActionResult VerEncuesta(int idEncuesta)
+        {
+            List<PreguntasEntity> pregsEncuesta = em.GetPreguntasEncuesta(idEncuesta);
+
+            EncuestaEntity encu = em.GetEncuestaById(idEncuesta);
+
+            ViewBag.Encuesta = encu;
             ViewBag.IdEncuesta = idEncuesta;
             return View(pregsEncuesta);
         }
@@ -155,7 +212,7 @@ namespace ProyectoFinal
             int idTipoEncuesta = 0;
             switch (tipoEncuesta)
             {
-                case "Lugares de Hospedaje": idTipoEncuesta = 1;
+                case "Lugar de hospedaje": idTipoEncuesta = 1;
                     break;
 
                 case "Comercio": idTipoEncuesta = 2;

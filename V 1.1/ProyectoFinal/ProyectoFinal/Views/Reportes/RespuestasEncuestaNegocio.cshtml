@@ -1,0 +1,385 @@
+﻿@model IEnumerable<BussinesEntities.PreguntasEntity>
+@{
+    ViewBag.Title = "Respuestas por Encuesta";
+}
+
+
+<script>
+
+
+    $(document).ready(function () {
+
+        $('.date').mask('00-00-0000');
+
+        $('#fecha_desde').datetimepicker({
+            locale: 'es',
+            format: 'DD/MM/YYYY'
+        });
+
+        $('#fecha_hasta').datetimepicker({
+            locale: 'es',
+            format: 'DD/MM/YYYY'
+        });
+
+        $('#fecha_hasta').datetimepicker({
+            locale: 'es',
+            format: 'DD/MM/YYYY'
+        });
+
+        $("#Negocios").change(function () {
+            
+            var idNegocio = $("#Negocios").val();                       
+            window.location = '../../Reportes/RespuestasEncuestaNegocio/?idNegocio=' + idNegocio;
+        });
+
+    });
+
+
+    function armar_graficoTorta(idPregunta, idEncuesta, idNegocio, nomCanvas) {
+
+
+        $("#resultado").hide();
+        $("#cargando_grafico").show();
+
+        $.ajax({
+            type: 'GET',
+            url: 'DataGraficoPregEncuesta?idPregunta=' + idPregunta + '&idEncuesta=' + idEncuesta + '&idNegocio=' + idNegocio,
+            success: function (response) {
+
+                var valores = [];
+                var etiquetas = [];
+
+                response.forEach(function (element) {
+                    valores.push(element.Valor);
+                    etiquetas.push(element.Campo);
+                });
+
+                var config = {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: valores,
+                            label: 'Dataset 1',
+                            backgroundColor: colores(valores)
+                        }],
+                        labels: etiquetas
+                    },
+                    options: {
+                        responsive: true
+                    }
+                };
+
+                var ctx = document.getElementById("chart-area").getContext("2d");
+                window.myPie = new Chart(ctx, config);
+
+                $("#cargando_grafico").hide();
+
+                $("#canvas-holder").show();
+                $("#chart-area").show();
+
+            }
+        })
+
+    }
+
+
+    function llamarGraficos() {
+        @{
+             if(ViewBag.IdEncuesta != null)
+             { 
+                int i = -1;
+                foreach (var item in Model)
+                {
+                    i++;
+                    @:armar_graficoBarra('@item.idPregunta', '@item.idEncuesta', '@ViewBag.IdNegocio', 'canvas_' + '@i', 'label_' + '@i');
+                }
+                
+             }
+
+        }
+    }
+
+    function buscarPreguntas() {
+        var idEncuesta = $("#encuesta").val();
+        var idNegocio = @ViewBag.IdNegocio
+
+        window.location = '../RespuestasEncuestaNegocio/?idEncuesta=' + idEncuesta + '&idNegocio=' + idNegocio;
+    }
+
+    
+
+    function armar_graficoBarra(idPregunta, idEncuesta, idNegocio, nomCanvas, nomLabel) {
+
+
+        $("#resultado").hide();
+        $("#cargando_grafico").show();
+
+        var idEncuestaSend = idEncuesta;
+
+
+        $.ajax({
+            type: 'GET',
+            url: '../DataGraficoPregEncuesta?idPregunta=' + idPregunta + '&idEncuesta=' + idEncuestaSend + '&idNegocio=' + idNegocio,
+            success: function (response) {
+
+                var valores = [];
+                var etiquetas = [];
+
+                response.forEach(function (element) {
+                    valores.push(element.Valor);
+                    etiquetas.push(element.Campo);
+                });
+
+                var color = Chart.helpers.color;
+
+                var barChartData = {
+                    labels: etiquetas,
+                    datasets: [{
+                        label: 'Cantidad',
+                        backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+                        borderColor: window.chartColors.green,
+                        borderWidth: 1,
+                        data: valores
+                    }]
+
+                };
+
+                var ctx = document.getElementById(nomCanvas).getContext("2d");
+                window.myBar = new Chart(ctx, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: ''
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+
+                $("#cargando_grafico").hide();
+                $('#' + nomCanvas).show();
+                $('#' + nomLabel).show();
+                $("#canvas-holder").show();
+                $("#chart-area").show();
+
+            }
+        })
+
+    }
+
+    function colores(internalData) {
+
+        var graphColors = [];
+        var graphOutlines = [];
+        var hoverColor = [];
+
+        var internalDataLength = internalData.length;
+        i = 0;
+        while (i <= internalDataLength) {
+            var randomR = Math.floor((Math.random() * 130) + 100);
+            var randomG = Math.floor((Math.random() * 130) + 100);
+            var randomB = Math.floor((Math.random() * 130) + 100);
+
+            var graphBackground = "rgb("
+                    + randomR + ", "
+                    + randomG + ", "
+                    + randomB + ")";
+            graphColors.push(graphBackground);
+
+            var graphOutline = "rgb("
+                    + (randomR - 80) + ", "
+                    + (randomG - 80) + ", "
+                    + (randomB - 80) + ")";
+            graphOutlines.push(graphOutline);
+
+            var hoverColors = "rgb("
+                    + (randomR + 25) + ", "
+                    + (randomG + 25) + ", "
+                    + (randomB + 25) + ")";
+            hoverColor.push(hoverColors);
+
+            i++;
+        };
+
+        return hoverColor;
+
+    }
+    @*function ReporteCampoFechaValorPorNegocio() {
+
+        var tipo_reporte = $("#tipo_reporte").val();
+        //var nombre_reporte = $("#nombre_reporte").val();
+        var nombre_reporte = "@ViewBag.nombre_reporte";
+        var fecha_desde    = $("#fecha_desde").val();
+        var fecha_hasta    = $("#fecha_hasta").val();
+        var negocio = $("#Negocios").val();
+
+
+
+        $.ajax({
+            type: 'GET',
+            url: 'ReporteCampoFechaValorPorNegocio?tipo_reporte=' + tipo_reporte + '&nombre_reporte=' + nombre_reporte + '&fecha_desde=' + fecha_desde + '&fecha_hasta=' + fecha_hasta + '&negocio='+negocio,
+            success: function (response) {
+                $("#resultado").html(response);
+            }
+        })
+
+        $("#cargando_grafico").hide();
+        $("#canvas-holder").hide();
+        $("#chart-area").hide();
+        $("#resultado").show();
+    }*@
+
+    function llamarReporte() {
+        var tipo_reporte = $("#tipo_reporte").val();
+
+        alert(tipo_reporte);
+
+        if (tipo_reporte == "General")
+            armar_graficoTorta();
+        else
+            armar_graficoBarra();
+    }
+
+</script>
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>GESTION DE REPORTES</h2>
+                    <br />
+                    <h3>@ViewBag.nombre_reporte</h3>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Gestion de Reportes</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+        <div class="row" style="margin-bottom:20px;">
+           
+
+            <div class="col-md-3">
+
+                @Html.DropDownList("Negocios", new SelectList(ViewBag.lista_negocios, "idNegocio", "nombre", ViewBag.IdNegocio),"SELECCIONA TU NEGOCIO", new { @class = "form-control" })
+
+            </div>
+
+           
+             @{
+                 List<BussinesEntities.EncuestasRespEntity> encuestas = ViewBag.EncuestasNegocio;
+
+                 if (encuestas != null)
+                 {
+                     <div class="col-md-3">
+
+                        @Html.DropDownList("encuesta", new SelectList(ViewBag.EncuestasNegocio, "idEncuesta", "NombreEncuesta", ViewBag.IdEncuesta), "SELECCIONÁ LA ENCUESTA", new { @class = "form-control" })
+
+                     </div>               
+                    
+                 }
+             }           
+            
+
+
+        </div>
+
+        @{
+            List<BussinesEntities.EncuestasRespEntity> encuestasNeg = ViewBag.EncuestasNegocio;
+
+            if (encuestasNeg != null)
+            {
+                <div class="row">   
+
+                    <div class="col-md-4">
+                        <button class="btn btn-block" onclick="buscarPreguntas();" style="background-color:yellowgreen; color:white;">Buscar</button>
+                    </div>
+
+                </div>
+            }
+         }       
+
+
+        <div id="resultado">
+        </div>
+
+        <div id="cargando_grafico" style="display:none; text-align:center">Cargando grafico por favor espere...</div>
+        <div id="canvas-holder" style="width:80%">
+
+            <br />
+            <br />
+            <br />
+
+            @{
+                int cantEncResp = ViewBag.CantEncuestasResp==null?0:ViewBag.CantEncuestasResp;
+                if(cantEncResp > 0)
+                {
+                    <label style="font-size:28px;">CANTIDAD DE RESPUESTAS: @cantEncResp</label>
+                }
+            }
+
+            <br />
+            <br />
+            <br />
+            <br />
+
+
+             
+            @{
+                int idEncuesta = ViewBag.IdEncuesta == null ? 0 : ViewBag.IdEncuesta;
+                if (idEncuesta != 0)
+                {
+                    int j = 0;
+                    foreach (var item in Model)
+                    {
+                        string nombreCanvas = "canvas_" + j;
+                        string nombreLabel = "label_" + j;
+
+                        <label style="display:none; font-size:28px; text-align:center" id=@nombreLabel>@item.textoPregunta</label>
+                        <canvas id=@nombreCanvas></canvas>
+                        <br />
+                        <br />
+                        j++;
+
+
+                    }
+
+                    @:<label style="display:none" id="labelCanvases"></label>
+                    @:
+                    <script>llamarGraficos();</script>
+            }
+
+            }
+
+            <canvas id="chart-area" />
+        </div>
+
+        
+       
+
+    </div>
+</section>

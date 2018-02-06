@@ -36,13 +36,13 @@
         }
 
         @{
-            if(Model.idTipoEncuesta == 1 || Model.idTipoEncuesta == 2)
-            { 
+            if (Model.idTipoEncuesta == 1 || Model.idTipoEncuesta == 2)
+            {
                 <div class="page-header">
                     <h3>Por tu visita a <span>@ViewBag.Negocio</span></h3>
                 </div>
             }
-          }
+        }
 
 
         <div>
@@ -75,32 +75,78 @@
                 string preg = "preg_" + i;
 
                 @Html.HiddenFor(m => m.Preguntas1[i].idPregunta)
-                @Html.LabelFor(m => m.Preguntas1[i].idPregunta, String.Empty);
+                @Html.LabelFor(m => m.Preguntas1[i].idPregunta, String.Empty)        ;
 
-            int j = 0;
-            foreach (var it in item.TiposRespuesta.RespuestasPosiblesArray)
-            {
-            @Html.RadioButtonFor(m => m.Preguntas1[i].respuesta, it.valor)
-            @Html.HiddenFor(m => m.Preguntas1[i].TiposRespuesta.RespuestasPosiblesArray[j].valor)
+                                                                                     int j = 0;
+                                                                                     foreach (var it in item.TiposRespuesta.RespuestasPosiblesArray)
+                                                                                     {
+                                                                                         var mostrar = "";
 
-            <text> @it.nombre </text>
-            @Html.HiddenFor(m => m.Preguntas1[i].TiposRespuesta.RespuestasPosiblesArray[j].nombre)
-                j++;
-            }
+                                                                                         switch (it.nombre)
+                                                                                         {
+                                                                                             case "SI":
+                                                                                                 mostrar = "<img src='../Content/img/si.png' />";
+                                                                                                 break;
+                                                                                             case "NO":
+                                                                                                 mostrar = "<img src='../Content/img/no.png' />";
+                                                                                                 break;
+                                                                                             case "MALO":
+                                                                                                 mostrar += "<img src='../Content/img/estrella.png' />";
+                                                                                                 break;
+
+                                                                                             case "REGULAR":
+                                                                                                 mostrar += "<img src='../Content/img/estrella.png' />";
+                                                                                                 mostrar += "<img src='../Content/img/estrella.png' />";
+                                                                                                 break;
+
+                                                                                             case "BUENO":
+                                                                                                 mostrar += "<img src='../Content/img/estrella.png' />";
+                                                                                                 mostrar += "<img src='../Content/img/estrella.png' />";
+                                                                                                 mostrar += "<img src='../Content/img/estrella.png' />";
+                                                                                                 break;
+
+                                                                                             case "MUY BUENO":
+                                                                                                 mostrar += "<img src='../Content/img/estrella.png' />";
+                                                                                                 mostrar += "<img src='../Content/img/estrella.png' />";
+                                                                                                 mostrar += "<img src='../Content/img/estrella.png' />";
+                                                                                                 mostrar += "<img src='../Content/img/estrella.png' />";
+                                                                                                 break;
+
+                                                                                             case "EXCELENTE":
+                                                                                                 mostrar += "<img src='../Content/img/estrella.png' />";
+                                                                                                 mostrar += "<img src='../Content/img/estrella.png' />";
+                                                                                                 mostrar += "<img src='../Content/img/estrella.png' />";
+                                                                                                 mostrar += "<img src='../Content/img/estrella.png' />";
+                                                                                                 mostrar += "<img src='../Content/img/estrella.png' />";
+                                                                                                 break;
+                                                                                             default:
+                                                                                                 mostrar = it.nombre;
+                                                                                                 break;
+                                                                                         }
+
+                                                                                        <label class="radio-inline">
+                                                                                            @Html.RadioButtonFor(m => m.Preguntas1[i].respuesta, it.valor) @MvcHtmlString.Create(mostrar)
+                                                                                        </label>
+                                                                                        @Html.HiddenFor(m => m.Preguntas1[i].TiposRespuesta.RespuestasPosiblesArray[j].valor)
 
 
-                                                                             i++;
+                                                                                        @Html.HiddenFor(m => m.Preguntas1[i].TiposRespuesta.RespuestasPosiblesArray[j].nombre)
+                                                                                         j++;
+                                                                                     }
 
-                                                                            <br />
-                                                                            <br />
-                                                                            <br />
-                                                                            <br />
+
+                                                                                     i++;
+
+                                                                                    <br />
+                                                                                    <br />
+                                                                                    <br />
+                                                                                    <br />
             }
 
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
-                    <input type="submit" value="ENVIAR ENCUESTA" class="btn btn-default" />
+                    <input type="submit" value="ENVIAR ENCUESTA" style="padding:10px; color:white; background: yellowgreen;" class="btn btn-default" />
                 </div>
             </div>
         }
@@ -110,6 +156,5 @@
         </div>
 
 
-        </div>
+    </div>
 </section>
-

@@ -30,8 +30,8 @@ namespace ProyectoFinal
         // GET: /Encuestas/
         public ActionResult EncuestasIndex()
         {
-
-            ObtenerUsuarioActual();
+          
+			ObtenerUsuarioActual();
             List<EncuestaEntityIndexUsuario> encuestasUsuario = em.GetEncuestasAsignadas(usuarioActual.idUsuario);
 
             //ViewBag.IdEncuesta = idEncuesta;
@@ -151,8 +151,7 @@ namespace ProyectoFinal
         }
 
         public ActionResult ResponderEncuesta(string tipoEncuesta, int idEncuestaAsignada)
-        {
-            
+        {            
             int idTipoEncuesta = 0;
             switch (tipoEncuesta)
             {
@@ -173,7 +172,16 @@ namespace ProyectoFinal
 
             EncuestaEntity enc = new EncuestaEntity();
             enc.idEncuesta = idEncuesta;
+            enc.idTipoEncuesta = idTipoEncuesta;
             enc.Preguntas1 = em.GetPreguntasEncuesta(idEncuesta).ToArray();
+
+            //Obtengo el negocio de la encuesta. Siempre y cuando la misma sea de tipo Comercio o Lugar de Hospedaje.
+            if (idTipoEncuesta == 1 || idTipoEncuesta == 2)
+            {
+                EncuestasAsignadas ea = em.GetEncuestaAsignadaById(idEncuestaAsignada);
+                ViewBag.Negocio = ea.Negocio.nombre;
+            }
+            
 
             ViewBag.IdEncuestaAsignada = idEncuestaAsignada;
             return View(enc);
@@ -208,15 +216,53 @@ namespace ProyectoFinal
             ObtenerUsuarioActual();
             List<EncuestaEntityIndexUsuario> encuestasUsuario = em.GetEncuestasAsignadas(usuarioActual.idUsuario);
 
-            //ViewBag.IdEncuesta = idEncuesta;
-            ViewBag.idPerfil = usuarioActual.idPerfil;
+            foreach (var item in encuestasUsuario)
+            {
+                if (item.TIPO == "Ciudad")
+                    item.NEGOCIO = "";
+            }
 
+            //ViewBag.IdEncuesta = idEncuesta;
+			ViewBag.idPerfil = usuarioActual.idPerfil;
             return View(encuestasUsuario);
         }
+
+        public string GetEncuestasSinResponder()
+        {
+            ObtenerUsuarioActual();
+            List<EncuestaEntityIndexUsuario> encuestasUsuario = em.GetEncuestasAsignadas(usuarioActual.idUsuario);
+
+            int cantSinResp = 0;
+            foreach (var item in encuestasUsuario)
+            {
+                if (item.RESPUESTA == "PENDIENTE")
+                    cantSinResp++;
+            }
+
+            //ViewBag.IdEncuesta = idEncuesta;
+
+            if (cantSinResp > 0)
+                return "[" + cantSinResp + "]";
+            else
+                return "";        
+        }
+
 
         public ActionResult VerEncuestaUsuario(int idEncuestaAsignada)
         {
             List<RespuestasEncuestaUsuarioEntity> respuestas = em.GetRespuestaUsuarioEntity(idEncuestaAsignada);
+
+            //Obtengo tipo de encuesta y negocio. Si no es encuesta de tipo ciudad los envio a la vista
+                      
+            EncuestasAsignadas ea = em.GetEncuestaAsignadaById(idEncuestaAsignada);
+
+            if (ea.idTipoEncuesta == 1 || ea.idTipoEncuesta == 2)
+            {
+                ViewBag.Negocio = ea.Negocio.nombre;                
+            }
+
+            ViewBag.IdTipoEncuesta = ea.idTipoEncuesta;
+      
             return View(respuestas);
         }
 

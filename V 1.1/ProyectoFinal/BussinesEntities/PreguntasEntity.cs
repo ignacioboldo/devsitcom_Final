@@ -26,6 +26,8 @@ namespace BussinesEntities
         public virtual TiposRespuestaEntity TiposRespuesta { get; set; }
         public virtual ClasifPregunta ClasifPregunta { get; set; }
 
+        public Encuestas Encuesta { get; set; }
+
         public List<TiposRespuesta> TiposRespuestaList { get; set; }
         public List<ClasifPregunta> ClasifPreguntaList { get; set; }
     }

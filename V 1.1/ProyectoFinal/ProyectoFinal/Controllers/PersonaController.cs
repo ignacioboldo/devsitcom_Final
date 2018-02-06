@@ -91,6 +91,8 @@ namespace ProyectoFinal.Controllers
             ViewBag.Sexos = new SelectList(db.Sexo, "idSexo", "nombre", persona.idSexo);
             ViewBag.TiposDocumento = new SelectList(db.TipoDocumento, "idTipoDocumento", "nombre", persona.idTipoDocumento);
             ViewBag.ReturnUrl = returnUrl;
+            ViewBag.IdNegocio = persona.idNegocio;
+
             persona.Domicilio = new DomicilioEntity()
             {
                 listPaises = dm.GetAllPaises(),
@@ -114,6 +116,7 @@ namespace ProyectoFinal.Controllers
             ViewBag.Sexos = new SelectList(db.Sexo, "idSexo", "nombre", persona.idSexo);
             ViewBag.TiposDocumento = new SelectList(db.TipoDocumento, "idTipoDocumento", "nombre", persona.idTipoDocumento);
             ViewBag.ReturnUrl = returnUrl;
+            ViewBag.IdNegocio = persona.idNegocio;
             
             if(idProvinciaSeleccionada != null)
             { 

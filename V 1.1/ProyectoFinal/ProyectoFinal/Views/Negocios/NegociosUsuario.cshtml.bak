@@ -1,58 +1,6 @@
 ﻿@model IEnumerable<DAL.Negocio>
 @using GridMvc.Html
 
-<script type="text/javascript">
-
-    var perfil = "@ViewBag.Perfil"
-    var mensaje = "@ViewBag.Mensaje"
-
-    $(document).ready(function () {
-
-
-        if (perfil == 3) {
-            $("#btnTusTramites").hide();
-            $("#btnTusNegocios").hide();
-            $("#btnTusTramitesAsignados").show();
-        }
-        else {
-            $("#btnTusTramites").show();
-            $("#btnTusNegocios").show();
-            $("#btnTusTramitesAsignados").hide();
-        }
-
-        if (mensaje != "") {
-            alert(mensaje);
-        }
-
-        $("#btnTusTramites").click(function (event) {
-            window.location = '@Url.Action("TramitesUsuario","Tramites")';
-            event.preventDefault();
-        });
-
-        $("#btnTusTramitesAsignados").click(function (event) {
-            window.location = '@Url.Action("TramitesUsuario","Tramites")';
-            event.preventDefault();
-        });
-
-        $("#btnModificarDatos").click(function (event) {
-            window.location = '@Url.Action("EditUsuario","Usuarios")';
-            event.preventDefault();
-        });
-
-        $("#btnTusNegocios").click(function (event) {
-            window.location = '@Url.Action("NegociosUsuario","Negocios")';
-            event.preventDefault();
-        });
-    });
-</script>
-
-
-
-
-
-
-
-
 
 <!-- LIGHT SECTION -->
 <section class="lightSection clearfix pageHeader">
@@ -81,30 +29,7 @@
     <div class="container">
  
 
-        <div class="row">
-
-            <div class="col-xs-12">
-                <div class="btn-group" role="group" aria-label="..." style="text-align:center">
-
-                    <a class="btn btn-default" id="btnModificarDatos" style="width:200px;">
-                        MODIFICÁ TUS DATOS
-                    </a>
-
-                    <a class="btn btn-default active" id="btnTusNegocios" style="width:200px;">
-                        TUS NEGOCIOS
-                    </a>
-
-                    <a class="btn btn-default" id="btnTusTramites" style="width:200px;">
-                        TUS TRAMITES
-                    </a>
-
-                    <a class="btn btn-default" id="btnTusTramitesAsignados" style="width:200px;">
-                        TUS TRAMITES ASIGNADOS
-                    </a>
-
-                </div>
-            </div>
-        </div>
+        @Html.Partial("_Botonera")
 
 
 
@@ -116,41 +41,103 @@
 
                         <h4><strong>Tus Negocios</strong></h4>
 
+                        <a href="@Url.Action("Nuevo", "Negocios")" id="alta_negocio" class="btn btn-default btn-block active"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>Nuevo Negocio</a>
+
                         @if (Model.Count() != 0)
                         {
                             @helper botonVer(DAL.Negocio n)
                             {
                                 if (n.idTipoNegocio == 1)
                                 {
-                                                <button id="btnVerNegocio" style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("VerHospedaje","Negocios",new { id = n.idNegocio })'" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Ver"><i class="fa fa-search"></i></button>
-    <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("EditHospedaje","Negocios", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar"><i class="fa fa-edit"></i></button>
+                                    if(n.estaAnulado == null)
+                                    {
+                                        <button id="btnVerNegocio" style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("VerHospedaje","Negocios",new { id = n.idNegocio })'" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Ver"><i class="fa fa-search"></i></button>
+                                        <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("EditHospedaje","Negocios", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Editar"><i class="fa fa-edit"></i></button>
+    <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("SolicitarBajaNegocio", "Negocios", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="DAR DE BAJA"><i class="fa fa-close"></i></button>
+                                        
+                                    }
+                                    else
+                                    { 
+                                        <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("SolicitarRepublicacion", "Negocios", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">RE-PUBLICAR</button>
+                                        <button id="btnVerNegocio" style="font-size:10px; padding: 5px;" disabled onclick="window.location = '@Url.Action("VerHospedaje","Negocios",new { id = n.idNegocio })'" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Ver"><i class="fa fa-search"></i></button>
+                                        <button style="font-size:10px; padding: 5px;" disabled onclick="window.location = '@Url.Action("EditHospedaje","Negocios", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar"><i class="fa fa-edit"></i></button>
+                                        <button style="font-size:10px; padding: 5px;" disabled onclick="window.location = '@Url.Action("SolicitarBajaNegocio", "Negocios", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="DAR DE BAJA"><i class="fa fa-edit"></i></button>
+                                        <button style="font-size:10px; padding: 5px;" disabled onclick="window.location = '@Url.Action("PromocionesNeg", "Promociones", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Promociones</button>                                        
+                                    }
 
+                                   if(n.LugarHospedaje.FirstOrDefault().moduloReservas==true)
+                                       { 
+                                    <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("GestionReservas", "Reservas", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar Reservas</button>
+                                       }
+                                   else
+                                   {
 
-
-
-    <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("GestionReservas", "Reservas", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar Reservas</button>
-
+                                    <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("GestionDisponibilidad", "Reservas", new { idNegocio = n.idNegocio , idTipo=n.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar Disponibilidad</button>
+                                    <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("SolicitarModulo", "Reservas", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Solicitar Modulo Gestión de Reservas</button>
+                                 
+                                   }
                                 }
                                 else
                                 {
-                                    <button id="btnVerNegocio" style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("VerComercio","Negocios",new { id = n.idNegocio })'" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Ver"><i class="fa fa-search"></i></button>
-    <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("EditComercio","Negocios", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar"><i class="fa fa-edit"></i></button>
-    <button style="font-size:10px; padding: 5px;" disabled class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar Reservas</button>
-                                }
-}
+                                    if (n.estaAnulado == null)
+                                    {
+                                        <button id="btnVerNegocio" style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("VerComercio","Negocios",new { id = n.idNegocio })'" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Ver"><i class="fa fa-search"></i></button>
+    <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("EditComercio","Negocios", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Editar"><i class="fa fa-edit"></i></button>
+    <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("SolicitarBajaNegocio","Negocios", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="DAR DE BAJA"><i class="fa fa-close"></i></button>
+                                        <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("PromocionesNeg", "Promociones", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Promociones</button>
+                                    }
+                                    else
+                                    {
+                                        <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("SolicitarRepublicacion", "Negocios", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">RE-PUBLICAR</button>
+                                        <button id="btnVerNegocio" style="font-size:10px; padding: 5px;" disabled onclick="window.location = '@Url.Action("VerComercio","Negocios",new { id = n.idNegocio })'" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Ver"><i class="fa fa-search"></i></button>
+                                        <button style="font-size:10px; padding: 5px;" disabled onclick="window.location = '@Url.Action("EditComercio","Negocios", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar"><i class="fa fa-edit"></i></button>
+                                        <button style="font-size:10px; padding: 5px;" disabled onclick="window.location = '@Url.Action("SolicitarBajaNegocio","Negocios", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-warning tooltips" data-placement="top" data-original-title="DAR DE BAJA"><i class="fa fa-edit"></i></button>
+                                        <button style="font-size:10px; padding: 5px;" disabled onclick="window.location = '@Url.Action("PromocionesNeg", "Promociones", new { idNegocio = n.idNegocio })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Promociones</button>
+                                    }
 
+
+                                    
+                                    <button style="font-size:10px; padding: 5px;" disabled class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">Gestionar Reservas</button>
+                                }
+                            }
+                            
+                            @helper estado(DAL.Negocio n)
+                            {
+    
+                                if(n.estaAnulado == null)
+                                { 
+                                    <span style="font-weight:normal;">PUBLICADO</span>
+                                }
+                                else
+                                {
+                                    if ((bool)n.estaAnulado)
+                                    {
+                                       <span style="font-weight:normal;">ANULADO</span>
+                                    }
+                                    else
+                                    {
+                                        <span style="font-weight:normal;">ANULADO</span>
+                                    }
+                                }
+                             }
 
                             @Html.Grid(Model).Columns(columns =>
         {
             //columns.Add(model => model.fechaAlta).Titled("Fecha Alta");
             columns.Add(model => model.nombre).Titled("Nombre").SetWidth(30);
             columns.Add(model => model.TipoDeNegocio.nombre).Titled("Tipo").SetWidth(30);
+            columns.Add().Titled("Estado")
+                   .Encoded(false)
+                   .Sanitized(false)
+                   .SetWidth(40)
+                   .RenderValueAs(n => estado(n));
             columns.Add(model => model.idNegocio)
                 .Titled("Acción")
                 .Encoded(false)
                 .Sanitized(false)
                 .SetWidth(40)
                 .RenderValueAs(n => botonVer(n));
+            
         }).WithPaging(10).Sortable(true)
 
 
@@ -170,6 +157,12 @@
                 </div>
             </div>
         </div>
+
+        <a href="javascript:history.back()" class="btn btn-info" style="padding:10px; margin-top:20px; width: 200px;">
+            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  Volver
+        </a>
+
+
     </div>
 
 

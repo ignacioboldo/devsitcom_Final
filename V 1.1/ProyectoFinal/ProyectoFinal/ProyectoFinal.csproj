@@ -180,6 +180,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HotelController.cs" />
     <Compile Include="Controllers\List.cs" />
+    <Compile Include="Controllers\MensajesController.cs" />
     <Compile Include="Controllers\NegociosController.cs" />
     <Compile Include="Controllers\NotificacionesController.cs" />
     <Compile Include="Controllers\PersonaController.cs" />
@@ -207,11 +208,15 @@
     <Content Include="Content\Gridmvc.css" />
     <Content Include="Content\Images\lugares-para-fotografiar.png" />
     <Content Include="Content\img\1.png" />
+    <Content Include="Content\img\estrella.png" />
     <Content Include="Content\img\icon.png" />
     <Content Include="Content\img\icono_bandera_amarilla.png" />
     <Content Include="Content\img\icono_bandera_roja.png" />
     <Content Include="Content\img\invitado.png" />
     <Content Include="Content\img\lugares-para-fotografiar.png" />
+    <Content Include="Content\img\no.png" />
+    <Content Include="Content\img\ok-appproval-aceptacion.png" />
+    <Content Include="Content\img\si.png" />
     <Content Include="Content\img\siete-cascadas_edit.jpg" />
     <Content Include="Content\img\Valle-De-Punilla_edit.jpg" />
     <Content Include="Content\Site.css" />
@@ -674,6 +679,11 @@
     <Content Include="Views\Test\Index.cshtml" />
     <Content Include="Views\Complejo\BuscarHabitacionesDisponibles_Disponibilidad.cshtml" />
     <Content Include="Views\Test\GraficoBarraDinamico.cshtml" />
+    <Content Include="Views\Reportes\RespuestasEncuestaNegocio.cshtml" />
+    <Content Include="Views\Reportes\RespuestasEncuestaSecretaria.cshtml" />
+    <Content Include="Views\Encuestas\EditPregunta.cshtml" />
+    <Content Include="Views\Encuestas\VerEncuesta.cshtml" />
+    <Content Include="Views\Mensajes\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

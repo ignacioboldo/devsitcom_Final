@@ -223,7 +223,30 @@ namespace BL
             }
         }
 
+        public List <ReportesCampoValor>ObtenerRespuestasPorPreguntaNegocio(int idEncuesta, int idPregunta, int idNegocio)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramIdEncuesta = new SqlParameter("@pIdEncuesta", idEncuesta);
+                SqlParameter paramIdPregunta = new SqlParameter("@pIdPregunta", idPregunta);
+                SqlParameter paramIdNegocio = new SqlParameter("@pIdNegocio", idNegocio);
 
+                return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[RespuestasEncuesta] @idEncuesta=@pIdEncuesta , @idPregunta=@pIdPregunta  , @idNegocio=@pIdNegocio", paramIdEncuesta, paramIdPregunta, paramIdNegocio).ToList();
+            }
+
+        }
+
+        public List<ReportesCampoValor> ObtenerRespuestasPorPregunta(int idEncuesta, int idPregunta)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramIdEncuesta = new SqlParameter("@pIdEncuesta", idEncuesta);
+                SqlParameter paramIdPregunta = new SqlParameter("@pIdPregunta", idPregunta);
+
+                return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[RespuestasEncuestaSecretaria] @idEncuesta=@pIdEncuesta , @idPregunta=@pIdPregunta", paramIdEncuesta, paramIdPregunta).ToList();
+            }
+
+        }
 
     }
 }

@@ -98,6 +98,53 @@
 <section class="mainContent clearfix userProfile">
     <div class="container">
 
+        @{
+            string retUrl = ViewBag.ReturnUrl;
+            int idNeg = ViewBag.IdNegocio;
+           
+
+            switch (retUrl)
+            {
+                case "../Negocios/Nuevo": 
+                    
+                    <div id="mensaje" class="alert alert-info" role="alert">
+
+                            <br />
+                            <h5>      ATENCION:  </h5>
+                            <br />
+
+                            <label style="font-size:14px;"> Aun no hemos terminado de completar tus datos. Para poder dar de alta un negocio debes completar tus datos personales. </label>
+
+                            <br />
+                            <br />
+
+                     </div>
+        
+                    break;
+
+                case "../Reservas/SolicitarReserva/": 
+                    
+                    <div id="mensaje" class="alert alert-info" role="alert">
+
+                            <br />
+                            <h5>      ATENCION:  </h5>
+                            <br />
+
+                            <label style="font-size:14px;"> Aun no hemos terminado de completar tus datos. Para poder solicitar una reserva debes completar tus datos personales. </label>
+
+                            <br />
+                            <br />
+
+                     </div>
+        
+                    break;
+                default:
+                    break;
+            }            
+
+
+        }
+
 
         @using (Html.BeginForm("DatosPersonales", "Persona", new { returnUrl = ViewBag.ReturnUrl }))
         {

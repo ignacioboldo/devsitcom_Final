@@ -30,6 +30,53 @@
     <div class="container">
 
 
+        @{
+            string retUrl = Session["ReturnUrl"] == null ? "" : (string)Session["ReturnUrl"];
+            //int idNeg = ViewBag.IdNegocio == null ;
+
+
+            switch (retUrl)
+            {
+                case "../Negocios/Nuevo":
+
+                    <div id="mensaje" class="alert alert-info" role="alert">
+
+                        <br />
+                        <h5>      ATENCION:  </h5>
+                        <br />
+
+                        <label style="font-size:14px;"> Para poder dar de alta un negocio debes estar loggeado. </label>
+
+                        <br />
+                        <br />
+
+                    </div>
+
+                    break;
+
+                default:
+                    break;
+            }
+            
+            if (retUrl.Contains("../Promociones/ObtenerPromocion/?idPromocion="))
+	        {
+		            <div id="mensaje" class="alert alert-info" role="alert">
+
+                        <br />
+                        <h5>      ATENCION:  </h5>
+                        <br />
+
+                        <label style="font-size:14px;"> Para poder obtener una promoción debes estar loggeado. </label>
+
+                        <br />
+                        <br />
+
+                    </div>
+	        }
+
+
+        }
+
 
         <div class="row">
 

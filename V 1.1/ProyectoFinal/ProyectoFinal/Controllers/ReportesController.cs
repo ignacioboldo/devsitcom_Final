@@ -15,6 +15,7 @@ namespace ProyectoFinal.Controllers
         public UsuarioEntity usuarioActual;
         public UsuariosManager um = new UsuariosManager();
         public NegociosManager nm = new NegociosManager();
+        public EncuestasManager em = new EncuestasManager();
         ReportesManager rm = new ReportesManager();
 
 
@@ -288,6 +289,87 @@ namespace ProyectoFinal.Controllers
             ViewBag.tipo_reporte = tipo_reporte;
 
             return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+
+   public JsonResult DataGraficoPregEncuesta(int idPregunta, int idEncuesta, int idNegocio)
+        {
+            List<ReportesCampoValor> result = new List<ReportesCampoValor>();
+
+            result = rm.ObtenerRespuestasPorPreguntaNegocio(idEncuesta, idPregunta, idNegocio);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
+
+
+
+  public JsonResult DataGraficoPregEncuestaSecretaria(int idPregunta, int idEncuesta)
+        {
+            List<ReportesCampoValor> result = new List<ReportesCampoValor>();
+
+            result = rm.ObtenerRespuestasPorPregunta(idEncuesta, idPregunta);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+
+        }
+
+        public ActionResult RespuestasEncuestaNegocio(int? idEncuesta, int? idNegocio)
+        {
+            ObtenerUsuarioActual();
+            List<Negocio> negocios = nm.GetNegocioByUsuario(usuarioActual.idUsuario);
+            ViewBag.lista_negocios = negocios;
+            ViewBag.nombre_reporte = "Encuesta de Negocio";
+
+            if (idNegocio != null)
+            {
+                List<EncuestasRespEntity> encuestas = em.GetEncuestasRespondidasNegocio((int)idNegocio);
+                ViewBag.IdNegocio = idNegocio;
+                ViewBag.EncuestasNegocio = encuestas;
+            }            
+
+            if(idEncuesta != null)
+            { 
+                 List<PreguntasEntity> pregs = em.GetPreguntasEncuesta((int)idEncuesta);
+
+                 List<ReportesCampoValor> result = rm.ObtenerRespuestasPorPreguntaNegocio((int)idEncuesta, (int)pregs.FirstOrDefault().idPregunta, (int)idNegocio);
+
+                 int cantEnc = 0;
+                 foreach (var item in result)
+                 {
+                     cantEnc += int.Parse(item.Valor);
+                 }
+
+                 ViewBag.CantEncuestasResp = cantEnc;
+                 ViewBag.IdEncuesta = idEncuesta; 
+                 ViewBag.IdNegocio = idNegocio;
+                 
+                 
+                 return View(pregs);
+            }            
+            
+            return View();
+        }
+
+
+        public ActionResult RespuestasEncuestaSecretaria(int? idEncuesta)
+        {
+            ObtenerUsuarioActual();
+            ViewBag.nombre_reporte = "Encuestas";
+
+            
+            List<EncuestasRespEntity> encuestas = em.GetEncuestasRespondidas();
+            ViewBag.Encuestas = encuestas;
+
+
+            if (idEncuesta != null)
+            {
+                List<PreguntasEntity> pregs = em.GetPreguntasEncuesta((int)idEncuesta);
+                ViewBag.IdEncuesta = idEncuesta;
+                return View(pregs);
+            }
+
+            return View();
         }
     }
 }

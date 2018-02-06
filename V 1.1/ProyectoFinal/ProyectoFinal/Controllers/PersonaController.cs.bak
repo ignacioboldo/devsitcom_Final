@@ -27,6 +27,9 @@ namespace ProyectoFinal.Controllers
                 ViewBag.ReturnUrl = returnUrl;
                 ViewBag.idNegocio = idNegocio;
 
+               // string msj = mensaje == null ? "" : mensaje.ToString();
+               // ViewBag.Mensaje = msj;
+
                 per.idNegocio = idNegocio;
 
                 per.Domicilio = new DomicilioEntity()

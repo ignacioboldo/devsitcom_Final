@@ -76,9 +76,8 @@
                     </td>
 
                     <td>
-                        @Html.ActionLink("Edit", "Edit", new { id = item.idPregunta }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.idPregunta }) |
-                        @Html.ActionLink("Delete", "Delete", new { id = item.idPregunta })
+                        @Html.ActionLink("Modificar", "EditPregunta", new { idPregunta = item.idPregunta }) |
+                        @Html.ActionLink("Eliminar", "DeletePregunta", "Encuestas", new { id = item.idPregunta },String.Empty)
                     </td>
                 </tr>
             }

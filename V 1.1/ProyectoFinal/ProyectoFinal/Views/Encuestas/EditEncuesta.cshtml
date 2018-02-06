@@ -37,38 +37,60 @@
 
                 @Html.ValidationSummary(true)
                 @Html.HiddenFor(model => model.idEncuesta)
+                
+                @{
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.nombre, "Nombre: ", new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.nombre, new { @class = "form-control", style = "width:300px;" })
-                        @Html.ValidationMessageFor(model => model.nombre)
-                    </div>
-                </div>
+                                bool tieneRespuestas = ViewBag.TieneRespuestas;
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.descripcion, "Descripción: ", new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.TextBoxFor(model => model.descripcion, new { @class = "form-control", style = "width:300px;" })
-                        @Html.ValidationMessageFor(model => model.descripcion)
-                    </div>
-                </div>
+                                if (!tieneRespuestas)
+                                {
+                                    <div class="form-group">
+                                        @Html.LabelFor(model => model.nombre, "Nombre: ", new { @class = "control-label col-md-2" })
+                                        <div class="col-md-10">
+                                            @Html.TextBoxFor(model => model.nombre, new { @class = "form-control", style = "width:300px;" })
+                                            @Html.ValidationMessageFor(model => model.nombre)
+                                        </div>
+                                    </div>
 
-                <div class="form-group">
-                    @Html.LabelFor(model => model.idTipoEncuesta, "Tipo: ", new { @class = "control-label col-md-2" })
-                    <div class="col-md-10">
-                        @Html.DropDownList("idTipoEncuesta", null,String.Empty, new { @class = "form-control", style = "width:300px;" })
-                        @Html.ValidationMessageFor(model => model.idTipoEncuesta)
-                    </div>
-                </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.descripcion, "Descripción: ", new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.TextBoxFor(model => model.descripcion, new { @class = "form-control", style = "width:300px;" })
+                                                @Html.ValidationMessageFor(model => model.descripcion)
+                                            </div>
+                                        </div>
 
-                <div class="form-group">
-                    <div class="col-md-2">
-                    </div>
-                    <div class="col-md-10">
-                        @Html.CheckBoxFor(model => model.setearComoActiva) @Html.Label("Setear como activa")
-                    </div>
-                </div>
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.idTipoEncuesta, "Tipo: ", new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.DropDownList("idTipoEncuesta", null, String.Empty, new { @class = "form-control", style = "width:300px;" })
+                                                @Html.ValidationMessageFor(model => model.idTipoEncuesta)
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-md-2">
+                                            </div>
+                                            <div class="col-md-10">
+                                                @Html.CheckBoxFor(model => model.setearComoActiva) @Html.Label("Setear como activa")
+                                            </div>
+                                        </div>
+                                }
+                                else
+                                {
+                                    <div class="form-group">
+                                        <div class="col-md-2">
+                                        </div>
+                                        <div class="col-md-10">
+                                            @Html.CheckBoxFor(model => model.setearComoActiva) @Html.Label("Setear como activa")
+                                        </div>
+                                    </div>
+                                }
+
+}
+
+
+                
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">

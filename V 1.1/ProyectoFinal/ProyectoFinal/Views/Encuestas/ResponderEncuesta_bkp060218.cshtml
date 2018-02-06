@@ -1,0 +1,115 @@
+﻿@model BussinesEntities.EncuestaEntity
+@{
+    ViewBag.Title = "Responder Encuesta";
+}
+
+
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Responder Encuesta</h2>
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="home">INICIO</a>
+                    </li>
+                    <li class="active">Responder Encuesta</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+        @{
+            int idEncuestaAsignada = ViewBag.IdEncuestaAsignada;
+        }
+
+        @{
+            if(Model.idTipoEncuesta == 1 || Model.idTipoEncuesta == 2)
+            { 
+                <div class="page-header">
+                    <h3>Por tu visita a <span>@ViewBag.Negocio</span></h3>
+                </div>
+            }
+          }
+
+
+        <div>
+            @ViewBag.Error
+        </div>
+
+        <br />
+
+        @using (Html.BeginForm(new { idEncuestaAsignada = idEncuestaAsignada }))
+        {
+            @Html.AntiForgeryToken()
+            int i = 0;
+            string ultClasifPregunta = "";
+
+            @Html.HiddenFor(m => m.idEncuesta)
+
+            foreach (var item in Model.Preguntas1)
+            {
+                if (ultClasifPregunta != item.ClasifPregunta.nombre)
+                {
+                    ultClasifPregunta = item.ClasifPregunta.nombre;
+                    <h4 style="color:grey">@item.ClasifPregunta.nombre</h4>
+                }
+
+                @Html.HiddenFor(m => m.Preguntas1[i].ClasifPregunta.nombre)
+
+                <h5>@item.textoPregunta</h5>
+                <br />
+
+                string preg = "preg_" + i;
+
+                @Html.HiddenFor(m => m.Preguntas1[i].idPregunta)
+                @Html.LabelFor(m => m.Preguntas1[i].idPregunta, String.Empty);
+
+            int j = 0;
+            foreach (var it in item.TiposRespuesta.RespuestasPosiblesArray)
+            {
+            @Html.RadioButtonFor(m => m.Preguntas1[i].respuesta, it.valor)
+            @Html.HiddenFor(m => m.Preguntas1[i].TiposRespuesta.RespuestasPosiblesArray[j].valor)
+
+            <text> @it.nombre </text>
+            @Html.HiddenFor(m => m.Preguntas1[i].TiposRespuesta.RespuestasPosiblesArray[j].nombre)
+                j++;
+            }
+
+
+                                                                             i++;
+
+                                                                            <br />
+                                                                            <br />
+                                                                            <br />
+                                                                            <br />
+            }
+
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="ENVIAR ENCUESTA" class="btn btn-default" />
+                </div>
+            </div>
+        }
+
+        <div>
+            @Html.ActionLink("VOLVER A ENCUESTAS", "EncuestasIndex")
+        </div>
+
+
+        </div>
+</section>
+

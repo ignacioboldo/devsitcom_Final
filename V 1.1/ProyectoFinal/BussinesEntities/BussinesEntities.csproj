@@ -60,6 +60,7 @@
     <Compile Include="EncuestaEntity.cs" />
     <Compile Include="EncuestaEntityIndex.cs" />
     <Compile Include="EncuestaEntityIndexUsuario.cs" />
+    <Compile Include="EncuestasRespEntity.cs" />
     <Compile Include="EstadoReservaEntity.cs" />
     <Compile Include="EstadoTramiteEntity.cs" />
     <Compile Include="GestionReservaEntities.cs" />

@@ -1,0 +1,44 @@
+﻿<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Mensaje del Sistema</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+    
+
+        @if(ViewBag.codigo == "NEG-ALT-200"){
+            
+            <div style="text-align:center;margin-top:30px;"><img src="~/Content/img/ok-appproval-aceptacion.png" /></div>
+            <div style="text-align:center;font-size:20px; color:gray; padding:20px;">Registro dado de alta correctamente.</div>
+            <div style="text-align:center">
+                <a href="javascript:history.back()" class="btn btn-info" style="padding:10px; margin-top:20px; width: 200px;">
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  Volver
+                </a>
+            </div>
+
+        }
+        
+        @if (ViewBag.codigo == "NEG-ALT-300")
+        {
+
+            <div style="text-align:center;font-size:20px; color:gray; padding:20px;">Un registro con el mismo nombre ya está registrado. Por favor elige otro.</div>
+            <div style="text-align:center">
+                <a href="javascript:history.back()" class="btn btn-info" style="padding:10px; margin-top:20px; width: 200px;">
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  Volver
+                </a>
+            </div>
+
+        }
+    
+    </div>
+    
+</section>

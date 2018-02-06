@@ -2,9 +2,6 @@
 @using GridMvc.Html
 
 
-
-
-
 <!-- LIGHT SECTION -->
 <section class="lightSection clearfix pageHeader">
     <div class="container">
@@ -61,9 +58,18 @@
                             @helper botonVer(BussinesEntities.EncuestaEntityIndex e)
                             {                                                    
                                 <button id="btnVerEncuesta" style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("VerEncuesta","Encuestas",new { idEncuesta = e.idEncuesta })'" class="btn btn-xs btn-green tooltips" data-placement="top" data-original-title="Ver"><i class="fa fa-search"></i></button>
-                                <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("EditEncuesta","Encuestas", new { idEncuesta = e.idEncuesta })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar"><i class="fa fa-edit"></i></button>
-                                <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("PreguntasEncuesta", "Encuestas", new { idEncuesta = e.idEncuesta })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">PREGUNTAS</button>
-                            }
+                                
+                                if (e.RESPUESTAS > 0)
+                                {
+                                     <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("EditEncuesta","Encuestas", new { idEncuesta = e.idEncuesta })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar"><i class="fa fa-edit"></i></button>
+                                     <button style="font-size:10px; padding: 5px;" disabled onclick="window.location = '@Url.Action("PreguntasEncuesta", "Encuestas", new { idEncuesta = e.idEncuesta })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">PREGUNTAS</button>
+                                }
+                                else
+                                {
+                                    <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("EditEncuesta","Encuestas", new { idEncuesta = e.idEncuesta })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar"><i class="fa fa-edit"></i></button>
+                                     <button style="font-size:10px; padding: 5px;" onclick="window.location = '@Url.Action("PreguntasEncuesta", "Encuestas", new { idEncuesta = e.idEncuesta })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">PREGUNTAS</button>
+                                }
+                           }
                         }
                               
 

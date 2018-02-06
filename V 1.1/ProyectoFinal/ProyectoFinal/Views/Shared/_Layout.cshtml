@@ -71,7 +71,7 @@
 
                     response.forEach(function (element) {
                         sum += element.Cantidad;
-                        html += '<a href="' + element.Url + '" class="list-group-item"><span class="badge">' + element.Cantidad + '</span> <b>' + element.Descripcion + '</b>:' + element.Mensaje + '</a>';
+                        html += '<li class="list-group-item"><span class="badge">' + element.Cantidad + '</span> <b>' + element.Descripcion + '</b>:' + element.Mensaje + '</li>';
                     });
 
 
@@ -129,7 +129,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="#"><img class="img-responsive" src="~/Content/img/lugares-para-fotografiar.png" alt=""></a>
+                        <a class="navbar-brand" href="#"><img class="img-responsive" style="margin-bottom: 15px;" src="~/Content/img/lugares-para-fotografiar.png" alt=""></a>
                     </div>
 
                     <!-- Collect the nav links, forms, and other content for toggling -->

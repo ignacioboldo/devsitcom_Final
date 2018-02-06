@@ -21,5 +21,6 @@ namespace BussinesEntities
         public string DESCRIPCION { get; set; }
         public string TIPO { get; set; }
         public string ESTADO { get; set; }
+        public int RESPUESTAS { get; set; }
     }
 }
