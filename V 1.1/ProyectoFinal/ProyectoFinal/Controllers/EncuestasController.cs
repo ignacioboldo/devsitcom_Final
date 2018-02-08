@@ -292,7 +292,7 @@ namespace ProyectoFinal
             int cantSinResp = 0;
             foreach (var item in encuestasUsuario)
             {
-                if (item.RESPUESTA == "PENDIENTE")
+                if (item.ESTADO == "PENDIENTE")
                     cantSinResp++;
             }
 

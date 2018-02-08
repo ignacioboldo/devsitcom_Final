@@ -529,6 +529,13 @@ namespace ProyectoFinal.Controllers
         public ActionResult SolicitarReserva(int id)
         {
             ObtenerUsuarioActual();
+
+            if (usuarioActual.idUsuario == 0)
+            {
+                Session["ReturnUrl"] = "../Reservas/SolicitarReserva";
+                return RedirectToAction("Login", "Usuarios");
+            }
+
             if(usuarioActual.idPersona != null)
             {
                 NegocioEntity neg = nm.GetNegocioById(id);

@@ -20,6 +20,7 @@ namespace BussinesEntities
         public string TIPO { get; set; }
         public string NEGOCIO { get; set; }
         public DateTime ASIGNADA { get; set; }
-        public string RESPUESTA { get; set; } 
+        public string ESTADO { get; set; }
+        public DateTime VENCE { get; set; }
     }
 }
