@@ -28,7 +28,7 @@ namespace BussinesEntities
         public string nombre { get; set; }
 
         [Required(ErrorMessage = "¡Se debe completar el nombre del comercio!")]
-        [StringLength(500, MinimumLength = 50, ErrorMessage="¡La descripción debe tener un mínimo de 50 caractéres!")]
+        [StringLength(500, MinimumLength = 20, ErrorMessage="¡La descripción debe tener un mínimo de 20 caractéres!")]
         public string descripcion { get; set; }
         public Nullable<System.DateTime> fechaAlta { get; set; }
         public Nullable<int> idTipoNegocio { get; set; }
