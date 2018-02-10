@@ -82,7 +82,7 @@
             columns.Add(model => model.Usuarios.nombreUsuario).Titled("Usuario Solicitante");
             columns.Add(model => model.Usuarios1.nombreUsuario).Titled("Usuario Responsable");
             columns.Add(model => model.fechaAlta).Titled("Fecha Alta").SetWidth(160);
-            columns.Add(model => model.EstadoTramite.nombreEstadoTramite).Titled("Estado Trámite").SetWidth(40);
+            columns.Add(model => model.EstadoTramite.nombreEstadoTramite).Titled("Estado Trámite").Css("CustomCss").SetWidth(40);
             columns.Add(model => model.TipoTramite.nombreTipoTramite).Titled("Tipo").SetWidth(100);
             columns.Add(t => t.idTramite)
                 .Titled("Acción")

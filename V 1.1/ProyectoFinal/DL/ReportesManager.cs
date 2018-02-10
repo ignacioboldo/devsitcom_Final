@@ -338,27 +338,31 @@ namespace BL
             }
         }
 
-        public List <ReportesCampoValor>ObtenerRespuestasPorPreguntaNegocio(int idEncuesta, int idPregunta, int idNegocio)
+        public List <ReportesCampoValor>ObtenerRespuestasPorPreguntaNegocio(int idEncuesta, int idPregunta, int idNegocio, string fechaDesde, string fechaHasta)
         {
             using (SitcomEntities db = new SitcomEntities())
             {
                 SqlParameter paramIdEncuesta = new SqlParameter("@pIdEncuesta", idEncuesta);
                 SqlParameter paramIdPregunta = new SqlParameter("@pIdPregunta", idPregunta);
                 SqlParameter paramIdNegocio = new SqlParameter("@pIdNegocio", idNegocio);
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", fechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", fechaHasta);
 
-                return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[RespuestasEncuesta] @idEncuesta=@pIdEncuesta , @idPregunta=@pIdPregunta  , @idNegocio=@pIdNegocio", paramIdEncuesta, paramIdPregunta, paramIdNegocio).ToList();
+                return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[RespuestasEncuesta] @idEncuesta=@pIdEncuesta , @idPregunta=@pIdPregunta  , @idNegocio=@pIdNegocio, @fechaDesdeP=@pFechaDesde, @fechaHastaP=@pFechaHasta", paramIdEncuesta, paramIdPregunta, paramIdNegocio, paramFechaDesde, paramFechaHasta).ToList();
             }
 
         }
 
-        public List<ReportesCampoValor> ObtenerRespuestasPorPregunta(int idEncuesta, int idPregunta)
+        public List<ReportesCampoValor> ObtenerRespuestasPorPregunta(int idEncuesta, int idPregunta, string fechaDesde, string fechaHasta)
         {
             using (SitcomEntities db = new SitcomEntities())
             {
                 SqlParameter paramIdEncuesta = new SqlParameter("@pIdEncuesta", idEncuesta);
                 SqlParameter paramIdPregunta = new SqlParameter("@pIdPregunta", idPregunta);
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", fechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", fechaHasta);
 
-                return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[RespuestasEncuestaSecretaria] @idEncuesta=@pIdEncuesta , @idPregunta=@pIdPregunta", paramIdEncuesta, paramIdPregunta).ToList();
+                return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[RespuestasEncuestaSecretaria] @idEncuesta=@pIdEncuesta , @idPregunta=@pIdPregunta, @fechaDesdeP=@pfechaDesde, @fechaHastaP=@pFechaHasta", paramIdEncuesta, paramIdPregunta, paramFechaDesde, paramFechaHasta).ToList();
             }
 
         }

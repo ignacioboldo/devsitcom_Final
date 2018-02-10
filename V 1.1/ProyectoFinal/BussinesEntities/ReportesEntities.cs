@@ -62,6 +62,9 @@ namespace BussinesEntities
         public string Valor_2 { get; set; }
         public string Valor_3 { get; set; }
 
+    public class ReportesEncuesta
+    {       
+        List<ReportesCampoValor> preguntas { get; set; }
     }
 
    

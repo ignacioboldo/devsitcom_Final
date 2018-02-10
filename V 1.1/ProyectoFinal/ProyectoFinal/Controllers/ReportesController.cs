@@ -353,29 +353,27 @@ namespace ProyectoFinal.Controllers
         }
 
 
-   public JsonResult DataGraficoPregEncuesta(int idPregunta, int idEncuesta, int idNegocio)
+   public JsonResult DataGraficoPregEncuesta(int idPregunta, int idEncuesta, int idNegocio, string fechaDesde, string fechaHasta)
         {
             List<ReportesCampoValor> result = new List<ReportesCampoValor>();
 
-            result = rm.ObtenerRespuestasPorPreguntaNegocio(idEncuesta, idPregunta, idNegocio);
+            result = rm.ObtenerRespuestasPorPreguntaNegocio(idEncuesta, idPregunta, idNegocio, fechaDesde, fechaHasta);
 
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
 
-
-
-  public JsonResult DataGraficoPregEncuestaSecretaria(int idPregunta, int idEncuesta)
+  public JsonResult DataGraficoPregEncuestaSecretaria(int idPregunta, int idEncuesta, string fechaDesde, string fechaHasta)
         {
             List<ReportesCampoValor> result = new List<ReportesCampoValor>();
 
-            result = rm.ObtenerRespuestasPorPregunta(idEncuesta, idPregunta);
+            result = rm.ObtenerRespuestasPorPregunta(idEncuesta, idPregunta, fechaDesde, fechaHasta);
 
             return Json(result, JsonRequestBehavior.AllowGet);
 
         }
 
-        public ActionResult RespuestasEncuestaNegocio(int? idEncuesta, int? idNegocio)
+  public ActionResult RespuestasEncuestaNegocio(int? idEncuesta, int? idNegocio, string fechaDesde, string fechaHasta)
         {
             ObtenerUsuarioActual();
             List<Negocio> negocios = nm.GetNegocioByUsuario(usuarioActual.idUsuario);
@@ -393,7 +391,13 @@ namespace ProyectoFinal.Controllers
             { 
                  List<PreguntasEntity> pregs = em.GetPreguntasEncuesta((int)idEncuesta);
 
-                 List<ReportesCampoValor> result = rm.ObtenerRespuestasPorPreguntaNegocio((int)idEncuesta, (int)pregs.FirstOrDefault().idPregunta, (int)idNegocio);
+                 string fecha_desde = fechaDesde == null ? "" : fechaDesde.ToString();
+                 string fecha_hasta = fechaHasta == null ? "" : fechaHasta.ToString();
+
+                 Session["fecha_desde"] = fecha_desde;
+                 Session["fecha_hasta"] = fecha_hasta;
+
+                 List<ReportesCampoValor> result = rm.ObtenerRespuestasPorPreguntaNegocio((int)idEncuesta, (int)pregs.FirstOrDefault().idPregunta, (int)idNegocio, fecha_desde, fecha_hasta);
 
                  int cantEnc = 0;
                  foreach (var item in result)
@@ -412,8 +416,7 @@ namespace ProyectoFinal.Controllers
             return View();
         }
 
-
-        public ActionResult RespuestasEncuestaSecretaria(int? idEncuesta)
+  public ActionResult RespuestasEncuestaSecretaria(int? idEncuesta, string fechaDesde, string fechaHasta)
         {
             ObtenerUsuarioActual();
             ViewBag.nombre_reporte = "Encuestas";
@@ -425,7 +428,20 @@ namespace ProyectoFinal.Controllers
 
             if (idEncuesta != null)
             {
+                Session["fecha_desde"] = fechaDesde;
+                Session["fecha_hasta"] = fechaHasta;
+
                 List<PreguntasEntity> pregs = em.GetPreguntasEncuesta((int)idEncuesta);
+
+                List<ReportesCampoValor> result = rm.ObtenerRespuestasPorPregunta((int)idEncuesta, (int)pregs.FirstOrDefault().idPregunta, fechaDesde, fechaHasta);
+
+                int cantEnc = 0;
+                foreach (var item in result)
+                {
+                    cantEnc += int.Parse(item.Valor);
+                }
+
+                ViewBag.CantEncuestasResp = cantEnc;
                 ViewBag.IdEncuesta = idEncuesta;
                 return View(pregs);
             }

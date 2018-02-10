@@ -28,8 +28,10 @@
 
         $("#Negocios").change(function () {
             
-            var idNegocio = $("#Negocios").val();                       
-            window.location = '../../Reportes/RespuestasEncuestaNegocio/?idNegocio=' + idNegocio;
+            var idNegocio = $("#Negocios").val();
+            var fechaDesde = '';
+            var fechaHasta = '';
+            window.location = '../../Reportes/RespuestasEncuestaNegocio/?idNegocio=' + idNegocio + '&fechaDesde='+fechaDesde+'&fechaHasta='+fechaHasta;
         });
 
     });
@@ -40,10 +42,12 @@
 
         $("#resultado").hide();
         $("#cargando_grafico").show();
+        var fecha_desde = $("#fecha_desde").val();
+        var fecha_hasta = $("#fecha_hasta").val();
 
         $.ajax({
             type: 'GET',
-            url: 'DataGraficoPregEncuesta?idPregunta=' + idPregunta + '&idEncuesta=' + idEncuesta + '&idNegocio=' + idNegocio,
+            url: 'DataGraficoPregEncuesta?idPregunta=' + idPregunta + '&idEncuesta=' + idEncuesta + '&idNegocio=' + idNegocio + '&fechaDesde=' + fecha_desde + '&fechaHasta=' + fecha_hasta,
             success: function (response) {
 
                 var valores = [];
@@ -100,10 +104,13 @@
     }
 
     function buscarPreguntas() {
-        var idEncuesta = $("#encuesta").val();
+        var idEncuesta = $("#encuesta").val();      
+
+        var fecha_desde = $("#fecha_desde").val();
+        var fecha_hasta = $("#fecha_hasta").val();
         var idNegocio = @ViewBag.IdNegocio
 
-        window.location = '../RespuestasEncuestaNegocio/?idEncuesta=' + idEncuesta + '&idNegocio=' + idNegocio;
+        window.location = '../RespuestasEncuestaNegocio/?idEncuesta=' + idEncuesta + '&idNegocio=' + idNegocio + '&fechaDesde=' + fecha_desde + '&fechaHasta=' + fecha_hasta;
     }
 
     
@@ -113,13 +120,15 @@
 
         $("#resultado").hide();
         $("#cargando_grafico").show();
+        var fecha_desde = $("#fecha_desde").val();
+        var fecha_hasta = $("#fecha_hasta").val();
 
         var idEncuestaSend = idEncuesta;
 
 
         $.ajax({
             type: 'GET',
-            url: '../DataGraficoPregEncuesta?idPregunta=' + idPregunta + '&idEncuesta=' + idEncuestaSend + '&idNegocio=' + idNegocio,
+            url: '../DataGraficoPregEncuesta?idPregunta=' + idPregunta + '&idEncuesta=' + idEncuestaSend + '&idNegocio=' + idNegocio + '&fechaDesde=' + fecha_desde + '&fechaHasta=' + fecha_hasta,
             success: function (response) {
 
                 var valores = [];
@@ -261,7 +270,7 @@
                 <div class="page-title">
                     <h2>GESTION DE REPORTES</h2>
                     <br />
-                    <h3>@ViewBag.nombre_reporte</h3>
+                    <!--    <h3>@ViewBag.nombre_reporte</h3>-->
                 </div>
             </div>
             <div class="col-xs-6">
@@ -281,46 +290,71 @@
     <div class="container">
 
         <div class="row" style="margin-bottom:20px;">
-           
+
 
             <div class="col-md-3">
 
-                @Html.DropDownList("Negocios", new SelectList(ViewBag.lista_negocios, "idNegocio", "nombre", ViewBag.IdNegocio),"SELECCIONA TU NEGOCIO", new { @class = "form-control" })
+                @Html.DropDownList("Negocios", new SelectList(ViewBag.lista_negocios, "idNegocio", "nombre", ViewBag.IdNegocio), "SELECCIONA TU NEGOCIO", new { @class = "form-control" })
 
             </div>
+            @{
+                
+                List<BussinesEntities.EncuestasRespEntity> encuestas = ViewBag.EncuestasNegocio;
+                if (encuestas != null)
+                {
+                    <div class="col-md-3">
+
+                         @Html.DropDownList("encuesta", new SelectList(ViewBag.EncuestasNegocio, "idEncuesta", "NombreEncuesta", ViewBag.IdEncuesta), "SELECCIONÁ LA ENCUESTA", new { @class = "form-control" })
+
+                     </div>
+                }
+            }
+
+            
+
+        </div>
+
 
            
-             @{
-                 List<BussinesEntities.EncuestasRespEntity> encuestas = ViewBag.EncuestasNegocio;
+             @{                   
 
-                 if (encuestas != null)
-                 {
-                     <div class="col-md-3">
+                    if (encuestas != null)
+                    {
+                        <br />
+                <div class="row">
+                   
 
-                        @Html.DropDownList("encuesta", new SelectList(ViewBag.EncuestasNegocio, "idEncuesta", "NombreEncuesta", ViewBag.IdEncuesta), "SELECCIONÁ LA ENCUESTA", new { @class = "form-control" })
 
-                     </div>               
+                    <div class="col-md-3">
+                        <input type="text" name="fecha_desde" id="fecha_desde" class="form-control date" placeholder="Fecha Desde" value="@Session["fecha_desde"]" />
+                    </div>
+
+                    <div class="col-md-3">
+                        <input type="text" class="form-control date" id="fecha_hasta" name="fecha_hasta" placeholder="Fecha Hasta" value="@Session["fecha_hasta"]" />
+                    </div> 
+        </div>
                     
                  }
              }           
             
 
 
-        </div>
+        
 
         @{
-            List<BussinesEntities.EncuestasRespEntity> encuestasNeg = ViewBag.EncuestasNegocio;
+    List<BussinesEntities.EncuestasRespEntity> encuestasNeg = ViewBag.EncuestasNegocio;
 
-            if (encuestasNeg != null)
-            {
-                <div class="row">   
+    if (encuestasNeg != null)
+    {
+        <br />
+                        <div class="row">   
 
                     <div class="col-md-4">
                         <button class="btn btn-block" onclick="buscarPreguntas();" style="background-color:yellowgreen; color:white;">Buscar</button>
                     </div>
 
                 </div>
-            }
+    }
          }       
 
 
@@ -335,11 +369,13 @@
             <br />
 
             @{
-                int cantEncResp = ViewBag.CantEncuestasResp==null?0:ViewBag.CantEncuestasResp;
-                if(cantEncResp > 0)
+                //int cantEncResp = ViewBag.CantEncuestasResp==null?0:ViewBag.CantEncuestasResp;
+                if (ViewBag.CantEncuestasResp != null)
                 {
+                    int cantEncResp = ViewBag.CantEncuestasResp;               
                     <label style="font-size:28px;">CANTIDAD DE RESPUESTAS: @cantEncResp</label>
                 }
+                
             }
 
             <br />

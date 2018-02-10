@@ -13,9 +13,9 @@
 
     function corregir(idnegocio, idtiponegocio) {
         if (idtiponegocio==1) //Si es Lugar de Hospedaje
-            window.location = "../Negocios/EditHospedaje/?idNegocio=" + idnegocio;
+            window.location = "../Negocios/EditHospedaje/?idNegocio=" + idnegocio+"&esCorreccion=true";
         else
-            window.location = "../Negocios/EditComercio/?idNegocio=" + idnegocio;
+            window.location = "../Negocios/EditComercio/?idNegocio=" + idnegocio+"&esCorreccion=true";
     }
 
 
@@ -83,7 +83,7 @@
          @Html.Grid(Model).Columns(columns =>
         {
             columns.Add(model => model.fechaAlta).Titled("Fecha Alta");
-            columns.Add(model => model.EstadoTramite.nombreEstadoTramite).Titled("Estado Trámite");
+            columns.Add(model => model.EstadoTramite.nombreEstadoTramite).Titled("Estado Trámite").Css("CustomCss");
             columns.Add(model => model.TipoTramite.nombreTipoTramite).Titled("Tipo");
             columns.Add(model => model.fechaFin).Titled("Fecha Fin");
             columns.Add(t => t.idTramite)
@@ -116,7 +116,7 @@
              columns.Add(model => model.Usuarios.nombreUsuario).Titled("Usuario Solicitante");
              columns.Add(model => model.Usuarios1.nombreUsuario).Titled("Usuario Responsable");
              columns.Add(model => model.fechaAlta).Titled("Fecha Alta");
-             columns.Add(model => model.EstadoTramite.nombreEstadoTramite).Titled("Estado Trámite");
+             columns.Add(model => model.EstadoTramite.nombreEstadoTramite).Titled("Estado Trámite").Css("CustomCss");
              columns.Add(model => model.TipoTramite.nombreTipoTramite).Titled("Tipo");
              // columns.Add(model => model.fechaFin).Titled("Fecha Fin");
              columns.Add(t => t.idTramite)
