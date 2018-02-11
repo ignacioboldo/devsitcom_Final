@@ -108,7 +108,7 @@
                                 columns.Add(model => model.FECHA_ALTA).Titled("Fecha Alta").SetWidth(30);
                                 columns.Add(model => model.CANT_DISP).Titled("Disponibles").SetWidth(30);
                                 columns.Add(model => model.VENCE).Titled("Vence").SetWidth(30);
-                                columns.Add(model => model.ESTADO).Titled("Estado").SetWidth(30);
+                                columns.Add(model => model.ESTADO).Titled("Estado").Css("CustomCss").SetWidth(30);
                                 columns.Add(model => model.idPromocion)
                                     .Titled("")
                                     .Encoded(false)

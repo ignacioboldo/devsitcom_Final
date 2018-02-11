@@ -53,21 +53,43 @@ namespace BussinesEntities
     }
 
 
-    public class ReportesCampoValorDinamico
-    {
+    public class ReportesCampoValorDinamico_old
+ {
+     public string Campo { get; set; }
+     public string Valor { get; set; }
+     public string Valor_2 { get; set; }
+     public string Valor_3 { get; set; }
+ }
 
-        
-        public string Campo { get; set; }
-        public string Valor { get; set; }
-        public string Valor_2 { get; set; }
-        public string Valor_3 { get; set; }
+ public class ReportesCampoValorDinamico
+ {
+     public string Campo { get; set; }
+     public string Valor { get; set; }
+     public string Valor_2 { get; set; }
+     public string Valor_3 { get; set; }
+
+     public string Etiqueta_1 { get; set; }
+
+     public string Etiqueta_2 { get; set; }
+
+     public string Etiqueta_3 { get; set; }
+ }
 
     public class ReportesEncuesta
     {       
         List<ReportesCampoValor> preguntas { get; set; }
     }
 
-   
+    public class ReportesFechaValorValor
+    {
+
+
+        public string Fecha { get; set; }
+        public string Valor { get; set; }
+        public string Valor_2 { get; set; }
+        
+
+    }
 
 
     //public class ReportesGraficoPieEntities

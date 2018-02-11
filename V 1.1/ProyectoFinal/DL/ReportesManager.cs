@@ -78,6 +78,25 @@ namespace BL
             }
         }
 
+        public List<ReportesCampoFechaValor> ObtenerReservasPorOrigenGrafico_2(string FechaDesde, string FechaHasta, String Vista, int? idProv1, int? idProv2, int? idProv3)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", FechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", FechaHasta);
+                SqlParameter paramVista = new SqlParameter("@pVista", Vista);
+                SqlParameter paramProv1 = new SqlParameter("@pProv1", idProv1);
+                SqlParameter paramProv2 = new SqlParameter("@pProv2", idProv2);
+                SqlParameter paramProv3 = new SqlParameter("@pProv3", idProv3);
+
+
+                return db.Database.SqlQuery<ReportesCampoFechaValor>("EXEC [Reportes].[ObtenerOrigenDeReservasPorFecha_Grafico] @fechaDesdeP=@pfechaDesde , @fechaHastaP=@pfechaHasta  , @vista=@pVista, @idProv1=@pProv1, @idProv2=@pProv2, @idProv3=@pProv3", paramFechaDesde, paramFechaHasta, paramVista,paramProv1,paramProv2,paramProv3).ToList();
+
+
+
+            }
+        }
+
         public List<ReportesCampoValorDinamico> ObtenerPorcentajeOcupacionGrafico(DateTime FechaDesde, DateTime FechaHasta, String Vista)
         {
             using (SitcomEntities db = new SitcomEntities())
@@ -364,6 +383,14 @@ namespace BL
 
                 return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[RespuestasEncuestaSecretaria] @idEncuesta=@pIdEncuesta , @idPregunta=@pIdPregunta, @fechaDesdeP=@pfechaDesde, @fechaHastaP=@pFechaHasta", paramIdEncuesta, paramIdPregunta, paramFechaDesde, paramFechaHasta).ToList();
             }
+        }
+
+        public List<ReportesCampoValor> ObtenerEncuestasPorEstado(string fechaDesde, string fechaHasta)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", fechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", fechaHasta);
 
         }
 

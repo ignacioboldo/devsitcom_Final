@@ -112,6 +112,18 @@ namespace ProyectoFinal.Controllers
                     ViewBag.valor3 = null;
                     break;
 
+                case "Promociones no Utilizadas Negocio":
+                    ViewBag.valor1 = "NO UTILIZADAS";
+                    ViewBag.valor2 = "UTILIZADAS";
+                    ViewBag.valor3 = null;
+                    break;
+
+                case "Reservas por Solicitud Negocio":
+                    ViewBag.valor1 = "RESERVAS DIRECTAS";
+                    ViewBag.valor2 = "RESERVAS CON SOLICITUD";
+                    ViewBag.valor3 = null;
+                    break;
+
                 default:
                     break;
             
@@ -270,30 +282,38 @@ namespace ProyectoFinal.Controllers
 
                 case "Reservas por Origen Negocio":
                     resultNegocio = rm.ObtenerReservasPorProvinciaNegocioGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
-                  
+                    return Json(resultNegocio, JsonRequestBehavior.AllowGet);
+                    break;
+
+                case "Reservas por Solicitud Negocio":
+                    resultNegocio = rm.ObtenerReservasPorSolicitudNegocioGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
+                    return Json(resultNegocio, JsonRequestBehavior.AllowGet);
                     break;
 
                 case "Promociones no Utilizadas Negocio":
-                    result = rm.ObtenerPromocionesNoUtilizadasPorComercio(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
-                    ViewBag.clase_reporte = "ReportesCampoValor";
+                    resultNegocio = rm.ObtenerPromocionesNoUtilizadasPorNegocioGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
+                   
+                    return Json(resultNegocio, JsonRequestBehavior.AllowGet);
                     break;
 
                 
                 case "Promociones Vencidas Negocio":
-                   
 
+                    return Json(result, JsonRequestBehavior.AllowGet);
                     break;
 
                 case "Promociones por Provincia Negocio":
-                   
+                    lista = rm.ObtenerPromocionesPorProvincia(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
+                    return Json(lista, JsonRequestBehavior.AllowGet);
                     break;
 
                 case "Porcentaje Ocupacion Negocio":
 
                     resultNegocio = rm.ObtenerPorcentajeOcupacionNegocioGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
-
+                    return Json(resultNegocio, JsonRequestBehavior.AllowGet);
 
                     break;
+
                 default:
 
                     break;
@@ -353,6 +373,21 @@ namespace ProyectoFinal.Controllers
         }
 
 
+
+                    return Json(rcvd, JsonRequestBehavior.AllowGet);
+                    break;
+           
+
+                default:
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                    break;
+            }
+
+            ViewBag.nombre_reporte = nombre_reporte;
+            ViewBag.tipo_reporte = tipo_reporte;
+
+
+        }
    public JsonResult DataGraficoPregEncuesta(int idPregunta, int idEncuesta, int idNegocio, string fechaDesde, string fechaHasta)
         {
             List<ReportesCampoValor> result = new List<ReportesCampoValor>();
@@ -371,6 +406,15 @@ namespace ProyectoFinal.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
 
+        }
+
+   public JsonResult DataGraficoEncuestasPorEstado(string fechaDesde, string fechaHasta)
+        {
+          List<ReportesCampoValor> result = new List<ReportesCampoValor>();
+
+          result = rm.ObtenerEncuestasPorEstado(fechaDesde, fechaHasta);
+
+          return Json(result, JsonRequestBehavior.AllowGet);
         }
 
   public ActionResult RespuestasEncuestaNegocio(int? idEncuesta, int? idNegocio, string fechaDesde, string fechaHasta)
@@ -448,5 +492,20 @@ namespace ProyectoFinal.Controllers
 
             return View();
         }
+
+   public ActionResult ReporteEncuestasCampoValor()
+   {
+       return View();
+    }
+
+   public ActionResult CampoFechaValor_ReservasOrigen(string nombre_reporte) 
+        {
+            List<Provincia> listProvincias = dm.getProvinciaPaisSeleccionado(1);
+            ViewBag.nombre_reporte = nombre_reporte;
+            ViewBag.Provincias = listProvincias;
+
+            return View();
+        }
+
     }
 }
