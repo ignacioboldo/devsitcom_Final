@@ -392,6 +392,8 @@ namespace BL
                 SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", fechaDesde);
                 SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", fechaHasta);
 
+                return db.Database.SqlQuery<ReportesCampoValor>("EXEC GetEncuestasPorEstado @fechaDesdeP=@pfechaDesde, @fechaHastaP=@pFechaHasta", paramFechaDesde, paramFechaHasta).ToList();
+            }
         }
 
     }

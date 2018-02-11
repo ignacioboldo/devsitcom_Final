@@ -16,6 +16,7 @@ namespace ProyectoFinal.Controllers
         public UsuariosManager um = new UsuariosManager();
         public NegociosManager nm = new NegociosManager();
         public EncuestasManager em = new EncuestasManager();
+        public DomicilioManager dm = new DomicilioManager();
         ReportesManager rm = new ReportesManager();
 
 
@@ -372,6 +373,112 @@ namespace ProyectoFinal.Controllers
             
         }
 
+
+
+                    return Json(rcvd, JsonRequestBehavior.AllowGet);
+                    break;
+           
+
+                default:
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                    break;
+            }
+
+            ViewBag.nombre_reporte = nombre_reporte;
+            ViewBag.tipo_reporte = tipo_reporte;
+
+
+        }
+
+
+public JsonResult DataGraficoTortaDinamicoReservas(string tipo_reporte, string nombre_reporte, String fecha_desde, String fecha_hasta, int? idProv1, int? idProv2, int? idProv3)
+        {
+            var result = new List<ReportesCampoValorDinamico>();
+            var resultValor = new List<ReportesCampoValorValor>();
+            var resultCampo = new List<ReportesCampoValor>();
+            var result_2 = new List<ReportesCampoFechaValor>();
+
+            switch (nombre_reporte)
+            {
+                case "Reservas por Origen":
+
+                    idProv1 = idProv1 == null ? 0 : idProv1;
+                    idProv2 = idProv2 == null ? 0 : idProv2;
+                    idProv3 = idProv3 == null ? 0 : idProv3;
+
+                    result_2 = rm.ObtenerReservasPorOrigenGrafico_2(fecha_desde, fecha_hasta, tipo_reporte,(int)idProv1,(int)idProv2,(int)idProv3);
+
+                    List<ReportesCampoValorDinamico> rcvd = new List<ReportesCampoValorDinamico>();
+
+                    ReportesCampoFechaValor[] valores = result_2.ToArray();
+
+                    int i = 0;
+                    string valorSet = "";
+                    string valor2Set = "";
+                    string valor3Set = "";
+                    Session["Etiqueta_1"] = null;
+                    Session["Etiqueta_2"] = null;
+                    Session["Etiqueta_3"] = null;
+                    while (i < valores.Length)
+                    {
+                        string fecha = valores[i].fecha;
+                        ReportesCampoValorDinamico rc = new ReportesCampoValorDinamico();
+                        foreach (var item2 in valores)
+                        {
+                            if (item2.fecha == fecha)
+                            {
+                                if (rc.Campo == null)
+                                {
+                                    rc.Campo = fecha;
+                                }
+
+                                if (rc.Valor == null && (valorSet == "" || valorSet == item2.campo))
+                                {
+                                    if (valorSet == "")
+                                    {
+                                        valorSet = item2.campo;
+                                        rc.Etiqueta_1 = item2.campo;
+                                        //ViewBag.Etiqueta_1 = item2.campo;
+                                    }
+
+                                    rc.Valor = item2.valor;
+                                }
+                                else
+                                {
+                                    if (rc.Valor_2 == null && (valor2Set == "" || valor2Set == item2.campo))
+                                    {
+                                        if (valor2Set == "")
+                                        {
+                                            valor2Set = item2.campo;
+                                            rc.Etiqueta_2 = item2.campo;
+                                            //ViewBag.Etiqueta_2 = item2.campo;
+                                        }
+
+
+                                        rc.Valor_2 = item2.valor;
+                                    }
+                                    else
+                                    {
+                                        if (rc.Valor_3 == null && (valor3Set == "" || valor3Set == item2.campo))
+                                        {
+                                            if (valor3Set == "")
+                                            {
+                                                valor3Set = item2.campo;
+                                                rc.Etiqueta_3 = item2.campo;
+                                                //ViewBag.Etiqueta_3 = item2.campo;
+                                            }
+
+                                            rc.Valor_3 = item2.valor;
+                                        }
+
+                                    }
+                                }
+                                i++;
+                            }
+                        }
+
+                        rcvd.Add(rc);
+                    }
 
 
                     return Json(rcvd, JsonRequestBehavior.AllowGet);
