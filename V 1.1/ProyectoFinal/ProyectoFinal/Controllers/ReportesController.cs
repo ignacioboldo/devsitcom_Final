@@ -44,25 +44,25 @@ namespace ProyectoFinal.Controllers
 
         }
 
- 
+
 
 
         public ActionResult CampoFechaValor_Index(string nombre_reporte)
         {
             ViewBag.nombre_reporte = nombre_reporte;
-            
 
-            switch(nombre_reporte)
+
+            switch (nombre_reporte)
             {
                 case "Reservas por Origen":
-                    
-                            ViewBag.valor1 = "BUENOS AIRES";
-                            ViewBag.valor2 = "CORDOBA";
-                            ViewBag.valor3 = "ENTRE RIOS";
+
+                    ViewBag.valor1 = "BUENOS AIRES";
+                    ViewBag.valor2 = "CORDOBA";
+                    ViewBag.valor3 = "ENTRE RIOS";
                     break;
 
                 case "Reservas por Categoria":
-                    
+
                     ViewBag.valor1 = "3 ESTRELLAS";
                     ViewBag.valor2 = "4 ESTRELLAS";
                     ViewBag.valor3 = "5 ESTRELLAS";
@@ -73,10 +73,10 @@ namespace ProyectoFinal.Controllers
                     break;
 
                 case "Porcentaje Ocupacion":
-                     
+
                     ViewBag.valor1 = "OCUPADO";
                     ViewBag.valor2 = "LIBRE";
-                    
+
                     break;
                 default:
                     break;
@@ -98,17 +98,18 @@ namespace ProyectoFinal.Controllers
 
             ViewBag.lista_negocios = listaNegocio;
             ViewBag.nombre_reporte = nombre_reporte;
-            
 
-            switch(nombre_reporte){
+
+            switch (nombre_reporte)
+            {
                 case "Reservas por Origen Negocio":
-                   ViewBag.valor1 = "BUENOS AIRES";
+                    ViewBag.valor1 = "BUENOS AIRES";
                     ViewBag.valor2 = "CORDOBA";
                     ViewBag.valor3 = "ENTRE RIOS";
                     break;
 
                 case "Porcentaje Ocupacion Negocio":
-                     ViewBag.valor1 = "OCUPADO";
+                    ViewBag.valor1 = "OCUPADO";
                     ViewBag.valor2 = "LIBRE";
                     ViewBag.valor3 = null;
                     break;
@@ -127,9 +128,9 @@ namespace ProyectoFinal.Controllers
 
                 default:
                     break;
-            
+
             }
-          
+
             return View();
 
         }
@@ -139,7 +140,7 @@ namespace ProyectoFinal.Controllers
 
             var lista = new List<ReportesCampoFechaValor>();
             var listaValor = new List<ReportesCampoValor>();
-            
+
             var vista_reporte = "";
 
 
@@ -181,7 +182,7 @@ namespace ProyectoFinal.Controllers
                     ViewBag.clase_reporte = "ReportesCampoFechaValor";
                     vista_reporte = "CampoFechaValor_Tabla";
                     break;
-                  
+
                 case "Cantidad Pasajeros Hospedados":
                     listaValor = rm.ObtenerCantidadPasajerosGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte);
                     ViewBag.data = listaValor;
@@ -252,7 +253,7 @@ namespace ProyectoFinal.Controllers
                     ViewBag.nombre_campo = "Provincia";
                     ViewBag.nombre_valor = "Porcentaje Promociones";
                     ViewBag.data = lista;
-                    
+
                     ViewBag.clase_reporte = "ReportesCampoFechaValor";
 
                     vista_reporte = "CampoFechaValor_Tabla";
@@ -276,6 +277,7 @@ namespace ProyectoFinal.Controllers
         {
             var result = new List<ReportesCampoValor>();
             var resultNegocio = new List<ReportesCampoValorDinamico>();
+            var lista = new List<ReportesCampoFechaValor>();
            
 
             switch (nombre_reporte)
@@ -293,11 +295,11 @@ namespace ProyectoFinal.Controllers
 
                 case "Promociones no Utilizadas Negocio":
                     resultNegocio = rm.ObtenerPromocionesNoUtilizadasPorNegocioGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
-                   
+
                     return Json(resultNegocio, JsonRequestBehavior.AllowGet);
                     break;
 
-                
+
                 case "Promociones Vencidas Negocio":
 
                     return Json(result, JsonRequestBehavior.AllowGet);
@@ -325,7 +327,7 @@ namespace ProyectoFinal.Controllers
             ViewBag.tipo_reporte = tipo_reporte;
 
             return Json(resultNegocio, JsonRequestBehavior.AllowGet);
-            
+
         }
 
         public JsonResult DataGraficoTortaDinamico(string tipo_reporte, string nombre_reporte, String fecha_desde, String fecha_hasta)
@@ -359,25 +361,8 @@ namespace ProyectoFinal.Controllers
                 case "Cantidad Pasajeros Hospedados":
                     resultCampo = rm.ObtenerCantidadPasajerosGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte);
                     return Json(resultCampo, JsonRequestBehavior.AllowGet);
-                    
+
                     break;
-
-                default:
-                    return Json(result, JsonRequestBehavior.AllowGet);
-                    break;
-            }
-
-            ViewBag.nombre_reporte = nombre_reporte;
-            ViewBag.tipo_reporte = tipo_reporte;
-
-            
-        }
-
-
-
-                    return Json(rcvd, JsonRequestBehavior.AllowGet);
-                    break;
-           
 
                 default:
                     return Json(result, JsonRequestBehavior.AllowGet);
@@ -391,7 +376,9 @@ namespace ProyectoFinal.Controllers
         }
 
 
-public JsonResult DataGraficoTortaDinamicoReservas(string tipo_reporte, string nombre_reporte, String fecha_desde, String fecha_hasta, int? idProv1, int? idProv2, int? idProv3)
+
+
+        public JsonResult DataGraficoTortaDinamicoReservas(string tipo_reporte, string nombre_reporte, String fecha_desde, String fecha_hasta, int? idProv1, int? idProv2, int? idProv3)
         {
             var result = new List<ReportesCampoValorDinamico>();
             var resultValor = new List<ReportesCampoValorValor>();
@@ -406,7 +393,7 @@ public JsonResult DataGraficoTortaDinamicoReservas(string tipo_reporte, string n
                     idProv2 = idProv2 == null ? 0 : idProv2;
                     idProv3 = idProv3 == null ? 0 : idProv3;
 
-                    result_2 = rm.ObtenerReservasPorOrigenGrafico_2(fecha_desde, fecha_hasta, tipo_reporte,(int)idProv1,(int)idProv2,(int)idProv3);
+                    result_2 = rm.ObtenerReservasPorOrigenGrafico_2(fecha_desde, fecha_hasta, tipo_reporte, (int)idProv1, (int)idProv2, (int)idProv3);
 
                     List<ReportesCampoValorDinamico> rcvd = new List<ReportesCampoValorDinamico>();
 
@@ -483,7 +470,7 @@ public JsonResult DataGraficoTortaDinamicoReservas(string tipo_reporte, string n
 
                     return Json(rcvd, JsonRequestBehavior.AllowGet);
                     break;
-           
+
 
                 default:
                     return Json(result, JsonRequestBehavior.AllowGet);
@@ -495,7 +482,7 @@ public JsonResult DataGraficoTortaDinamicoReservas(string tipo_reporte, string n
 
 
         }
-   public JsonResult DataGraficoPregEncuesta(int idPregunta, int idEncuesta, int idNegocio, string fechaDesde, string fechaHasta)
+        public JsonResult DataGraficoPregEncuesta(int idPregunta, int idEncuesta, int idNegocio, string fechaDesde, string fechaHasta)
         {
             List<ReportesCampoValor> result = new List<ReportesCampoValor>();
 
@@ -505,7 +492,7 @@ public JsonResult DataGraficoTortaDinamicoReservas(string tipo_reporte, string n
 
         }
 
-  public JsonResult DataGraficoPregEncuestaSecretaria(int idPregunta, int idEncuesta, string fechaDesde, string fechaHasta)
+        public JsonResult DataGraficoPregEncuestaSecretaria(int idPregunta, int idEncuesta, string fechaDesde, string fechaHasta)
         {
             List<ReportesCampoValor> result = new List<ReportesCampoValor>();
 
@@ -515,16 +502,16 @@ public JsonResult DataGraficoTortaDinamicoReservas(string tipo_reporte, string n
 
         }
 
-   public JsonResult DataGraficoEncuestasPorEstado(string fechaDesde, string fechaHasta)
+        public JsonResult DataGraficoEncuestasPorEstado(string fechaDesde, string fechaHasta)
         {
-          List<ReportesCampoValor> result = new List<ReportesCampoValor>();
+            List<ReportesCampoValor> result = new List<ReportesCampoValor>();
 
-          result = rm.ObtenerEncuestasPorEstado(fechaDesde, fechaHasta);
+            result = rm.ObtenerEncuestasPorEstado(fechaDesde, fechaHasta);
 
-          return Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-  public ActionResult RespuestasEncuestaNegocio(int? idEncuesta, int? idNegocio, string fechaDesde, string fechaHasta)
+        public ActionResult RespuestasEncuestaNegocio(int? idEncuesta, int? idNegocio, string fechaDesde, string fechaHasta)
         {
             ObtenerUsuarioActual();
             List<Negocio> negocios = nm.GetNegocioByUsuario(usuarioActual.idUsuario);
@@ -536,43 +523,43 @@ public JsonResult DataGraficoTortaDinamicoReservas(string tipo_reporte, string n
                 List<EncuestasRespEntity> encuestas = em.GetEncuestasRespondidasNegocio((int)idNegocio);
                 ViewBag.IdNegocio = idNegocio;
                 ViewBag.EncuestasNegocio = encuestas;
-            }            
+            }
 
-            if(idEncuesta != null)
-            { 
-                 List<PreguntasEntity> pregs = em.GetPreguntasEncuesta((int)idEncuesta);
+            if (idEncuesta != null)
+            {
+                List<PreguntasEntity> pregs = em.GetPreguntasEncuesta((int)idEncuesta);
 
-                 string fecha_desde = fechaDesde == null ? "" : fechaDesde.ToString();
-                 string fecha_hasta = fechaHasta == null ? "" : fechaHasta.ToString();
+                string fecha_desde = fechaDesde == null ? "" : fechaDesde.ToString();
+                string fecha_hasta = fechaHasta == null ? "" : fechaHasta.ToString();
 
-                 Session["fecha_desde"] = fecha_desde;
-                 Session["fecha_hasta"] = fecha_hasta;
+                Session["fecha_desde"] = fecha_desde;
+                Session["fecha_hasta"] = fecha_hasta;
 
-                 List<ReportesCampoValor> result = rm.ObtenerRespuestasPorPreguntaNegocio((int)idEncuesta, (int)pregs.FirstOrDefault().idPregunta, (int)idNegocio, fecha_desde, fecha_hasta);
+                List<ReportesCampoValor> result = rm.ObtenerRespuestasPorPreguntaNegocio((int)idEncuesta, (int)pregs.FirstOrDefault().idPregunta, (int)idNegocio, fecha_desde, fecha_hasta);
 
-                 int cantEnc = 0;
-                 foreach (var item in result)
-                 {
-                     cantEnc += int.Parse(item.Valor);
-                 }
+                int cantEnc = 0;
+                foreach (var item in result)
+                {
+                    cantEnc += int.Parse(item.Valor);
+                }
 
-                 ViewBag.CantEncuestasResp = cantEnc;
-                 ViewBag.IdEncuesta = idEncuesta; 
-                 ViewBag.IdNegocio = idNegocio;
-                 
-                 
-                 return View(pregs);
-            }            
-            
+                ViewBag.CantEncuestasResp = cantEnc;
+                ViewBag.IdEncuesta = idEncuesta;
+                ViewBag.IdNegocio = idNegocio;
+
+
+                return View(pregs);
+            }
+
             return View();
         }
 
-  public ActionResult RespuestasEncuestaSecretaria(int? idEncuesta, string fechaDesde, string fechaHasta)
+        public ActionResult RespuestasEncuestaSecretaria(int? idEncuesta, string fechaDesde, string fechaHasta)
         {
             ObtenerUsuarioActual();
             ViewBag.nombre_reporte = "Encuestas";
 
-            
+
             List<EncuestasRespEntity> encuestas = em.GetEncuestasRespondidas();
             ViewBag.Encuestas = encuestas;
 
@@ -600,12 +587,12 @@ public JsonResult DataGraficoTortaDinamicoReservas(string tipo_reporte, string n
             return View();
         }
 
-   public ActionResult ReporteEncuestasCampoValor()
-   {
-       return View();
-    }
+        public ActionResult ReporteEncuestasCampoValor()
+        {
+            return View();
+        }
 
-   public ActionResult CampoFechaValor_ReservasOrigen(string nombre_reporte) 
+        public ActionResult CampoFechaValor_ReservasOrigen(string nombre_reporte)
         {
             List<Provincia> listProvincias = dm.getProvinciaPaisSeleccionado(1);
             ViewBag.nombre_reporte = nombre_reporte;
