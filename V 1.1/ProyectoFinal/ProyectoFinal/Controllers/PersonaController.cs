@@ -39,7 +39,18 @@ namespace ProyectoFinal.Controllers
                     listLocalidades = new List<Localidad>()
                 };
 
-                return View(per);
+                if (vienePor != null && vienePor =="checkin")
+                {
+                    Session["LayoutCheckIn"] = "_LayoutPopUp.cshtml";
+                    return PartialView(per);
+                }
+                else
+                {
+                    Session["LayoutCheckIn"] = "_Layout.cshtml";
+                    return View(per);
+                }
+
+                
         }
         [HttpPost]
         public ActionResult DatosPersonales(PersonaEntity per, string returnUrl, int? idNegocio)

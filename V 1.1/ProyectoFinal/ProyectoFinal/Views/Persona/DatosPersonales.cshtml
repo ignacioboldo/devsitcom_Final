@@ -1,6 +1,8 @@
 ﻿@model BussinesEntities.PersonaEntity
 @{
     ViewBag.Title = "Datos Personales";
+
+    Layout = "~/Views/Shared/" + Session["LayoutCheckIn"];
 }
 <script type="text/javascript">
 
@@ -100,7 +102,7 @@
 
         @{
             string retUrl = ViewBag.ReturnUrl;
-            //int idNeg = ViewBag.IdNegocio == null ;
+            int idNeg = ViewBag.IdNegocio;
            
 
             switch (retUrl)

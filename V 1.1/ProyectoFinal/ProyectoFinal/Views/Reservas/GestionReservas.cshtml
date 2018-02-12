@@ -93,6 +93,16 @@
 
     }
 
+    function checkinClienteNuevo() {
+
+        var idNegocio = '@Model.idNegocio';
+
+        window.open("/Persona/DatosPersonales?idNegocio=" + idNegocio + "&vienePor=checkin", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=40,left=100,width=600,height=400");
+
+
+        return false;
+    }
+
 
     function anular(id) {
         var nro_reserva = id;
@@ -602,6 +612,11 @@
                 <h4 class="modal-title">Check-In</h4>
             </div>
             <div id="mensajes" class="modal-body">
+ 				<a href="#" onclick="return checkinClienteNuevo()" style="background-color: rgba(177, 13, 20, 1); padding:10px;" class="btn btn-success">
+                    Nuevo Cliente
+                </a>
+
+                <br /><br />
 
                 <div id="resultado_checkin"></div>
 
