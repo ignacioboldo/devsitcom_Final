@@ -495,7 +495,7 @@ namespace ProyectoFinal.Controllers
             {                
                 NegocioEntity neg = nm.GetNegocioById(idNegocio);
 
-                Persona p = pm.GetPersonaById(usuarioActual.idUsuario);
+                Persona p = pm.GetPersonaById((int)usuarioActual.idPersona);
                 ViewBag.Persona = p;
 
                 ViewBag.Error = 1;
