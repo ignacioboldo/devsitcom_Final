@@ -378,7 +378,7 @@ namespace ProyectoFinal.Controllers
 
 
 
-        public JsonResult DataGraficoTortaDinamicoReservas(string tipo_reporte, string nombre_reporte, String fecha_desde, String fecha_hasta, int? idProv1, int? idProv2, int? idProv3)
+        public JsonResult DataGraficoTortaDinamicoReservas(string tipo_reporte, string nombre_reporte, String fecha_desde, String fecha_hasta, int? idProv1, int? idProv2, int? idProv3, int? idNegocio)
         {
             var result = new List<ReportesCampoValorDinamico>();
             var resultValor = new List<ReportesCampoValorValor>();
@@ -470,6 +470,90 @@ namespace ProyectoFinal.Controllers
 
                     return Json(rcvd, JsonRequestBehavior.AllowGet);
                     break;
+
+                case "Reservas por Origen Negocio":
+
+                    idProv1 = idProv1 == null ? 0 : idProv1;
+                    idProv2 = idProv2 == null ? 0 : idProv2;
+                    idProv3 = idProv3 == null ? 0 : idProv3;
+
+                    result_2 = rm.ObtenerReservasPorOrigenGrafico_ProvNegocio(fecha_desde, fecha_hasta, tipo_reporte, (int)idProv1, (int)idProv2, (int)idProv3, (int)idNegocio);
+
+                    List<ReportesCampoValorDinamico> rcvd_1 = new List<ReportesCampoValorDinamico>();
+
+                    ReportesCampoFechaValor[] valores_1 = result_2.ToArray();
+
+                    int j = 0;
+                    string valorSet_1 = "";
+                    string valor2Set_1 = "";
+                    string valor3Set_1 = "";
+                    Session["Etiqueta_1"] = null;
+                    Session["Etiqueta_2"] = null;
+                    Session["Etiqueta_3"] = null;
+
+                    while (j < valores_1.Length)
+                    {
+                        string fecha = valores_1[j].fecha;
+                        ReportesCampoValorDinamico rc = new ReportesCampoValorDinamico();
+                        foreach (var item2 in valores_1)
+                        {
+                            if (item2.fecha == fecha)
+                            {
+                                if (rc.Campo == null)
+                                {
+                                    rc.Campo = fecha;
+                                }
+
+                                if (rc.Valor == null && (valorSet_1 == "" || valorSet_1 == item2.campo))
+                                {
+                                    if (valorSet_1 == "")
+                                    {
+                                        valorSet_1 = item2.campo;
+                                        rc.Etiqueta_1 = item2.campo;
+                                        //ViewBag.Etiqueta_1 = item2.campo;
+                                    }
+
+                                    rc.Valor = item2.valor;
+                                }
+                                else
+                                {
+                                    if (rc.Valor_2 == null && (valor2Set_1 == "" || valor2Set_1 == item2.campo))
+                                    {
+                                        if (valor2Set_1 == "")
+                                        {
+                                            valor2Set_1 = item2.campo;
+                                            rc.Etiqueta_2 = item2.campo;
+                                            //ViewBag.Etiqueta_2 = item2.campo;
+                                        }
+                                        rc.Valor_2 = item2.valor;
+                                    }
+                                    else
+                                    {
+                                        if (rc.Valor_3 == null && (valor3Set_1 == "" || valor3Set_1 == item2.campo))
+                                        {
+                                            if (valor3Set_1 == "")
+                                            {
+                                                valor3Set_1 = item2.campo;
+                                                rc.Etiqueta_3 = item2.campo;
+                                                //ViewBag.Etiqueta_3 = item2.campo;
+                                            }
+
+                                            rc.Valor_3 = item2.valor;
+                                        }
+
+                                    }
+                                }
+                                j++;
+                            }
+                        }
+
+                        rcvd_1.Add(rc);
+                    }
+
+
+                    return Json(rcvd_1, JsonRequestBehavior.AllowGet);
+                    break;
+
 
 
                 default:
@@ -597,6 +681,27 @@ namespace ProyectoFinal.Controllers
             List<Provincia> listProvincias = dm.getProvinciaPaisSeleccionado(1);
             ViewBag.nombre_reporte = nombre_reporte;
             ViewBag.Provincias = listProvincias;
+
+            return View();
+        }
+
+public ActionResult CampoFechaValor_ReservasOrigenNegocio(string nombre_reporte,int idTipoReporte, int idNegocio)
+        {
+            ObtenerUsuarioActual();
+            List<Provincia> listProvincias = dm.getProvinciaPaisSeleccionado(1);
+            ViewBag.nombre_reporte = nombre_reporte;
+            ViewBag.Provincias = listProvincias;
+            ViewBag.IdNegocio = idNegocio;
+
+            var listaNegocio = new List<Negocio>();
+
+            if (idTipoReporte == 1)
+                listaNegocio = nm.GetHospedajeByUsuario(usuarioActual.idUsuario);
+            else if (idTipoReporte == 2)
+                listaNegocio = nm.GetComercioByUsuario(usuarioActual.idUsuario);
+
+            ViewBag.lista_negocios = listaNegocio;
+            ViewBag.nombre_reporte = nombre_reporte;
 
             return View();
         }

@@ -97,6 +97,23 @@ namespace BL
             }
         }
 
+public List<ReportesCampoFechaValor> ObtenerReservasPorOrigenGrafico_ProvNegocio(string FechaDesde, string FechaHasta, String Vista, int? idProv1, int? idProv2, int? idProv3, int idNegocio)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", FechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", FechaHasta);
+                SqlParameter paramVista = new SqlParameter("@pVista", Vista);
+                SqlParameter paramProv1 = new SqlParameter("@pProv1", idProv1);
+                SqlParameter paramProv2 = new SqlParameter("@pProv2", idProv2);
+                SqlParameter paramProv3 = new SqlParameter("@pProv3", idProv3);
+                SqlParameter paramIdNegocio = new SqlParameter("@pIdNegocio", idNegocio);
+
+
+                return db.Database.SqlQuery<ReportesCampoFechaValor>("EXEC [Reportes].[ObtenerOrigenDeReservasNegocioPorFecha_Grafico] @fechaDesdeP=@pfechaDesde , @fechaHastaP=@pfechaHasta  , @vista=@pVista, @idProv1=@pProv1, @idProv2=@pProv2, @idProv3=@pProv3, @idNegocio=@pIdNegocio", paramFechaDesde, paramFechaHasta, paramVista,paramProv1,paramProv2,paramProv3,paramIdNegocio).ToList();
+            }
+        }
+
         public List<ReportesCampoValorDinamico> ObtenerPorcentajeOcupacionGrafico(DateTime FechaDesde, DateTime FechaHasta, String Vista)
         {
             using (SitcomEntities db = new SitcomEntities())

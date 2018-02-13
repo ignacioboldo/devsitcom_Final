@@ -150,6 +150,9 @@
 </section>
 
 
+@{
+    int idNegocio = ViewBag.IdNegocio == null ? 0 : ViewBag.IdNegocio;
+}
 <!-- MAIN CONTENT SECTION -->
 <section class="mainContent clearfix userProfile">
     <div class="container">
@@ -178,7 +181,7 @@
                 </div>
 
                 <div class="col-md-12">
-                    <button id="btnReservasProvinciaNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValorNegocio_Index", "Reportes", new { nombre_reporte = "Reservas por Origen Negocio", idTipoReporte = 1 })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Provincia</button>
+                    <button id="btnReservasProvinciaNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_ReservasOrigenNegocio", "Reportes", new { nombre_reporte = "Reservas por Origen Negocio", idTipoReporte = 1, idNegocio = idNegocio })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Provincia</button>
                 </div>
 
                 <div class="col-md-12">
