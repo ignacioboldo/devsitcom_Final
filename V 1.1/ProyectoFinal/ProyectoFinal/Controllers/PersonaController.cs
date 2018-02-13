@@ -19,7 +19,7 @@ namespace ProyectoFinal.Controllers
         PersonasManager pm = new PersonasManager();
         PersonaEntity per;
 
-        public ActionResult DatosPersonales(string returnUrl, int? idNegocio)
+        public ActionResult DatosPersonales(string returnUrl, int? idNegocio, string vienePor)
         {
                 per = new PersonaEntity();
                 ViewBag.Sexos = new SelectList(db.Sexo, "idSexo", "nombre");
