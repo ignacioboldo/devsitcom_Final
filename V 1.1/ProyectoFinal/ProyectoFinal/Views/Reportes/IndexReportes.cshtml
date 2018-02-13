@@ -44,6 +44,7 @@
                 $("#btnPorcentajeOcupacion").hide();
                 $("#btnPorcentajeOcupacionNegocio").hide();
                 $("#btnCantidadPasajerosHospedados").hide();
+                $("#btnEncuestasPorEstado").hide();
                 
             }else if(countHospedaje > 0 & countComercio == 0){
                 $("#btnReservasCategoria").hide();
@@ -58,6 +59,7 @@
                 $("#btnPorcentajeOcupacion").hide();
                 $("#btnPorcentajeOcupacionNegocio").show();
                 $("#btnCantidadPasajerosHospedados").hide();
+                $("#btnEncuestasPorEstado").hide();
             }
             else if(countHospedaje > 0 & countComercio > 0){
                 $("#btnReservasCategoria").hide();
@@ -72,6 +74,7 @@
                 $("#btnPorcentajeOcupacion").hide();
                 $("#btnPorcentajeOcupacionNegocio").show();
                 $("#btnCantidadPasajerosHospedados").hide();
+                $("#btnEncuestasPorEstado").hide();
 
                 
                 
@@ -99,6 +102,7 @@
             $("#btnPorcentajeOcupacion").show();
             $("#btnPorcentajeOcupacionNegocio").hide();
             $("#btnCantidadPasajerosHospedados").show();
+            $("#btnEncuestasPorEstado").show();
         }
 
         if (mensaje != "") {
@@ -162,7 +166,7 @@
                 </div>
 
                 <div class="col-md-12">
-                    <button id="btnReservasProvincia" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Reservas por Origen" })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Provincia</button>
+                    <button id="btnReservasProvincia" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_ReservasOrigen", "Reportes", new { nombre_reporte = "Reservas por Origen" })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Provincia</button>
                 </div>
 
                 <div class="col-md-12">
@@ -195,6 +199,10 @@
 
                 <div class="col-md-12">
                     <button id="btnEncuestasSecretaria" class="btn btn-block" onclick="window.location = '@Url.Action("RespuestasEncuestaSecretaria", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Encuestas </button>
+                </div>
+
+  				<div class="col-md-12">
+                    <button id="btnEncuestasPorEstado" class="btn btn-block" onclick="window.location = '@Url.Action("ReporteEncuestasCampoValor", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Encuestas por estado </button>
                 </div>
 
                 <div class="col-md-12">
