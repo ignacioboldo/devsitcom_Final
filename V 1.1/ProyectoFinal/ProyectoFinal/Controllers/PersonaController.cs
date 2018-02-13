@@ -61,17 +61,20 @@ namespace ProyectoFinal.Controllers
             per.Usuarios.Add(usuarioActual);
 
             if (ModelState.IsValid)
-            {
-                
+            {                
                 int idPersona = pm.AddPersona(per);
 
                 usuarioActual.idPersona = idPersona;
                 Session["User"] = usuarioActual;
 
-                if (idNegocio != null)
+                if (returnUrl != null && idNegocio != null)
                     returnUrl = returnUrl + idNegocio.ToString();
 
-                return RedirectToAction(returnUrl);
+
+                if (returnUrl==null)
+                    return RedirectToAction("Index","Mensajes", new { codigo = "NEG-ALT-200"});
+                else
+                     return RedirectToAction(returnUrl);
             }
             else 
             {

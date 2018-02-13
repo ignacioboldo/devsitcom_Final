@@ -33,9 +33,9 @@
     });
 
     function buscar_cliente() {
-        
+
         var buscar = $("#buscar_cliente").val();
-     
+
         var idNegocio = '@ViewBag.idNegocio';
         $.ajax({
             url: "BuscarCliente?buscar=" + buscar + '&idNegocio=' + idNegocio
@@ -46,7 +46,7 @@
     };
 
 
-    function seleccionarCliente(idPersona, nombre,apellido, sexo, documento) {
+    function seleccionarCliente(idPersona, nombre, apellido, sexo, documento) {
         $("#nombre").val(nombre);
         $("#apellido").val(apellido);
         $("#idPersona").val(idPersona);
@@ -71,6 +71,16 @@
         }
 
 
+    }
+
+    function regClienteNuevo() {
+
+        var idNegocio = '@ViewBag.idNegocio';
+
+        window.open("/Persona/DatosPersonales?idNegocio=" + idNegocio + "&vienePor=checkin", "_blank", "toolbar=yes,scrollbars=yes,resizable=yes,top=40,left=100,width=600,height=400");
+
+
+        return false;
     }
 
 
@@ -170,18 +180,18 @@
                     {
 
 
-                        <div class="col-xs-12 col-md-3">
+                      <div class="col-xs-12 col-md-3">
 
-                            <div class="form-group">
-                                <label>&nbsp;</label>
+                        <div class="form-group">
+                            <label>&nbsp;</label>
 
-                                <a href="@Url.Action("DatosPersonales", "Persona", new { idNegocio = ViewBag.idNegocio })" style="background-color: rgba(177, 13, 20, 1);" class="btn btn-success btn-block">
-                                    Nuevo Cliente
-                                </a>
-
-                            </div>
+                            <a href="#" onclick="return regClienteNuevo()" style="background-color: rgba(177, 13, 20, 1); padding:10px;" class="btn btn-success">
+                                Nuevo Cliente
+                            </a>
 
                         </div>
+
+                     </div>
 
                         <div class="col-xs-12 col-md-3">
 
