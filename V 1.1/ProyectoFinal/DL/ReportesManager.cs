@@ -344,19 +344,26 @@ public List<ReportesCampoFechaValor> ObtenerReservasPorOrigenGrafico_ProvNegocio
             }
         }
 
-        public List<ReportesCampoFechaValor> ObtenerPromocionesPorProvincia(DateTime FechaDesde, DateTime FechaHasta, String Vista, Int32 Negocio)
+        public List<ReportesCampoValor> ObtenerPromocionesNegocioPorProvincia(string FechaDesde, string FechaHasta, int idNegocio)
         {
             using (SitcomEntities db = new SitcomEntities())
             {
                 SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", FechaDesde);
                 SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", FechaHasta);
-                SqlParameter paramVista = new SqlParameter("@pVista", Vista);
-                SqlParameter paramNegocio = new SqlParameter("@pNegocio", Negocio);
+                SqlParameter paramIdNegocio = new SqlParameter("@pIdNegocio", idNegocio);
 
-                return db.Database.SqlQuery<ReportesCampoFechaValor>("EXEC [Reportes].[ObtenerPromocionesPorNegocioYProvincia] @fechaDesde=@pfechaDesde , @fechaHasta=@pfechaHasta  , @vista=@pVista, @idNegocio=@pNegocio", paramFechaDesde, paramFechaHasta, paramVista, paramNegocio).ToList();
+                return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[GetPromocionesNegocioPorProvincia] @idNegocio=@pIdNegocio, @fechaDesdeP=@pfechaDesde, @fechaHastaP=@pfechaHasta", paramIdNegocio, paramFechaDesde, paramFechaHasta).ToList();
+            }
+        }
 
+        public List<ReportesCampoValor> ObtenerPromocionesPorProvincia(string FechaDesde, string FechaHasta)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", FechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", FechaHasta);
 
-
+                return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[GetPromocionesPorProvincia] @fechaDesdeP=@pfechaDesde, @fechaHastaP=@pfechaHasta", paramFechaDesde, paramFechaHasta).ToList();
             }
         }
 

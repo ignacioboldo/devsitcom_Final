@@ -248,17 +248,17 @@ namespace ProyectoFinal.Controllers
 
                     break;
 
-                case "Promociones por Provincia Negocio":
-                    lista = rm.ObtenerPromocionesPorProvincia(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
-                    ViewBag.nombre_campo = "Provincia";
-                    ViewBag.nombre_valor = "Porcentaje Promociones";
-                    ViewBag.data = lista;
+                //case "Promociones por Provincia Negocio":
+                //    lista = rm.ObtenerPromocionesPorProvincia(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
+                //    ViewBag.nombre_campo = "Provincia";
+                //    ViewBag.nombre_valor = "Porcentaje Promociones";
+                //    ViewBag.data = lista;
 
-                    ViewBag.clase_reporte = "ReportesCampoFechaValor";
+                //    ViewBag.clase_reporte = "ReportesCampoFechaValor";
 
-                    vista_reporte = "CampoFechaValor_Tabla";
+                //    vista_reporte = "CampoFechaValor_Tabla";
 
-                    break;
+                //    break;
                 default:
 
                     break;
@@ -306,8 +306,14 @@ namespace ProyectoFinal.Controllers
                     break;
 
                 case "Promociones por Provincia Negocio":
-                    lista = rm.ObtenerPromocionesPorProvincia(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
-                    return Json(lista, JsonRequestBehavior.AllowGet);
+                    int idNeg = int.Parse(negocio);
+                    result = rm.ObtenerPromocionesNegocioPorProvincia(fecha_desde, fecha_hasta, idNeg);
+                    return Json(result, JsonRequestBehavior.AllowGet);
+                    break;
+
+                case "Promociones por Provincia Secretaria":
+                    result = rm.ObtenerPromocionesPorProvincia(fecha_desde, fecha_hasta);
+                    return Json(result, JsonRequestBehavior.AllowGet);
                     break;
 
                 case "Porcentaje Ocupacion Negocio":
@@ -706,5 +712,31 @@ public ActionResult CampoFechaValor_ReservasOrigenNegocio(string nombre_reporte,
             return View();
         }
 
+
+        public ActionResult PromocionesNegocioPorProvincia(string nombre_reporte, int idTipoReporte)
+        {
+            ObtenerUsuarioActual();
+            var listaNegocio = new List<Negocio>();
+
+            if (idTipoReporte == 1)
+                listaNegocio = nm.GetHospedajeByUsuario(usuarioActual.idUsuario);
+            else if (idTipoReporte == 2)
+                listaNegocio = nm.GetComercioByUsuario(usuarioActual.idUsuario);
+
+            ViewBag.lista_negocios = listaNegocio;
+            ViewBag.nombre_reporte = nombre_reporte;
+
+         
+            return View();
+
+        }
+
+        public ActionResult PromocionesPorProvincia(string nombre_reporte, int idTipoReporte)
+        {
+           
+            ViewBag.nombre_reporte = nombre_reporte;
+            return View();
+
+        }
     }
 }
