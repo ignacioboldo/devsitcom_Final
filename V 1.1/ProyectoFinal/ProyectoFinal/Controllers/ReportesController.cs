@@ -135,6 +135,25 @@ namespace ProyectoFinal.Controllers
 
         }
 
+
+        public ActionResult CampoFechaValorNegocio_PromVencidas(string nombre_reporte, int idTipoReporte)
+        {
+            ObtenerUsuarioActual();
+            var listaNegocio = new List<Negocio>();
+
+            if (idTipoReporte == 1)
+                listaNegocio = nm.GetHospedajeByUsuario(usuarioActual.idUsuario);
+            else if (idTipoReporte == 2)
+                listaNegocio = nm.GetComercioByUsuario(usuarioActual.idUsuario);
+
+            ViewBag.lista_negocios = listaNegocio;
+            ViewBag.nombre_reporte = nombre_reporte;
+
+            List<ReportesCampoValor> lista = new List<ReportesCampoValor>();
+
+            return View();
+
+        }
         public ActionResult ReporteCampoFechaValor(string tipo_reporte, string nombre_reporte, String fecha_desde, String fecha_hasta)
         {
 
@@ -209,6 +228,7 @@ namespace ProyectoFinal.Controllers
         {
 
             var lista = new List<ReportesCampoFechaValor>();
+            var result = new List<ReportesCampoValor>();
 
             var vista_reporte = "";
 
@@ -238,7 +258,7 @@ namespace ProyectoFinal.Controllers
                     break;
 
                 case "Promociones Vencidas Negocio":
-                    lista = rm.ObtenerPromocionesVencidasPorNegocio(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
+                    result = rm.ObtenerPromocionesVencidasPorNegocio(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
                     ViewBag.nombre_campo = "Vencida";
                     ViewBag.nombre_valor = "Promociones Vencidas";
                     ViewBag.data = lista;
@@ -301,7 +321,7 @@ namespace ProyectoFinal.Controllers
 
 
                 case "Promociones Vencidas Negocio":
-
+                    result = rm.ObtenerPromocionesVencidasPorNegocio(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
                     return Json(result, JsonRequestBehavior.AllowGet);
                     break;
 

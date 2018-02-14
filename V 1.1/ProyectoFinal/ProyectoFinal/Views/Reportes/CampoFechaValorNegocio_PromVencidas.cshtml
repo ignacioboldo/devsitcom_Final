@@ -1,0 +1,430 @@
+﻿@{
+    ViewBag.Title = "Gestion de Reportes";
+}
+
+
+<script>
+
+
+    $(document).ready(function () {
+
+        $('.date').mask('00-00-0000');
+
+        $('#fecha_desde').datetimepicker({
+            locale: 'es',
+            format: 'DD/MM/YYYY'
+        });
+
+        $('#fecha_hasta').datetimepicker({
+            locale: 'es',
+            format: 'DD/MM/YYYY'
+        });
+
+        $('#fecha_hasta').datetimepicker({
+            locale: 'es',
+            format: 'DD/MM/YYYY'
+        });
+
+
+    });
+    function armar_graficoTorta() {
+
+        var tipo_reporte = $("#tipo_reporte").val();
+        //var nombre_reporte = $("#nombre_reporte").val();
+        var nombre_reporte = "@ViewBag.nombre_reporte";
+        var fecha_desde = $("#fecha_desde").val();
+        var fecha_hasta = $("#fecha_hasta").val();
+        var negocio = $("#Negocios").val();
+
+        $("#resultado").hide();
+        $("#cargando_grafico").show();
+
+        $.ajax({
+            type: 'GET',
+            url: 'DataGraficoTortaNegocio?tipo_reporte=' + tipo_reporte + '&nombre_reporte=' + nombre_reporte + '&fecha_desde=' + fecha_desde + '&fecha_hasta=' + fecha_hasta + '&negocio=' + negocio,
+            success: function (response) {
+
+                var valores = [];
+                var etiquetas = [];
+
+                response.forEach(function (element) {
+                    valores.push(element.Valor);
+                    etiquetas.push(element.Campo);
+                });
+
+                var config = {
+                    type: 'pie',
+                    data: {
+                        datasets: [{
+                            data: valores,
+                            label: 'Dataset 1',
+                            backgroundColor: colores(valores)
+                        }],
+                        labels: etiquetas
+                    },
+                    options: {
+                        responsive: true
+                    }
+                };
+
+                if (window.myPie != undefined) {
+                    window.myPie.destroy();
+                }
+
+                var ctx = document.getElementById("chart-area").getContext("2d");
+                window.myPie = new Chart(ctx, config);
+
+                $("#cargando_grafico").hide();
+               
+                $("#canvas-holder").show();
+                $("#chart-area").show();
+                $("#canvas").hide();
+                $("#resultado").hide();
+            }
+        })
+
+    }
+
+    function armar_graficoBarraDinamico() {
+
+        var tipo_reporte = $("#tipo_reporte").val();
+        //var nombre_reporte = $("#nombre_reporte").val();
+        var nombre_reporte = "@ViewBag.nombre_reporte";
+        var fecha_desde = $("#fecha_desde").val();
+        var fecha_hasta = $("#fecha_hasta").val();
+        var negocio = $("#Negocios").val();
+        var nombre1 = "@ViewBag.valor1";
+        var nombre2 = "@ViewBag.valor2";
+        var nombre3 = "@ViewBag.valor3";
+
+
+        $("#cargando_grafico").show();
+
+        $.ajax({
+            type: 'GET',
+            url: 'DataGraficoTortaNegocio?tipo_reporte=' + tipo_reporte + '&nombre_reporte=' + nombre_reporte + '&fecha_desde=' + fecha_desde + '&fecha_hasta=' + fecha_hasta + '&negocio=' + negocio,
+            success: function (response) {
+                
+                var valores = [];
+                var valores_2 = [];
+                var valores_3 = [];
+                var etiquetas = [];
+
+                response.forEach(function (element) {
+
+                    valores.push(element.Valor);
+                    valores_2.push(element.Valor_2);
+                    valores_3.push(element.Valor_3);
+
+                    etiquetas.push(element.Campo);
+                });
+
+                var color = Chart.helpers.color;
+
+                var barChartData = {
+                    labels: etiquetas,
+                    datasets: [{
+                        label: nombre1,
+                        backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                        borderColor: window.chartColors.green,
+                        borderWidth: 1,
+                        data: valores
+                    },
+                    {
+                        label: nombre2,
+                        backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                        borderColor: window.chartColors.green,
+                        borderWidth: 1,
+                        data: valores_2
+                    },
+                    {
+                        label: nombre3,
+                        backgroundColor: color(window.chartColors.yellow).alpha(0.5).rgbString(),
+                        borderColor: window.chartColors.green,
+                        borderWidth: 1,
+                        data: valores_3
+                    }]
+
+                };
+
+                if (window.myBar != undefined) {
+                    window.myBar.destroy();
+                }
+
+                var ctx = document.getElementById("canvas").getContext("2d");
+                window.myBar = new Chart(ctx, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: nombre_reporte
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+
+                $("#cargando_grafico").hide();
+
+            }
+        })
+
+        $("#cargando_grafico").hide();
+        $("#canvas").show();
+        $("#canvas-holder").hide();
+        $("#chart-area").hide();
+        $("#resultado").hide();
+    }
+
+
+    function armar_graficoBarra() {
+
+        var tipo_reporte = $("#tipo_reporte").val();
+        //var nombre_reporte = $("#nombre_reporte").val();
+        var nombre_reporte = "@ViewBag.nombre_reporte";
+        var fecha_desde = $("#fecha_desde").val();
+        var fecha_hasta = $("#fecha_hasta").val();
+        var negocio = $("#Negocios").val();
+
+        $("#resultado").hide();
+        $("#cargando_grafico").show();
+
+        $.ajax({
+            type: 'GET',
+            url: 'DataGraficoTortaNegocio?tipo_reporte=' + tipo_reporte + '&nombre_reporte=' + nombre_reporte + '&fecha_desde=' + fecha_desde + '&fecha_hasta=' + fecha_hasta + '&negocio=' + negocio,
+            success: function (response) {
+
+                var valores = [];
+                var etiquetas = [];
+                
+               response.forEach(function (element) {
+                    valores.push(element.Valor);
+                    etiquetas.push(element.Campo);
+                });
+
+                var color = Chart.helpers.color;
+
+                var barChartData = {
+                    labels: etiquetas,
+                    datasets: [{
+                        label: 'Representa',
+                        backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
+                        borderColor: window.chartColors.green,
+                        borderWidth: 1,
+                        data: valores
+                    }]
+
+                };
+
+                if (window.myBar != undefined) {
+                    window.myBar.destroy();
+                }
+
+                var ctx = document.getElementById("canvas").getContext("2d");
+                window.myBar = new Chart(ctx, {
+                    type: 'bar',
+                    data: barChartData,
+                    options: {
+                        responsive: true,
+                        legend: {
+                            position: 'top',
+                        },
+                        title: {
+                            display: true,
+                            text: nombre_reporte
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero: true
+                                }
+                            }]
+                        }
+                    }
+                });
+
+                $("#cargando_grafico").hide();
+                $("#canvas").show();
+                $("#canvas-holder").hide();
+                $("#chart-area").hide();
+                $("#resultado").hide();
+
+
+            }
+        })
+
+    }
+
+    function colores(internalData) {
+
+        var graphColors = [];
+        var graphOutlines = [];
+        var hoverColor = [];
+
+        var internalDataLength = internalData.length;
+        i = 0;
+        while (i <= internalDataLength) {
+            var randomR = Math.floor((Math.random() * 130) + 100);
+            var randomG = Math.floor((Math.random() * 130) + 100);
+            var randomB = Math.floor((Math.random() * 130) + 100);
+
+            var graphBackground = "rgb("
+                    + randomR + ", "
+                    + randomG + ", "
+                    + randomB + ")";
+            graphColors.push(graphBackground);
+
+            var graphOutline = "rgb("
+                    + (randomR - 80) + ", "
+                    + (randomG - 80) + ", "
+                    + (randomB - 80) + ")";
+            graphOutlines.push(graphOutline);
+
+            var hoverColors = "rgb("
+                    + (randomR + 25) + ", "
+                    + (randomG + 25) + ", "
+                    + (randomB + 25) + ")";
+            hoverColor.push(hoverColors);
+
+            i++;
+        };
+
+        return hoverColor;
+
+    }
+    function ReporteCampoFechaValorPorNegocio() {
+
+        var tipo_reporte = $("#tipo_reporte").val();
+        //var nombre_reporte = $("#nombre_reporte").val();
+        var nombre_reporte = "@ViewBag.nombre_reporte";
+        var fecha_desde    = $("#fecha_desde").val();
+        var fecha_hasta    = $("#fecha_hasta").val();
+        var negocio = $("#Negocios").val();
+
+     
+
+        $.ajax({
+            type: 'GET',
+            url: 'ReporteCampoFechaValorPorNegocio?tipo_reporte=' + tipo_reporte + '&nombre_reporte=' + nombre_reporte + '&fecha_desde=' + fecha_desde + '&fecha_hasta=' + fecha_hasta + '&negocio='+negocio,
+            success: function (response) {
+                $("#resultado").html(response);
+            }
+        })
+
+        $("#cargando_grafico").hide();
+        $("#canvas-holder").hide();
+        $("#chart-area").hide();
+        $("#canvas").hide();
+        $("#resultado").show();
+    }
+
+    function llamarReporte() {
+        var tipo_reporte = $("#tipo_reporte").val();
+
+        
+
+        if (tipo_reporte == "General")
+            armar_graficoTorta();
+        else
+            armar_graficoBarra();
+    }
+
+</script>
+
+<!-- LIGHT SECTION -->
+<section class="lightSection clearfix pageHeader">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6">
+                <div class="page-title">
+                    <h2>Gestion de Reportes </h2>
+            
+                </div>
+            </div>
+            <div class="col-xs-6">
+                <ol class="breadcrumb pull-right">
+                    <li>
+                        <a href="portada.htm">INICIO</a>
+                    </li>
+                    <li class="active">Gestion de Reportes</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- MAIN CONTENT SECTION -->
+<section class="mainContent clearfix userProfile">
+    <div class="container">
+
+        <h3><strong>@ViewBag.nombre_reporte</strong></h3>
+
+        <div class="row" style="margin-bottom:20px;">
+            <div class="col-md-3">
+                <select class="form-control" id="tipo_reporte">
+                    <option value="Diaria">Diaria</option>
+                    <option value="Mensual">Mensual</option>
+                    <option value="Anual">Anual</option>
+                    <option value="General">General</option>
+                </select>
+            </div>
+
+            <div class="col-md-3">
+
+                @Html.DropDownList("Negocios", new SelectList(ViewBag.lista_negocios, "idNegocio", "nombre", String.Empty), new { @class = "form-control" })
+
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-3">
+
+                <input type="text" name="fecha_desde" id="fecha_desde" class="form-control date" placeholder="Fecha Desde" value="@Session["fecha_desde"]" />
+            </div>
+            <div class="col-md-3">
+
+                <input type="text" class="form-control date" id="fecha_hasta" name="fecha_hasta" placeholder="Fecha Hasta" value="@Session["fecha_hasta"]" />
+            </div>
+
+            <div class="col-md-3">
+
+                <button class="btn btn-block" onclick="llamarReporte();" style="background-color:yellowgreen; color:white;">Graficar</button>
+            </div>
+
+           <!-- <div class="col-md-3">
+                <button class="btn btn-block" onclick="ReporteCampoFechaValorPorNegocio();" style="background-color:yellowgreen; color:white;">Listar</button>
+            </div> -->
+
+        </div>
+        <br />
+        <br />
+
+        <div id="resultado">
+
+        </div>
+
+        <div id="cargando_grafico" style="display:none; text-align:center">Cargando grafico por favor espere...</div>
+        <div id="canvas-holder" style="width:80%">
+            <br />
+            <br />
+            <canvas id="chart-area" />
+        </div>
+
+        <br />
+        <canvas id="canvas"></canvas>
+
+    </div>
+</section>
