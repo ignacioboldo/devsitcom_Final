@@ -35,3 +35,12 @@ C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DAL\bin\Release\Enti
 C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DAL\bin\Release\EntityFramework.SqlServer.xml
 C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DAL\obj\Release\DAL.dll
 C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DAL\obj\Release\DAL.pdb
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DAL\bin\Release\DAL.dll.config
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DAL\bin\Release\DAL.dll
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DAL\bin\Release\DAL.pdb
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DAL\bin\Release\EntityFramework.dll
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DAL\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DAL\bin\Release\EntityFramework.xml
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DAL\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DAL\obj\Release\DAL.dll
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DAL\obj\Release\DAL.pdb
