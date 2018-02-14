@@ -258,6 +258,24 @@ public List<ReportesCampoFechaValor> ObtenerReservasPorOrigenGrafico_ProvNegocio
             }
         }
 
+        public List<ReportesCampoFechaValor> ObtenerReservasPorSolicitudNegocio(DateTime FechaDesde, DateTime FechaHasta, String Vista, Int32 Negocio)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", FechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", FechaHasta);
+                SqlParameter paramVista = new SqlParameter("@pVista", Vista);
+                SqlParameter paramNegocio = new SqlParameter("@pNegocio", Negocio);
+
+                return db.Database.SqlQuery<ReportesCampoFechaValor>("EXEC [Reportes].[obtenerSolicitudesReservaVsReservaDirectaNegocio] @fechaDesde=@pfechaDesde , @fechaHasta=@pfechaHasta  , @vista=@pVista, @idNegocio=@pNegocio", paramFechaDesde, paramFechaHasta, paramVista, paramNegocio).ToList();
+
+
+
+            }
+        }
+
+
+
         public List<ReportesCampoValorValor> ObtenerReservasPorSolicitudPorNegocio(DateTime FechaDesde, DateTime FechaHasta, String Vista, Int32 Negocio)
         {
             using (SitcomEntities db = new SitcomEntities())

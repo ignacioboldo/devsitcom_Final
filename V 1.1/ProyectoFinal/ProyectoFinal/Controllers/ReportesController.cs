@@ -121,8 +121,9 @@ namespace ProyectoFinal.Controllers
                     break;
 
                 case "Reservas por Solicitud Negocio":
-                    ViewBag.valor1 = "RESERVAS DIRECTAS";
-                    ViewBag.valor2 = "RESERVAS CON SOLICITUD";
+                    ViewBag.valor1 = "RESERVAS CON SOLICITUD";
+                    ViewBag.valor2 = "RESERVAS DIRECTAS";
+                    
                     ViewBag.valor3 = null;
                     break;
 
@@ -191,7 +192,7 @@ namespace ProyectoFinal.Controllers
                 //    ViewBag.clase_reporte = "ReportesCampoFechaValor";
                 //    vista_reporte = "CampoFechaValor_Tabla";
 
-                    break;
+                    //break;
 
                 case "Reservas por Solicitud":
                     lista = rm.ObtenerReservasPorSolicitud(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte);
@@ -268,6 +269,15 @@ namespace ProyectoFinal.Controllers
 
                     break;
 
+                case "Reservas por Solicitud Negocio":
+                    lista = rm.ObtenerReservasPorSolicitudNegocio(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
+                    ViewBag.nombre_campo = "Reservas con Solicitud";
+                    ViewBag.nombre_valor = "Reservas sin Solicitud";
+                    ViewBag.data = lista;
+                    ViewBag.clase_reporte = "ReportesFechaValor";
+
+                    vista_reporte = "CampoFechaValor_Tabla";
+                    break;
                 //case "Promociones por Provincia Negocio":
                 //    lista = rm.ObtenerPromocionesPorProvincia(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
                 //    ViewBag.nombre_campo = "Provincia";
