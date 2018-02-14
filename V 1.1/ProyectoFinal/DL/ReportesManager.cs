@@ -383,8 +383,7 @@ public List<ReportesCampoFechaValor> ObtenerReservasPorOrigenGrafico_ProvNegocio
 
             }
         }
-
-        public List<ReportesCampoFechaValor> ObtenerPromocionesPorComercio(DateTime FechaDesde, DateTime FechaHasta, String Vista)
+        public List<ReportesCampoFechaValor> ObtenerPromocionesPorComercio_old(DateTime FechaDesde, DateTime FechaHasta, String Vista)
         {
             using (SitcomEntities db = new SitcomEntities())
             {
@@ -397,6 +396,19 @@ public List<ReportesCampoFechaValor> ObtenerReservasPorOrigenGrafico_ProvNegocio
 
 
 
+            }
+        }
+
+ 		public List<ReportesCampoValor> ObtenerPromocionesPorComercio(string FechaDesde, string FechaHasta, int idNegocio)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", FechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", FechaHasta);
+                SqlParameter paramIdNegocio = new SqlParameter("@pIdNegocio", idNegocio);
+
+
+                return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[obtenerPromocionesPorComercio] @fechaDesdeP=@pfechaDesde , @fechaHastaP=@pfechaHasta  , @idNegocio=@pIdNegocio", paramFechaDesde, paramFechaHasta, paramIdNegocio).ToList();
             }
         }
 
@@ -452,6 +464,17 @@ public List<ReportesCampoFechaValor> ObtenerReservasPorOrigenGrafico_ProvNegocio
                 SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", fechaHasta);
 
                 return db.Database.SqlQuery<ReportesCampoValor>("EXEC GetEncuestasPorEstado @fechaDesdeP=@pfechaDesde, @fechaHastaP=@pFechaHasta", paramFechaDesde, paramFechaHasta).ToList();
+            }
+        }
+
+ 		public List<ReportesCampoValor> ObtenerPromocionesPorEstado(string fechaDesde, string fechaHasta)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", fechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", fechaHasta);
+
+                return db.Database.SqlQuery<ReportesCampoValor>("EXEC Reportes.GetPromocionesPorEstado @fechaDesdeP=@pfechaDesde, @fechaHastaP=@pFechaHasta", paramFechaDesde, paramFechaHasta).ToList();
             }
         }
 

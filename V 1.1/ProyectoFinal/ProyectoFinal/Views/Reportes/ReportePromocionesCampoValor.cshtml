@@ -1,6 +1,5 @@
-﻿@model IEnumerable<BussinesEntities.PreguntasEntity>
-@{
-    ViewBag.Title = "Respuestas por Encuesta";
+﻿@{
+    ViewBag.Title = "Promociones por Estado";
 }
 
 
@@ -73,6 +72,10 @@
                     }
                 };
 
+                if (window.myPie != undefined) {
+                    window.myPie.destroy();
+                }
+
                 var ctx = document.getElementById("chart-area").getContext("2d");
                 window.myPie = new Chart(ctx, config);
 
@@ -103,16 +106,7 @@
         }
     }
 
-    function buscarPreguntas() {
-        var idEncuesta = $("#encuesta").val();      
-
-        var fecha_desde = $("#fecha_desde").val();
-        var fecha_hasta = $("#fecha_hasta").val();
-        var idNegocio = @ViewBag.IdNegocio
-
-        window.location = '../RespuestasEncuestaNegocio/?idEncuesta=' + idEncuesta + '&idNegocio=' + idNegocio + '&fechaDesde=' + fecha_desde + '&fechaHasta=' + fecha_hasta;
-    }
-
+   
     
 
     function armar_graficoBarra() {
@@ -125,7 +119,7 @@
 
         $.ajax({
             type: 'GET',
-            url: 'DataGraficoEncuestasPorEstado?fechaDesde=' + fecha_desde + '&fechaHasta=' + fecha_hasta,
+            url: 'DataGraficoPromocionesPorEstado?fechaDesde=' + fecha_desde + '&fechaHasta=' + fecha_hasta,
             success: function (response) {
 
                 var valores = [];
@@ -291,7 +285,7 @@
                 <div class="row">                                      
                     
                     <div class="col-md-2" style="text-align:right;vertical-align:central">
-                        <label style="text-align:right;vertical-align:central;font-size:13px">FECHA DE ASIGNACIÓN: </label>
+                        <label style="text-align:right;vertical-align:central;font-size:13px">FECHA DE OTORGAMIENTO: </label>
                     </div>
 
                     <div class="col-md-3">

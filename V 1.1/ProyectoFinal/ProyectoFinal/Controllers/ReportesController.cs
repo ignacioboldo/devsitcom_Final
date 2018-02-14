@@ -164,13 +164,13 @@ namespace ProyectoFinal.Controllers
                     break;
 
 
-                case "Promociones por Comercio":
-                    lista = rm.ObtenerPromocionesPorComercio(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte);
-                    ViewBag.nombre_campo = "Comercio";
-                    ViewBag.nombre_valor = "Porcentaje de Promociones";
-                    ViewBag.data = lista;
-                    ViewBag.clase_reporte = "ReportesCampoFechaValor";
-                    vista_reporte = "CampoFechaValor_Tabla";
+                //case "Promociones por Comercio":
+                //    lista = rm.ObtenerPromocionesPorComercio(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte);
+                //    ViewBag.nombre_campo = "Comercio";
+                //    ViewBag.nombre_valor = "Porcentaje de Promociones";
+                //    ViewBag.data = lista;
+                //    ViewBag.clase_reporte = "ReportesCampoFechaValor";
+                //    vista_reporte = "CampoFechaValor_Tabla";
 
                     break;
 
@@ -600,6 +600,22 @@ namespace ProyectoFinal.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+        public JsonResult DataGraficoPromocionesPorEstado(string fechaDesde, string fechaHasta)
+        {
+            List<ReportesCampoValor> result = new List<ReportesCampoValor>();
+
+            result = rm.ObtenerPromocionesPorEstado(fechaDesde, fechaHasta);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+        public JsonResult DataGraficoPromocionesPorComercio(string fechaDesde, string fechaHasta, int idNegocio)
+        {
+            List<ReportesCampoValor> result = new List<ReportesCampoValor>();
+
+            result = rm.ObtenerPromocionesPorComercio(fechaDesde, fechaHasta, idNegocio);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
 
         public ActionResult RespuestasEncuestaNegocio(int? idEncuesta, int? idNegocio, string fechaDesde, string fechaHasta)
         {
@@ -679,6 +695,23 @@ namespace ProyectoFinal.Controllers
 
         public ActionResult ReporteEncuestasCampoValor()
         {
+            return View();
+        }
+
+        public ActionResult ReportePromocionesCampoValor()
+        {
+            return View();
+        }
+
+        public ActionResult ReportePromocionesPorComercioCampoValor()
+        {
+            ObtenerUsuarioActual();
+            var listaNegocio = new List<Negocio>();
+
+            listaNegocio = nm.GetComercioByUsuario(usuarioActual.idUsuario);
+
+            ViewBag.lista_negocios = listaNegocio;
+
             return View();
         }
 

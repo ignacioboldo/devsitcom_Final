@@ -73,6 +73,10 @@
                     }
                 };
 
+                if (window.myPie != undefined) {
+                    window.myPie.destroy();
+                }
+
                 var ctx = document.getElementById("chart-area").getContext("2d");
                 window.myPie = new Chart(ctx, config);
 
@@ -152,6 +156,10 @@
                     }]
 
                 };
+
+                if (window.myBar != undefined) {
+                    window.myBar.destroy();
+                }
 
                 var ctx = document.getElementById(nomCanvas).getContext("2d");
                 window.myBar = new Chart(ctx, {
