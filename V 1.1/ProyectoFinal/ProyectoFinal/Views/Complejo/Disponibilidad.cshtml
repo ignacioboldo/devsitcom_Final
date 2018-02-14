@@ -98,6 +98,17 @@
 
         </div>
 
+        <div id="mensaje_reserva" style="text-align:center; font-size:19px; color:GrayText; display:none">
+            <div class="col-md-12">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Disponibilidad registrada correctamente.<br />
+            </div>
+            <div class="col-md-12">
+                <a href="@Url.Action("GestionDisponibilidad", "Reservas", new { idNegocio = ViewBag.IdNegocio, idTipo = ViewBag.tipo })" class="btn btn-info" style="padding:10px; margin-top:20px; width: 200px;">
+                    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Salir
+                </a>
+            </div>
+        </div>
+
 
 
 

@@ -40,20 +40,6 @@ C:\Boldo_resguardo\V 1.1\ProyectoFinal\DL\bin\Release\BussinesEntities.pdb
 C:\Boldo_resguardo\V 1.1\ProyectoFinal\DL\bin\Release\DAL.pdb
 C:\Boldo_resguardo\V 1.1\ProyectoFinal\DL\bin\Release\EntityFramework.xml
 C:\Boldo_resguardo\V 1.1\ProyectoFinal\DL\bin\Release\EntityFramework.SqlServer.xml
-C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\DL.dll.config
-C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\DL.dll
-C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\DL.pdb
-C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\BussinesEntities.dll
-C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\DAL.dll
-C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\EntityFramework.dll
-C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\EntityFramework.SqlServer.dll
-C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\BussinesEntities.pdb
-C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\DAL.pdb
-C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\EntityFramework.xml
-C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\EntityFramework.SqlServer.xml
-C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\obj\Release\BL.csprojResolveAssemblyReference.cache
-C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\obj\Release\DL.dll
-C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\obj\Release\DL.pdb
 C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DL\bin\Release\DL.dll.config
 C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DL\bin\Release\DL.dll
 C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DL\bin\Release\DL.pdb
@@ -68,3 +54,17 @@ C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DL\bin\Re
 C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DL\obj\Release\BL.csprojResolveAssemblyReference.cache
 C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DL\obj\Release\DL.dll
 C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\DL\obj\Release\DL.pdb
+C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\DL.dll.config
+C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\DL.dll
+C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\DL.pdb
+C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\BussinesEntities.dll
+C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\DAL.dll
+C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\EntityFramework.dll
+C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\BussinesEntities.pdb
+C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\DAL.pdb
+C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\EntityFramework.xml
+C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\obj\Release\BL.csprojResolveAssemblyReference.cache
+C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\obj\Release\DL.dll
+C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\DL\obj\Release\DL.pdb
