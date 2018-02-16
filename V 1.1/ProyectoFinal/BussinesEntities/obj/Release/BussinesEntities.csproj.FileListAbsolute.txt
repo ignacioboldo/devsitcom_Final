@@ -34,6 +34,18 @@ C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramew
 C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\DAL.pdb
 C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramework.xml
 C:\Boldo_resguardo\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\BussinesEntities.dll.config
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\BussinesEntities.dll
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\BussinesEntities.pdb
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\DAL.dll
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramework.dll
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramework.SqlServer.dll
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\DAL.pdb
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramework.xml
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\EntityFramework.SqlServer.xml
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\BussinesEntities\obj\Release\BussinesEntities.csprojResolveAssemblyReference.cache
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\BussinesEntities\obj\Release\BussinesEntities.dll
+C:\Users\enabarro\Documents\GitHub\devSitcom_Final\V 1.1\ProyectoFinal\BussinesEntities\obj\Release\BussinesEntities.pdb
 C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\BussinesEntities.dll.config
 C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\BussinesEntities.dll
 C:\Users\pc\Documents\Repo Final Nva PC\V 1.1\ProyectoFinal\BussinesEntities\bin\Release\BussinesEntities.pdb

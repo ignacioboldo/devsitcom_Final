@@ -684,6 +684,10 @@
     <Content Include="Views\Encuestas\EditPregunta.cshtml" />
     <Content Include="Views\Encuestas\VerEncuesta.cshtml" />
     <Content Include="Views\Mensajes\Index.cshtml" />
+    <Content Include="Views\Reportes\CampoFechaValorNegocio_PromVencidas.cshtml" />
+    <Content Include="Views\Reportes\CampoFechaValor_ReservasOrigen.cshtml" />
+    <Content Include="Views\Reportes\CampoFechaValor_ReservasOrigenNegocio.cshtml" />
+    <Content Include="Views\Reportes\ReportePromocionesPorComercioCampoValor.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

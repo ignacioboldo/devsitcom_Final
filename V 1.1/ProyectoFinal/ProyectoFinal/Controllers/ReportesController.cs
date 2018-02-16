@@ -249,10 +249,10 @@ namespace ProyectoFinal.Controllers
                     break;
 
                 case "Promociones no Utilizadas Negocio":
-                    lista = rm.ObtenerPromocionesNoUtilizadasPorNegocio(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
+                    result = rm.ObtenerPromocionesNoUtilizadasPorNegocio(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte, Convert.ToInt32(negocio));
                     ViewBag.nombre_campo = "Utilizada";
                     ViewBag.nombre_valor = "Promociones No Utilizadas";
-                    ViewBag.data = lista;
+                    ViewBag.data = result;
                     ViewBag.clase_reporte = "ReportesFechaValor";
 
                     vista_reporte = "CampoFechaValor_Tabla";

@@ -312,7 +312,7 @@ public List<ReportesCampoFechaValor> ObtenerReservasPorOrigenGrafico_ProvNegocio
 
         
 
-        public List<ReportesCampoFechaValor> ObtenerPromocionesNoUtilizadasPorNegocio(DateTime FechaDesde, DateTime FechaHasta, String Vista, Int32 Negocio)
+        public List<ReportesCampoValor> ObtenerPromocionesNoUtilizadasPorNegocio(DateTime FechaDesde, DateTime FechaHasta, String Vista, Int32 Negocio)
         {
             using (SitcomEntities db = new SitcomEntities())
             {
@@ -321,10 +321,7 @@ public List<ReportesCampoFechaValor> ObtenerReservasPorOrigenGrafico_ProvNegocio
                 SqlParameter paramVista = new SqlParameter("@pVista", Vista);
                 SqlParameter paramNegocio = new SqlParameter("@pNegocio", Negocio);
 
-                return db.Database.SqlQuery<ReportesCampoFechaValor>("EXEC [Reportes].[ObtenerPromocionesNoUtilizadasPorNegocio] @fechaDesde=@pfechaDesde , @fechaHasta=@pfechaHasta  , @vista=@pVista, @idNegocio=@pNegocio", paramFechaDesde, paramFechaHasta, paramVista, paramNegocio).ToList();
-
-
-
+                return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[ObtenerPromocionesNoUtilizadasPorNegocio] @fechaDesde=@pfechaDesde , @fechaHasta=@pfechaHasta  , @vista=@pVista, @idNegocio=@pNegocio", paramFechaDesde, paramFechaHasta, paramVista, paramNegocio).ToList();
             }
         }
 
@@ -346,7 +343,7 @@ public List<ReportesCampoFechaValor> ObtenerReservasPorOrigenGrafico_ProvNegocio
 
         
 
-        public List<ReportesCampoFechaValor> ObtenerPromocionesVencidasPorNegocio(DateTime FechaDesde, DateTime FechaHasta, String Vista, Int32 Negocio)
+        public List<ReportesCampoValor> ObtenerPromocionesVencidasPorNegocio(DateTime FechaDesde, DateTime FechaHasta, String Vista, Int32 Negocio)
         {
             using (SitcomEntities db = new SitcomEntities())
             {
@@ -355,7 +352,7 @@ public List<ReportesCampoFechaValor> ObtenerReservasPorOrigenGrafico_ProvNegocio
                 SqlParameter paramVista = new SqlParameter("@pVista", Vista);
                 SqlParameter paramNegocio = new SqlParameter("@pNegocio", Negocio);
 
-                return db.Database.SqlQuery<ReportesCampoFechaValor>("EXEC [Reportes].[ObtenerPromocionesVencidasPorNegocio] @fechaDesde=@pfechaDesde , @fechaHasta=@pfechaHasta  , @vista=@pVista, @idNegocio=@pNegocio", paramFechaDesde, paramFechaHasta, paramVista, paramNegocio).ToList();
+                return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[ObtenerPromocionesVencidasPorNegocio] @fechaDesde=@pfechaDesde , @fechaHasta=@pfechaHasta  , @vista=@pVista, @idNegocio=@pNegocio", paramFechaDesde, paramFechaHasta, paramVista, paramNegocio).ToList();
 
 
 

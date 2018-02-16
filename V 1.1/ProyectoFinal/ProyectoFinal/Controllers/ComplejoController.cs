@@ -142,7 +142,7 @@ namespace ProyectoFinal.Controllers
             return PartialView("BuscarHabitacionesDisponibles_Disponibilidad", listado);
         }
 
-        public string RegistrarReserva(int? idNegocio, int tipo)
+        public ActionResult RegistrarReserva(int? idPersona, int? idNegocio, int tipo)
         {
 
             var greListSession = Session["AgregarReservaList"] as List<GestionReservaEntities>;
@@ -163,8 +163,7 @@ namespace ProyectoFinal.Controllers
 
             };
 
-
-            return Convert.ToString("Hola");
+            return RedirectToAction("Index", "Mensajes", new { codigo = "NEG-ALT-200" });
         }
 
 
