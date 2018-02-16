@@ -32,6 +32,8 @@
             $("#btnEncuestasSecretaria").hide();  
             $("#btnPromocionesPorProvinciaSecretaria").hide();  
             $("#btnPromocionesPorEstado").hide();
+            $("#btnReservasProvinciaGeneral").hide();
+            $("#btnReservasPorTipoHospedaje").hide();
 
             
             
@@ -115,6 +117,8 @@
             $("#btnEncuestasPorEstado").show();
             $("#btnPromocionesPorProvinciaSecretaria").show(); 
             $("#btnPromocionesPorEstado").show();
+            $("#btnReservasProvinciaGeneral").show();
+            $("#btnReservasPorTipoHospedaje").show();  
         }
 
         if (mensaje != "") {
@@ -180,8 +184,12 @@
                     <button id="btnReservasCategoria" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Reservas por Categoria" })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Categoria</button>
                 </div>
 
+                 <div class="col-md-12">
+                    <button id="btnReservasProvincia" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_ReservasOrigen", "Reportes", new { nombre_reporte = "Reservas por Origen" })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Provincia (COMPARADOR)</button>
+                </div>
+
                 <div class="col-md-12">
-                    <button id="btnReservasProvincia" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_ReservasOrigen", "Reportes", new { nombre_reporte = "Reservas por Origen" })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Provincia</button>
+                    <button id="btnReservasProvinciaGeneral" class="btn btn-block" onclick="window.location = '@Url.Action("ReporteReservasPorProvinciaGeneral", "Reportes", new { nombre_reporte = "Reservas por Origen General" })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Provincia (GENERAL)</button>
                 </div>
 
                 <div class="col-md-12">
@@ -190,6 +198,11 @@
 
                 <div class="col-md-12">
                     <button id="btnReservasPorSolicitud" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Reservas por Solicitud" })' " style=" background-color:yellowgreen; color:white;;padding: 5px; margin-bottom:10px;">Reservas por Solicitud</button>
+                </div>
+
+
+				<div class="col-md-12">
+                    <button id="btnReservasPorTipoHospedaje" class="btn btn-block" onclick="window.location = '@Url.Action("ReportePorcentajeReservasTipoHospedaje", "Reportes", new { nombre_reporte = "Reservas por Tipo de Hospedaje" })' " style=" background-color:yellowgreen; color:white;;padding: 5px; margin-bottom:10px;">Reservas por Tipo de Hospedaje</button>
                 </div>
 
                 <div class="col-md-12">

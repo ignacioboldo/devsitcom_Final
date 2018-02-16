@@ -18,6 +18,7 @@ namespace ProyectoFinal.Controllers
         public EncuestasManager em = new EncuestasManager();
         public DomicilioManager dm = new DomicilioManager();
         ReportesManager rm = new ReportesManager();
+        SitcomEntities db = new SitcomEntities();
 
 
         public List<Negocio> obtenerHospedajesPorUsuario()
@@ -638,11 +639,30 @@ namespace ProyectoFinal.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult DataGraficoReservasPorTipoHospedaje(string fechaDesde, string fechaHasta)
+        {
+            List<ReportesCampoValor> result = new List<ReportesCampoValor>();
+
+            result = rm.ObtenerReservasPorTipoHospedaje(fechaDesde, fechaHasta);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         public JsonResult DataGraficoPromocionesPorComercio(string fechaDesde, string fechaHasta, int idNegocio)
         {
             List<ReportesCampoValor> result = new List<ReportesCampoValor>();
 
             result = rm.ObtenerPromocionesPorComercio(fechaDesde, fechaHasta, idNegocio);
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult DataGraficoReservasPorProvinciaGeneral(string fechaDesde, string fechaHasta, int idTipoLugarHospedaje)
+        {
+            List<ReportesCampoValor> result = new List<ReportesCampoValor>();
+
+            result = rm.ObtenerReservasPorProvinciaGeneral(fechaDesde, fechaHasta, idTipoLugarHospedaje);
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
@@ -743,6 +763,25 @@ namespace ProyectoFinal.Controllers
             ViewBag.lista_negocios = listaNegocio;
 
             return View();
+        }
+        public ActionResult ReporteReservasPorProvinciaGeneral()
+        {
+            ObtenerUsuarioActual();
+
+            List<TipoLugarHospedaje> tiposHospedaje = db.TipoLugarHospedaje.ToList();
+
+            tiposHospedaje.Add(new TipoLugarHospedaje() { idTipoLugarHospedaje = 0, nombre = "TODOS" });
+
+            SelectList listaTiposHospedaje = new SelectList(tiposHospedaje, "idTipoLugarHospedaje", "nombre", 0);
+
+            ViewBag.ListaTiposHospedaje = listaTiposHospedaje;
+
+            return View();
+        }
+
+        public ActionResult ReportePorcentajeReservasTipoHospedaje()
+        {
+           return View();
         }
 
         public ActionResult CampoFechaValor_ReservasOrigen(string nombre_reporte)

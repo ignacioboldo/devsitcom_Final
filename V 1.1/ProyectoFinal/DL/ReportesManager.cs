@@ -430,6 +430,17 @@ public List<ReportesCampoFechaValor> ObtenerReservasPorOrigenGrafico_ProvNegocio
             }
         }
 
+        public List<ReportesCampoValor> ObtenerReservasPorProvinciaGeneral(string FechaDesde, string FechaHasta, int idTipoHospedaje)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", FechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", FechaHasta);
+                SqlParameter paramIdTipoHospedaje = new SqlParameter("@pIdTipoHospedaje", idTipoHospedaje);
+
+                return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[ObtenerOrigenDeReservasPorFechaGeneral] @fechaDesdeP=@pfechaDesde , @fechaHastaP=@pfechaHasta  , @idTipoLugarHospedaje=@pIdTipoHospedaje", paramFechaDesde, paramFechaHasta, paramIdTipoHospedaje).ToList();
+            }
+        }
         public List<ReportesCampoValor> ObtenerPromocionesNoUtilizadasPorComercio(DateTime FechaDesde, DateTime FechaHasta, String Vista, Int32 Negocio)
         {
             using (SitcomEntities db = new SitcomEntities())
@@ -493,6 +504,17 @@ public List<ReportesCampoFechaValor> ObtenerReservasPorOrigenGrafico_ProvNegocio
                 SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", fechaHasta);
 
                 return db.Database.SqlQuery<ReportesCampoValor>("EXEC Reportes.GetPromocionesPorEstado @fechaDesdeP=@pfechaDesde, @fechaHastaP=@pFechaHasta", paramFechaDesde, paramFechaHasta).ToList();
+            }
+        }
+
+ 		public List<ReportesCampoValor> ObtenerReservasPorTipoHospedaje(string fechaDesde, string fechaHasta)
+        {
+            using (SitcomEntities db = new SitcomEntities())
+            {
+                SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", fechaDesde);
+                SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", fechaHasta);
+
+                return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[ObtenerReservasPorTipoHospedaje] @fechaDesdeP=@pfechaDesde, @fechaHastaP=@pFechaHasta", paramFechaDesde, paramFechaHasta).ToList();
             }
         }
 
