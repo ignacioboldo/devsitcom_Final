@@ -52,7 +52,12 @@
                 $("#btnPorcentajeOcupacionNegocio").hide();
                 $("#btnCantidadPasajerosHospedados").hide();
                 $("#btnEncuestasPorEstado").hide();
-                $("#btnPromocionesComercio").show();
+                $("#btnPromocionesComercio").show();      
+                $("#reservas").hide();      
+                $("#promociones").show();
+
+                  
+                
                 
 
                 
@@ -71,6 +76,9 @@
                 $("#btnCantidadPasajerosHospedados").hide();
                 $("#btnEncuestasPorEstado").hide();
                 $("#btnPromocionesComercio").hide();
+                $("#reservas").show();
+                $("#promociones").hide(); 
+                
             }
             else if(countHospedaje > 0 & countComercio > 0){
                 $("#btnReservasCategoria").hide();
@@ -87,6 +95,9 @@
                 $("#btnCantidadPasajerosHospedados").hide();
                 $("#btnEncuestasPorEstado").hide();
                 $("#btnPromocionesComercio").show();
+                $("#reservas").show();  
+                $("#promociones").show();
+                
 
                 
                 
@@ -118,7 +129,9 @@
             $("#btnPromocionesPorProvinciaSecretaria").show(); 
             $("#btnPromocionesPorEstado").show();
             $("#btnReservasProvinciaGeneral").show();
-            $("#btnReservasPorTipoHospedaje").show();  
+            $("#btnReservasPorTipoHospedaje").show();
+            $("#reservas").show();
+            $("#promociones").show();
         }
 
         if (mensaje != "") {
@@ -179,83 +192,119 @@
 
             <div class="col-md-3"></div>
 
-            <div class="col-md-6">
-                <div class="col-md-12">
-                    <button id="btnReservasCategoria" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Reservas por Categoria" })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Categoria</button>
+            <div class="col-md-6 panel-group">
+
+                <div class="panel panel-default" id="reservas">
+                    <div class="panel-heading" style="font-size:16  px; font-weight:bold;">RESERVAS</div>
+
+                    <div class="panel-body">
+                        <div class="col-md-12">
+                            <button id="btnReservasCategoria" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Reservas por Categoria" })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Categoria</button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <button id="btnReservasProvincia" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_ReservasOrigen", "Reportes", new { nombre_reporte = "Reservas por Origen" })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Provincia (COMPARADOR)</button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <button id="btnReservasProvinciaGeneral" class="btn btn-block" onclick="window.location = '@Url.Action("ReporteReservasPorProvinciaGeneral", "Reportes", new { nombre_reporte = "Reservas por Origen General" })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Provincia (GENERAL)</button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <button id="btnReservasPorSolicitudNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValorNegocio_Index", "Reportes", new { nombre_reporte = "Reservas por Solicitud Negocio", idTipoReporte = 1 })' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Reservas por Solicitud</button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <button id="btnPorcentajeOcupacion" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Porcentaje Ocupacion"})' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Porcentaje Ocupacion</button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <button id="btnPorcentajeOcupacionNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValorNegocio_Index", "Reportes", new { nombre_reporte = "Porcentaje Ocupacion Negocio", idTipoReporte = 1 })' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Porcentaje Ocupacion</button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <button id="btnCantidadPasajerosHospedados" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Cantidad Pasajeros Hospedados" })' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Cantidad Pasajeros Hospedados</button>
+                        </div>
+
+
+
+
+                        <div class="col-md-12">
+                            <button id="btnReservasPorSolicitud" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Reservas por Solicitud" })' " style=" background-color:yellowgreen; color:white;;padding: 5px; margin-bottom:10px;">Reservas por Solicitud</button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <button id="btnReservasPorTipoHospedaje" class="btn btn-block" onclick="window.location = '@Url.Action("ReportePorcentajeReservasTipoHospedaje", "Reportes", new { nombre_reporte = "Reservas por Tipo de Hospedaje" })' " style=" background-color:yellowgreen; color:white;;padding: 5px; margin-bottom:10px;">Reservas por Tipo de Hospedaje</button>
+                        </div>
+
+                        <div class="col-md-12">
+                            <button id="btnReservasProvinciaNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_ReservasOrigenNegocio", "Reportes", new { nombre_reporte = "Reservas por Origen Negocio", idTipoReporte = 1, idNegocio = idNegocio })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Provincia</button>
+                        </div>
+
+                    </div>    
+               
+
                 </div>
 
-                 <div class="col-md-12">
-                    <button id="btnReservasProvincia" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_ReservasOrigen", "Reportes", new { nombre_reporte = "Reservas por Origen" })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Provincia (COMPARADOR)</button>
-                </div>
+                <br />
+                <br /> 
 
-                <div class="col-md-12">
-                    <button id="btnReservasProvinciaGeneral" class="btn btn-block" onclick="window.location = '@Url.Action("ReporteReservasPorProvinciaGeneral", "Reportes", new { nombre_reporte = "Reservas por Origen General" })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Provincia (GENERAL)</button>
-                </div>
+                <div class="panel panel-default" id="promociones">
+                    <div class="panel-heading" style="font-size: 16px; font-weight: bold;">PROMOCIONES</div>
 
-                <div class="col-md-12">
-                    <button id="btnPromocionesComercio" class="btn btn-block" onclick="window.location = '@Url.Action("ReportePromocionesPorComercioCampoValor", "Reportes", new { nombre_reporte = "Promociones por Comercio" })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Promociones Utilizadas por Comercio</button>
-                </div>
+                    <div class="panel-body">
 
-                <div class="col-md-12">
-                    <button id="btnReservasPorSolicitud" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Reservas por Solicitud" })' " style=" background-color:yellowgreen; color:white;;padding: 5px; margin-bottom:10px;">Reservas por Solicitud</button>
-                </div>
+                        <div class="col-md-12">
+                            <button id="btnPromocionesComercio" class="btn btn-block" onclick="window.location = '@Url.Action("ReportePromocionesPorComercioCampoValor", "Reportes", new { nombre_reporte = "Promociones por Comercio" })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Promociones Utilizadas por Comercio</button>
+                        </div>
 
 
-				<div class="col-md-12">
-                    <button id="btnReservasPorTipoHospedaje" class="btn btn-block" onclick="window.location = '@Url.Action("ReportePorcentajeReservasTipoHospedaje", "Reportes", new { nombre_reporte = "Reservas por Tipo de Hospedaje" })' " style=" background-color:yellowgreen; color:white;;padding: 5px; margin-bottom:10px;">Reservas por Tipo de Hospedaje</button>
-                </div>
+                        <div class="col-md-12">
+                            <button id="btnPromocionesNoUtilizadas" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValorNegocio_Index", "Reportes", new { nombre_reporte = "Promociones no Utilizadas Negocio", idTipoReporte = 2 })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Promociones no Utilizadas Por Comercio</button>
+                        </div>
 
-                <div class="col-md-12">
-                    <button id="btnReservasProvinciaNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_ReservasOrigenNegocio", "Reportes", new { nombre_reporte = "Reservas por Origen Negocio", idTipoReporte = 1, idNegocio = idNegocio })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Reservas por Provincia</button>
-                </div>
+                        <div class="col-md-12">
+                            <button id="btnPromocionesVencidas" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValorNegocio_PromVencidas", "Reportes", new { nombre_reporte = "Promociones Vencidas Negocio", idTipoReporte = 2 })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Promociones Vencidas </button>
+                        </div>
 
-                <div class="col-md-12">
-                    <button id="btnPromocionesNoUtilizadas" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValorNegocio_Index", "Reportes", new { nombre_reporte = "Promociones no Utilizadas Negocio", idTipoReporte = 2 })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Promociones no Utilizadas Por Comercio</button>
-                </div>
+                        <div class="col-md-12">
+                            <button id="btnPromocionesPorProvincia" class="btn btn-block" onclick="window.location = '@Url.Action("PromocionesNegocioPorProvincia", "Reportes", new { nombre_reporte = "Promociones por Provincia Negocio", idTipoReporte = 2 })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Promociones por Provincia </button>
+                        </div>
 
-                <div class="col-md-12">
-                    <button id="btnPromocionesVencidas" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValorNegocio_PromVencidas", "Reportes", new { nombre_reporte = "Promociones Vencidas Negocio", idTipoReporte = 2 })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Promociones Vencidas </button>
-                </div>
+                        <div class="col-md-12">
+                            <button id="btnPromocionesPorEstado" class="btn btn-block" onclick="window.location = '@Url.Action("ReportePromocionesCampoValor", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Promociones por estado </button>
+                        </div>
 
-                <div class="col-md-12">
-                    <button id="btnPromocionesPorProvincia" class="btn btn-block" onclick="window.location = '@Url.Action("PromocionesNegocioPorProvincia", "Reportes", new { nombre_reporte = "Promociones por Provincia Negocio", idTipoReporte = 2 })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Promociones por Provincia </button>
-                </div>
+                        <div class="col-md-12">
+                            <button id="btnPromocionesPorProvinciaSecretaria" class="btn btn-block" onclick="window.location = '@Url.Action("PromocionesPorProvincia", "Reportes", new { nombre_reporte = "Promociones por Provincia Secretaria", idTipoReporte = 2 })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Promociones por Provincia </button>
+                        </div>
 
-                <div class="col-md-12">
-                    <button id="btnPromocionesPorProvinciaSecretaria" class="btn btn-block" onclick="window.location = '@Url.Action("PromocionesPorProvincia", "Reportes", new { nombre_reporte = "Promociones por Provincia Secretaria", idTipoReporte = 2 })' " style=" background-color:yellowgreen; color:white;padding: 5px; margin-bottom:10px;">Promociones por Provincia </button>
-                </div>
+                    </div>
+                     
 
-				<div class="col-md-12">
-                    <button id="btnPromocionesPorEstado" class="btn btn-block" onclick="window.location = '@Url.Action("ReportePromocionesCampoValor", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Promociones por estado </button>
                 </div>
+                
+                <br />
+                <br /> 
 
-                <div class="col-md-12">
-                    <button id="btnEncuestasNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("RespuestasEncuestaNegocio", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Tus Encuestas </button>
-                </div>
+                <div class="panel panel-default" id="encuestas">
+                    <div class="panel-heading" style="font-size: 16px; font-weight: bold;">ENCUESTAS</div>
 
-                <div class="col-md-12">
-                    <button id="btnEncuestasSecretaria" class="btn btn-block" onclick="window.location = '@Url.Action("RespuestasEncuestaSecretaria", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Encuestas </button>
-                </div>
+                    <div class="panel-body">
+                        <div class="col-md-12">
+                            <button id="btnEncuestasNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("RespuestasEncuestaNegocio", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Tus Encuestas </button>
+                        </div>
 
-  				<div class="col-md-12">
-                    <button id="btnEncuestasPorEstado" class="btn btn-block" onclick="window.location = '@Url.Action("ReporteEncuestasCampoValor", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Encuestas por estado </button>
-                </div>
+                        <div class="col-md-12">
+                            <button id="btnEncuestasSecretaria" class="btn btn-block" onclick="window.location = '@Url.Action("RespuestasEncuestaSecretaria", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Encuestas </button>
+                        </div>
 
-                <div class="col-md-12">
-                    <button id="btnReservasPorSolicitudNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValorNegocio_Index", "Reportes", new { nombre_reporte = "Reservas por Solicitud Negocio", idTipoReporte = 1 })' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Reservas por Solicitud</button>
-                </div>
+                        <div class="col-md-12">
+                            <button id="btnEncuestasPorEstado" class="btn btn-block" onclick="window.location = '@Url.Action("ReporteEncuestasCampoValor", "Reportes")' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Encuestas por estado </button>
+                        </div>
+                    </div>
+               </div>              
 
-                <div class="col-md-12">
-                    <button id="btnPorcentajeOcupacion" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Porcentaje Ocupacion"})' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Porcentaje Ocupacion</button>
-                </div>
-
-                <div class="col-md-12">
-                    <button id="btnPorcentajeOcupacionNegocio" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValorNegocio_Index", "Reportes", new { nombre_reporte = "Porcentaje Ocupacion Negocio", idTipoReporte = 1 })' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Porcentaje Ocupacion</button>
-                </div>
-
-                <div class="col-md-12">
-                    <button id="btnCantidadPasajerosHospedados" class="btn btn-block" onclick="window.location = '@Url.Action("CampoFechaValor_Index", "Reportes", new { nombre_reporte = "Cantidad Pasajeros Hospedados" })' " style=" background-color:yellowgreen; color:white;height: 33px;padding: 5px; margin-bottom:10px;">Cantidad Pasajeros Hospedados</button>
-                </div>
 
                 <div class="col-md-3"></div>
 
