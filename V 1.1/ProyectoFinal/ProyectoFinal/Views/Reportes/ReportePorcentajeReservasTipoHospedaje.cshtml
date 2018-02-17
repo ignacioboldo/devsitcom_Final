@@ -28,6 +28,42 @@
 
     });
 
+    var textoPDF = "";
+
+
+    function armar_pdf() {
+
+        var id_canvas = $("#elmento_grafico").val();
+        //var canvas = document.getElementsByTagName(id_canvas);
+        
+        var canvas = document.querySelector('#' + id_canvas);
+
+        //creates image
+        var dataURL = canvas.toDataURL();
+
+        var nombre = '@ViewBag.nombre_reporte';
+
+        var date = Date.now();
+
+        var pdf = new jsPDF();
+        pdf.text(15, 15, '@ViewBag.nombre_reporte');
+
+
+        var tR = $("#tipo_reporte").val();
+        var n = $("#Negocios :selected").text();
+        var fecha_desde = $("#fecha_desde").val();
+        var fecha_hasta = $("#fecha_hasta").val();
+
+        pdf.setFontSize(11);
+
+        
+        pdf.text(28, 30, "Fecha desde: " + fecha_desde + " - Fecha Hasta: " + fecha_hasta + "\n\n" + textoPDF);
+
+
+        pdf.addImage(dataURL, 'JPEG', 0, 70, 200, 100);// el 0 representa a la distancia que toma el grafico con respecto al top
+        pdf.save(nombre + "_" + date + ".pdf");
+
+    }
 
     function armar_graficoTorta(idPregunta, idEncuesta, idNegocio, nomCanvas) {
 
@@ -75,7 +111,7 @@
 
                 $("#cargando_grafico").hide();
 
-                $("#canvas-holder").show();
+                $("#canvasholder").show();
                 $("#chart-area").show();
 
             }
@@ -100,11 +136,18 @@
 
                 var valores = [];
                 var etiquetas = [];
+                var tPDF = "";
 
                 response.forEach(function (element) {
                     valores.push(element.Valor);
                     etiquetas.push(element.Campo);
+
+                    tPDF = tPDF + element.Campo + ': ' + element.Valor + '\n';
                 });
+
+               
+
+                textoPDF = tPDF;
 
                 var color = Chart.helpers.color;
 
@@ -148,8 +191,10 @@
                 });
 
                 $("#cargando_grafico").hide();
-                $("#canvas-holder").show();
+                $("#canvasholder").show();
                 $("#chart-area").show();
+                $("#btn_exportar").show();
+                $("#elmento_grafico").val('canvas');
 
             }
         })
@@ -289,7 +334,7 @@
         })
 
         $("#cargando_grafico").hide();
-        $("#canvas-holder").hide();
+        $("#canvasholder").hide();
         $("#chart-area").hide();
         $("#resultado").show();
     }*@
@@ -398,6 +443,11 @@
             <label style="font-size:16px; display:none" id="porcen3"></label>
             <label style="font-size:16px; display:none" id="porcenText3">%)</label>
         </div>
+
+		<input type="hidden" id="elmento_grafico" />
+
+        <button onclick="armar_pdf();" id="btn_exportar" style="display:none; width:150px; background-color:lightslategray; color:white;border: 1px solid;margin-top: 20px;" type="button">Exportar a PDF</button>
+
 
                 <div id="canvas-holder" style="width:80%">
 
