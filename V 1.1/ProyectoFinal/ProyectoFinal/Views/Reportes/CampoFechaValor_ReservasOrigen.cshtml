@@ -136,31 +136,79 @@
 
 
 
-                var barChartData = {
-                    labels: etiquetas,
-                    datasets: [{
-                        label: string1,
-                        backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-                        borderColor: window.chartColors.green,
-                        borderWidth: 1,
-                        data: valores
-                    },
-                    {
-                        label: string2,
-                        backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-                        borderColor: window.chartColors.green,
-                        borderWidth: 1,
-                        data: valores_2
-                    },
-                    {
-                        label: string3,
-                        backgroundColor: color(window.chartColors.yellow).alpha(0.5).rgbString(),
-                        borderColor: window.chartColors.green,
-                        borderWidth: 1,
-                        data: valores_3
-                    }]
+              cantVacias = 0;
 
-                };
+                if (Prov1 == "")
+                    cantVacias = cantVacias + 1;
+
+                if (Prov2 == "")
+                    cantVacias = cantVacias + 1;
+
+                if (Prov3 == "")
+                    cantVacias = cantVacias + 1;
+
+
+                switch (cantVacias) {
+
+                    case 0: var barChartData = {
+                        labels: etiquetas,
+                        datasets: [{
+                            label: string1,
+                            backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                            borderColor: window.chartColors.green,
+                            borderWidth: 1,
+                            data: valores
+                        },
+                        {
+                            label: string2,
+                            backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                            borderColor: window.chartColors.green,
+                            borderWidth: 1,
+                            data: valores_2
+                        },
+                        {
+                            label: string3,
+                            backgroundColor: color(window.chartColors.yellow).alpha(0.5).rgbString(),
+                            borderColor: window.chartColors.green,
+                            borderWidth: 1,
+                            data: valores_3
+                        }]
+                    };
+                        break;
+
+                    case 1: var barChartData = {
+                        labels: etiquetas,
+                        datasets: [{
+                            label: string1,
+                            backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                            borderColor: window.chartColors.green,
+                            borderWidth: 1,
+                            data: valores
+                        },
+                        {
+                            label: string2,
+                            backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                            borderColor: window.chartColors.green,
+                            borderWidth: 1,
+                            data: valores_2
+                        }]
+                    };
+                        break;
+                    case 2: var barChartData = {
+                        labels: etiquetas,
+                        datasets: [{
+                            label: string1,
+                            backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                            borderColor: window.chartColors.green,
+                            borderWidth: 1,
+                            data: valores
+                        }]
+                    };
+                        break;
+
+                    default:
+
+                }
 
                 if (window.myBar != undefined) {
                     window.myBar.destroy();
