@@ -261,6 +261,10 @@
 
                 };
 
+                if (window.myBar != undefined) {
+                    window.myBar.destroy();
+                }
+
                 var ctx = document.getElementById("canvas").getContext("2d");
                 window.myBar = new Chart(ctx, {
                     type: 'bar',
@@ -362,7 +366,6 @@
     }
 
     function llamarReporte() {
-        var tipo_reporte = $("#tipo_reporte").val();
 
         armar_graficoBarra();
     }

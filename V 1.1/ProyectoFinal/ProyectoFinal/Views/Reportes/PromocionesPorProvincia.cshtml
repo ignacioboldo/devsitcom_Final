@@ -118,104 +118,7 @@
 
     }
 
-    function armar_graficoBarraDinamico() {
-
-        var tipo_reporte = $("#tipo_reporte").val();
-        //var nombre_reporte = $("#nombre_reporte").val();
-        var nombre_reporte = "@ViewBag.nombre_reporte";
-        var fecha_desde = $("#fecha_desde").val();
-        var fecha_hasta = $("#fecha_hasta").val();
-        var negocio = $("#Negocios").val();
-        var nombre1 = "@ViewBag.valor1";
-        var nombre2 = "@ViewBag.valor2";
-        var nombre3 = "@ViewBag.valor3";
-
-
-        $("#cargando_grafico").show();
-
-        $.ajax({
-            type: 'GET',
-            url: 'DataGraficoTortaNegocio?tipo_reporte=' + tipo_reporte + '&nombre_reporte=' + nombre_reporte + '&fecha_desde=' + fecha_desde + '&fecha_hasta=' + fecha_hasta + '&negocio=' + negocio,
-            success: function (response) {
-                
-                var valores = [];
-                var valores_2 = [];
-                var valores_3 = [];
-                var etiquetas = [];
-
-                response.forEach(function (element) {
-
-                    valores.push(element.Valor);
-                    valores_2.push(element.Valor_2);
-                    valores_3.push(element.Valor_3);
-
-                    etiquetas.push(element.Campo);
-                });
-
-                var color = Chart.helpers.color;
-
-                var barChartData = {
-                    labels: etiquetas,
-                    datasets: [{
-                        label: nombre1,
-                        backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-                        borderColor: window.chartColors.green,
-                        borderWidth: 1,
-                        data: valores
-                    },
-                    {
-                        label: nombre2,
-                        backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-                        borderColor: window.chartColors.green,
-                        borderWidth: 1,
-                        data: valores_2
-                    },
-                    {
-                        label: nombre3,
-                        backgroundColor: color(window.chartColors.yellow).alpha(0.5).rgbString(),
-                        borderColor: window.chartColors.green,
-                        borderWidth: 1,
-                        data: valores_3
-                    }]
-
-                };
-
-                var ctx = document.getElementById("canvas").getContext("2d");
-                window.myBar = new Chart(ctx, {
-                    type: 'bar',
-                    data: barChartData,
-                    options: {
-                        responsive: true,
-                        legend: {
-                            position: 'top',
-                        },
-                        title: {
-                            display: true,
-                            text: nombre_reporte
-                        },
-                        scales: {
-                            yAxes: [{
-                                ticks: {
-                                    beginAtZero: true
-                                }
-                            }]
-                        }
-                    }
-                });
-
-                $("#cargando_grafico").hide();
-
-            }
-        })
-
-        $("#cargando_grafico").hide();
-        $("#canvas").show();
-        $("#canvas-holder").hide();
-        $("#chart-area").hide();
-        $("#resultado").hide();
-    }
-
-
+    
     function armar_graficoBarra() {
 
         var tipo_reporte = $("#tipo_reporte").val();
@@ -260,6 +163,11 @@
                     }]
 
                 };
+
+                if (window.myBar != undefined) {
+                    window.myBar.destroy();
+                }
+
 
                 var ctx = document.getElementById("canvas").getContext("2d");
                 window.myBar = new Chart(ctx, {
