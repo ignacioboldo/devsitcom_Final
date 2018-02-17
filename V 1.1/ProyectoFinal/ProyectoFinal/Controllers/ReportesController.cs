@@ -697,6 +697,21 @@ namespace ProyectoFinal.Controllers
             resultCampo = rm.ObtenerCantidadPasajerosGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte);
             return Json(resultCampo, JsonRequestBehavior.AllowGet);
         }
+
+        public JsonResult DataGraficoPromocionesPorProvincia(string fecha_desde, string fecha_hasta)
+        {
+            List<ReportesCampoValor> result = new List<ReportesCampoValor>();
+            result = rm.ObtenerPromocionesPorProvincia(fecha_desde, fecha_hasta);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
+        public JsonResult DataGraficoPromocionesPorProvinciaNegocio(string fecha_desde, string fecha_hasta, string negocio)
+        {
+            List<ReportesCampoValor> result = new List<ReportesCampoValor>();
+            int idNeg = int.Parse(negocio);
+            result = rm.ObtenerPromocionesNegocioPorProvincia(fecha_desde, fecha_hasta, idNeg);
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult RespuestasEncuestaNegocio(int? idEncuesta, int? idNegocio, string fechaDesde, string fechaHasta)
         {
             ObtenerUsuarioActual();
