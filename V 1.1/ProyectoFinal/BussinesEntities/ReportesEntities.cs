@@ -25,6 +25,15 @@ namespace BussinesEntities
 
     }
 
+    public class ReportesCampoCantidadValor
+    {
+
+        public string valor { get; set; }
+        public string campo { get; set; }
+        public string cantidad { get; set; }
+
+    }
+
     public class ReportesCampoValor
     {
 
