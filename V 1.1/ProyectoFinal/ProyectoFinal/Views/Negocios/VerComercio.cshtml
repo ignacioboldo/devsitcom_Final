@@ -360,7 +360,7 @@
                                     {
                                         <div style="color: rgba(177, 13, 20, 1);font-size: 18px;text-align: center; padding:10px;"><img src="~/Content/img/promociones.png" /> @item.PROMOCION</div>
                                         <div style="margin-bottom:10px;">
-                                            <button onclick="window.location = '@Url.Action("ObtenerPromocion", "Promociones", new { idPromocion = item.idPromocion })'" style="background: cornflowerblue;color: white;" class="btn btn-xs btn-blue tooltips btn-block" data-placement="top" data-original-title="Editar">Quiero Esta Promoción!</button>
+                                            <button onclick="window.location = '@Url.Action("ObtenerPromocion", "Promociones", new { id = item.idPromocion })'" style="background: cornflowerblue;color: white;" class="btn btn-xs btn-blue tooltips btn-block" data-placement="top" data-original-title="Editar">Quiero Esta Promoción!</button>
                                         </div>
                                     }
 
