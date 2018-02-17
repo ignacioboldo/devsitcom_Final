@@ -504,14 +504,14 @@ public List<ReportesCampoFechaValor> ObtenerReservasPorOrigenGrafico_ProvNegocio
             }
         }
 
- 		public List<ReportesCampoValor> ObtenerReservasPorTipoHospedaje(string fechaDesde, string fechaHasta)
+        public List<ReportesCampoCantidadValor> ObtenerReservasPorTipoHospedaje(string fechaDesde, string fechaHasta)
         {
             using (SitcomEntities db = new SitcomEntities())
             {
                 SqlParameter paramFechaDesde = new SqlParameter("@pFechaDesde", fechaDesde);
                 SqlParameter paramFechaHasta = new SqlParameter("@pFechaHasta", fechaHasta);
 
-                return db.Database.SqlQuery<ReportesCampoValor>("EXEC [Reportes].[ObtenerReservasPorTipoHospedaje] @fechaDesdeP=@pfechaDesde, @fechaHastaP=@pFechaHasta", paramFechaDesde, paramFechaHasta).ToList();
+                return db.Database.SqlQuery<ReportesCampoCantidadValor>("EXEC [Reportes].[ObtenerReservasPorTipoHospedajeConCantidad] @fechaDesdeP=@pfechaDesde, @fechaHastaP=@pFechaHasta", paramFechaDesde, paramFechaHasta).ToList();
             }
         }
 

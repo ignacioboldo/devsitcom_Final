@@ -640,9 +640,33 @@ namespace ProyectoFinal.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
-        public JsonResult DataGraficoReservasPorTipoHospedaje(string fechaDesde, string fechaHasta)
+       public JsonResult DataGraficoReservasPorTipoHospedaje(string fechaDesde, string fechaHasta)
         {
-            List<ReportesCampoValor> result = new List<ReportesCampoValor>();
+            List<ReportesCampoCantidadValor> result = new List<ReportesCampoCantidadValor>();   
+
+            result = rm.ObtenerReservasPorTipoHospedaje(fechaDesde, fechaHasta);
+      
+
+            List<ReportesCampoValor> resultParaGraficar = new List<ReportesCampoValor>();
+
+            foreach (var item in result)
+            {
+                ReportesCampoValor r = new ReportesCampoValor()
+                {
+                    Campo = item.campo,
+                    Valor = item.valor
+                };
+
+                resultParaGraficar.Add(r);
+            }      
+                       
+
+            return Json(resultParaGraficar, JsonRequestBehavior.AllowGet);
+        }
+
+		public JsonResult DataGraficoReservasPorTipoHospedajeConCantidad(string fechaDesde, string fechaHasta)
+        {
+            List<ReportesCampoCantidadValor> result = new List<ReportesCampoCantidadValor>();
 
             result = rm.ObtenerReservasPorTipoHospedaje(fechaDesde, fechaHasta);
 
