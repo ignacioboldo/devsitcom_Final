@@ -111,7 +111,7 @@
                 var barChartData = {
                     labels: etiquetas,
                     datasets: [{
-                        label: 'Cantidad',
+                        label: 'Porcentaje',
                         backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
                         borderColor: window.chartColors.green,
                         borderWidth: 1,
@@ -151,6 +151,82 @@
                 $("#canvas-holder").show();
                 $("#chart-area").show();
 
+            }
+        })
+
+    }
+
+    function armar_TextoResumen() {
+
+        var fecha_desde = $("#fecha_desde").val();
+        var fecha_hasta = $("#fecha_hasta").val();
+
+
+        $.ajax({
+            type: 'GET',
+            url: 'DataGraficoReservasPorTipoHospedajeConCantidad?fechaDesde=' + fecha_desde + '&fechaHasta=' + fecha_hasta,
+            success: function (response) {
+
+                  
+
+                cantTotalReservas = 0;
+
+
+                response.forEach(function (element) {
+                    cantTotalReservas = cantTotalReservas + parseInt(element.cantidad);
+                });
+
+                i = 1;
+
+                response.forEach(function (element) {
+
+                    if (i == 1)
+                    {
+                        $("#tipoHospedaje1").text(element.campo);
+                        $("#tipoHospedaje1").show();
+                        $("#dosPuntos1").show();
+                        $("#cantTipoHospedaje1").text(element.cantidad);
+                        $("#cantTipoHospedaje1").show();
+                        $("#primerPar1").show();
+                        $("#porcen1").text(element.valor);
+                        $("#porcen1").show();
+                        $("#porcenText1").show();
+                    }
+
+                    if (i == 2) {
+                        $("#tipoHospedaje2").text(element.campo);
+                        $("#tipoHospedaje2").show();
+                        $("#dosPuntos2").show();
+                        $("#cantTipoHospedaje2").text(element.cantidad);
+                        $("#cantTipoHospedaje2").show();
+                        $("#primerPar2").show();
+                        $("#porcen2").text(element.valor);
+                        $("#porcen2").show();
+                        $("#porcenText2").show();
+                    }
+
+                    if (i == 3) {
+                        $("#tipoHospedaje3").text(element.campo);
+                        $("#tipoHospedaje3").show();
+                        $("#dosPuntos3").show();
+                        $("#cantTipoHospedaje3").text(element.cantidad);
+                        $("#cantTipoHospedaje3").show();
+                        $("#primerPar3").show();
+                        $("#porcen3").text(element.valor);
+                        $("#porcen3").show();
+                        $("#porcenText3").show();
+                    }
+
+                    i = i + 1;
+                });             
+
+
+
+                $("#divResumen").show();
+                $("#cantReservasTexto").show();
+                $("#cantReservasValor").text(cantTotalReservas);
+                $("#cantReservasValor").show();
+                
             }
         })
 
@@ -229,6 +305,12 @@
             armar_graficoBarra();
     }
 
+    function armarGrafico() {
+
+        armar_graficoBarra();
+        armar_TextoResumen();
+    }
+
 </script>
 
 <!-- LIGHT SECTION -->
@@ -273,7 +355,7 @@
                 <div class="row">
                     <br /> 
                     <div class="col-md-4">
-                        <button class="btn btn-block" onclick="armar_graficoBarra();" style="background-color:yellowgreen; color:white;">Buscar</button>
+                        <button class="btn btn-block" onclick="armarGrafico();" style="background-color:yellowgreen; color:white;">Buscar</button>
                     </div>
 
                 </div>
@@ -283,22 +365,55 @@
             <div id="resultado">
             </div>
 
-            <div id="cargando_grafico" style="display:none; text-align:center">Cargando grafico por favor espere...</div>
-            <div id="canvas-holder" style="width:80%">
-
-                <br />
-                <br />
-
-            <canvas id="canvas"></canvas>
+            <div id="cargando_grafico" style="display:none; text-align:center">Cargando grafico por favor espere...</div>                         
+                
+        <div id="divResumen" style="display:none">
             <br />
             <br />
-                    
+            <label style="font-size:24px; display:none" id="cantReservasTexto">CANTIDAD TOTAL DE RESERVAS: </label>
+            <label style="font-size:24px; display:none" id="cantReservasValor"></label>
 
-            <canvas id="chart-area" />
+            <br />
+            <br />
+            <label style="font-size:16px; color:grey; display:none" id="tipoHospedaje1"></label>
+            <label style="font-size:16px; color:grey; display:none" id="dosPuntos1">: </label>
+            <label style="font-size:16px; display:none" id="cantTipoHospedaje1"></label>
+            <label style="font-size:16px; display:none" id="primerPar1"> (</label>
+            <label style="font-size:16px; display:none" id="porcen1"></label>
+            <label style="font-size:16px; display:none" id="porcenText1">%)</label>
+            
+            <br />
+            <label style="font-size:16px; color:grey; display:none" id="tipoHospedaje2"></label>
+            <label style="font-size:16px; color:grey; display:none" id="dosPuntos2">: </label>
+            <label style="font-size:16px; display:none" id="cantTipoHospedaje2"></label>
+            <label style="font-size:16px; display:none" id="primerPar2"> (</label>
+            <label style="font-size:16px; display:none" id="porcen2"></label>
+            <label style="font-size:16px; display:none" id="porcenText2">%)</label>
+
+            <br />
+            <label style="font-size:16px; color:grey; display:none" id="tipoHospedaje2"></label>
+            <label style="font-size:16px; color:grey; display:none" id="dosPuntos2">: </label>
+            <label style="font-size:16px; display:none" id="cantTipoHospedaje2"></label>
+            <label style="font-size:16px; display:none" id="primerPar2"> (</label>
+            <label style="font-size:16px; display:none" id="porcen2"></label>
+            <label style="font-size:16px; display:none" id="porcenText2">%)</label>
         </div>
 
-        
-       
+                <div id="canvas-holder" style="width:80%">
 
-    </div>
+                    <br />
+                    <br />
+
+                    <canvas id="canvas"></canvas>
+                    <br />
+                    <br />
+
+
+                    <canvas id="chart-area" />
+                </div>
+
+
+
+
+</div>
 </section>
