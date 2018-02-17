@@ -816,6 +816,7 @@ namespace ProyectoFinal.Controllers
 
         public ActionResult ReportePorcentajeReservasTipoHospedaje()
         {
+            ViewBag.nombre_reporte = "PORCENTAJE DE RESERVAS POR TIPO DE HOSPEDAJE";
            return View();
         }
 
