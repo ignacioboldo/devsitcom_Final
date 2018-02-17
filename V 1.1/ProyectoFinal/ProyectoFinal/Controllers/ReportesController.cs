@@ -690,7 +690,13 @@ namespace ProyectoFinal.Controllers
 
             return Json(result, JsonRequestBehavior.AllowGet);
         }
-
+       
+        public JsonResult DataGraficoCantPasajerosHospedados(string tipo_reporte, string fecha_desde, string fecha_hasta)
+        {
+            List<ReportesCampoValor> resultCampo = new List<ReportesCampoValor>();
+            resultCampo = rm.ObtenerCantidadPasajerosGrafico(Convert.ToDateTime(fecha_desde), Convert.ToDateTime(fecha_hasta), tipo_reporte);
+            return Json(resultCampo, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult RespuestasEncuestaNegocio(int? idEncuesta, int? idNegocio, string fechaDesde, string fechaHasta)
         {
             ObtenerUsuarioActual();
@@ -767,6 +773,11 @@ namespace ProyectoFinal.Controllers
             return View();
         }
 
+        public ActionResult ReporteCantidadPasajerosHospedados(string nombre_reporte)
+        {
+            ViewBag.nombre_reporte = nombre_reporte;
+            return View();
+        }
         public ActionResult ReporteEncuestasCampoValor()
         {
             return View();
