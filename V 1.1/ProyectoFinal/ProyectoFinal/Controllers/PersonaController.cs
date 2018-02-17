@@ -78,8 +78,8 @@ namespace ProyectoFinal.Controllers
             }
             else 
             {
-                if (idNegocio != null)
-                    returnUrl = returnUrl + idNegocio.ToString();
+                //if (idNegocio != null)
+                    //returnUrl = returnUrl + idNegocio.ToString();
 
                 ViewBag.ReturnUrl = returnUrl;
                 ViewBag.IdNegocio = idNegocio;

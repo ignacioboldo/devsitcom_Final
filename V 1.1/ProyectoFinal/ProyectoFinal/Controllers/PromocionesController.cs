@@ -23,17 +23,23 @@ namespace ProyectoFinal
         private EncuestasManager em = new EncuestasManager();
 
 
-        public ActionResult ObtenerPromocion(int idPromocion)
+        public ActionResult ObtenerPromocion(int id)
         {
             ObtenerUsuarioActual();
 
             if (usuarioActual.idPerfil == 0)
             {
-                Session["ReturnUrl"] = "../Promociones/ObtenerPromocion/?idPromocion="+idPromocion;
+                Session["ReturnUrl"] = "../Promociones/ObtenerPromocion/"+id;
                 return RedirectToAction("Login", "Usuarios");
             }
 
-           PromocionesEntity p = pm.getPromocionById(idPromocion);
+
+			if (usuarioActual.idPersona == 0 || usuarioActual.idPersona == null)
+            {
+                return RedirectToAction("DatosPersonales", "Persona", new { returnUrl = "../Promociones/ObtenerPromocion/", idNegocio = id });    
+            }
+
+           PromocionesEntity p = pm.getPromocionById(id);
            ViewBag.Mensaje = "";
            return View(p);
         }

@@ -7,11 +7,13 @@
 <script type="text/javascript">
 
     var returnUrl = "@ViewBag.ReturnUrl"
+    var idNeg = @ViewBag.IdNegocio
 
     $(document).ready(function () {
         $("#ddlPaises").change(function () {
             nombre = $("#nombre").val();
-            idNegocio = $("#idNegocio").val();
+            idNegocio = idNeg;
+            //idNegocio = $("#idNegocio").val();
             $("#idNegocio").val(idNegocio)
             apellido = $("#apellido").val();
             idTipoDocumento = $("#idTipoDocumento").val();
@@ -49,7 +51,8 @@
 
         $("#ddlProvincias").change(function () {
             nombre = $("#nombre").val();
-            idNegocio = $("#idNegocio").val();
+            idNegocio = idNeg;
+            //idNegocio = $("#idNegocio").val();
             $("#idNegocio").val(idNegocio)
             apellido = $("#apellido").val();
             idTipoDocumento = $("#idTipoDocumento").val();
@@ -102,7 +105,7 @@
 
         @{
             string retUrl = ViewBag.ReturnUrl;
-            int idNeg = ViewBag.IdNegocio==null?0:ViewBag.IdNegocio;
+            int idNeg = ViewBag.IdNegocio == null ? null : ViewBag.IdNegocio ;
            
 
             switch (retUrl)
@@ -140,6 +143,23 @@
                      </div>
         
                     break;
+
+                case "../Promociones/ObtenerPromocion/": 
+                    
+                    <div id="mensaje" class="alert alert-info" role="alert">
+
+                            <br />
+                            <h5>      ATENCION:  </h5>
+                            <br />
+
+                            <label style="font-size:14px;"> Aun no hemos terminado de completar tus datos. Para poder obtener una promoción debes completar tus datos personales. </label>
+
+                            <br />
+                            <br />
+
+                     </div>
+        
+                    break;
                 default:
                     break;
             }            
@@ -148,13 +168,13 @@
         }
 
 
-        @using (Html.BeginForm("DatosPersonales", "Persona", new { returnUrl = ViewBag.ReturnUrl }))
+        @using (Html.BeginForm("DatosPersonales", "Persona", new { returnUrl = ViewBag.ReturnUrl, idNegocio = idNeg }))
         {
             @Html.AntiForgeryToken()
 
             @Html.ValidationSummary(true)
             
-            @Html.HiddenFor(model => model.idNegocio)
+           @* @Html.HiddenFor(model => model.idNegocio)*@
 
             <div class="row">
                 <div class="col-md-12">
