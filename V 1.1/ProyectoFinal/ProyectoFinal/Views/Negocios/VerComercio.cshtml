@@ -199,7 +199,7 @@
 
                 // put in some information about each json object - in this case, the opening hours.
                 var infowindow = new google.maps.InfoWindow({
-                    content: "<div class='infoDiv'><h4>" + nomComercio + "</h4><br /><h5>" + addressShow + "</h5></div></div>"
+                    content: "<div><label style='font-size:15px; color:grey;'>" + nomComercio + "</label><br /><label>" + addressShow + "</label></div></div>"
                 });
 
                 // finally hook up an "OnClick" listener to the map so it pops up out info-window when the marker-pin is clicked!
@@ -358,9 +358,9 @@
 
                                     foreach (var item in Model.Promociones)
                                     {
-                                        <div style="color: rgba(177, 13, 20, 1);font-size: 18px;text-align: center; padding:10px;"><img src="~/Content/img/promociones.png" /> @item.PROMOCION</div>
+                                        <div style="color: rgba(177, 13, 20, 1);font-size: 14px;text-align: center; padding:10px; font-weight:bold"><img src="~/Content/img/promociones.png" /> @item.PROMOCION</div>
                                         <div style="margin-bottom:10px;">
-                                            <button onclick="window.location = '@Url.Action("ObtenerPromocion", "Promociones", new { id = item.idPromocion })'" style="background: cornflowerblue;color: white;" class="btn btn-xs btn-blue tooltips btn-block" data-placement="top" data-original-title="Editar">Quiero Esta Promoción!</button>
+                                            <button onclick="window.location = '@Url.Action("ObtenerPromocion", "Promociones", new { id = item.idPromocion })'" style="background: cornflowerblue;color: white; font-weight:bold;" class="btn btn-xs btn-blue tooltips btn-block" data-placement="top" data-original-title="Editar">Quiero Esta Promoción!</button>
                                         </div>
                                     }
 
@@ -390,7 +390,7 @@
 
                 <div class="titulodesc">
                     <br>
-                    <h3><strong>@Model.nombre</strong></h3>
+                    <h3><strong style="font-size:20px;">@Model.nombre</strong></h3>
                 </div>
                 <br />
                 <div class="desc-des" style="font-size:17px;">
@@ -438,6 +438,7 @@
 
                 <div class="titulodesc">
                     <br>
+                    <br />
                     <h3><strong>Dirección</strong></h3>
                 </div>
 
@@ -462,10 +463,10 @@
                                 <div class="panel-body">
                                     <div class="collapse navbar-collapse navbar-ex1-collapse navbar-side-collapse">
 
-                                        <div style="color: cornflowerblue;font-size: 16px;padding:10px;"><i class="fa fa-phone"> <span class="text-bold">Teléfono: @Model.Sucursal.FirstOrDefault().telefono</span></i></div>
+                                        <div style="color: cornflowerblue;font-size: 16px;padding:10px;"><i class="fa fa-phone"> <span class="text-bold" style="font-weight:bold;">Teléfono: @Model.Sucursal.FirstOrDefault().telefono</span></i></div>
                                         <div style="color: cornflowerblue;font-size: 16px;padding:10px;">
                                             <i class="fa fa-map-marker">
-                                                <span class="text-bold">Dirección: @Model.Sucursal.FirstOrDefault().Domicilio.calle @Html.Label("  ") @Model.Sucursal.FirstOrDefault().Domicilio.numero @Html.Label(",  ") @Model.Sucursal.FirstOrDefault().Domicilio.Localidad.nombreLocalidad</span>
+                                                <span class="text-bold" style="font-weight:bold;">Dirección: @Model.Sucursal.FirstOrDefault().Domicilio.calle @Html.Label("  ") @Model.Sucursal.FirstOrDefault().Domicilio.numero @Html.Label(",  ") @Model.Sucursal.FirstOrDefault().Domicilio.Localidad.nombreLocalidad</span>
                                             </i>
 
                                         </div>
