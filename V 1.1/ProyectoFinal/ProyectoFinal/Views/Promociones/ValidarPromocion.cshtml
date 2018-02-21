@@ -117,92 +117,127 @@
                 DAL.Persona p = ViewBag.Persona;
 
                 string nombreCompleto = p.nombre + " " + p.apellido;
+                
+                <h4>Promocion Valida!</h4>
 
-                <div>
+                <div class="col-md-6 panel-group">
 
-                    <h4>Promocion Valida!</h4>
-                    <hr />
-                    <dl class="dl-horizontal">
+                    <div class="panel panel-default" id="datosPromocion">
+                        <div class="panel-heading" style="font-size:14px; font-weight:bold;">DATOS DE LA PROMOCION</div>
 
-                        <dt>
-                            PROMOCION:
-                        </dt>
+                        <div class="panel-body">
+                            <div>
+                                <dl class="dl-horizontal">
 
-                        <dd>
-                            @Html.DisplayFor(model => model.PROMOCION)
-                        </dd>
+                                    <dt>
+                                        PROMOCION:
+                                    </dt>
 
-                        <dt>
-                            NEGOCIO:
-                        </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.PROMOCION)
+                                    </dd>
 
-                        <dd>
-                            @Html.DisplayFor(model => model.NEGOCIO)
-                        </dd>
+                                    <dt>
+                                        NEGOCIO:
+                                    </dt>
 
-                        <dt>
-                            OBTENIDA:
-                        </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.NEGOCIO)
+                                    </dd>
 
-                        <dd>
-                            @Html.DisplayFor(model => model.OBTENIDA)
-                        </dd>
+                                    <dt>
+                                        OBTENIDA:
+                                    </dt>
 
-                        <dt>
-                            VENCE:
-                        </dt>
+                                    <dd>
+                                        @Html.DisplayFor(model => model.OBTENIDA)
+                                    </dd>
 
-                        <dd>
-                            @Html.DisplayFor(model => model.VENCE)
-                        </dd>
+                                    <dt>
+                                        VENCE:
+                                    </dt>
 
-                        <br />
+                                    <dd>
+                                        @Html.DisplayFor(model => model.VENCE)
+                                    </dd>
+                                 </dl>
 
-                        <dt>
-                            USUARIO:
-                        </dt>
+                            </div>
+                        </div>
+                    </div>
 
-                        <dd>
-                            @nombreCompleto
-                        </dd>
+                    <br />
 
-                        <dt>
-                            MAIL:
-                        </dt>
+                    <div class="panel panel-default" id="datosPersona">
+                        <div class="panel-heading" style="font-size:14px; font-weight:bold;">DATOS BENEFICIARIO</div>
 
-                        <dd>
-                            @p.email
-                        </dd>
+                        <div class="panel-body">
+                            <div>
 
-                        <dt>
-                            DOCUMENTO:
-                        </dt>
+                                <dl class="dl-horizontal">
+                                    <dt>
+                                        USUARIO:
+                                    </dt>
 
-                        <dd>
-                            @p.documento.ToString()
-                        </dd>
+                                    <dd>
+                                        @nombreCompleto
+                                    </dd>
 
-                    </dl>
+                                    <dt>
+                                        MAIL:
+                                    </dt>
 
-                </div>
+                                    <dd>
+                                        @p.email
+                                    </dd>
 
-                <br />
+                                    <dt>
+                                        DOCUMENTO:
+                                    </dt>
 
-                <div>
-                    <p>
-                        <button style="background: yellowgreen; color:white;padding:10px;" onclick="window.location = '@Url.Action("RegUsoPromocion", "Promociones", new { codigo = Model.CODIGO })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">REGISTRAR USO DE PROMOCIÓN</button>
-                    </p>
-                </div>
+                                    <dd>
+                                        @p.documento.ToString()
+                                    </dd>
+                                  </dl>
+
+
+                                    </div>
+                            </div>
+                        </div>
+            
+                    </div>
+            
+                    <br />
+                    <br />
+            <br />
+                    <br />
+            <br />
+                    <br />
+            <br />
+                    <br />
+            <br />
+                    <br />
+            <br />
+                    <br />
+            <br />
+                    <br /><br />
+                    <br /><br />
+                    <br /><br /><br />
+                    <div>
+                        <p>
+                            <button style="background: yellowgreen; color:white;padding:10px;" onclick="window.location = '@Url.Action("RegUsoPromocion", "Promociones", new { codigo = Model.CODIGO })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">REGISTRAR USO DE PROMOCIÓN</button>
+                        </p>
+                    </div>
 
             }
-        }
+    }
 
 
 
 
-        <a href="javascript:history.back()" class="btn btn-info" style="padding:10px; margin-top:20px; width: 200px;">
-            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  Volver
-        </a>
+    <a href="javascript:history.back()" class="btn btn-info" style="padding:10px; margin-top:20px; width: 200px;">
+        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>  Volver
+    </a>
 
 
 

@@ -39,59 +39,68 @@
 
     <div class="container">
 
-        <div>
-            <h4>Detalles</h4>
-            <hr />
-            <dl class="dl-horizontal">
+        <div class="col-md-6 panel-group">
 
-                <dt>
-                    Negocio:
-                </dt>
+            <div class="panel panel-default" id="detalles">
+                <div class="panel-heading" style="font-size:16px; font-weight:bold;">DETALLES</div>
 
-                <dd>
-                    @Html.DisplayFor(model => model.NEGOCIO)
-                </dd>
+                <div class="panel-body">
+                    <div>
+                        <dl class="dl-horizontal">
 
-                <dt>
-                    Promocion:
-                </dt>
+                            <dt>
+                                Negocio:
+                            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.PROMOCION)
-                </dd>
+                            <dd>
+                                @Html.DisplayFor(model => model.NEGOCIO)
+                            </dd>
 
-                <dt>
-                    Obtenida:
-                </dt>
+                            <dt>
+                                Promocion:
+                            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.OBTENIDA)
-                </dd>
+                            <dd>
+                                @Html.DisplayFor(model => model.PROMOCION)
+                            </dd>
 
-                <dt>
-                    Vence:
-                </dt>
+                            <dt>
+                                Obtenida:
+                            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.VENCE)
-                </dd>
+                            <dd>
+                                @Html.DisplayFor(model => model.OBTENIDA)
+                            </dd>
 
-                <dt>
-                    Codigo:
-                </dt>
+                            <dt>
+                                Vence:
+                            </dt>
 
-                <dd>
-                    @Html.DisplayFor(model => model.CODIGO)
-                </dd>
+                            <dd>
+                                @Html.DisplayFor(model => model.VENCE)
+                            </dd>
 
-            </dl>
-        </div>
-        <p>
-            @{
-                int idUsuario = ViewBag.IdUsuario;
-            }
-            <button style="background: yellowgreen; color:white;padding:10px;"  onclick="window.location = '@Url.Action("PromocionesUsuario", "Promociones", new { idUsuario = idUsuario })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">IR A TUS PROMOCIONES</button>
-        </p>
-    </div>
+                            <dt>
+                                <label style="font-size: 14px;">Código:</label>
+                            </dt>
+
+                            <dd>
+                                <label style="font-size:14px; color:grey">@Model.CODIGO</label>
+                            </dd>
+
+                         </dl>
+
+                        <br />
+                    </div>
+                 </div>
+                </div>
+            </div>
+                    <p>
+                        @{
+                            int idUsuario = ViewBag.IdUsuario;
+                        }
+                        <button style="background: yellowgreen; color:white;padding:10px;" onclick="window.location = '@Url.Action("PromocionesUsuario", "Promociones", new { idUsuario = idUsuario })'" class="btn btn-xs btn-blue tooltips" data-placement="top" data-original-title="Editar">IR A TUS PROMOCIONES</button>
+                    </p>
+           </div>
 
 </section>

@@ -86,215 +86,231 @@
 
 
         <div class="row">
-            <div class="col-md-12">
-                <div class="panel panel-white" style="width:1190px;">
+            <div class="col-md-4">
 
-                    <div class="panel-body">
-                        <div class="list-group">
-                            <a class="list-group-item list-group-item-info" href="#" style="font-size: 20px;">
-                                @Model.nombre
-                            </a>
-                            <a class="list-group-item" href="#">
-                                Usuario Solicitante: <span class="text-bold">@Model.Usuarios.nombreUsuario</span>
-                            </a>
-                            <a class="list-group-item" href="#">
-                                Tipo de Negocio:
-                                <span class="text-bold">
-                                    @Model.TipoDeNegocio.nombre
+                <h3><strong>Foto Principal</strong></h3>
+
+                @{
+                    foreach (var item in Model.FotosNegocio)
+                    {
+                        if (item.esPrincipal == true)
+                        {
+                            <div id="divImagenPrincipal">
+                                <img src="@Url.Action("ObtenerImagen","Negocios",new { id = item.idFoto })" alt="Alternate Text" style="width:100%;" />
+                            </div>
+                        }
+                    }
+                }
+
+                <br />
+
+                <h3><strong>Otras Fotos</strong></h3>
+                @{
+                    int index = 0;
+
+                    foreach (var item in Model.FotosNegocio)
+                    {
+
+                        string activo = "";
+                        if (index == 0) { activo = "active"; }
+
+                        if (item.esPrincipal != true)
+                        {
+
+                        <div class="col-xs-4 col-md-4">
+                            <div class="item @activo" data-thumb="@index">
+                                <img src="@Url.Action("ObtenerImagen","Negocios",new { id = item.idFoto })" onclick="modal('@index')" id="foto_@index" style="cursor: pointer;width:100px;height:80px " class="img-thumbnail">
+                            </div>
+                        </div>
+                    
+                            index++;
+                      }
+
+
+                        
+                    }
+                }
+
+            </div>
+            <div class="col-md-8">
+                
+                <div class="col-md-12" style="margin-top: 9px;">
+                    <div class="panel panel-white">
+
+                        <div class="panel-body">
+                            <div class="list-group">
+                                <a class="list-group-item list-group-item-info" href="#" style="font-size: 20px; background: rgba(177, 13, 20, 1);color: white;">
+                                    Persona responsable: @Model.nombre
+                                </a>
+                                <a class="list-group-item" href="#">
+                                    Usuario Solicitante: <span class="text-bold">@Model.Usuarios.nombreUsuario</span>
+                                </a>
+                                <a class="list-group-item" href="#">
+                                    Tipo de Negocio:
+                                    <span class="text-bold">
+                                        @Model.TipoDeNegocio.nombre
+                                        @if (Model.idTipoNegocio == 1)
+                                        {
+                                            if (Model.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje != 2)
+                                            {
+                                                @Html.Label("  -  ") @Model.LugarHospedaje.FirstOrDefault().TipoLugarHospedaje.nombre
+                                            }
+                                            else
+                                            {
+                                                if (Model.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idTipoComplejo == 4)
+                                                {
+                                                    @Html.Label("  -  Casa o Departamento")
+                                                }
+                                                else
+                                                {
+                                                    @Html.Label("  -  ") @Model.LugarHospedaje.FirstOrDefault().TipoLugarHospedaje.nombre
+                                                    @Html.Label(" de ") @Model.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().TipoComplejo.nombreTipoComplejo
+                                                }
+                                            }
+
+                                        }
+                                    </span>
+
+                                </a>
+                                <a class="list-group-item" href="#">
+
+
                                     @if (Model.idTipoNegocio == 1)
                                     {
-                                        if (Model.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje != 2)
+                                        if (Model.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje != 1)
                                         {
-                                            @Html.Label("  -  ") @Model.LugarHospedaje.FirstOrDefault().TipoLugarHospedaje.nombre
-                                        }
-                                        else
-                                        {
-                                            if (Model.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().idTipoComplejo == 4)
-                                            {
-                                                @Html.Label("  -  Casa o Departamento") 
-                                            }
-                                            else
-                                            {                                     
-                                                 @Html.Label("  -  ") @Model.LugarHospedaje.FirstOrDefault().TipoLugarHospedaje.nombre
-                                                 @Html.Label(" de ") @Model.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().TipoComplejo.nombreTipoComplejo
-                                            }
-                                        }
-
-                                    }
-                                </span>
-
-                            </a>
-                            <a class="list-group-item" href="#">
-
-
-                                @if (Model.idTipoNegocio == 1)
-                                {
-                                    if (Model.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje != 1)
-                                    {
-                                        <div>
-                                            @Html.Label("Categoria: ", new { @class = "control-label" })
-                                            @if (Model.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 2)
-                                            {
-                                                <div>
-                                                    <span class="text-bold">@Model.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().CategoriaHospedaje.nombre </span>
-                                                </div>
-                                            }
-                                            else
-                                            {
-                                                <div>
-                                                    <span class="text-bold">  @Model.LugarHospedaje.FirstOrDefault().Hotel.FirstOrDefault().CategoriaHospedaje.nombre</span>
-                                                </div>
-                                            }
-                                        </div>
-                                    }
-
-                                    <br />
-
-                                    @*<div>
-                                            @Html.Label("Caracteristicas: ", new { @class = "control-label" })
-                                            @foreach (var item in Model.LugarHospedaje.FirstOrDefault().CaracteristicasHospedaje)
-                                            {
-                                                <div>
-                                                    @Html.Label(" - ") @item.Caracteristica.nombre
-                                                </div>
-                                            }
-                                        </div>*@
-
-                                }
-                                else
-                                {
-                                    <div>
-
-                                        <div>
-                                            @Html.Label("Rubro: ", new { @class = "control-label", id = "lblRubro" })
-                                            <span class="text-bold">  @Model.Comercio.FirstOrDefault().Rubro.nombreRubro </span>
-                                        </div>
-                                    </div>
-                                }
-
-                            </a>
-                            <a class="list-group-item" href="#">
-                                <div>
-                                    Teléfono: <span class="text-bold">@Model.Sucursal.FirstOrDefault().telefono</span>
-                                </div>
-                            </a>
-                            <a class="list-group-item" href="#">
-                                Ubicación: <span class="text-bold">@Model.Sucursal.FirstOrDefault().Domicilio.calle @Html.Label("  ") @Model.Sucursal.FirstOrDefault().Domicilio.numero</span> @Html.Label("Dpto: ")<span class="text-bold"> @Model.Sucursal.FirstOrDefault().Domicilio.dpto @Html.Label(",  ") @Model.Sucursal.FirstOrDefault().Domicilio.Localidad.nombreLocalidad</span>
-                            </a>
-                            <a class="list-group-item" href="#">
-                                <div>
-                                    @Html.Label("Descripcion:", new { @class = "control-label" })
-                                    <div>
-                                        @Model.descripcion
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="row">
-                            <div class="col-lg-6 col-lg-offset-1">
-                                @{
-                                    foreach (var item in Model.FotosNegocio)
-                                    {
-                                        if (item.esPrincipal == true)
-                                        {
-                                            <div id="divImagenPrincipal">
-                                                <img src="@Url.Action("ObtenerImagen","Negocios", new { id = item.idFoto })" alt="Alternate Text" style="width: 500px; height: 500px;" />
+                                            <div>
+                                                @Html.Label("Categoria: ", new { @class = "control-label" })
+                                                @if (Model.LugarHospedaje.FirstOrDefault().idTipoLugarHospedaje == 2)
+                                                {
+                                                    <div>
+                                                        <span class="text-bold">@Model.LugarHospedaje.FirstOrDefault().Complejo.FirstOrDefault().CategoriaHospedaje.nombre </span>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div>
+                                                        <span class="text-bold">  @Model.LugarHospedaje.FirstOrDefault().Hotel.FirstOrDefault().CategoriaHospedaje.nombre</span>
+                                                    </div>
+                                                }
                                             </div>
                                         }
-                                    }
-                                }
-                                <br />
-                            </div>
-                            <div class="col-lg-5">
-                                @*@Html.Label("Imagenes del Negocio: ", new { @class = "control-label col-md-2", id = "lblRubro" })*@
 
-                                <ul class="row the-icons">
+                                        <br />
 
-
-
-                                    @{foreach (var item in Model.FotosNegocio)
+                                        @*<div>
+                                    @Html.Label("Caracteristicas: ", new { @class = "control-label" })
+                                    @foreach (var item in Model.LugarHospedaje.FirstOrDefault().CaracteristicasHospedaje)
                                     {
-
-                                        if (item.esPrincipal != true)
-                                        {
-                                            <li class="col-lg-4">
-
-                                                <img src="@Url.Action("ObtenerImagen","Negocios",new { id = item.idFoto })" alt="Alternate Text" style="width: 100px; height: 100px;" />
-                                                <hr />
-                                            </li>
-
-                                        }
+                                        <div>
+                                            @Html.Label(" - ") @item.Caracteristica.nombre
+                                        </div>
+                                    }
+                                </div>*@
 
                                     }
+                                    else
+                                    {
+                                        <div>
 
+                                            <div>
+                                                @Html.Label("Rubro: ", new { @class = "control-label", id = "lblRubro" })
+                                                <span class="text-bold">  @Model.Comercio.FirstOrDefault().Rubro.nombreRubro </span>
+                                            </div>
+                                        </div>
                                     }
 
-                                </ul>
+                                </a>
+                                <a class="list-group-item" href="#">
+                                    <div>
+                                        Teléfono: <span class="text-bold">@Model.Sucursal.FirstOrDefault().telefono</span>
+                                    </div>
+                                </a>
+                                <a class="list-group-item" href="#">
+                                    Ubicación: <span class="text-bold">@Model.Sucursal.FirstOrDefault().Domicilio.calle @Html.Label("  ") @Model.Sucursal.FirstOrDefault().Domicilio.numero</span> @Html.Label("Dpto: ")<span class="text-bold"> @Model.Sucursal.FirstOrDefault().Domicilio.dpto @Html.Label(",  ") @Model.Sucursal.FirstOrDefault().Domicilio.Localidad.nombreLocalidad</span>
+                                </a>
+                                <a class="list-group-item" href="#">
+                                    <div>
+                                        @Html.Label("Descripcion:", new { @class = "control-label" })
+                                        <div>
+                                            @Model.descripcion
+                                        </div>
+                                    </div>
+                                </a>
                             </div>
-                        </div>
-                        <br />
-                        <div class="row">
-                            <div class="col-lg-offset-5">
 
-                                <button class="btn btn-green" id="btnAprobar" style="background: yellowgreen; color:white;padding:10px;">
-                                    <i class="fa fa-check"></i> ACEPTAR
-                                </button>
 
-                                <button class="btn btn-green" id="btnSolicitarCorreccion" style="background: cornflowerblue; color:white;padding:10px;">
-                                    <i class="fa fa-check"></i> SOLICITAR CORRECCION
-                                </button>
 
-                                <button class="btn btn-red" id="btnRechazar" style="background: rgba(177, 13, 20, 1); color:white;padding:10px;">
-                                    <i class="fa fa-times fa fa-white"></i> RECHAZAR
-                                </button>
-                            </div>
+
                             <br />
+                            
+                                <div style="margin-bottom:20px; text-align:right;">
 
-                            <div id="textoAprob" style="display:none" class="alert alert-block alert-success fade in col-lg-10 col-lg-offset-1">
-                                <h4 class="alert-heading"><i class="fa fa-check"></i> Aprobado!</h4>
-                                <p>
-                                    Atención! Usted esta aprobando la publicacion del siguiente negocio,
-                                    el mismo será publicado a la brevedad en el sitio web.
-                                </p>
-                            </div>
+                                    <button class="btn btn-green" id="btnAprobar" style="background: yellowgreen; color:white;padding:10px;">
+                                        <i class="fa fa-check"></i> ACEPTAR
+                                    </button>
 
-                            <div id="textoRecha" style="display:none" class="alert alert-block alert-danger fade in col-lg-10 col-lg-offset-1">
-                                <h4 class="alert-heading"><i class="fa fa-times"></i> Rechazado</h4>
-                                Atención! Usted esta rechazando la publicacion del siguiente negocio,
-                                el mismo no se hará publico en el sitio web informando el motivo de rechazo al usuario.
-                                <br />
+                                    <button class="btn btn-green" id="btnSolicitarCorreccion" style="background: cornflowerblue; color:white;padding:10px;">
+                                        <i class="fa fa-check"></i> SOLICITAR CORRECCION
+                                    </button>
 
-                                <div id="comentario" style="display:none">
-                                    <br />
-                                    <textarea id="comentarioTexto" placeholder="Motivo del Rechazo.." style="width:500px; height:100px;" class="autosize form-control col-lg-offset-4"></textarea>
+                                    <button class="btn btn-red" id="btnRechazar" style="background: rgba(177, 13, 20, 1); color:white;padding:10px;">
+                                        <i class="fa fa-times fa fa-white"></i> RECHAZAR
+                                    </button>
                                 </div>
-                            </div>
+                             
 
-
-                            <div id="textoSolicCorr" style="display:none" class="alert alert-block alert-danger fade in col-lg-10 col-lg-offset-1">
-                                <h4 class="alert-heading"><i class="fa fa-times"></i> Solicitud de Correccion</h4>
-                                Atención! Usted esta solicitando una correccion del siguiente negocio,
-                                el mismo no se hará publico en el sitio web hasta no ser aprobado. Recordá que se pueden solicitar
-                                hasta 2 correcciones, luego se debera aprobar o rechazar el tramite.
-                                <br />
-
-                                <div id="comentarioCorreccion" style="display:none">
-                                    <br />
-                                    <textarea id="comentarioCorreccionTexto" placeholder="Comentario.." style="width:500px; height:100px;" class="autosize form-control col-lg-offset-4"></textarea>
+                                <div id="textoAprob" style="display:none" class="alert alert-block alert-success fade in col-md-12">
+                                    <h4 class="alert-heading"><i class="fa fa-check"></i> Aprobado!</h4>
+                                    <p>
+                                        Atención! Usted esta aprobando la publicacion del siguiente negocio,
+                                        el mismo será publicado a la brevedad en el sitio web.
+                                    </p>
                                 </div>
 
-                            </div>
-                            <br />
+                                <div id="textoRecha" style="display:none" class="alert alert-block alert-danger fade in col-md-12">
+                                    <h4 class="alert-heading"><i class="fa fa-times"></i> Rechazado</h4>
+                                    Atención! Usted esta rechazando la publicacion del siguiente negocio,
+                                    el mismo no se hará publico en el sitio web informando el motivo de rechazo al usuario.
+                                    <br />
 
-                            <input type="button" value="CONFIRMAR" style="background: yellowgreen; color:white;padding:10px;display:none" class="btn btn-green col-lg-offset-5" id="btnConfirmar"/>
+                                    <div id="comentario" style="display:none">
+                                        <br />
+                                        <textarea id="comentarioTexto" placeholder="Motivo del Rechazo.." class="autosize form-control col-md-12"></textarea>
+                                    </div>
+                                </div>
+
+
+                                <div id="textoSolicCorr" style="display:none" class="alert alert-block alert-danger fade in col-md-12">
+                                    <h4 class="alert-heading"><i class="fa fa-times"></i> Solicitud de Correccion</h4>
+                                    Atención! Usted esta solicitando una correccion del siguiente negocio,
+                                    el mismo no se hará publico en el sitio web hasta no ser aprobado. Recordá que se pueden solicitar
+                                    hasta 2 correcciones, luego se debera aprobar o rechazar el tramite.
+                                    <br />
+
+                                    <div id="comentarioCorreccion" style="display:none">
+                                        <br />
+                                        <textarea id="comentarioCorreccionTexto" placeholder="Comentario.."  class="autosize form-control"></textarea>
+                                    </div>
+
+                                </div>
+                                <br />
+
+                                <input type="button" value="CONFIRMAR" style="background: yellowgreen; color:white;display:none" class="btn btn-green col-md-12" id="btnConfirmar" />
+                          
+
+
+
+
                         </div>
-
-
-
-
                     </div>
                 </div>
             </div>
+
+        </div>
+
+        <div class="row">
+
         </div>
 
 
@@ -405,6 +421,40 @@
             <br />*@
 
     </div>
+
+
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title" id="myModalLabel"></h4>
+                </div>
+                <div class="modal-body">
+                    <img class="img-responsive" style="width:100%; height:100%" id="img_modal" src="">
+                </div>
+                <div class="modal-footer">
+
+                    <a class="btn btn-default" style="padding: 10px;" data-dismiss="modal" href="javascript:void(0);">Cerrar</a>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+
+    function modal(id) {
+        $("#myModalLabel").html('Foto');
+        var src = $("#foto_" + id).attr("src");
+        $("#img_modal").attr("src", src);
+        $('#myModal').modal('show');
+    };
+
+
+    </script>
+
 
 
 
