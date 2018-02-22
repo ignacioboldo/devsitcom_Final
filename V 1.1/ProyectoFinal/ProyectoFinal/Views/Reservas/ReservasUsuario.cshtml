@@ -281,10 +281,11 @@
 
                         }
 
-                        <h4><strong>Tus Reservas</strong></h4>
-
+                        
                         @if (Model.reservas.Count() != 0)
                         {
+                            <h4><strong>Tus Reservas</strong></h4>
+
                             @helper botonVer(BussinesEntities.ReservasUsuarioEntities n)
                             {
                                 if (n.idPersona != null)

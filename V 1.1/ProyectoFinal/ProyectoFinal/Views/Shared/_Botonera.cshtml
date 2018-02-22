@@ -32,23 +32,7 @@
 
     $(document).ready(function () {
 
-        $.ajax({
-            type: 'GET',
-            url: '../../Encuestas/GetEncuestasSinResponder',
-            success: function (response) {
-                $("#encuestasSinResponder").html(response);
-            },
-            async:false
-         });
-
-        $.ajax({
-            type: 'GET',
-            url: '../../Promociones/GetPromocioneSinUtilizar',  
-            success: function (response) {
-                $("#promocionesSinUtilizar").html(response);
-            },
-            async:false
-        });
+        
 
         if (perfil == 1) {
             $("#btnTusTramites").show();
@@ -189,6 +173,24 @@
         $("#btnNuevaEncuesta").click(function (event) {
             window.location = '@Url.Action("NuevaEncuesta", "Encuestas")';
             event.preventDefault();
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: '../../Encuestas/GetEncuestasSinResponder',
+            success: function (response) {
+                $("#encuestasSinResponder").html(response);
+            },
+            async: false
+        });
+
+        $.ajax({
+            type: 'GET',
+            url: '../../Promociones/GetPromocioneSinUtilizar',
+            success: function (response) {
+                $("#promocionesSinUtilizar").html(response);
+            },
+            async: false
         });
 
     });

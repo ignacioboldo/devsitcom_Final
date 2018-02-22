@@ -67,7 +67,7 @@ namespace ProyectoFinal.Controllers
                 usuarioActual.idPersona = idPersona;
                 Session["User"] = usuarioActual;
 
-                if (returnUrl != null && idNegocio != null)
+                if (returnUrl != null && idNegocio != null && idNegocio != 0)
                     returnUrl = returnUrl + idNegocio.ToString();
 
 
